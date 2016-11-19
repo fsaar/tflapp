@@ -316,14 +316,18 @@
                                                         <rect key="frame" x="0.0" y="0.0" width="54" height="44"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <subviews>
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mcz-Ns-JOi">
+                                                                <rect key="frame" x="5" y="3" width="44" height="20"/>
+                                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            </view>
                                                             <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="207" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="89R-yJ-7Rc" userLabel="Line">
-                                                                <rect key="frame" x="0.0" y="6" width="54" height="14"/>
+                                                                <rect key="frame" x="16.5" y="6" width="21" height="14"/>
                                                                 <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="11"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 mins" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Sy-Fd-B0S">
-                                                                <rect key="frame" x="0.0" y="24" width="54" height="14"/>
+                                                                <rect key="frame" x="0.0" y="26" width="54" height="14"/>
                                                                 <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="11"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -332,16 +336,20 @@
                                                     </view>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
-                                                        <constraint firstItem="89R-yJ-7Rc" firstAttribute="leading" secondItem="sSL-d7-rLk" secondAttribute="leading" id="2jY-Cd-PXA"/>
-                                                        <constraint firstItem="9Sy-Fd-B0S" firstAttribute="top" secondItem="89R-yJ-7Rc" secondAttribute="bottom" constant="4" id="ce8-uT-3e7"/>
+                                                        <constraint firstItem="Mcz-Ns-JOi" firstAttribute="bottom" secondItem="89R-yJ-7Rc" secondAttribute="bottom" constant="3" id="VdX-Ng-Mut"/>
+                                                        <constraint firstItem="89R-yJ-7Rc" firstAttribute="centerX" secondItem="sSL-d7-rLk" secondAttribute="centerX" id="Xxz-3U-xig"/>
+                                                        <constraint firstItem="9Sy-Fd-B0S" firstAttribute="top" secondItem="89R-yJ-7Rc" secondAttribute="bottom" constant="6" id="ce8-uT-3e7"/>
                                                         <constraint firstItem="89R-yJ-7Rc" firstAttribute="top" secondItem="sSL-d7-rLk" secondAttribute="top" constant="6" id="dwh-15-GHS"/>
+                                                        <constraint firstAttribute="trailing" secondItem="Mcz-Ns-JOi" secondAttribute="trailing" constant="5" id="gsw-mG-4CS"/>
                                                         <constraint firstItem="9Sy-Fd-B0S" firstAttribute="leading" secondItem="sSL-d7-rLk" secondAttribute="leading" id="kHM-l1-Wtj"/>
                                                         <constraint firstAttribute="trailing" secondItem="9Sy-Fd-B0S" secondAttribute="trailing" id="mgH-rB-k5b"/>
-                                                        <constraint firstAttribute="trailing" secondItem="89R-yJ-7Rc" secondAttribute="trailing" id="mhQ-HX-H5S"/>
+                                                        <constraint firstItem="Mcz-Ns-JOi" firstAttribute="top" secondItem="89R-yJ-7Rc" secondAttribute="top" constant="-3" id="uyg-K3-2GT"/>
+                                                        <constraint firstItem="Mcz-Ns-JOi" firstAttribute="leading" secondItem="sSL-d7-rLk" secondAttribute="leading" constant="5" id="vTL-xE-hMh"/>
                                                     </constraints>
                                                     <connections>
                                                         <outlet property="arrivalTime" destination="9Sy-Fd-B0S" id="RZf-ia-QhN"/>
                                                         <outlet property="line" destination="89R-yJ-7Rc" id="cLh-Jo-gId"/>
+                                                        <outlet property="lineBackground" destination="Mcz-Ns-JOi" id="d2I-sL-7yr"/>
                                                     </connections>
                                                 </collectionViewCell>
                                             </cells>

@@ -67,7 +67,7 @@ class TFLRootViewController: UIViewController {
     @IBOutlet weak var contentView : UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.ackLabel.font = UIFont.tflFont(size: 20)
+        self.ackLabel.font = UIFont.tflFont(size: 14)
         self.ackLabel.text = NSLocalizedString("TFLRootViewController.ackTitle", comment: "")
         self.ackLabel.textColor = .black
         self.navigationController?.navigationBar.isHidden = true

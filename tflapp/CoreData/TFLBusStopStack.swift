@@ -2,6 +2,8 @@ import Foundation
 import CoreData
 import Crashlytics
 
+private let dbFileName  = URL(string:"TFLBusStops.sqlite")
+
 @objc public final class TFLBusStopStack : NSObject {
     
     static let sharedDataStack = TFLBusStopStack()
@@ -25,7 +27,7 @@ import Crashlytics
     
     override init() {
         func cleanUpCoreData(_ coordinator : NSPersistentStoreCoordinator) -> Bool{
-            guard let destinationStoreURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last?.appendingPathComponent("TFLBusStops.sqlite") else {
+            guard let dbFullFileName = dbFileName?.path,let destinationStoreURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last?.appendingPathComponent(dbFullFileName) else {
                 return false
             }
             if let persistentStore = coordinator.persistentStores.first {
@@ -42,11 +44,12 @@ import Crashlytics
         
         
         func initCoreData(_ coordinator : NSPersistentStoreCoordinator) -> Bool {
-            guard let destinationStoreURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last?.appendingPathComponent("TFLBusStops.sqlite"),
-                let sourceStoreURL = Bundle.main.url(forResource: "TFLBusStops", withExtension: "sqlite") else {
+            
+            guard let dbFullFileName = dbFileName?.path, let path = dbFileName?.deletingPathExtension().path,let ext = dbFileName?.pathExtension,let destinationStoreURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last?.appendingPathComponent(dbFullFileName),
+                let sourceStoreURL = Bundle.main.url(forResource: path, withExtension: ext) else {
                 return false
             }
-
+            
             if !FileManager.default.fileExists(atPath: destinationStoreURL.path) {
                 _ = try? FileManager.default.copyItem(at: sourceStoreURL, to: destinationStoreURL)
             }

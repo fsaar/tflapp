@@ -30,11 +30,11 @@ class TFLRootViewController: UIViewController {
                 showLoadingCurrentLocationIfNeedBe()
             case State.retrievingNearbyStations:
                 self.contentView.isHidden = false
-                self.ackLabel.isHidden = false
+                self.ackLabel.isHidden = self.nearbyBusStationController?.busStopPredicationTuple.isEmpty ?? true
                 showLoadingNearbyStationsIfNeedBe()
             case State.loadingArrivals:
                 self.contentView.isHidden = false
-                self.ackLabel.isHidden = false
+                self.ackLabel.isHidden = self.nearbyBusStationController?.busStopPredicationTuple.isEmpty ?? true
                 showLoadingArrivalTimesIfNeedBe()
             case State.noError:
                 hideInfoViews()

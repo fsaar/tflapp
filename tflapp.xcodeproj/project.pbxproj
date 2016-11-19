@@ -10,6 +10,7 @@
 		564EC6F51DE0A2A0008CFD11 /* TFLButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564EC6F41DE0A2A0008CFD11 /* TFLButton.swift */; };
 		564EC6FA1DE0DC1C008CFD11 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 564EC6F81DE0DC1C008CFD11 /* Fabric.framework */; };
 		564EC6FB1DE0DC1C008CFD11 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 564EC6F91DE0DC1C008CFD11 /* Crashlytics.framework */; };
+		564EC6FD1DE10272008CFD11 /* Crashlytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564EC6FC1DE10272008CFD11 /* Crashlytics.swift */; };
 		565A1FC31DD8F317003CE960 /* TLFRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565A1FC21DD8F317003CE960 /* TLFRequestManager.swift */; };
 		565A1FC51DD8F331003CE960 /* TLFClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565A1FC41DD8F331003CE960 /* TLFClient.swift */; };
 		565A1FC81DD8F6E6003CE960 /* TFLCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565A1FC71DD8F6E6003CE960 /* TFLCoreDataStack.swift */; };
@@ -47,6 +48,7 @@
 		564EC6F41DE0A2A0008CFD11 /* TFLButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLButton.swift; sourceTree = "<group>"; };
 		564EC6F81DE0DC1C008CFD11 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		564EC6F91DE0DC1C008CFD11 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
+		564EC6FC1DE10272008CFD11 /* Crashlytics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Crashlytics.swift; sourceTree = "<group>"; };
 		565A1FC21DD8F317003CE960 /* TLFRequestManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLFRequestManager.swift; sourceTree = "<group>"; };
 		565A1FC41DD8F331003CE960 /* TLFClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLFClient.swift; sourceTree = "<group>"; };
 		565A1FC71DD8F6E6003CE960 /* TFLCoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLCoreDataStack.swift; sourceTree = "<group>"; };
@@ -190,6 +192,7 @@
 		566EF7E01DDC59D9006162D7 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				564EC6FC1DE10272008CFD11 /* Crashlytics.swift */,
 				566EF7E11DDC59ED006162D7 /* UIFont.swift */,
 			);
 			path = Extensions;
@@ -393,6 +396,7 @@
 				565A1FC51DD8F331003CE960 /* TLFClient.swift in Sources */,
 				56823EAA1DDDA4CC00E79B1A /* TFLNoStationsView.swift in Sources */,
 				566EF7D91DDC4D47006162D7 /* TFLNearbyBusStationsController.swift in Sources */,
+				564EC6FD1DE10272008CFD11 /* Crashlytics.swift in Sources */,
 				565A1FC31DD8F317003CE960 /* TLFRequestManager.swift in Sources */,
 				56A81B2F1DD862DC001DF7F1 /* TFLAppDelegate.swift in Sources */,
 				56823EAE1DDDA5B300E79B1A /* TFLNoGPSEnabledView.swift in Sources */,

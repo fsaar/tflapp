@@ -1,6 +1,7 @@
 import CoreLocation
 import UIKit
 import CoreData
+import Crashlytics
 
 
 class TFLRootViewController: UIViewController {
@@ -67,6 +68,7 @@ class TFLRootViewController: UIViewController {
     @IBOutlet weak var contentView : UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        Crashlytics.notify()
         self.ackLabel.font = UIFont.tflFont(size: 14)
         self.ackLabel.text = NSLocalizedString("TFLRootViewController.ackTitle", comment: "")
         self.ackLabel.textColor = .black
@@ -98,6 +100,7 @@ class TFLRootViewController: UIViewController {
 fileprivate extension TFLRootViewController {
     
     func loadNearbyBusstops(using completionBlock:(()->())? = nil) {
+        Crashlytics.notify()
         retrieveBusstopsForCurrentLocation { busStopPredictionTuples in
             self.nearbyBusStationController?.busStopPredicationTuple = busStopPredictionTuples
             completionBlock?()
@@ -123,11 +126,12 @@ fileprivate extension TFLRootViewController {
     
     func updateNearbyBusStops(for currentLocation:CLLocationCoordinate2D ) {
         self.tflClient.nearbyBusStops(with: currentLocation) { _  in
-            
+            Crashlytics.notify()
         }
     }
     
     func loadArrivalTimesForStoreStopPoints(with coord: CLLocationCoordinate2D, using completionBlock:@escaping ([TFLBusStopArrivalsInfo])->()) {
+        Crashlytics.notify()
         self.state = .loadingArrivals
         let currentLocation = CLLocation(latitude: coord.latitude, longitude: coord.longitude)
         let group = DispatchGroup()
@@ -145,6 +149,7 @@ fileprivate extension TFLRootViewController {
             let sortedStopPoints = newStopPoints.sorted { $0.busStopDistance < $1.busStopDistance }
             self.state = sortedStopPoints.isEmpty ? .errorNoStationsNearby : .noError
             completionBlock(sortedStopPoints)
+            Crashlytics.notify()
         }
     }
     
@@ -224,6 +229,7 @@ fileprivate extension TFLRootViewController {
 
 extension TFLRootViewController : TFLNoGPSEnabledViewDelegate {
     func didTap(noGPSEnabledButton: UIButton,in view : TFLNoGPSEnabledView) {
+        Crashlytics.notify()
         guard let url = URL(string: UIApplicationOpenSettingsURLString) else {
             return
         }
@@ -235,6 +241,7 @@ extension TFLRootViewController : TFLNoGPSEnabledViewDelegate {
 
 extension TFLRootViewController : TFLNoStationsViewDelegate {
     func didTap(noStationsButton: UIButton,in view : TFLNoStationsView) {
+        Crashlytics.notify()
         loadNearbyBusstops ()
     }
 }
@@ -261,6 +268,7 @@ fileprivate extension TFLRootViewController {
 
 extension TFLRootViewController : TFLNearbyBusStationsControllerDelegate {
     func refresh(controller: TFLNearbyBusStationsController, using completionBlock:@escaping ()->()) {
+        Crashlytics.notify()
         loadNearbyBusstops (using: completionBlock)
     }
 }

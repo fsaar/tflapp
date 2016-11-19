@@ -1,0 +1,3 @@
+"NSLocationAlwaysUsageDescription" = "This is so we can get the nearest bus stops for your location.";
+"NSLocationWhenInUseUsageDescription" = "This is so we can get the nearest bus stops for your location.";
+

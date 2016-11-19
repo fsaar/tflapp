@@ -1,0 +1,14 @@
+"TFLBusStopArrivalsViewModel.towards" = "towards ";
+"TFLBusStopArrivalsViewModel.min" = "min";
+"TFLBusStopArrivalsViewModel.mins" = "mins";
+"TFLBusStopArrivalsViewModel.due" = "due";
+"TFLBusStationArrivalsCell.noDataError" = "No Data available.";
+"TFLLoadLocationView.title" = "Retrieving current location ...";
+"TFLLoadNearbyStationsView.title" = "Loading nearby stations ...";
+"TFLNoStationsView.title" = "No stations found for your current location";
+"TFLNoStationsView.retryButtonTitle" = "Try again";
+"TFLLoadArrivalTimesView.title" = "Loading bus arrival times ...";
+"TFLNoGPSEnabledView.title" = "For this app to function properly, location services need to be enabled in settings.";
+"TFLNoGPSEnabledView.settingsButtonTitle" = "Go to Settings";
+"TFLNoGPSEnabledView.headerTitle" = "No Location Services";
+"TFLRootViewController.ackTitle" = "Powered by TfL Open Data";

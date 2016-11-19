@@ -62,7 +62,6 @@ import Crashlytics
 
         let models = NSManagedObjectModel.mergedModel(from: nil)!
         storeCoordinator = NSPersistentStoreCoordinator(managedObjectModel: models)
-        _ = initCoreData(storeCoordinator)
         if !initCoreData(storeCoordinator) {
             Crashlytics.notify()
             if cleanUpCoreData(storeCoordinator) {

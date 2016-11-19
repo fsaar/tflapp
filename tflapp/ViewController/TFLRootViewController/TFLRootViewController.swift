@@ -25,8 +25,8 @@ class TFLRootViewController: UIViewController {
                 self.ackLabel.isHidden = true
                 showNoStationsFoundError()
             case State.determineCurrentLocation:
-                self.contentView.isHidden = false
-                self.ackLabel.isHidden = false
+                self.contentView.isHidden = self.nearbyBusStationController?.busStopPredicationTuple.isEmpty ?? true
+                self.ackLabel.isHidden = self.nearbyBusStationController?.busStopPredicationTuple.isEmpty ?? true
                 showLoadingCurrentLocationIfNeedBe()
             case State.retrievingNearbyStations:
                 self.contentView.isHidden = false

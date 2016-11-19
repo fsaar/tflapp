@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		564EC6F51DE0A2A0008CFD11 /* TFLButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564EC6F41DE0A2A0008CFD11 /* TFLButton.swift */; };
 		565A1FC31DD8F317003CE960 /* TLFRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565A1FC21DD8F317003CE960 /* TLFRequestManager.swift */; };
 		565A1FC51DD8F331003CE960 /* TLFClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565A1FC41DD8F331003CE960 /* TLFClient.swift */; };
 		565A1FC81DD8F6E6003CE960 /* TFLCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565A1FC71DD8F6E6003CE960 /* TFLCoreDataStack.swift */; };
@@ -41,6 +42,7 @@
 
 /* Begin PBXFileReference section */
 		564EC6EF1DDFAA67008CFD11 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		564EC6F41DE0A2A0008CFD11 /* TFLButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLButton.swift; sourceTree = "<group>"; };
 		565A1FC21DD8F317003CE960 /* TLFRequestManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLFRequestManager.swift; sourceTree = "<group>"; };
 		565A1FC41DD8F331003CE960 /* TLFClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLFClient.swift; sourceTree = "<group>"; };
 		565A1FC71DD8F6E6003CE960 /* TFLCoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLCoreDataStack.swift; sourceTree = "<group>"; };
@@ -88,6 +90,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		564EC6F31DE0A289008CFD11 /* TFLButton */ = {
+			isa = PBXGroup;
+			children = (
+				564EC6F41DE0A2A0008CFD11 /* TFLButton.swift */,
+			);
+			path = TFLButton;
+			sourceTree = "<group>";
+		};
 		565A1FC11DD8F317003CE960 /* Network */ = {
 			isa = PBXGroup;
 			children = (
@@ -111,6 +121,7 @@
 		565A1FC91DD8F8D1003CE960 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				564EC6F31DE0A289008CFD11 /* TFLButton */,
 				566EF7E01DDC59D9006162D7 /* Extensions */,
 				56D70D121DD9A24E004CA293 /* TFLLocationManager */,
 				565A1FCD1DD8F93F003CE960 /* TFLNotificationObserver */,
@@ -356,6 +367,7 @@
 				56823EAE1DDDA5B300E79B1A /* TFLNoGPSEnabledView.swift in Sources */,
 				566EF7C71DDA3A2B006162D7 /* TFLBusPrediction.swift in Sources */,
 				566EF7CC1DDB0851006162D7 /* TFLCDBusStop+CoreDataClass.swift in Sources */,
+				564EC6F51DE0A2A0008CFD11 /* TFLButton.swift in Sources */,
 				56823EA61DDDA39600E79B1A /* TFLLoadLocationView.swift in Sources */,
 				565A1FC81DD8F6E6003CE960 /* TFLCoreDataStack.swift in Sources */,
 				565A1FD21DD8FB2A003CE960 /* Model.xcdatamodeld in Sources */,

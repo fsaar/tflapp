@@ -7,7 +7,7 @@ import Crashlytics
 class TFLRootViewController: UIViewController {
     fileprivate enum State {
         case errorNoGPSAvailable
-        case errorNoStationsNearby
+        case errorNoStationsNearby(coordinate : CLLocationCoordinate2D)
         case determineCurrentLocation
         case retrievingNearbyStations
         case loadingArrivals
@@ -18,10 +18,12 @@ class TFLRootViewController: UIViewController {
         didSet {
             switch self.state {
             case State.errorNoGPSAvailable:
+                Crashlytics.notify()
                 self.contentView.isHidden = true
                 self.ackLabel.isHidden = true
                 showNoGPSEnabledError()
-            case State.errorNoStationsNearby:
+            case State.errorNoStationsNearby(let coord):
+                Crashlytics.log("no stations for coordinate (lat,long):(\(coord.latitude),\(coord.longitude))")
                 self.contentView.isHidden = true
                 self.ackLabel.isHidden = true
                 showNoStationsFoundError()
@@ -147,7 +149,7 @@ fileprivate extension TFLRootViewController {
         }
         group.notify(queue: DispatchQueue.main) {
             let sortedStopPoints = newStopPoints.sorted { $0.busStopDistance < $1.busStopDistance }
-            self.state = sortedStopPoints.isEmpty ? .errorNoStationsNearby : .noError
+            self.state = sortedStopPoints.isEmpty ? .errorNoStationsNearby(coordinate: coord) : .noError
             completionBlock(sortedStopPoints)
             Crashlytics.notify()
         }

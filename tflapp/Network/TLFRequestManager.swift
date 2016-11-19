@@ -1,9 +1,6 @@
 import Foundation
 import UIKit
 
-
-
-
 enum TFLRequestManagerErrorType : Error {
     case InvalidURL(urlString : String)
 }

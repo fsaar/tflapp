@@ -1,5 +1,6 @@
 import Foundation
 import CoreData
+import Crashlytics
 
 @objc public final class TFLBusStopStack : NSObject {
     
@@ -23,6 +24,23 @@ import CoreData
     fileprivate var backgroundNotificationObserver : TFLNotificationObserver?
     
     override init() {
+        func cleanUpCoreData(_ coordinator : NSPersistentStoreCoordinator) -> Bool{
+            guard let destinationStoreURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last?.appendingPathComponent("TFLBusStops.sqlite") else {
+                return false
+            }
+            if let persistentStore = coordinator.persistentStores.first {
+                _ = try? coordinator .remove(persistentStore)
+            }
+            guard let _ = try? FileManager.default.removeItem(at: destinationStoreURL) else {
+                return false
+                
+            }
+            
+            return true
+        }
+
+        
+        
         func initCoreData(_ coordinator : NSPersistentStoreCoordinator) -> Bool {
             guard let destinationStoreURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last?.appendingPathComponent("TFLBusStops.sqlite"),
                 let sourceStoreURL = Bundle.main.url(forResource: "TFLBusStops", withExtension: "sqlite") else {
@@ -41,10 +59,24 @@ import CoreData
             return true
         }
 
-        
+
         let models = NSManagedObjectModel.mergedModel(from: nil)!
         storeCoordinator = NSPersistentStoreCoordinator(managedObjectModel: models)
         _ = initCoreData(storeCoordinator)
+        if !initCoreData(storeCoordinator) {
+            Crashlytics.notify()
+            if cleanUpCoreData(storeCoordinator) {
+                Crashlytics.notify()
+                if !initCoreData(storeCoordinator) {
+                    Crashlytics.log("Can't recover from Core Data initialisation")
+                    fatalError("Can't recover from Core Data initialisation")
+                }
+            }
+            else {
+                Crashlytics.log("Can't recover from Core Data initialisation")
+                fatalError("Can't recover from Core Data initialisation")
+            }
+        }
         
         super.init()
         
@@ -52,7 +84,7 @@ import CoreData
             self?.privateQueueManagedObjectContext.performAndWait {
                 _ = try? self?.privateQueueManagedObjectContext.save()
             }
-            });
+        });
     }
 }
 

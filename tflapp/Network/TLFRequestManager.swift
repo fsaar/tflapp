@@ -1,5 +1,5 @@
 import Foundation
-
+import UIKit
 
 
 
@@ -26,12 +26,15 @@ public final class TFLRequestManager {
     }
 
     fileprivate func getDataWithURL(URL: URL , completionBlock:@escaping ((_ data : Data?,_ error:Error?) -> Void)) {
-        let task = session.dataTask(with: URL, completionHandler: { (data, _, error) -> (Void) in
-        
-        
+        let task = session.dataTask(with: URL, completionHandler: { [weak self] (data, _, error) -> (Void) in
+            self?.session.getAllTasks { tasks in
+                UIApplication.shared.isNetworkActivityIndicatorVisible = !tasks.isEmpty
+            }
+            
             completionBlock(data,error)
         })
         task.resume()
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
     }
 
 }

@@ -16,6 +16,8 @@ class TFLRootViewController: UIViewController {
 
     fileprivate var state : State = .noError {
         didSet {
+            let shouldHide = self.nearbyBusStationController?.busStopPredicationTuple.isEmpty ?? true
+
             switch self.state {
             case State.errorNoGPSAvailable:
                 Crashlytics.notify()
@@ -28,16 +30,16 @@ class TFLRootViewController: UIViewController {
                 self.ackLabel.isHidden = true
                 showNoStationsFoundError()
             case State.determineCurrentLocation:
-                self.contentView.isHidden = self.nearbyBusStationController?.busStopPredicationTuple.isEmpty ?? true
-                self.ackLabel.isHidden = self.nearbyBusStationController?.busStopPredicationTuple.isEmpty ?? true
+                self.contentView.isHidden = shouldHide
+                self.ackLabel.isHidden = shouldHide
                 showLoadingCurrentLocationIfNeedBe()
             case State.retrievingNearbyStations:
                 self.contentView.isHidden = false
-                self.ackLabel.isHidden = self.nearbyBusStationController?.busStopPredicationTuple.isEmpty ?? true
+                self.ackLabel.isHidden = shouldHide
                 showLoadingNearbyStationsIfNeedBe()
             case State.loadingArrivals:
                 self.contentView.isHidden = false
-                self.ackLabel.isHidden = self.nearbyBusStationController?.busStopPredicationTuple.isEmpty ?? true
+                self.ackLabel.isHidden = shouldHide
                 showLoadingArrivalTimesIfNeedBe()
             case State.noError:
                 hideInfoViews()

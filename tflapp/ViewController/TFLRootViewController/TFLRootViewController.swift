@@ -157,7 +157,7 @@ fileprivate extension TFLRootViewController {
         }
     }
     
-    func nearbyBusStops(with coordinate: CLLocationCoordinate2D, with radiusInMeter: Double = 300) -> [TFLCDBusStop] {
+    func nearbyBusStops(with coordinate: CLLocationCoordinate2D, with radiusInMeter: Double = 350) -> [TFLCDBusStop] {
         let context = TFLBusStopStack.sharedDataStack.mainQueueManagedObjectContext
         
         // London : long=-0.252395&lat=51.506788

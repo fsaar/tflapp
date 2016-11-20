@@ -1,7 +1,3 @@
-//
-//  TFLPrediction.swift
-//  tflapp
-//
 import Foundation
 
 public struct TFLBusPrediction : CustomDebugStringConvertible,Equatable {

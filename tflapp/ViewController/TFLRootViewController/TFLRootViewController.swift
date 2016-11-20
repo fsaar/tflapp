@@ -1,12 +1,13 @@
 import CoreLocation
 import UIKit
 import CoreData
+import Crashlytics
 
 
 class TFLRootViewController: UIViewController {
     fileprivate enum State {
         case errorNoGPSAvailable
-        case errorNoStationsNearby
+        case errorNoStationsNearby(coordinate : CLLocationCoordinate2D)
         case determineCurrentLocation
         case retrievingNearbyStations
         case loadingArrivals
@@ -15,26 +16,30 @@ class TFLRootViewController: UIViewController {
 
     fileprivate var state : State = .noError {
         didSet {
+            let shouldHide = self.nearbyBusStationController?.busStopPredicationTuple.isEmpty ?? true
+
             switch self.state {
             case State.errorNoGPSAvailable:
+                Crashlytics.notify()
                 self.contentView.isHidden = true
                 self.ackLabel.isHidden = true
                 showNoGPSEnabledError()
-            case State.errorNoStationsNearby:
+            case State.errorNoStationsNearby(let coord):
+                Crashlytics.log("no stations for coordinate (lat,long):(\(coord.latitude),\(coord.longitude))")
                 self.contentView.isHidden = true
                 self.ackLabel.isHidden = true
                 showNoStationsFoundError()
             case State.determineCurrentLocation:
-                self.contentView.isHidden = false
-                self.ackLabel.isHidden = false
+                self.contentView.isHidden = shouldHide
+                self.ackLabel.isHidden = shouldHide
                 showLoadingCurrentLocationIfNeedBe()
             case State.retrievingNearbyStations:
                 self.contentView.isHidden = false
-                self.ackLabel.isHidden = false
+                self.ackLabel.isHidden = shouldHide
                 showLoadingNearbyStationsIfNeedBe()
             case State.loadingArrivals:
                 self.contentView.isHidden = false
-                self.ackLabel.isHidden = false
+                self.ackLabel.isHidden = shouldHide
                 showLoadingArrivalTimesIfNeedBe()
             case State.noError:
                 hideInfoViews()
@@ -67,7 +72,8 @@ class TFLRootViewController: UIViewController {
     @IBOutlet weak var contentView : UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.ackLabel.font = UIFont.tflFont(size: 20)
+        Crashlytics.notify()
+        self.ackLabel.font = UIFont.tflFont(size: 14)
         self.ackLabel.text = NSLocalizedString("TFLRootViewController.ackTitle", comment: "")
         self.ackLabel.textColor = .black
         self.navigationController?.navigationBar.isHidden = true
@@ -98,6 +104,7 @@ class TFLRootViewController: UIViewController {
 fileprivate extension TFLRootViewController {
     
     func loadNearbyBusstops(using completionBlock:(()->())? = nil) {
+        Crashlytics.notify()
         retrieveBusstopsForCurrentLocation { busStopPredictionTuples in
             self.nearbyBusStationController?.busStopPredicationTuple = busStopPredictionTuples
             completionBlock?()
@@ -110,8 +117,8 @@ fileprivate extension TFLRootViewController {
         TFLLocationManager.sharedManager.updateLocation { [weak self] coord in
             self?.state = .retrievingNearbyStations
             if CLLocationCoordinate2DIsValid(coord) {
-                self?.updateNearbyBusStops(for: coord)
                 self?.loadArrivalTimesForStoreStopPoints(with: coord, using: completionBlock)
+                self?.updateNearbyBusStops(for: coord)
             }
             else
             {
@@ -123,11 +130,12 @@ fileprivate extension TFLRootViewController {
     
     func updateNearbyBusStops(for currentLocation:CLLocationCoordinate2D ) {
         self.tflClient.nearbyBusStops(with: currentLocation) { _  in
-            
+            Crashlytics.notify()
         }
     }
     
     func loadArrivalTimesForStoreStopPoints(with coord: CLLocationCoordinate2D, using completionBlock:@escaping ([TFLBusStopArrivalsInfo])->()) {
+        Crashlytics.notify()
         self.state = .loadingArrivals
         let currentLocation = CLLocation(latitude: coord.latitude, longitude: coord.longitude)
         let group = DispatchGroup()
@@ -143,12 +151,13 @@ fileprivate extension TFLRootViewController {
         }
         group.notify(queue: DispatchQueue.main) {
             let sortedStopPoints = newStopPoints.sorted { $0.busStopDistance < $1.busStopDistance }
-            self.state = sortedStopPoints.isEmpty ? .errorNoStationsNearby : .noError
+            self.state = sortedStopPoints.isEmpty ? .errorNoStationsNearby(coordinate: coord) : .noError
             completionBlock(sortedStopPoints)
+            Crashlytics.notify()
         }
     }
     
-    func nearbyBusStops(with coordinate: CLLocationCoordinate2D, with radiusInMeter: Double = 300) -> [TFLCDBusStop] {
+    func nearbyBusStops(with coordinate: CLLocationCoordinate2D, with radiusInMeter: Double = 350) -> [TFLCDBusStop] {
         let context = TFLBusStopStack.sharedDataStack.mainQueueManagedObjectContext
         
         // London : long=-0.252395&lat=51.506788
@@ -224,6 +233,7 @@ fileprivate extension TFLRootViewController {
 
 extension TFLRootViewController : TFLNoGPSEnabledViewDelegate {
     func didTap(noGPSEnabledButton: UIButton,in view : TFLNoGPSEnabledView) {
+        Crashlytics.notify()
         guard let url = URL(string: UIApplicationOpenSettingsURLString) else {
             return
         }
@@ -235,6 +245,7 @@ extension TFLRootViewController : TFLNoGPSEnabledViewDelegate {
 
 extension TFLRootViewController : TFLNoStationsViewDelegate {
     func didTap(noStationsButton: UIButton,in view : TFLNoStationsView) {
+        Crashlytics.notify()
         loadNearbyBusstops ()
     }
 }
@@ -261,6 +272,7 @@ fileprivate extension TFLRootViewController {
 
 extension TFLRootViewController : TFLNearbyBusStationsControllerDelegate {
     func refresh(controller: TFLNearbyBusStationsController, using completionBlock:@escaping ()->()) {
+        Crashlytics.notify()
         loadNearbyBusstops (using: completionBlock)
     }
 }

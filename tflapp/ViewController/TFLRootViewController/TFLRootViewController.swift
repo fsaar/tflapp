@@ -117,8 +117,8 @@ fileprivate extension TFLRootViewController {
         TFLLocationManager.sharedManager.updateLocation { [weak self] coord in
             self?.state = .retrievingNearbyStations
             if CLLocationCoordinate2DIsValid(coord) {
-                self?.updateNearbyBusStops(for: coord)
                 self?.loadArrivalTimesForStoreStopPoints(with: coord, using: completionBlock)
+                self?.updateNearbyBusStops(for: coord)
             }
             else
             {

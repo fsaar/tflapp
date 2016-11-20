@@ -1,0 +1,14 @@
+language: objective-c
+
+#branches:
+# only:
+# - master
+
+xcode_project: tflapp.xcodeproj
+xcode_scheme: tflapp
+osx_image: xcode8.1
+xcode_sdk: iphonesimulator10.1
+
+script:
+- xcodebuild build clean -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.1' -sdk iphonesimulator 
+#travis_retry xcodebuild test -scheme tflapp -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.1' | xcpretty

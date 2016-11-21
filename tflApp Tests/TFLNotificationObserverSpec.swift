@@ -10,7 +10,7 @@ class TFLNotificationObserverSpec: QuickSpec {
     override func spec() {
         var notificationName : String!
         beforeEach {
-            notificationName = "NMATestNotification"
+            notificationName = "TestNotification"
         }
         
         describe("When instantiating notification handler") {

@@ -11,6 +11,6 @@ xcode_sdk: iphonesimulator10.1
 
 script:
 - xcrun  instruments -w "iPhone SE (10.1) [52017E39-4BB5-4068-9125-970D36A2BBD9] (Simulator)" || true
-- xcodebuild xcodebuild build clean -workspace tflapp.xcworkspace -scheme tflapp -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.1' -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO RUN_CLANG_STATIC_ANALYZER=YES GCC_TREAT_WARNINGS_AS_ERRORS=YES 
+- xcodebuild build clean -workspace tflapp.xcworkspace -scheme tflapp -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.1' -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO RUN_CLANG_STATIC_ANALYZER=YES GCC_TREAT_WARNINGS_AS_ERRORS=YES 
 - xcodebuild test clean -workspace tflapp.xcworkspace -scheme tflapp -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.1' -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
 #travis_retry xcodebuild test -scheme tflapp -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.1' | xcpretty

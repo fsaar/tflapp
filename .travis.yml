@@ -14,3 +14,6 @@ script:
 - xcodebuild build clean -workspace tflapp.xcworkspace -scheme tflapp -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.1' -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO RUN_CLANG_STATIC_ANALYZER=YES GCC_TREAT_WARNINGS_AS_ERRORS=YES 
 - xcodebuild test clean -workspace tflapp.xcworkspace -scheme tflapp -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.1' -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
 #travis_retry xcodebuild test -scheme tflapp -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.1' | xcpretty
+
+notifications:
+  slack: samedialabs: $SLACK_SAMEDIALABS_TRAVIS_CI

@@ -1,16 +1,6 @@
 language: objective-c
 
-#branches:
-# only:
-# - master
-
-
-
-#xcode_workspace: tflapp.xcworkspace
-#xcode_scheme: tflapp
 osx_image: xcode8.1
-#xcode_sdk: iphonesimulator10.1
-
 script:
 - xcrun  instruments -w "iPhone SE (10.1) [8F22171A-FD13-45C9-A45B-68529E1385BD] (Simulator)" || true
 

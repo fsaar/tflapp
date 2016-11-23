@@ -12,7 +12,7 @@ osx_image: xcode8.1
 #xcode_sdk: iphonesimulator10.1
 
 script:
-#- xcrun  instruments -w "iPhone SE (10.1) [8F22171A-FD13-45C9-A45B-68529E1385BD] (Simulator)" || true
+- xcrun  instruments -w "iPhone SE (10.1) [8F22171A-FD13-45C9-A45B-68529E1385BD] (Simulator)" || true
 
 - xcodebuild -workspace tflapp.xcworkspace -scheme tflapp -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.1' -sdk iphonesimulator build CODE_SIGNING_REQUIRED=NO  ONLY_ACTIVE_ARCH=NO  RUN_CLANG_STATIC_ANALYZER=YES GCC_TREAT_WARNINGS_AS_ERRORS=YES
 - xcodebuild -workspace tflapp.xcworkspace -scheme tflapp -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.1' -sdk iphonesimulator clean test CODE_SIGNING_REQUIRED=NO  ONLY_ACTIVE_ARCH=NO 

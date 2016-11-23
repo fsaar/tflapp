@@ -65,7 +65,7 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
             managedObjectContext.persistentStoreCoordinator = coordinator
             let busStopModel = TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext)
             
-            busPredictions = [
+            let tempPredictions = [
                 ["id": "1836802865",
                 "vehicleId": "LTZ1218",
                 "naptanId": "490011791K",
@@ -92,8 +92,32 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
                  "destinationName": "Victoria",
                  "timestamp": "2016-11-16T15:59:35Z",
                  "timeToStation": UInt(902),
-                 "timeToLive": "2016-11-16T16:15:07.51239Z"]
+                 "timeToLive": "2016-11-16T16:15:07.51239Z"],
+                ["id": "1836802868",
+                 "vehicleId": "LTZ1218",
+                 "naptanId": "490011791K",
+                 "lineId": "40",
+                 "lineName": "40",
+                 "destinationName": "Victoria",
+                 "timestamp": "2016-11-16T15:59:35Z",
+                 "timeToStation": UInt(902)]
             ]
+            let timeStampFormatter = DateFormatter()
+            timeStampFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSXXXXX"
+            timeStampFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+            timeStampFormatter.calendar = Calendar(identifier: .iso8601)
+            var predictions : [[String:Any]] = []
+            for dict in tempPredictions  {
+                var newDict = dict
+                timeStampFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSXXXXX"
+                newDict["timestamp"] = timeStampFormatter.string(from: Date())
+                timeFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSXXX"
+                newDict["timeToLive"] = timeStampFormatter.string(from: Date().addingTimeInterval(TimeInterval(60)))
+
+                predictions +=  [newDict]
+            }
+            busPredictions =  predictions
+            
             let model1 = TFLBusPrediction(with:busPredictions[0])
             let model2 = TFLBusPrediction(with:busPredictions[1])
             let model3 = TFLBusPrediction(with:busPredictions[2])
@@ -101,25 +125,39 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
         }
         
         context("when testing TFLBusStopArrivalsViewModel") {
-            fit ("should not be nil") {
+            it ("should not be nil") {
                let model = TFLBusStopArrivalsViewModel(with: busArrivalInfo, distanceFormatter: distanceFormatter, and: timeFormatter)
                 expect(model).notTo(beNil())
             }
             
-            pending ("should setup model correctly") {
-                
+            it ("should setup model correctly") {
+                let model = TFLBusStopArrivalsViewModel(with: busArrivalInfo, distanceFormatter: distanceFormatter, and: timeFormatter)
+                expect(model.identifier) == "490003029W"
+                expect(model.stationName) == "Abbey Road"
+                expect(model.stationDetails) == "towards Ealing Broadway"
+                expect(model.distance) == "300m"
             }
             
-            pending ("models should be the same if identifier are the same") {
-                
+            it ("models should be the same if identifier are the same") {
+                let model = TFLBusStopArrivalsViewModel(with: busArrivalInfo, distanceFormatter: distanceFormatter, and: timeFormatter)
+                let busStopDict =  ["naptanId": "490003029W","stopType": "NaptanPublicBusCoachTram"]
+                let busStopModel = TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext)
+                let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStopModel!, busStopDistance: 0, arrivals: [])
+                let model2 = TFLBusStopArrivalsViewModel(with: busArrivalInfo, distanceFormatter: distanceFormatter, and: timeFormatter)
+                expect(model) == model2
             }
             
-            pending ("should filter expired bus predictions") {
-                
+            it ("should filter expired bus predictions") {
+                let model = TFLBusStopArrivalsViewModel(with: busArrivalInfo, distanceFormatter: distanceFormatter, and: timeFormatter)
+                expect(model.arrivalTimes.count) == 3
+
             }
             
-            pending ("should sort bus predictions in increasing order") {
-                
+            it ("should sort bus predictions in increasing order") {
+                let model = TFLBusStopArrivalsViewModel(with: busArrivalInfo, distanceFormatter: distanceFormatter, and: timeFormatter)
+                let (pred1,pred2,pred3) = (model.arrivalTimes[0],model.arrivalTimes[1],model.arrivalTimes[2])
+                expect(pred1 < pred2) == true
+                expect(pred2 < pred3) == true
             }
             
 
@@ -152,6 +190,10 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
             }
             
             pending ("models should be the same if identifier are the same") {
+                
+            }
+            
+            pending ("should handle predictions with invalid ttl gracefully") {
                 
             }
             

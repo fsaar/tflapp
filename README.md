@@ -14,4 +14,9 @@ I added a build step to the project which looks for the .env file and copies the
 
 You can change the app in any way you like but mind that the use of TfL's unified API is subject to their [terms & conditions](https://tfl.gov.uk/corporate/terms-and-conditions/transport-data-service).
 
+## Acknowledgment
+
+API: TfL unified API
+Icon Design: Pedro Santana (zoidfactory@gmail.com) 
+
 

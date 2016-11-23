@@ -2,11 +2,12 @@ import Foundation
 import MapKit
 
 public struct TFLBusStopArrivalsViewModel :Equatable,CustomDebugStringConvertible {
-    struct LinePredictionViewModel :Equatable,CustomDebugStringConvertible {
+    public struct LinePredictionViewModel :Equatable,CustomDebugStringConvertible,Comparable {
         let line : String
         let eta : String
         let identifier : String
-        init(with busPrediction: TFLBusPrediction) {
+        let timeToStation : Int
+        init?(with busPrediction: TFLBusPrediction) {
             
             func arrivalTime(in secs : Int) -> String {
                 var timeString = ""
@@ -25,16 +26,26 @@ public struct TFLBusStopArrivalsViewModel :Equatable,CustomDebugStringConvertibl
                 }
                 return timeString
             }
+            guard let timeToStation = busPrediction.timeToStation else {
+                return nil
+            }
+            
             var timeOffset = Int(0)
             if let timeStampDate = ISO8601DateFormatter().date(from: busPrediction.timeStamp) {
                timeOffset = Int(Date().timeIntervalSince(timeStampDate))
             }
             self.identifier = busPrediction.identifier
             self.line = busPrediction.lineName
-            self.eta =  arrivalTime(in: max(Int((busPrediction.timeToStation ?? 0)) - timeOffset,0) )
+            self.timeToStation = Int(timeToStation)
+            self.eta =  arrivalTime(in: Int(timeToStation) - timeOffset )
+
         }
         public static func ==(lhs: LinePredictionViewModel,rhs :LinePredictionViewModel) -> (Bool) {
             return lhs.identifier == rhs.identifier
+        }
+        
+        public static func <(lhs: LinePredictionViewModel, rhs: LinePredictionViewModel) -> Bool {
+            return lhs.timeToStation < rhs.timeToStation
         }
         public var debugDescription: String {
             return "\n\(line) [\(identifier)]: \(eta)"
@@ -60,15 +71,14 @@ public struct TFLBusStopArrivalsViewModel :Equatable,CustomDebugStringConvertibl
         self.identifier = arrivalInfo.busStop.identifier
         self.distance = distanceFormatter.string(fromValue: arrivalInfo.busStopDistance, unit: .meter)
         
-        let sortedPredictions =  arrivalInfo.arrivals.sorted { ($0.timeToStation ?? UInt.max) < ($1.timeToStation ?? UInt.max) }
         let now = Date()
-        let filteredPredictions = sortedPredictions.filter { busPrediction in
-            guard let date = timeFormatter.date(from: busPrediction.ttl) else {
+        let filteredPredictions = arrivalInfo.arrivals.filter { busPrediction in
+            guard let date = timeFormatter.date(from: busPrediction.ttl), let _ = busPrediction.timeToStation  else {
                 return false
             }
             return date > now
         }
-        self.arrivalTimes = filteredPredictions.map { LinePredictionViewModel(with: $0) }
+        self.arrivalTimes = filteredPredictions.flatMap { LinePredictionViewModel(with: $0) }.sorted (by:<)
     }
     
 }

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C659326B6D6A9829EDDAFC3 /* Pods_tflApp_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E391093442B4E54575D4146B /* Pods_tflApp_Tests.framework */; };
+		412222F26B670B4DE4DA2909 /* libPods-tflapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A103EB36E89F05E8B43D63BE /* libPods-tflapp.a */; };
+		5646C4031DE62389006EA956 /* TFLBusPredictionViewCellSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5646C4021DE62389006EA956 /* TFLBusPredictionViewCellSpecs.swift */; };
 		564EC6F51DE0A2A0008CFD11 /* TFLButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564EC6F41DE0A2A0008CFD11 /* TFLButton.swift */; };
 		564EC6FA1DE0DC1C008CFD11 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 564EC6F81DE0DC1C008CFD11 /* Fabric.framework */; };
 		564EC6FB1DE0DC1C008CFD11 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 564EC6F91DE0DC1C008CFD11 /* Crashlytics.framework */; };
@@ -15,8 +18,10 @@
 		564EC7061DE1917D008CFD11 /* TFLBusPredictionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564EC7001DE1917D008CFD11 /* TFLBusPredictionViewCell.swift */; };
 		564EC7071DE1917D008CFD11 /* TFLBusStationArrivalsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564EC7011DE1917D008CFD11 /* TFLBusStationArrivalsCell.swift */; };
 		564EC7081DE1917D008CFD11 /* TFLBusStopArrivalsInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564EC7021DE1917D008CFD11 /* TFLBusStopArrivalsInfo.swift */; };
-		564EC7091DE1917D008CFD11 /* TFLBusStopArrivalsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564EC7031DE1917D008CFD11 /* TFLBusStopArrivalsViewModel.swift */; };
 		564EC70A1DE1917D008CFD11 /* TFLNearbyBusStationsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564EC7041DE1917D008CFD11 /* TFLNearbyBusStationsController.swift */; };
+		5657D3711DE38ADF004E4CD0 /* TFLBusPredictionSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5657D3701DE38ADF004E4CD0 /* TFLBusPredictionSpecs.swift */; };
+		5657D3731DE3A00A004E4CD0 /* TFLCDBusStopSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5657D3721DE3A00A004E4CD0 /* TFLCDBusStopSpecs.swift */; };
+		5657D3751DE3B480004E4CD0 /* TFLNotificationObserverSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5657D3741DE3B480004E4CD0 /* TFLNotificationObserverSpec.swift */; };
 		565A1FC31DD8F317003CE960 /* TLFRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565A1FC21DD8F317003CE960 /* TLFRequestManager.swift */; };
 		565A1FC51DD8F331003CE960 /* TLFClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565A1FC41DD8F331003CE960 /* TLFClient.swift */; };
 		565A1FC81DD8F6E6003CE960 /* TFLCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565A1FC71DD8F6E6003CE960 /* TFLCoreDataStack.swift */; };
@@ -38,12 +43,27 @@
 		56A81B341DD862DC001DF7F1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56A81B321DD862DC001DF7F1 /* Main.storyboard */; };
 		56A81B391DD862DC001DF7F1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 56A81B381DD862DC001DF7F1 /* Assets.xcassets */; };
 		56A81B3C1DD862DC001DF7F1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56A81B3A1DD862DC001DF7F1 /* LaunchScreen.storyboard */; };
+		56B86EAD1DE4FED000A89D16 /* TFLBusStopArrivalsViewModelSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B86EAC1DE4FED000A89D16 /* TFLBusStopArrivalsViewModelSpecs.swift */; };
+		56C2D6DC1DE5D6B000F43628 /* TFLBusStopArrivalsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564EC7031DE1917D008CFD11 /* TFLBusStopArrivalsViewModel.swift */; };
 		56D70D141DD9A25F004CA293 /* TFLLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D70D131DD9A25F004CA293 /* TFLLocationManager.swift */; };
 		56D70D341DD9A7A6004CA293 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 56D70D301DD9A7A6004CA293 /* InfoPlist.strings */; };
 		56D70D351DD9A7A6004CA293 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 56D70D321DD9A7A6004CA293 /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		5657D36B1DE387E6004E4CD0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 56A81B231DD862DC001DF7F1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 56A81B2A1DD862DC001DF7F1;
+			remoteInfo = tflapp;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		09B8C602EFB434FF269AB5A9 /* Pods-tflapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tflapp.release.xcconfig"; path = "Pods/Target Support Files/Pods-tflapp/Pods-tflapp.release.xcconfig"; sourceTree = "<group>"; };
+		29D20D8BDB3378F1D7CC9DAE /* Pods-tflapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tflapp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-tflapp/Pods-tflapp.debug.xcconfig"; sourceTree = "<group>"; };
+		5646C4021DE62389006EA956 /* TFLBusPredictionViewCellSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusPredictionViewCellSpecs.swift; sourceTree = "<group>"; };
 		564EC6EF1DDFAA67008CFD11 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		564EC6F41DE0A2A0008CFD11 /* TFLButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLButton.swift; sourceTree = "<group>"; };
 		564EC6F81DE0DC1C008CFD11 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
@@ -55,6 +75,11 @@
 		564EC7021DE1917D008CFD11 /* TFLBusStopArrivalsInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusStopArrivalsInfo.swift; sourceTree = "<group>"; };
 		564EC7031DE1917D008CFD11 /* TFLBusStopArrivalsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusStopArrivalsViewModel.swift; sourceTree = "<group>"; };
 		564EC7041DE1917D008CFD11 /* TFLNearbyBusStationsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLNearbyBusStationsController.swift; sourceTree = "<group>"; };
+		5657D3661DE387E6004E4CD0 /* tflApp Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "tflApp Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5657D36A1DE387E6004E4CD0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5657D3701DE38ADF004E4CD0 /* TFLBusPredictionSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusPredictionSpecs.swift; sourceTree = "<group>"; };
+		5657D3721DE3A00A004E4CD0 /* TFLCDBusStopSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLCDBusStopSpecs.swift; sourceTree = "<group>"; };
+		5657D3741DE3B480004E4CD0 /* TFLNotificationObserverSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLNotificationObserverSpec.swift; sourceTree = "<group>"; };
 		565A1FC21DD8F317003CE960 /* TLFRequestManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLFRequestManager.swift; sourceTree = "<group>"; };
 		565A1FC41DD8F331003CE960 /* TLFClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLFClient.swift; sourceTree = "<group>"; };
 		565A1FC71DD8F6E6003CE960 /* TFLCoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLCoreDataStack.swift; sourceTree = "<group>"; };
@@ -80,18 +105,32 @@
 		56A81B381DD862DC001DF7F1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		56A81B3B1DD862DC001DF7F1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		56A81B3D1DD862DC001DF7F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		56B86EAC1DE4FED000A89D16 /* TFLBusStopArrivalsViewModelSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusStopArrivalsViewModelSpecs.swift; sourceTree = "<group>"; };
 		56D70D131DD9A25F004CA293 /* TFLLocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLLocationManager.swift; sourceTree = "<group>"; };
 		56D70D311DD9A7A6004CA293 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		56D70D331DD9A7A6004CA293 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		7A89F45A39DFA1D633B11475 /* Pods-tflApp Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tflApp Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-tflApp Tests/Pods-tflApp Tests.release.xcconfig"; sourceTree = "<group>"; };
+		A103EB36E89F05E8B43D63BE /* libPods-tflapp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-tflapp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BEB656AE4FFADE13DD37A13F /* Pods-tflApp Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tflApp Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-tflApp Tests/Pods-tflApp Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		E391093442B4E54575D4146B /* Pods_tflApp_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_tflApp_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		5657D3631DE387E6004E4CD0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2C659326B6D6A9829EDDAFC3 /* Pods_tflApp_Tests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		56A81B281DD862DC001DF7F1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				564EC6FB1DE0DC1C008CFD11 /* Crashlytics.framework in Frameworks */,
 				564EC6FA1DE0DC1C008CFD11 /* Fabric.framework in Frameworks */,
+				412222F26B670B4DE4DA2909 /* libPods-tflapp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -126,6 +165,19 @@
 				564EC7041DE1917D008CFD11 /* TFLNearbyBusStationsController.swift */,
 			);
 			path = TFLNearbyBusStationsController;
+			sourceTree = "<group>";
+		};
+		5657D3671DE387E6004E4CD0 /* tflApp Tests */ = {
+			isa = PBXGroup;
+			children = (
+				5657D3701DE38ADF004E4CD0 /* TFLBusPredictionSpecs.swift */,
+				5657D3721DE3A00A004E4CD0 /* TFLCDBusStopSpecs.swift */,
+				5657D3741DE3B480004E4CD0 /* TFLNotificationObserverSpec.swift */,
+				56B86EAC1DE4FED000A89D16 /* TFLBusStopArrivalsViewModelSpecs.swift */,
+				5646C4021DE62389006EA956 /* TFLBusPredictionViewCellSpecs.swift */,
+				5657D36A1DE387E6004E4CD0 /* Info.plist */,
+			);
+			path = "tflApp Tests";
 			sourceTree = "<group>";
 		};
 		565A1FC11DD8F317003CE960 /* Network */ = {
@@ -210,7 +262,10 @@
 			isa = PBXGroup;
 			children = (
 				56A81B2D1DD862DC001DF7F1 /* tflapp */,
+				5657D3671DE387E6004E4CD0 /* tflApp Tests */,
 				56A81B2C1DD862DC001DF7F1 /* Products */,
+				B6405A0BEDCDF1FE409534F9 /* Pods */,
+				FE001E57A0E40DC9805C38C7 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -218,6 +273,7 @@
 			isa = PBXGroup;
 			children = (
 				56A81B2B1DD862DC001DF7F1 /* London Bus.app */,
+				5657D3661DE387E6004E4CD0 /* tflApp Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -263,19 +319,63 @@
 			path = Localization;
 			sourceTree = "<group>";
 		};
+		B6405A0BEDCDF1FE409534F9 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				BEB656AE4FFADE13DD37A13F /* Pods-tflApp Tests.debug.xcconfig */,
+				7A89F45A39DFA1D633B11475 /* Pods-tflApp Tests.release.xcconfig */,
+				29D20D8BDB3378F1D7CC9DAE /* Pods-tflapp.debug.xcconfig */,
+				09B8C602EFB434FF269AB5A9 /* Pods-tflapp.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		FE001E57A0E40DC9805C38C7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E391093442B4E54575D4146B /* Pods_tflApp_Tests.framework */,
+				A103EB36E89F05E8B43D63BE /* libPods-tflapp.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		5657D3651DE387E6004E4CD0 /* tflApp Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5657D36F1DE387E6004E4CD0 /* Build configuration list for PBXNativeTarget "tflApp Tests" */;
+			buildPhases = (
+				CA12D93F7484B0C6E06F9920 /* [CP] Check Pods Manifest.lock */,
+				5657D3621DE387E6004E4CD0 /* Sources */,
+				5657D3631DE387E6004E4CD0 /* Frameworks */,
+				5657D3641DE387E6004E4CD0 /* Resources */,
+				4B310D95D34D5BED18455079 /* [CP] Embed Pods Frameworks */,
+				B5ACE26E6374F6550AC45E8A /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5657D36C1DE387E6004E4CD0 /* PBXTargetDependency */,
+			);
+			name = "tflApp Tests";
+			productName = "tflApp Tests";
+			productReference = 5657D3661DE387E6004E4CD0 /* tflApp Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		56A81B2A1DD862DC001DF7F1 /* tflapp */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 56A81B401DD862DC001DF7F1 /* Build configuration list for PBXNativeTarget "tflapp" */;
 			buildPhases = (
+				E665C226CB022DA33D91ED39 /* [CP] Check Pods Manifest.lock */,
 				564EC6F11DDFE180008CFD11 /* Inject API Keys */,
 				56A81B271DD862DC001DF7F1 /* Sources */,
 				56A81B281DD862DC001DF7F1 /* Frameworks */,
 				56A81B291DD862DC001DF7F1 /* Resources */,
 				564EC6F21DDFE205008CFD11 /* Remove API Keys */,
 				564EC6F61DE0DA8D008CFD11 /* Fabrics */,
+				5CCA668F6EB7B436258B28AA /* [CP] Embed Pods Frameworks */,
+				AC828CD492670DF6F91697A8 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -296,6 +396,13 @@
 				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = SAMedialabs;
 				TargetAttributes = {
+					5657D3651DE387E6004E4CD0 = {
+						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = RF4LJPC23U;
+						LastSwiftMigration = 0810;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 56A81B2A1DD862DC001DF7F1;
+					};
 					56A81B2A1DD862DC001DF7F1 = {
 						CreatedOnToolsVersion = 8.1;
 						DevelopmentTeam = RF4LJPC23U;
@@ -326,11 +433,19 @@
 			projectRoot = "";
 			targets = (
 				56A81B2A1DD862DC001DF7F1 /* tflapp */,
+				5657D3651DE387E6004E4CD0 /* tflApp Tests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		5657D3641DE387E6004E4CD0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		56A81B291DD862DC001DF7F1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -347,6 +462,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		4B310D95D34D5BED18455079 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-tflApp Tests/Pods-tflApp Tests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		564EC6F11DDFE180008CFD11 /* Inject API Keys */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -390,9 +520,96 @@
 			shellPath = /bin/sh;
 			shellScript = "if [ -e \".env\" ]\nthen\nsource .env\n./Fabric.framework/run $TFLFABBRICSAPIKEY $TFLFABRICSBUILDSECRET\nfi";
 		};
+		5CCA668F6EB7B436258B28AA /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-tflapp/Pods-tflapp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AC828CD492670DF6F91697A8 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-tflapp/Pods-tflapp-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B5ACE26E6374F6550AC45E8A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-tflApp Tests/Pods-tflApp Tests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CA12D93F7484B0C6E06F9920 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		E665C226CB022DA33D91ED39 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		5657D3621DE387E6004E4CD0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5657D3711DE38ADF004E4CD0 /* TFLBusPredictionSpecs.swift in Sources */,
+				56B86EAD1DE4FED000A89D16 /* TFLBusStopArrivalsViewModelSpecs.swift in Sources */,
+				5657D3731DE3A00A004E4CD0 /* TFLCDBusStopSpecs.swift in Sources */,
+				5657D3751DE3B480004E4CD0 /* TFLNotificationObserverSpec.swift in Sources */,
+				5646C4031DE62389006EA956 /* TFLBusPredictionViewCellSpecs.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		56A81B271DD862DC001DF7F1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -407,6 +624,7 @@
 				564EC7081DE1917D008CFD11 /* TFLBusStopArrivalsInfo.swift in Sources */,
 				56823EAE1DDDA5B300E79B1A /* TFLNoGPSEnabledView.swift in Sources */,
 				566EF7C71DDA3A2B006162D7 /* TFLBusPrediction.swift in Sources */,
+				56C2D6DC1DE5D6B000F43628 /* TFLBusStopArrivalsViewModel.swift in Sources */,
 				566EF7CC1DDB0851006162D7 /* TFLCDBusStop+CoreDataClass.swift in Sources */,
 				564EC6F51DE0A2A0008CFD11 /* TFLButton.swift in Sources */,
 				56823EA61DDDA39600E79B1A /* TFLLoadLocationView.swift in Sources */,
@@ -421,12 +639,19 @@
 				566EF7D71DDC4D14006162D7 /* TFLRootViewController.swift in Sources */,
 				564EC7051DE1917D008CFD11 /* TFLBusPredictionView.swift in Sources */,
 				566EF7CD1DDB0851006162D7 /* TFLCDBusStop+CoreDataProperties.swift in Sources */,
-				564EC7091DE1917D008CFD11 /* TFLBusStopArrivalsViewModel.swift in Sources */,
 				564EC7071DE1917D008CFD11 /* TFLBusStationArrivalsCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		5657D36C1DE387E6004E4CD0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 56A81B2A1DD862DC001DF7F1 /* tflapp */;
+			targetProxy = 5657D36B1DE387E6004E4CD0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		56A81B321DD862DC001DF7F1 /* Main.storyboard */ = {
@@ -464,6 +689,45 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		5657D36D1DE387E6004E4CD0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BEB656AE4FFADE13DD37A13F /* Pods-tflApp Tests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "";
+				DEVELOPMENT_TEAM = RF4LJPC23U;
+				INFOPLIST_FILE = "tflApp Tests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.samedialabs.tflApp-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				RUN_CLANG_STATIC_ANALYZER = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/London Bus.app/London Bus";
+			};
+			name = Debug;
+		};
+		5657D36E1DE387E6004E4CD0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7A89F45A39DFA1D633B11475 /* Pods-tflApp Tests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "";
+				DEVELOPMENT_TEAM = RF4LJPC23U;
+				INFOPLIST_FILE = "tflApp Tests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.samedialabs.tflApp-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				RUN_CLANG_STATIC_ANALYZER = NO;
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/London Bus.app/London Bus";
+			};
+			name = Release;
+		};
 		56A81B3E1DD862DC001DF7F1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -559,6 +823,7 @@
 		};
 		56A81B411DD862DC001DF7F1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 29D20D8BDB3378F1D7CC9DAE /* Pods-tflapp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "tflapp/tflapp-dev.entitlements";
@@ -579,6 +844,7 @@
 		};
 		56A81B421DD862DC001DF7F1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 09B8C602EFB434FF269AB5A9 /* Pods-tflapp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "tflapp/tflapp-prod.entitlements";
@@ -598,6 +864,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		5657D36F1DE387E6004E4CD0 /* Build configuration list for PBXNativeTarget "tflApp Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5657D36D1DE387E6004E4CD0 /* Debug */,
+				5657D36E1DE387E6004E4CD0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		56A81B261DD862DC001DF7F1 /* Build configuration list for PBXProject "tflapp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

@@ -178,36 +178,61 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
                 expect(model.eta) == "15 mins"
                 expect(model.identifier) == "1836802865"
                 expect(model.timeToStation) == 902
-
-                
-            }
-            pending ("should setup model correctly (2nd model)") {
-
-                
             }
             
-            pending("should set time to 'due' if less than 30 secs") {
-                
+            it ("should setup model correctly (2nd model)") {
+                let prediction = TFLBusPrediction(with: busPredictions.last!)
+                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!)!
+                expect(model.line) == "40"
+                expect(model.eta) == "15 mins"
+                expect(model.identifier) == "1836802868"
+                expect(model.timeToStation) == 902
             }
             
-            pending("should set time to '1 min' if less than 90 secs") {
-                
+            it("should set time to 'due' if less than 30 secs") {
+                var dict = busPredictions.first!
+                dict["timeToStation"] = UInt(29)
+                let prediction = TFLBusPrediction(with: dict)
+                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!)!
+                expect(model.eta) == "due"
             }
             
-            pending("should set time to '5 min' if less than 305 secs") {
-                
+            it("should set time to '1 min' if less than 90 secs") {
+                var dict = busPredictions.first!
+                dict["timeToStation"] = UInt(60)
+                let prediction = TFLBusPrediction(with: dict)
+                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!)!
+                expect(model.eta) == "1 min"
             }
             
-            pending ("should setup bus predictions correctly") {
-                
+            it("should set time to '5 min' if less than 301 secs") {
+                var dict = busPredictions.first!
+                dict["timeToStation"] = UInt(300)
+                let prediction = TFLBusPrediction(with: dict)
+                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!)!
+                expect(model.eta) == "5 mins"
             }
             
-            pending ("models should be the same if identifier are the same") {
-                
+            it ("models should be the same if identifier are the same") {
+                var dict1 = busPredictions.first!
+                var dict2 = busPredictions.last!
+                dict1["id"] = "1"
+                dict2["id"] = "1"
+                let prediction1 = TFLBusPrediction(with: dict1)
+                let prediction2 = TFLBusPrediction(with: dict2)
+                let model1 = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction1!)
+                let model2 = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction2!)
+                expect(model1) == model2
             }
             
-            pending ("should handle predictions with invalid ttl gracefully") {
-                
+            it ("should handle predictions with invalid ttl gracefully") {
+                var dict = busPredictions.first!
+                dict["timeToLive"] = nil
+                let prediction = TFLBusPrediction(with: dict)
+                expect({
+                    let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!)!
+                    expect(model).to(beNil())
+                }).notTo(raiseException())
             }
             
         }

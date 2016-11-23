@@ -2,7 +2,7 @@ import Foundation
 import MapKit
 
 public struct TFLBusStopArrivalsViewModel :Equatable,CustomDebugStringConvertible {
-    struct LinePredictionViewModel :Equatable,CustomDebugStringConvertible,Comparable {
+    public struct LinePredictionViewModel :Equatable,CustomDebugStringConvertible,Comparable {
         let line : String
         let eta : String
         let identifier : String
@@ -45,7 +45,7 @@ public struct TFLBusStopArrivalsViewModel :Equatable,CustomDebugStringConvertibl
         }
         
         public static func <(lhs: LinePredictionViewModel, rhs: LinePredictionViewModel) -> Bool {
-            return lhs.timeToStation == rhs.timeToStation
+            return lhs.timeToStation < rhs.timeToStation
         }
         public var debugDescription: String {
             return "\n\(line) [\(identifier)]: \(eta)"
@@ -71,15 +71,14 @@ public struct TFLBusStopArrivalsViewModel :Equatable,CustomDebugStringConvertibl
         self.identifier = arrivalInfo.busStop.identifier
         self.distance = distanceFormatter.string(fromValue: arrivalInfo.busStopDistance, unit: .meter)
         
-        let sortedPredictions =  arrivalInfo.arrivals.sorted { ($0.timeToStation ?? UInt.max) < ($1.timeToStation ?? UInt.max) }
         let now = Date()
-        let filteredPredictions = sortedPredictions.filter { busPrediction in
+        let filteredPredictions = arrivalInfo.arrivals.filter { busPrediction in
             guard let date = timeFormatter.date(from: busPrediction.ttl), let _ = busPrediction.timeToStation  else {
                 return false
             }
             return date > now
         }
-        self.arrivalTimes = filteredPredictions.flatMap { LinePredictionViewModel(with: $0) }
+        self.arrivalTimes = filteredPredictions.flatMap { LinePredictionViewModel(with: $0) }.sorted (by:<)
     }
     
 }

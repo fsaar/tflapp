@@ -13,9 +13,8 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
         var timeFormatter : DateFormatter!
         var managedObjectContext : NSManagedObjectContext!
         var busStopDict : [String : Any]!
-        var busStopModel : TFLCDBusStop!
         var busPredictions : [[String:Any]]!
-        let busArrivalInfo : TFLBusStopArrivalsInfo!
+        var busArrivalInfo : TFLBusStopArrivalsInfo!
         beforeEach {
            
             distanceFormatter = LengthFormatter()
@@ -64,7 +63,7 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
             let _ = try! coordinator.addPersistentStore(ofType: NSInMemoryStoreType, configurationName: nil, at: nil, options: nil)
             managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
             managedObjectContext.persistentStoreCoordinator = coordinator
-            busStopModel = TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext)
+            let busStopModel = TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext)
             
             busPredictions = [
                 ["id": "1836802865",
@@ -98,12 +97,13 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
             let model1 = TFLBusPrediction(with:busPredictions[0])
             let model2 = TFLBusPrediction(with:busPredictions[1])
             let model3 = TFLBusPrediction(with:busPredictions[2])
-            busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStopModel, busStopDistance: 300, arrivals: [model1!,model2!,model3!])
+            busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStopModel!, busStopDistance: 300, arrivals: [model1!,model2!,model3!])
         }
         
         context("when testing TFLBusStopArrivalsViewModel") {
-            pending ("should not be nil") {
-                
+            fit ("should not be nil") {
+               let model = TFLBusStopArrivalsViewModel(with: busArrivalInfo, distanceFormatter: distanceFormatter, and: timeFormatter)
+                expect(model).notTo(beNil())
             }
             
             pending ("should setup model correctly") {

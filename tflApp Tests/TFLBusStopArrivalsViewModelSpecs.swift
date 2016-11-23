@@ -165,11 +165,24 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
         }
         
         context("when testing TFLBusStopArrivalsViewModel.LinePredictionViewModel") {
-            pending ("should not be nil") {
-                
+            it ("should not be nil") {
+                let prediction = TFLBusPrediction(with: busPredictions.first!)
+                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!)
+                expect(model).notTo(beNil())
             }
             
-            pending ("should setup model correctly") {
+            it ("should setup model correctly (1st model)") {
+                let prediction = TFLBusPrediction(with: busPredictions.first!)
+                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!)!
+                expect(model.line) == "38"
+                expect(model.eta) == "15 mins"
+                expect(model.identifier) == "1836802865"
+                expect(model.timeToStation) == 902
+
+                
+            }
+            pending ("should setup model correctly (2nd model)") {
+
                 
             }
             

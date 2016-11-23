@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2C659326B6D6A9829EDDAFC3 /* Pods_tflApp_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E391093442B4E54575D4146B /* Pods_tflApp_Tests.framework */; };
 		412222F26B670B4DE4DA2909 /* libPods-tflapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A103EB36E89F05E8B43D63BE /* libPods-tflapp.a */; };
+		5646C4031DE62389006EA956 /* TFLBusPredictionViewCellSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5646C4021DE62389006EA956 /* TFLBusPredictionViewCellSpecs.swift */; };
 		564EC6F51DE0A2A0008CFD11 /* TFLButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564EC6F41DE0A2A0008CFD11 /* TFLButton.swift */; };
 		564EC6FA1DE0DC1C008CFD11 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 564EC6F81DE0DC1C008CFD11 /* Fabric.framework */; };
 		564EC6FB1DE0DC1C008CFD11 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 564EC6F91DE0DC1C008CFD11 /* Crashlytics.framework */; };
@@ -62,6 +63,7 @@
 /* Begin PBXFileReference section */
 		09B8C602EFB434FF269AB5A9 /* Pods-tflapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tflapp.release.xcconfig"; path = "Pods/Target Support Files/Pods-tflapp/Pods-tflapp.release.xcconfig"; sourceTree = "<group>"; };
 		29D20D8BDB3378F1D7CC9DAE /* Pods-tflapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tflapp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-tflapp/Pods-tflapp.debug.xcconfig"; sourceTree = "<group>"; };
+		5646C4021DE62389006EA956 /* TFLBusPredictionViewCellSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusPredictionViewCellSpecs.swift; sourceTree = "<group>"; };
 		564EC6EF1DDFAA67008CFD11 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		564EC6F41DE0A2A0008CFD11 /* TFLButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLButton.swift; sourceTree = "<group>"; };
 		564EC6F81DE0DC1C008CFD11 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
@@ -172,6 +174,7 @@
 				5657D3721DE3A00A004E4CD0 /* TFLCDBusStopSpecs.swift */,
 				5657D3741DE3B480004E4CD0 /* TFLNotificationObserverSpec.swift */,
 				56B86EAC1DE4FED000A89D16 /* TFLBusStopArrivalsViewModelSpecs.swift */,
+				5646C4021DE62389006EA956 /* TFLBusPredictionViewCellSpecs.swift */,
 				5657D36A1DE387E6004E4CD0 /* Info.plist */,
 			);
 			path = "tflApp Tests";
@@ -603,6 +606,7 @@
 				56B86EAD1DE4FED000A89D16 /* TFLBusStopArrivalsViewModelSpecs.swift in Sources */,
 				5657D3731DE3A00A004E4CD0 /* TFLCDBusStopSpecs.swift in Sources */,
 				5657D3751DE3B480004E4CD0 /* TFLNotificationObserverSpec.swift in Sources */,
+				5646C4031DE62389006EA956 /* TFLBusPredictionViewCellSpecs.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

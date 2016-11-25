@@ -68,14 +68,44 @@ class TFLChangeSetProtocolSpecs : QuickSpec {
         beforeEach {
             changeSetHandler = TFLChangeSetHandler()
         }
+        it("should return the correct tuple when nothing's been inserted : [] -> []") {
+            let newList : [M] = []
+            let (inserted ,deleted ,updated, moved)  = changeSetHandler.evaluateLists(oldList: [], newList: newList, compare : M.compare)
+            expect(Set(inserted.map { D($0,$1) })) == Set([])
+            expect(Set(deleted.map { D($0,$1) })) == Set([])
+            expect(Set(updated.map { D($0,$1) })) == Set([])
+            expect(Set(moved.map { T($0,$1,$2) })) == Set([])
+            
+        }
         
-        it("should return the correct inserted set : [] -> [1,2,4,6,8]") {
+        it("should return the correct tuple when inserted 1,2,4,6,8 : [] -> [1,2,4,6,8]") {
             let newList = [1,2,4,6,8].map { M("\($0)",$0) }
             let (inserted ,deleted ,updated, moved)  = changeSetHandler.evaluateLists(oldList: [], newList: newList, compare : M.compare)
             expect(Set(inserted.map { D($0,$1) })) == Set([D(M("1",1),0),D(M("2",2),1),D(M("4",4),2),D(M("6",6),3),D(M("8",8),4)])
             expect(Set(deleted.map { D($0,$1) })) == Set([])
             expect(Set(updated.map { D($0,$1) })) == Set([])
             expect(Set(moved.map { T($0,$1,$2) })) == Set([])
+        }
+        
+        it("should return the correct tuple when nothing's changed : [1,2,4,6,8] -> [1,2,4,6,8]") {
+            let oldList = [1,2,4,6,8].map { M("\($0)",$0) }
+            let newList = [1,2,4,6,8].map { M("\($0)",$0) }
+            let (inserted ,deleted ,updated, moved)  = changeSetHandler.evaluateLists(oldList: oldList, newList: newList, compare : M.compare)
+            expect(Set(inserted.map { D($0,$1) })) == Set([])
+            expect(Set(deleted.map { D($0,$1) })) == Set([])
+            expect(Set(updated.map { D($0,$1) })) == Set([D(M("1",1),0),D(M("2",2),1),D(M("4",4),2),D(M("6",6),3),D(M("8",8),4)])
+            expect(Set(moved.map { T($0,$1,$2) })) == Set([])
+            
+        }
+
+        it("should return the correct tuple when everything's removed : [1,2,4,6,8] -> []") {
+            let oldList = [1,2,4,6,8].map { M("\($0)",$0) }
+            let (inserted ,deleted ,updated, moved)  = changeSetHandler.evaluateLists(oldList: oldList, newList: [], compare : M.compare)
+            expect(Set(inserted.map { D($0,$1) })) == Set([])
+            expect(Set(deleted.map { D($0,$1) })) == Set([D(M("1",1),0),D(M("2",2),1),D(M("4",4),2),D(M("6",6),3),D(M("8",8),4)])
+            expect(Set(updated.map { D($0,$1) })) == Set([])
+            expect(Set(moved.map { T($0,$1,$2) })) == Set([])
+            
         }
 
         it("should return the correct tuple when inserted 5 : ([1,2,4,6,8] -> [1,2,4,5,6,8]") {

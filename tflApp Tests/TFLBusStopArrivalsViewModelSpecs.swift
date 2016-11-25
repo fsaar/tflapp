@@ -156,8 +156,8 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
             it ("should sort bus predictions in increasing order") {
                 let model = TFLBusStopArrivalsViewModel(with: busArrivalInfo, distanceFormatter: distanceFormatter, and: timeFormatter)
                 let (pred1,pred2,pred3) = (model.arrivalTimes[0],model.arrivalTimes[1],model.arrivalTimes[2])
-                expect(pred1 < pred2) == true
-                expect(pred2 < pred3) == true
+                expect(TFLBusStopArrivalsViewModel.LinePredictionViewModel.compare(lhs: pred1, rhs: pred2)) == true
+                expect(TFLBusStopArrivalsViewModel.LinePredictionViewModel.compare(lhs: pred2, rhs: pred3)) == true
             }
             
 

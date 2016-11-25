@@ -1,12 +1,13 @@
 import Foundation
 import MapKit
 
-public struct TFLBusStopArrivalsViewModel :Equatable,CustomDebugStringConvertible {
-    public struct LinePredictionViewModel :Equatable,CustomDebugStringConvertible,Comparable {
+public struct TFLBusStopArrivalsViewModel :Equatable,CustomDebugStringConvertible,Hashable {
+    public struct LinePredictionViewModel :Equatable,CustomDebugStringConvertible,Hashable {
         let line : String
         let eta : String
         let identifier : String
         let timeToStation : Int
+
         init?(with busPrediction: TFLBusPrediction) {
             
             func arrivalTime(in secs : Int) -> String {
@@ -44,12 +45,16 @@ public struct TFLBusStopArrivalsViewModel :Equatable,CustomDebugStringConvertibl
             return lhs.identifier == rhs.identifier
         }
         
-        public static func <(lhs: LinePredictionViewModel, rhs: LinePredictionViewModel) -> Bool {
-            return lhs.timeToStation < rhs.timeToStation
+        public static func compare(lhs: LinePredictionViewModel, rhs: LinePredictionViewModel) -> Bool {
+            return lhs.timeToStation <= rhs.timeToStation
         }
         public var debugDescription: String {
             return "\n\(line) [\(identifier)]: \(eta)"
         }
+        public var hashValue: Int {
+            return self.identifier.hashValue
+        }
+
 
         
     }
@@ -58,6 +63,9 @@ public struct TFLBusStopArrivalsViewModel :Equatable,CustomDebugStringConvertibl
     }
     public var debugDescription: String {
         return "\n\(stationName) [\(identifier)] towards \(stationDetails)"
+    }
+    public var hashValue: Int {
+        return self.identifier.hashValue
     }
     let identifier : String
     let stationName : String
@@ -78,8 +86,12 @@ public struct TFLBusStopArrivalsViewModel :Equatable,CustomDebugStringConvertibl
             }
             return date > now
         }
-        self.arrivalTimes = filteredPredictions.flatMap { LinePredictionViewModel(with: $0) }.sorted (by:<)
+        self.arrivalTimes = filteredPredictions.flatMap { LinePredictionViewModel(with: $0) }.sorted (by:LinePredictionViewModel.compare)
     }
+    public static func compare(lhs: TFLBusStopArrivalsViewModel, rhs: TFLBusStopArrivalsViewModel) -> Bool {
+        return lhs.distance <= rhs.distance
+    }
+
     
 }
 

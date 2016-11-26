@@ -56,7 +56,8 @@ class TFLNearbyBusStationsController : UITableViewController,TFLChangeSetProtoco
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.tableView.scrollIndicatorInsets = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
+        self.tableView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(self.refreshHandler(control:)), for: .valueChanged)
         self.refreshControl = refreshControl

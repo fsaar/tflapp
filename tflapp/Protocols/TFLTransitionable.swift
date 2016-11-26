@@ -14,9 +14,9 @@ extension UITableView : Transitionable {
         
         self.beginUpdates()
         let insertedIndexPaths = inserted.map { IndexPath(row: $0.index,section:0)}
-        self.insertRows(at: insertedIndexPaths , with: .left)
+        self.insertRows(at: insertedIndexPaths , with: .automatic)
         let deledtedIndexPaths = deleted.map { IndexPath(row: $0.index,section:0)}
-        self.deleteRows(at: deledtedIndexPaths , with: .right)
+        self.deleteRows(at: deledtedIndexPaths , with: .automatic)
         self.endUpdates()
         
         if !updated.isEmpty {

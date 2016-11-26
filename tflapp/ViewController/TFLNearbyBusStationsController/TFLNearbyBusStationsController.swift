@@ -7,7 +7,7 @@ protocol TFLNearbyBusStationsControllerDelegate : class {
 
 class TFLNearbyBusStationsController : UITableViewController,TFLChangeSetProtocol {
     let defaultTableViewRowHeight = CGFloat (119)
-    private let distanceFormatter : LengthFormatter = {
+    fileprivate let distanceFormatter : LengthFormatter = {
         let formatter = LengthFormatter()
         formatter.unitStyle = .short
         formatter.numberFormatter.roundingMode = .halfUp
@@ -15,7 +15,7 @@ class TFLNearbyBusStationsController : UITableViewController,TFLChangeSetProtoco
         return formatter
     }()
     
-    private let timeFormatter : DateFormatter = { () -> (DateFormatter) in
+    fileprivate let timeFormatter : DateFormatter = { () -> (DateFormatter) in
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX"
         formatter.timeZone = TimeZone(secondsFromGMT: 0)
@@ -27,48 +27,22 @@ class TFLNearbyBusStationsController : UITableViewController,TFLChangeSetProtoco
     
     weak var delegate : TFLNearbyBusStationsControllerDelegate?
     
-    fileprivate var busStopArrivalsViewModel : [TFLBusStopArrivalsViewModel] = [] {
+    var sortedBusStopPredicationTuple :  [TFLBusStopArrivalsInfo] = [] {
+        
         didSet (oldModel) {
-            let (inserted ,deleted ,updated, moved) = self.evaluateLists(oldList: oldModel, newList: busStopArrivalsViewModel, compare : TFLBusStopArrivalsViewModel.compare)
-            
-            self.tableView.beginUpdates()
-            let insertedIndexPaths = inserted.map { IndexPath(row: $0.index,section:0)}
-            self.tableView.insertRows(at: insertedIndexPaths , with: .left)
-            let deledtedIndexPaths = deleted.map { IndexPath(row: $0.index,section:0)}
-            self.tableView.deleteRows(at: deledtedIndexPaths , with: .right)
-            self.tableView.endUpdates()
-            
-            if !updated.isEmpty {
-                self.tableView.beginUpdates()
-                let updatedIndexPaths = Set(updated.map { IndexPath(row: $0.index,section:0)})
-                let visibleIndexPaths = Set(self.tableView.indexPathsForVisibleRows ?? [])
-                let visibleReloadablePaths = visibleIndexPaths.intersection(updatedIndexPaths)
-                visibleReloadablePaths.map { (self.tableView.cellForRow(at: $0) ,self.busStopArrivalsViewModel[$0.row]) }.forEach { cell, model in
-                    cell?.textLabel?.text = "\(model.identifier):\(model.distance)"
-                }
-                self.tableView.endUpdates()
+            if oldModel.isEmpty {
+                self.tableView.reloadData()
             }
-            
-            if !moved.isEmpty {
-                self.tableView.beginUpdates()
-                moved.forEach { self.tableView.moveRow(at: IndexPath(row: $0.oldIndex,section:0), to:  IndexPath(row: $0.newIndex,section:0)) }
-                self.tableView.endUpdates()
-                
-                self.tableView.beginUpdates()
-                let indexPaths = moved.map { IndexPath(row: $0.newIndex,section:0)}
-                let visibleIndexPaths = Set(self.tableView.indexPathsForVisibleRows ?? [])
-                let visibleMovedPaths = visibleIndexPaths.intersection(indexPaths)
-                visibleMovedPaths.map { (self.tableView.cellForRow(at: $0) ,self.busStopArrivalsViewModel[$0.row]) }.forEach { cell, model in
-                    cell?.textLabel?.text = "\(model.identifier):\(model.distance)"
-                }
-                self.tableView.endUpdates()
+            else
+            {
+                self.transition(tableView: self.tableView, from: oldModel, to: sortedBusStopPredicationTuple)
             }
-            
         }
     }
+
     var busStopPredicationTuple :  [TFLBusStopArrivalsInfo] = [] {
         didSet {
-            self.busStopArrivalsViewModel = self.busStopPredicationTuple.sorted { $0.busStopDistance < $1 .busStopDistance }.map { TFLBusStopArrivalsViewModel(with: $0,  distanceFormatter: distanceFormatter, and: timeFormatter ) }
+            self.sortedBusStopPredicationTuple = self.busStopPredicationTuple.sorted { $0.busStopDistance < $1 .busStopDistance }
         }
     }
 
@@ -97,7 +71,7 @@ class TFLNearbyBusStationsController : UITableViewController,TFLChangeSetProtoco
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.busStopArrivalsViewModel.count
+        return self.sortedBusStopPredicationTuple.count
     }
     
     
@@ -105,8 +79,7 @@ class TFLNearbyBusStationsController : UITableViewController,TFLChangeSetProtoco
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing:TFLBusStationArrivalsCell.self), for: indexPath)
         
         if let arrivalsCell = cell as? TFLBusStationArrivalsCell {
-            let viewModel = busStopArrivalsViewModel[indexPath.row]
-            arrivalsCell.configure(with: viewModel)
+            configure(arrivalsCell, at: indexPath)
         }
         return cell
      }
@@ -116,9 +89,54 @@ class TFLNearbyBusStationsController : UITableViewController,TFLChangeSetProtoco
 
 // MARK: Private
 
-private extension TFLNearbyBusStationsController {
-    func validateArrivalTimes() {
+fileprivate extension TFLNearbyBusStationsController {
+    fileprivate func configure(_ cell : TFLBusStationArrivalsCell,at indexPath : IndexPath) {
+        let model = self.sortedBusStopPredicationTuple[indexPath.row]
+        let viewModel = TFLBusStopArrivalsViewModel(with: model,  distanceFormatter: distanceFormatter, and: timeFormatter )
+        cell.configure(with: viewModel)
+
+    }
+    
+    fileprivate func transition(tableView: UITableView,from oldArrivalInfo: [TFLBusStopArrivalsInfo],to newArrivalInfo: [TFLBusStopArrivalsInfo]) {
+        let (inserted ,deleted ,updated, moved) = self.evaluateLists(oldList: oldArrivalInfo, newList: newArrivalInfo, compare : TFLBusStopArrivalsInfo.compare)
         
+        tableView.beginUpdates()
+        let insertedIndexPaths = inserted.map { IndexPath(row: $0.index,section:0)}
+        tableView.insertRows(at: insertedIndexPaths , with: .left)
+        let deledtedIndexPaths = deleted.map { IndexPath(row: $0.index,section:0)}
+        tableView.deleteRows(at: deledtedIndexPaths , with: .right)
+        tableView.endUpdates()
+        
+        if !updated.isEmpty {
+            tableView.beginUpdates()
+            let updatedIndexPaths = Set(updated.map { IndexPath(row: $0.index,section:0)})
+            let visibleIndexPaths = Set(tableView.indexPathsForVisibleRows ?? [])
+            let visibleReloadablePaths = visibleIndexPaths.intersection(updatedIndexPaths)
+            visibleReloadablePaths.map  { (tableView.cellForRow(at: $0) ,$0) }.forEach { cell, indexPath in
+                if let cell = cell as? TFLBusStationArrivalsCell {
+                    configure(cell, at: indexPath)
+                }
+            }
+            tableView.endUpdates()
+        }
+        
+        if !moved.isEmpty {
+            tableView.beginUpdates()
+            moved.forEach { tableView.moveRow(at: IndexPath(row: $0.oldIndex,section:0), to:  IndexPath(row: $0.newIndex,section:0)) }
+            tableView.endUpdates()
+            
+            tableView.beginUpdates()
+            let indexPaths = moved.map { IndexPath(row: $0.newIndex,section:0)}
+            let visibleIndexPaths = Set(tableView.indexPathsForVisibleRows ?? [])
+            let visibleMovedPaths = visibleIndexPaths.intersection(indexPaths)
+            visibleMovedPaths.map { (tableView.cellForRow(at: $0) ,$0) }.forEach { cell, indexPath in
+                if let cell = cell as? TFLBusStationArrivalsCell {
+                    configure(cell, at: indexPath)
+                }
+            }
+            tableView.endUpdates()
+        }
+
     }
 }
 

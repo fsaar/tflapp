@@ -78,7 +78,6 @@ public struct TFLBusStopArrivalsViewModel :Equatable,CustomDebugStringConvertibl
         self.stationName = arrivalInfo.busStop.name
         self.identifier = arrivalInfo.busStop.identifier
         self.distance = distanceFormatter.string(fromValue: arrivalInfo.busStopDistance, unit: .meter)
-        
         let now = Date()
         let filteredPredictions = arrivalInfo.arrivals.filter { busPrediction in
             guard let date = timeFormatter.date(from: busPrediction.ttl), let _ = busPrediction.timeToStation  else {
@@ -87,9 +86,6 @@ public struct TFLBusStopArrivalsViewModel :Equatable,CustomDebugStringConvertibl
             return date > now
         }
         self.arrivalTimes = filteredPredictions.flatMap { LinePredictionViewModel(with: $0) }.sorted (by:LinePredictionViewModel.compare)
-    }
-    public static func compare(lhs: TFLBusStopArrivalsViewModel, rhs: TFLBusStopArrivalsViewModel) -> Bool {
-        return lhs.distance <= rhs.distance
     }
 
     

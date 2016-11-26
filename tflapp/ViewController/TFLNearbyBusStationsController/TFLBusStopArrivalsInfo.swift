@@ -7,13 +7,16 @@ public struct TFLBusStopArrivalsInfo : CustomDebugStringConvertible,Hashable {
     let busStop : TFLCDBusStop
     let busStopDistance : Double
     let arrivals : [TFLBusPrediction]
+    var identifier : String {
+        return self.busStop.identifier
+    }
     
     public var hashValue: Int {
-        return self.busStop.identifier.hashValue
+        return self.identifier.hashValue
     }
     
     public static func ==(lhs: TFLBusStopArrivalsInfo, rhs: TFLBusStopArrivalsInfo) -> Bool {
-        return lhs.busStop.identifier == rhs.busStop.identifier
+        return lhs.identifier == rhs.identifier
         
     }
     

@@ -1,6 +1,6 @@
 import UIKit
 import MapKit
-
+import Crashlytics
 protocol TFLNearbyBusStationsControllerDelegate : class {
     func refresh(controller: TFLNearbyBusStationsController, using completionBlock:@escaping ()->())
 }
@@ -35,6 +35,7 @@ class TFLNearbyBusStationsController : UITableViewController,TFLChangeSetProtoco
             }
             else
             {
+                Crashlytics.log("oldTuples:\(oldModel.map { $0.debugInfo }.joined(separator: ","))\nnewTuples:\(sortedBusStopPredicationTuple.map { $0.debugInfo }.joined(separator: ","))")
                 self.tableView.transition(from: oldModel, to: sortedBusStopPredicationTuple, with: TFLBusStopArrivalsInfo.compare) { updatedIndexPaths in
                     let visibleIndexPaths = Set(tableView.indexPathsForVisibleRows ?? [])
                     let visibleUpdatablePaths = visibleIndexPaths.intersection(updatedIndexPaths)

@@ -11,6 +11,10 @@ public struct TFLBusStopArrivalsInfo : CustomDebugStringConvertible,Hashable {
         return self.busStop.identifier
     }
     
+    var debugInfo : String {
+        return "\(identifier),\(busStopDistance)"
+    }
+    
     public var hashValue: Int {
         return self.identifier.hashValue
     }

@@ -267,14 +267,21 @@ fileprivate extension TFLRootViewController {
         }
     }
     
-    func startSim(counter : Double = 0) {
-        let coords = CLLocationCoordinate2D(latitude: 51.506700, longitude: -0.102136)
+    func startSim(tuple : (counter:Double,up:Bool) = (0,true) ) {
+        let coords = CLLocationCoordinate2D(latitude: 51.556700, longitude: -0.102136)
         _ = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { [weak self] _ in
             self?.state = .determineCurrentLocation
-            let coords = CLLocationCoordinate2D(latitude: coords.latitude, longitude: coords.longitude - counter * 0.001)
+            let coords = CLLocationCoordinate2D(latitude: coords.latitude, longitude: coords.longitude + tuple.counter * 0.001)
             self?.retrieveBusstops(for: coords) { busStopPredictionTuples in
                 self?.nearbyBusStationController?.busStopPredicationTuple = busStopPredictionTuples
-                self?.startSim(counter: counter+1)
+                switch tuple {
+                case (30,_):
+                    self?.startSim(tuple: (tuple.counter-1,false))
+                case (0,_):
+                    self?.startSim(tuple: (tuple.counter+1,true))
+                default:
+                    self?.startSim(tuple: (tuple.up ? tuple.counter+1 : tuple.counter-1,tuple.up))
+                }
             }
         }
     }

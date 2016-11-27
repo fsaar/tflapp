@@ -31,7 +31,7 @@ class TFLBusPredictionView: UICollectionView {
                             with: TFLBusStopArrivalsViewModel.LinePredictionViewModel.compare,
                             using: { [weak self] animationBlock in
                                         self?.performBatchUpdates({
-                                            self?.predictions = predictions
+                                            self?.predictions = newPredictions
                                             animationBlock()
                                             }, completion: nil)
                                     }

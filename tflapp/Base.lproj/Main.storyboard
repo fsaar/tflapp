@@ -317,7 +317,7 @@
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="46" id="Ce5-JF-JFJ"/>
                                             </constraints>
-                                            <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="5" minimumInteritemSpacing="0.0" id="dxW-6p-dcc">
+                                            <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="5" minimumInteritemSpacing="0.0" id="dxW-6p-dcc" customClass="TFLCollectionFlowLayout" customModule="London_Bus" customModuleProvider="target">
                                                 <size key="itemSize" width="54" height="46"/>
                                                 <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                                 <size key="footerReferenceSize" width="0.0" height="0.0"/>

@@ -1,8 +1,8 @@
 import Foundation
 import MapKit
 
-public struct TFLBusStopArrivalsViewModel :Equatable,CustomDebugStringConvertible,Hashable {
-    public struct LinePredictionViewModel :Equatable,CustomDebugStringConvertible,Hashable {
+public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable {
+    public struct LinePredictionViewModel :CustomDebugStringConvertible,Hashable {
         let line : String
         let eta : String
         let identifier : String

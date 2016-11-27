@@ -36,13 +36,17 @@ class TFLNearbyBusStationsController : UITableViewController,TFLChangeSetProtoco
             else
             {
                 Crashlytics.log("oldTuples:\(oldModel.map { $0.debugInfo }.joined(separator: ","))\nnewTuples:\(sortedBusStopPredicationTuple.map { $0.debugInfo }.joined(separator: ","))")
-                self.tableView.transition(from: oldModel, to: sortedBusStopPredicationTuple, with: TFLBusStopArrivalsInfo.compare) { updatedIndexPaths in
+                self.tableView.transition(from: oldModel, to: sortedBusStopPredicationTuple, with: TFLBusStopArrivalsInfo.compare, using: { animationBlock in
+                    self.tableView.beginUpdates()
+                    animationBlock()
+                    self.tableView.endUpdates()
+                }, with: {  updatedIndexPaths in
                     updatedIndexPaths.forEach { [weak self] indexPath in
                         if let cell = self?.tableView.cellForRow(at: indexPath) as? TFLBusStationArrivalsCell {
                             self?.configure(cell, at: indexPath)
                         }
                     }
-                }
+                })
             }
         }
     }

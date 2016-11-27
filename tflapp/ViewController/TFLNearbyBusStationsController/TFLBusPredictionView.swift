@@ -1,4 +1,5 @@
 import UIKit
+import Crashlytics
 
 class TFLBusPredictionView: UICollectionView {
     
@@ -24,33 +25,22 @@ class TFLBusPredictionView: UICollectionView {
             self.reloadData()
         }
         else {
-            
-            let oldPredictions = self.predictions
-            
-            let (inserted ,deleted ,updated, moved) = self.evaluateLists(oldList: oldPredictions, newList: newPredictions, compare : TFLBusStopArrivalsViewModel.LinePredictionViewModel.compare)
-            self.performBatchUpdates({
-                self.predictions = newPredictions
-                let insertedIndexPaths = inserted.map { IndexPath(item: $0.index,section:0)}
-                self.insertItems(at: insertedIndexPaths )
-                moved.forEach { self.moveItem(at: IndexPath(item: $0.oldIndex,section:0), to:  IndexPath(item: $0.newIndex,section:0)) }
-                let deletedIndexPaths = deleted.map { IndexPath(item: $0.index,section:0)}
-                self.deleteItems(at: deletedIndexPaths)
-            }) { _ in
-                let updatedIndexPaths = updated.map { IndexPath(item: $0.index,section:0)}
-                let movedIndexPaths = moved.map { IndexPath(item: $0.newIndex,section:0)}
-                (movedIndexPaths+updatedIndexPaths).forEach { indexPath in
-                    let cell = self.cellForItem(at: indexPath)
-                    self.configure(cell, at: indexPath)
-                }
-            }
+            Crashlytics.log("oldTuples:\(self.predictions.map { $0.identifier }.joined(separator: ","))\nnewTuples:\(predictions.map { $0.identifier }.joined(separator: ","))")
 
-            
-//            self.transition(from: oldPredictions, to: predictions, with: TFLBusStopArrivalsViewModel.LinePredictionViewModel.compare) { [weak self] updatedIndexPaths in
-//                updatedIndexPaths.forEach { indexPath in
-//                    let cell = self?.cellForItem(at: indexPath)
-//                    self?.configure(cell, at: indexPath)
-//                }
-//            }
+            self.transition(from: self.predictions, to: predictions,
+                            with: TFLBusStopArrivalsViewModel.LinePredictionViewModel.compare,
+                            using: { [weak self] animationBlock in
+                                        self?.performBatchUpdates({
+                                            self?.predictions = predictions
+                                            animationBlock()
+                                            }, completion: nil)
+                                    }
+                            , with: { [weak self] updateIndexPaths in
+                                        updateIndexPaths.forEach { indexPath in
+                                            let cell = self?.cellForItem(at: indexPath)
+                                            self?.configure(cell, at: indexPath)
+                                        }
+            })
         }
     }
     public var predictions : [TFLBusStopArrivalsViewModel.LinePredictionViewModel] = [] 

@@ -1,3 +1,4 @@
+import UIKit
 
 protocol TFLChangeSetProtocol  {
     func evaluateLists<T: Equatable & Hashable >(oldList : [T], newList : [T], compare: @escaping (_ lhs : T,_ rhs: T) -> (Bool)) -> (inserted : [(element:T,index:Int)],deleted : [(element:T,index:Int)],updated : [(element:T,index:Int)], moved : [(element:T,oldIndex:Int,newIndex:Int)])
@@ -90,3 +91,5 @@ extension TFLChangeSetProtocol {
     }
     
 }
+
+extension UICollectionView : TFLChangeSetProtocol {}

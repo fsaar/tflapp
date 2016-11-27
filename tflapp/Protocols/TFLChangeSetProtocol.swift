@@ -5,10 +5,13 @@ protocol TFLChangeSetProtocol  {
 
 
 extension TFLChangeSetProtocol {
-    func evaluateLists<T: Equatable & Hashable>(oldList : [T], newList : [T], compare: @escaping (_ lhs : T,_ rhs: T) -> (Bool))  -> (inserted : [(element:T,index:Int)],deleted : [(element:T,index:Int)], updated : [(element:T,index:Int)],moved : [(element:T,oldIndex:Int,newIndex:Int)])
+    func evaluateLists<T: Hashable>(oldList : [T], newList : [T], compare: @escaping (_ lhs : T,_ rhs: T) -> (Bool))  -> (inserted : [(element:T,index:Int)],deleted : [(element:T,index:Int)], updated : [(element:T,index:Int)],moved : [(element:T,oldIndex:Int,newIndex:Int)])
     {
         guard !oldList.isEmpty else {
             return (newList.enumerated().map { ($1,$0) },[],[],[])
+        }
+        guard !newList.isEmpty else {
+            return ([],oldList.enumerated().map { ($1,$0) },[],[])
         }
         
         let sortedOldList = oldList.sorted(by: compare)

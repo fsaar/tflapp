@@ -4,6 +4,7 @@ class TFLCollectionFlowLayout : UICollectionViewFlowLayout {
     
     var deleteIndexPaths : [IndexPath] = []
     var insertIndexPaths : [IndexPath] = []
+    lazy var finalTransform : CGAffineTransform = CGAffineTransform.identity.scaledBy(x: 0.01, y: 0.01)
     
     override func finalizeCollectionViewUpdates() {
         self.deleteIndexPaths = []
@@ -27,8 +28,8 @@ class TFLCollectionFlowLayout : UICollectionViewFlowLayout {
     
     override func finalLayoutAttributesForDisappearingItem(at itemIndexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
         let layoutAttributes = super.finalLayoutAttributesForDisappearingItem(at: itemIndexPath)
-        if self.deleteIndexPaths.contains(itemIndexPath), let width = self.collectionView?.frame.size.width {
-            layoutAttributes?.frame.origin.x -= width
+        if self.deleteIndexPaths.contains(itemIndexPath) {
+            layoutAttributes?.transform = self.finalTransform
         }
         return layoutAttributes
     }

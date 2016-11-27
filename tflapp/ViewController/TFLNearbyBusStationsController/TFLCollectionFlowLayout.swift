@@ -12,7 +12,7 @@ class TFLCollectionFlowLayout : UICollectionViewFlowLayout {
     override func prepare(forCollectionViewUpdates updateItems: [UICollectionViewUpdateItem]) {
         super.prepare(forCollectionViewUpdates: updateItems)
         self.deleteIndexPaths = updateItems.filter { $0.updateAction == .delete }.flatMap { $0.indexPathBeforeUpdate }
-        self.self.insertIndexPaths = updateItems.filter { $0.updateAction == .insert }.flatMap { $0.indexPathAfterUpdate }
+        self.insertIndexPaths = updateItems.filter { $0.updateAction == .insert }.flatMap { $0.indexPathAfterUpdate }
     }
     
     

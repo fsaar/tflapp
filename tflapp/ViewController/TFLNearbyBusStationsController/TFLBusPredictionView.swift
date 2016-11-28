@@ -28,7 +28,6 @@ class TFLBusPredictionView: UICollectionView {
             Crashlytics.log("oldTuples:\(self.predictions.map { $0.identifier }.joined(separator: ","))\nnewTuples:\(visiblePredictions.map { $0.identifier }.joined(separator: ","))")
             
             let (inserted ,deleted ,updated, moved) = self.evaluateLists(oldList: self.predictions, newList: visiblePredictions, compare : TFLBusStopArrivalsViewModel.LinePredictionViewModel.compare)
-            
             self.performBatchUpdates({ [weak self] in
                 Crashlytics.notify()
                 self?.predictions = visiblePredictions
@@ -37,14 +36,18 @@ class TFLBusPredictionView: UICollectionView {
                 moved.forEach { self?.moveItem(at: IndexPath(item: $0.oldIndex,section:0), to:  IndexPath(item: $0.newIndex,section:0)) }
                 let deletedIndexPaths = deleted.map { IndexPath(item: $0.index,section:0)}
                 self?.deleteItems(at: deletedIndexPaths)
-                } ,completion: { [weak self] _ in
-                    Crashlytics.notify()
-                    let updatedIndexPaths = updated.map { IndexPath(item: $0.index,section:0)}
-                    let movedIndexPaths = moved.map { IndexPath(item: $0.newIndex,section:0)}
-                    (updatedIndexPaths+movedIndexPaths).forEach { indexPath in
-                        let cell = self?.cellForItem(at: indexPath)
-                        self?.configure(cell, at: indexPath)
-                    }
+                } ,completion: { [weak self]  _ in
+                    self?.performBatchUpdates({ [weak self] in
+                        Crashlytics.notify()
+                        let updatedIndexPaths = updated.map { IndexPath(item: $0.index,section:0)}
+                        let movedIndexPaths = moved.map { IndexPath(item: $0.newIndex,section:0)}
+                        (updatedIndexPaths+movedIndexPaths).forEach { indexPath in
+                            let cell = self?.cellForItem(at: indexPath)
+                            self?.configure(cell, at: indexPath)
+                        }
+                        },completion: { _ in
+                            Crashlytics.notify()
+                    })
             })
        }
     }

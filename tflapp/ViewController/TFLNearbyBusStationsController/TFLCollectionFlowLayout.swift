@@ -18,7 +18,7 @@ class TFLCollectionFlowLayout : UICollectionViewFlowLayout {
     override func prepare(forCollectionViewUpdates updateItems: [UICollectionViewUpdateItem]) {
         super.prepare(forCollectionViewUpdates: updateItems)
         self.deleteIndexPaths = updateItems.filter { $0.updateAction == .delete }.flatMap { $0.indexPathBeforeUpdate }.sorted { $0.item < $1.item }
-        self.insertIndexPaths = updateItems.filter { $0.updateAction == .insert }.flatMap { $0.indexPathAfterUpdate }.sorted { $1.item < $1.item }
+        self.insertIndexPaths = updateItems.filter { $0.updateAction == .insert }.flatMap { $0.indexPathAfterUpdate }.sorted { $0.item < $1.item }
 
     }
     
@@ -59,7 +59,7 @@ private extension TFLCollectionFlowLayout {
         let indices = Array<Int>(indexPath.item..<itemCount)
         let insertedIndices = self.insertIndexPaths[startIndex..<self.insertIndexPaths.count].map { $0.item }
         let subtractedSet = Set(indices).subtracting(insertedIndices)
-        let animationType = subtractedSet.isEmpty ? TFLCollectionFlowLayoutAppearingItemAnimationType.translate : TFLCollectionFlowLayoutAppearingItemAnimationType.scale
+        let animationType : TFLCollectionFlowLayoutAppearingItemAnimationType = subtractedSet.isEmpty ? .translate : .scale
         return animationType
     }
 }

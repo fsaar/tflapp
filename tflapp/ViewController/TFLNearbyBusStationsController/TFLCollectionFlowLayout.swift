@@ -52,11 +52,17 @@ class TFLCollectionFlowLayout : UICollectionViewFlowLayout {
 
 private extension TFLCollectionFlowLayout {
     func appearingAnimationType(forItemAppearingAt indexPath: IndexPath) -> (TFLCollectionFlowLayoutAppearingItemAnimationType) {
-        var animationType = TFLCollectionFlowLayoutAppearingItemAnimationType.translate
-        if let startIndex = self.insertIndexPaths.index(of: indexPath),let itemCount = self.collectionView?.numberOfItems(inSection: 0), startIndex+1 < self.insertIndexPaths.count  {
-            let succeedingItemCount = self.insertIndexPaths[startIndex+1..<self.insertIndexPaths.count].count
-            animationType = ((itemCount-1) - indexPath.row) == succeedingItemCount ? TFLCollectionFlowLayoutAppearingItemAnimationType.translate : TFLCollectionFlowLayoutAppearingItemAnimationType.scale
+        guard let startIndex = self.insertIndexPaths.index(of: indexPath),let itemCount = self.collectionView?.numberOfItems(inSection: 0) else {
+            return .scale
         }
+        
+        let indices = Array<Int>(indexPath.item..<itemCount)
+        let insertedIndices = self.insertIndexPaths[startIndex..<self.insertIndexPaths.count].map { $0.item }
+        let subtractedSet = Set(indices).subtracting(insertedIndices)
+        let animationType = subtractedSet.isEmpty ? TFLCollectionFlowLayoutAppearingItemAnimationType.translate : TFLCollectionFlowLayoutAppearingItemAnimationType.scale
         return animationType
     }
 }
+
+
+

@@ -28,13 +28,14 @@ class TFLBusStationArrivalsCell: UITableViewCell {
         self.stationDetails.text = nil
         self.distanceLabel.text = nil
         self.noDataErrorLabel.isHidden = true
+        self.predictionView.setPredictions(predictions: [],animated: false)
     }
     
     func configure(with busStopArrivalViewModel: TFLBusStopArrivalsViewModel) {
         self.stationName.text = busStopArrivalViewModel.stationName
         self.stationDetails.text  = busStopArrivalViewModel.stationDetails
         self.distanceLabel.text = busStopArrivalViewModel.distance
-        self.predictionView.predictions = busStopArrivalViewModel.arrivalTimes
+        self.predictionView.setPredictions(predictions: busStopArrivalViewModel.arrivalTimes,animated: true)
         self.noDataErrorLabel.isHidden = !busStopArrivalViewModel.arrivalTimes.isEmpty
     }
     

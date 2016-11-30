@@ -3,11 +3,33 @@ import UIKit
 class TFLBusPredictionViewCell: UICollectionViewCell {
     @IBOutlet weak var line : UILabel!
     @IBOutlet weak var arrivalTime : UILabel!
-    @IBOutlet weak var lineBackground : UIView!
-    private let bgColor = UIColor.init(colorLiteralRed: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
+    @IBOutlet weak var bgImage : UIImageView!
+    private let bgColor = UIColor(colorLiteralRed: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
+    static var busPredictionViewBackgroundImage: UIImage = {
+        let bounds = CGRect(origin:.zero, size: CGSize(width: 54, height: 46))
+        let busNumberRect = CGRect(x: 5, y: 4, width: 44, height: 20)
+        let format = UIGraphicsImageRendererFormat()
+        format.opaque = true
+        let renderer = UIGraphicsImageRenderer(bounds: bounds,format: format)
+        return renderer.image { context in
+            UIColor.white.setFill()
+            context.fill(bounds)
+            
+            let path = UIBezierPath(roundedRect: bounds, cornerRadius: 5)
+            let bgColor = UIColor(colorLiteralRed: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
+            bgColor.setFill()
+            path.fill()
+            
+            let busNumberRectPath = UIBezierPath(roundedRect: busNumberRect , cornerRadius: busNumberRect.size.height/2)
+            UIColor.red.setFill()
+            UIColor.white.setStroke()
+            busNumberRectPath.fill()
+            busNumberRectPath.stroke()
+        }
+    }()
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.lineBackground.isHidden = true
         self.line.font = UIFont.tflFont(size: 12)
         self.line.textColor = .white
         self.line.isOpaque = true
@@ -16,6 +38,7 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
         self.arrivalTime.textColor = .black
         self.arrivalTime.isOpaque = true
         self.arrivalTime.backgroundColor = bgColor
+        self.bgImage.image = TFLBusPredictionViewCell.busPredictionViewBackgroundImage
     }
     
     override func prepareForReuse() {
@@ -28,22 +51,6 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
         self.line.text = predictionViewModel.line
         self.arrivalTime.text =  predictionViewModel.eta
     }
-    
-    override func draw(_ rect: CGRect) {
-        let context = UIGraphicsGetCurrentContext()
-        if let context = context {
-            let path = UIBezierPath(roundedRect:  self.bounds, cornerRadius: 5)
-            context.setFillColor(bgColor.cgColor)
-            path.fill()
-            
-            let lineBgFrame = self.lineBackground.frame
-            let lineBgPath = UIBezierPath(roundedRect: lineBgFrame , cornerRadius: lineBgFrame.size.height/2)
-            context.setFillColor(UIColor.red.cgColor)
-            context.setStrokeColor(UIColor.white.cgColor)
-            lineBgPath.fill()
-            lineBgPath.stroke()
-        }
-        
-    }
+
 }
 

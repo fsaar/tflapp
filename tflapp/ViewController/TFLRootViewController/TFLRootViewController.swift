@@ -105,26 +105,26 @@ fileprivate extension TFLRootViewController {
     
     func loadNearbyBusstops(using completionBlock:(()->())? = nil) {
         Crashlytics.notify()
-        retrieveBusstopsForCurrentLocation { busStopPredictionTuples in
-            self.nearbyBusStationController?.busStopPredicationTuple = busStopPredictionTuples
-            completionBlock?()
+        self.state = .determineCurrentLocation
+        TFLLocationManager.sharedManager.updateLocation { [weak self] coord in
+            self?.retrieveBusstops(for: coord) { busStopPredictionTuples in
+                self?.nearbyBusStationController?.busStopPredicationTuple = busStopPredictionTuples
+                completionBlock?()
+            }
         }
     }
     
   
-    func retrieveBusstopsForCurrentLocation(using completionBlock:@escaping ([TFLBusStopArrivalsInfo])->()) {
-        self.state = .determineCurrentLocation
-        TFLLocationManager.sharedManager.updateLocation { [weak self] coord in
-            self?.state = .retrievingNearbyStations
-            if CLLocationCoordinate2DIsValid(coord) {
-                self?.loadArrivalTimesForStoreStopPoints(with: coord, using: completionBlock)
-                self?.updateNearbyBusStops(for: coord)
-            }
-            else
-            {
-                self?.state = .errorNoGPSAvailable
-                completionBlock([])
-            }
+    func retrieveBusstops(for location:CLLocationCoordinate2D, using completionBlock:@escaping ([TFLBusStopArrivalsInfo])->()) {
+        self.state = .retrievingNearbyStations
+        if CLLocationCoordinate2DIsValid(location) {
+            self.loadArrivalTimesForStoreStopPoints(with: location, using: completionBlock)
+            self.updateNearbyBusStops(for: location)
+        }
+        else
+        {
+            self.state = .errorNoGPSAvailable
+            completionBlock([])
         }
     }
     
@@ -250,10 +250,10 @@ extension TFLRootViewController : TFLNoStationsViewDelegate {
     }
 }
 
-// MARK: DataBase Generation
 
 fileprivate extension TFLRootViewController {
     
+    // MARK: DataBase Generation
     func loadBusStops(of page: UInt = 0) {
         self.tflClient.busStops(with: page) { [weak self] busStops,_ in
             if let busStops = busStops, !busStops.isEmpty {
@@ -263,6 +263,25 @@ fileprivate extension TFLRootViewController {
             let context = TFLCoreDataStack.sharedDataStack.privateQueueManagedObjectContext
             context.perform {
                 try? context.save()
+            }
+        }
+    }
+    
+    func startSim(tuple : (counter:Double,up:Bool) = (0,true) ) {
+        let coords = CLLocationCoordinate2D(latitude: 51.556700, longitude: -0.102136)
+        _ = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { [weak self] _ in
+            self?.state = .determineCurrentLocation
+            let coords = CLLocationCoordinate2D(latitude: coords.latitude, longitude: coords.longitude + tuple.counter * 0.001)
+            self?.retrieveBusstops(for: coords) { busStopPredictionTuples in
+                self?.nearbyBusStationController?.busStopPredicationTuple = busStopPredictionTuples
+                switch tuple {
+                case (30,_):
+                    self?.startSim(tuple: (tuple.counter-1,false))
+                case (0,_):
+                    self?.startSim(tuple: (tuple.counter+1,true))
+                default:
+                    self?.startSim(tuple: (tuple.up ? tuple.counter+1 : tuple.counter-1,tuple.up))
+                }
             }
         }
     }

@@ -6,21 +6,10 @@ import CoreData
 
 @testable import London_Bus
 
-fileprivate class CollectionViewDataSource : NSObject,UICollectionViewDataSource {
-    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
-    }
-
-    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        return  UICollectionViewCell()
-    }
-
-}
-
-class TFLBusPredictionViewCellSpecs: QuickSpec {
+class TFLBusStationArrivalsCellSpecs: QuickSpec {
     
     override func spec() {
-        var cell : TFLBusPredictionViewCell!
+        var cell : TFLBusStationArrivalsCell!
         var timeStampFormatter : DateFormatter!
         var distanceFormatter : LengthFormatter!
         var busStopDict : [String:Any]!
@@ -138,48 +127,52 @@ class TFLBusPredictionViewCellSpecs: QuickSpec {
             
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let controller = storyboard.instantiateViewController(withIdentifier: "TFLNearbyBusStationsController") as! TFLNearbyBusStationsController
-            _ = controller.view
-            let busStationArrivalCell = controller.tableView.dequeueReusableCell(withIdentifier: String(describing: TFLBusStationArrivalsCell.self), for: IndexPath(row: 0, section: 0)) as!  TFLBusStationArrivalsCell
-            let collectionView = busStationArrivalCell.predictionView
-            let dataSource = CollectionViewDataSource()
-            collectionView?.dataSource = dataSource
-            cell = collectionView!.dequeueReusableCell(withReuseIdentifier: String(describing: TFLBusPredictionViewCell.self), for: IndexPath(item:0, section:0)) as! TFLBusPredictionViewCell
-            cell2 = collectionView!.dequeueReusableCell(withReuseIdentifier: String(describing: TFLBusPredictionViewCell.self), for: IndexPath(item:1, section:0)) as! TFLBusPredictionViewCell
-            
+            cell = controller.tableView.dequeueReusableCell(withIdentifier: String(describing: TFLBusStationArrivalsCell.self), for: IndexPath(row: 0, section: 0)) as!  TFLBusStationArrivalsCell
         }
         
         it ("should NOT be nil") {
             expect(cell).notTo(beNil())
         }
         
-        it("should configure cell correctly (test1)") {
+        it("should configure cell correctly") {
             let busStop = TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext)
 
             let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: busPredicationModels)
 
             let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo, distanceFormatter:distanceFormatter , and: timeStampFormatter)
 
-            cell.configure(with: model.arrivalTimes.first!)
-            expect(cell.line.text) == "39"
-            expect(cell.arrivalTime.text) == "1 min"
+            cell.configure(with: model)
+            expect(cell.stationName.text) == "Abbey Road"
+            expect(cell.stationDetails.text) == "towards Ealing Broadway"
+            expect(cell.distanceLabel.text) == "300m"
+            expect(cell.predictionView.predictions.count) == 3
+            expect(cell.noDataErrorLabel.text) == NSLocalizedString("TFLBusStationArrivalsCell.noDataError", comment: "")
         }
-        it("should configure cell correctly (test2)") {
+        
+        it("should hide noDataErrorLabel if arrivalTimes is  empty") {
+            let busStop = TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext)
+            let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: [])
+            
+            let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo, distanceFormatter:distanceFormatter , and: timeStampFormatter)
+            
+            cell.configure(with: model)
+            expect(cell.noDataErrorLabel.isHidden) == false
+        }
+        
+        it("should hide noDataErrorLabel if arrivalTimes is empty") {
             let busStop = TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext)
             
             let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: busPredicationModels)
             
             let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo, distanceFormatter:distanceFormatter , and: timeStampFormatter)
             
-            cell.configure(with: model.arrivalTimes.last!)
-            expect(cell.line.text) == "40"
-            expect(cell.arrivalTime.text) == "31 mins"
+            cell.configure(with: model)
+            expect(cell.noDataErrorLabel.isHidden) == true
         }
         
-
-        
-        it("should have only one global background image") {
-           expect(TFLBusPredictionViewCell.busPredictionViewBackgroundImage) === TFLBusPredictionViewCell.busPredictionViewBackgroundImage
-        }
+//        fit("should have only one global background image") {
+//            expect(cell.self.busPredictionViewBackgroundImage) === TFLBusPredictionViewCell.self.busPredictionViewBackgroundImage
+//        }
 
     }
 }

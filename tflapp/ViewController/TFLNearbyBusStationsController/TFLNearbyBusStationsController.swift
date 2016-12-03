@@ -6,7 +6,8 @@ protocol TFLNearbyBusStationsControllerDelegate : class {
 }
 
 class TFLNearbyBusStationsController : UITableViewController,TFLChangeSetProtocol {
-    let defaultTableViewRowHeight = CGFloat (119)
+    
+    let defaultTableViewRowHeight = CGFloat (120)
     fileprivate let distanceFormatter : LengthFormatter = {
         let formatter = LengthFormatter()
         formatter.unitStyle = .short
@@ -56,8 +57,8 @@ class TFLNearbyBusStationsController : UITableViewController,TFLChangeSetProtoco
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.scrollIndicatorInsets = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
-        self.tableView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
+        self.tableView.scrollIndicatorInsets = UIEdgeInsets(top: 40, left: 0, bottom: 0, right: 0)
+        self.tableView.contentInset = UIEdgeInsets(top: 40, left: 0, bottom: 0, right: 0)
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(self.refreshHandler(control:)), for: .valueChanged)
         self.refreshControl = refreshControl

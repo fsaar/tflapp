@@ -169,10 +169,5 @@ class TFLBusStationArrivalsCellSpecs: QuickSpec {
             cell.configure(with: model)
             expect(cell.noDataErrorLabel.isHidden) == true
         }
-        
-//        fit("should have only one global background image") {
-//            expect(cell.self.busPredictionViewBackgroundImage) === TFLBusPredictionViewCell.self.busPredictionViewBackgroundImage
-//        }
-
     }
 }

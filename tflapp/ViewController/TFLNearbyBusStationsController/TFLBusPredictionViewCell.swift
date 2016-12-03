@@ -51,6 +51,10 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
         self.line.text = predictionViewModel.line
         self.arrivalTime.text =  predictionViewModel.eta
     }
-
+    
+    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+        return layoutAttributes
+    }
+    
 }
 

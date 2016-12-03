@@ -3,6 +3,7 @@ import UIKit
 
 class TFLSlideContainerController: UIViewController {
     var bottomSlideOffset : CGFloat = 160
+    var topSlideOffset : CGFloat = UIApplication.shared.statusBarFrame.size.height
     var yOffset : CGFloat = 0
     @IBOutlet weak var backgroundContainerView : UIView!
     var recognizer : UIPanGestureRecognizer?
@@ -32,7 +33,7 @@ class TFLSlideContainerController: UIViewController {
         case .changed:
             let statusBarHeight = UIApplication.shared.statusBarFrame.size.height
             let newYOrigin =  p.y - yOffset
-            sliderContainerView.frame.origin.y = max(min(newYOrigin,self.view.frame.size.height - self.bottomSlideOffset + statusBarHeight),statusBarHeight)
+            sliderContainerView.frame.origin.y = max(min(newYOrigin,self.view.frame.size.height - self.bottomSlideOffset + statusBarHeight),self.topSlideOffset)
         default:
             break
         }

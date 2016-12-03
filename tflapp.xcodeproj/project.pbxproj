@@ -43,7 +43,6 @@
 		5692B5001DF2E26300C56A3C /* TFLSlideContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5692B4FF1DF2E26300C56A3C /* TFLSlideContainerController.swift */; };
 		5692B5031DF2E4EB00C56A3C /* TFLMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5692B5021DF2E4EB00C56A3C /* TFLMapViewController.swift */; };
 		5692B5071DF2F15F00C56A3C /* TFLNearbyBackgroundController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5692B5061DF2F15F00C56A3C /* TFLNearbyBackgroundController.swift */; };
-		5692B5091DF2F3F300C56A3C /* TFLContentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5692B5081DF2F3F300C56A3C /* TFLContentController.swift */; };
 		56A81B2F1DD862DC001DF7F1 /* TFLAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A81B2E1DD862DC001DF7F1 /* TFLAppDelegate.swift */; };
 		56A81B341DD862DC001DF7F1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56A81B321DD862DC001DF7F1 /* Main.storyboard */; };
 		56A81B391DD862DC001DF7F1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 56A81B381DD862DC001DF7F1 /* Assets.xcassets */; };
@@ -113,7 +112,6 @@
 		5692B4FF1DF2E26300C56A3C /* TFLSlideContainerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLSlideContainerController.swift; sourceTree = "<group>"; };
 		5692B5021DF2E4EB00C56A3C /* TFLMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLMapViewController.swift; sourceTree = "<group>"; };
 		5692B5061DF2F15F00C56A3C /* TFLNearbyBackgroundController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLNearbyBackgroundController.swift; sourceTree = "<group>"; };
-		5692B5081DF2F3F300C56A3C /* TFLContentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLContentController.swift; sourceTree = "<group>"; };
 		56A81B2B1DD862DC001DF7F1 /* London Bus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "London Bus.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		56A81B2E1DD862DC001DF7F1 /* TFLAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLAppDelegate.swift; sourceTree = "<group>"; };
 		56A81B331DD862DC001DF7F1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -257,7 +255,6 @@
 			children = (
 				5692B5011DF2E4C200C56A3C /* TFLMapViewController */,
 				5692B4FE1DF2E21100C56A3C /* TFLSlideContainerController */,
-				5692B4FB1DF2DF1100C56A3C /* TFLContentController */,
 				564EC6FE1DE1917D008CFD11 /* TFLNearbyBusStationsController */,
 				566EF7D51DDC4D14006162D7 /* TFLRootViewController */,
 			);
@@ -284,14 +281,6 @@
 				566EF7E11DDC59ED006162D7 /* UIFont.swift */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		5692B4FB1DF2DF1100C56A3C /* TFLContentController */ = {
-			isa = PBXGroup;
-			children = (
-				5692B5081DF2F3F300C56A3C /* TFLContentController.swift */,
-			);
-			path = TFLContentController;
 			sourceTree = "<group>";
 		};
 		5692B4FE1DF2E21100C56A3C /* TFLSlideContainerController */ = {
@@ -716,7 +705,6 @@
 				566EF7D71DDC4D14006162D7 /* TFLRootViewController.swift in Sources */,
 				564EC7051DE1917D008CFD11 /* TFLBusPredictionView.swift in Sources */,
 				566EF7CD1DDB0851006162D7 /* TFLCDBusStop+CoreDataProperties.swift in Sources */,
-				5692B5091DF2F3F300C56A3C /* TFLContentController.swift in Sources */,
 				56AB9FAC1DE8D95A00A9042A /* TFLChangeSetProtocol.swift in Sources */,
 				564EC7071DE1917D008CFD11 /* TFLBusStationArrivalsCell.swift in Sources */,
 				5692B5071DF2F15F00C56A3C /* TFLNearbyBackgroundController.swift in Sources */,

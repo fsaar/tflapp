@@ -48,7 +48,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <segue destination="FYs-lM-5MD" kind="embed" identifier="TFLContentControllerSegue" id="8Fa-1G-fGr"/>
+                                    <segue destination="goP-9S-1cr" kind="embed" identifier="TFLSlideContainerControllerSegue" id="VIA-hh-WRJ"/>
                                 </connections>
                             </containerView>
                             <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HN6-mp-Vc7">
@@ -281,38 +281,6 @@
             </objects>
             <point key="canvasLocation" x="-463.19999999999999" y="17.541229385307346"/>
         </scene>
-        <!--Content Controller-->
-        <scene sceneID="hBL-uE-NCe">
-            <objects>
-                <viewController storyboardIdentifier="TFLContentController" id="FYs-lM-5MD" customClass="TFLContentController" customModule="London_Bus" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="waq-lm-JH2"/>
-                        <viewControllerLayoutGuide type="bottom" id="irZ-UX-8iy"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="F1V-2d-mbv">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yk5-vm-HT2">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <connections>
-                                    <segue destination="goP-9S-1cr" kind="embed" identifier="TFLSlideContainerControllerSegue" id="TYG-kn-ERx"/>
-                                </connections>
-                            </containerView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="Yk5-vm-HT2" firstAttribute="leading" secondItem="F1V-2d-mbv" secondAttribute="leading" id="ZGj-4i-2Dr"/>
-                            <constraint firstAttribute="trailing" secondItem="Yk5-vm-HT2" secondAttribute="trailing" id="rJh-aB-4Gc"/>
-                            <constraint firstAttribute="topMargin" secondItem="Yk5-vm-HT2" secondAttribute="top" id="s2K-4i-xTx"/>
-                            <constraint firstAttribute="bottomMargin" secondItem="Yk5-vm-HT2" secondAttribute="bottom" id="t6f-5w-rY5"/>
-                        </constraints>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="sPL-04-fA6" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="469.60000000000002" y="17.541229385307346"/>
-        </scene>
         <!--Slide Container Controller-->
         <scene sceneID="4Ri-Aq-HwN">
             <objects>
@@ -409,7 +377,7 @@
                     </connections>
                 </panGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1422" y="18"/>
+            <point key="canvasLocation" x="431" y="18"/>
         </scene>
         <!--Map View Controller-->
         <scene sceneID="wcZ-Uc-Vhc">
@@ -439,7 +407,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="28b-Gl-A0H" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2464.8000000000002" y="-338.68065967016497"/>
+            <point key="canvasLocation" x="1487" y="-308"/>
         </scene>
         <!--Nearby Background Controller-->
         <scene sceneID="mJ8-Ek-jgE">
@@ -473,7 +441,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rC1-6g-WTm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2487" y="313"/>
+            <point key="canvasLocation" x="1508" y="343"/>
         </scene>
         <!--Nearby Bus Stations Controller-->
         <scene sceneID="ffn-81-5f0">
@@ -625,7 +593,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jZ7-L3-Irz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3481" y="313"/>
+            <point key="canvasLocation" x="2503" y="343"/>
         </scene>
     </scenes>
 </document>

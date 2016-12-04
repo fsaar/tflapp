@@ -2,22 +2,19 @@
 import UIKit
 
 class TFLSlideContainerController: UIViewController {
-    var bottomSlideOffset : CGFloat = 160
-    var topSlideOffset : CGFloat = UIApplication.shared.statusBarFrame.size.height
+    var slideOffset : (top:CGFloat,bottom:CGFloat) = (UIApplication.shared.statusBarFrame.size.height,160)
     var yOffset : CGFloat = 0
-    @IBOutlet weak var backgroundContainerView : UIView!
-    var recognizer : UIPanGestureRecognizer?
-    @IBOutlet var sliderContainerView : UIView!
-    @IBOutlet var sliderHandleContainerView : UIView!
-    @IBOutlet var sliderContentContainerView : UIView!
-    @IBOutlet var sliderHandleView : UIView! {
+    @IBOutlet fileprivate weak var backgroundContainerView : UIView!
+     @IBOutlet fileprivate var sliderContainerView : UIView! = nil {
+        didSet {
+        }
+    }
+    @IBOutlet fileprivate var sliderHandleContainerView : UIView!
+    @IBOutlet fileprivate var sliderContentContainerView : UIView!
+    @IBOutlet fileprivate var sliderHandleView : UIView! {
         didSet {
             self.sliderHandleView.layer.cornerRadius = self.sliderHandleView.frame.size.height/2
         }
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
     }
     
     func setContentControllers(with backgroundController : UIViewController,and sliderController : UIViewController) {
@@ -33,16 +30,17 @@ class TFLSlideContainerController: UIViewController {
         case .changed:
             let statusBarHeight = UIApplication.shared.statusBarFrame.size.height
             let newYOrigin =  p.y - yOffset
-            sliderContainerView.frame.origin.y = max(min(newYOrigin,self.view.frame.size.height - self.bottomSlideOffset + statusBarHeight),self.topSlideOffset)
+            sliderContainerView.frame.origin.y = max(min(newYOrigin,self.view.frame.size.height - self.slideOffset.bottom + statusBarHeight),self.slideOffset.top)
+            updateClipsToBounds()
         default:
             break
         }
     }
 }
 
-extension TFLSlideContainerController  : UIGestureRecognizerDelegate{
-    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
+fileprivate extension TFLSlideContainerController {
+    func updateClipsToBounds() {
+        self.sliderContainerView.clipsToBounds = sliderContainerView.frame.origin.y == UIApplication.shared.statusBarFrame.size.height ? false : true
     }
 }
 

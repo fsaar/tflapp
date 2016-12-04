@@ -22,28 +22,22 @@ class TFLRootViewController: UIViewController {
             case State.errorNoGPSAvailable:
                 Crashlytics.notify()
                 self.contentView.isHidden = true
-                self.ackLabel.isHidden = true
                 showNoGPSEnabledError()
             case State.errorNoStationsNearby(let coord):
                 Crashlytics.log("no stations for coordinate (lat,long):(\(coord.latitude),\(coord.longitude))")
                 self.contentView.isHidden = true
-                self.ackLabel.isHidden = true
                 showNoStationsFoundError()
             case State.determineCurrentLocation:
                 self.contentView.isHidden = shouldHide
-                self.ackLabel.isHidden = shouldHide
                 showLoadingCurrentLocationIfNeedBe()
             case State.retrievingNearbyStations:
-                self.contentView.isHidden = false
-                self.ackLabel.isHidden = shouldHide
+                self.contentView.isHidden = shouldHide
                 showLoadingNearbyStationsIfNeedBe()
             case State.loadingArrivals:
-                self.contentView.isHidden = false
-                self.ackLabel.isHidden = shouldHide
+                self.contentView.isHidden = shouldHide
                 showLoadingArrivalTimesIfNeedBe()
             case State.noError:
                 hideInfoViews()
-                self.ackLabel.isHidden = false
                 self.contentView.isHidden = false
             }
         }
@@ -63,17 +57,13 @@ class TFLRootViewController: UIViewController {
     }
     
     fileprivate lazy var nearbyBackgroundController : TFLNearbyBackgroundController? = {
-        guard let controller = self.storyboard?.instantiateViewController(withIdentifier: "TFLNearbyBackgroundController") as? TFLNearbyBackgroundController else {
-            return nil
-        }
-        controller.delegate = self
+        let controller = self.storyboard?.instantiateViewController(withIdentifier: "TFLNearbyBackgroundController") as? TFLNearbyBackgroundController
         return controller
     }()
 
     fileprivate var slideContainerController : TFLSlideContainerController?
     fileprivate let tflClient = TFLClient()
     private var foregroundNotificationHandler  : TFLNotificationObserver?
-    @IBOutlet weak var ackLabel : UILabel!
     @IBOutlet weak var noGPSEnabledView : TFLNoGPSEnabledView! = nil {
         didSet {
             self.noGPSEnabledView.delegate = self
@@ -91,20 +81,16 @@ class TFLRootViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         Crashlytics.notify()
-        self.ackLabel.font = UIFont.tflFont(size: 14)
-        self.ackLabel.text = NSLocalizedString("TFLRootViewController.ackTitle", comment: "")
-        self.ackLabel.textColor = .black
         self.navigationController?.navigationBar.isHidden = true
+        if let mapViewController = self.mapViewController, let nearbyBackgroundController = self.nearbyBackgroundController {
+            self.slideContainerController?.setContentControllers(with: mapViewController,and: nearbyBackgroundController)
+            self.nearbyBusStationController?.delegate = self
+        }
         self.foregroundNotificationHandler = TFLNotificationObserver(notification: NSNotification.Name.UIApplicationWillEnterForeground.rawValue) { [weak self]  notification in
             self?.loadNearbyBusstops()
         }
         self.loadNearbyBusstops()
         
-        if let mapViewController = self.mapViewController, let nearbyBackgroundController = self.nearbyBackgroundController {
-            self.slideContainerController?.setContentControllers(with: mapViewController,and: nearbyBackgroundController)
-            
-            
-        }
 
     }
     

@@ -38,12 +38,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Powered by TfL Open Data" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9fW-nN-Lr5">
-                                <rect key="frame" x="50" y="80" width="275" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zdp-aj-ca4">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -236,7 +230,6 @@
                             <constraint firstAttribute="trailing" secondItem="TaB-mf-qpy" secondAttribute="trailing" constant="20" id="4Nf-mV-uJr"/>
                             <constraint firstAttribute="trailing" secondItem="uf8-Ej-oRB" secondAttribute="trailing" constant="20" id="7DA-Jh-b9H"/>
                             <constraint firstItem="uf8-Ej-oRB" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="7JX-Vf-8yf"/>
-                            <constraint firstItem="9fW-nN-Lr5" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="60" id="BeP-6y-xCo"/>
                             <constraint firstItem="uf8-Ej-oRB" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="BkC-35-mbF"/>
                             <constraint firstItem="Zdp-aj-ca4" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="CMh-sU-iTm"/>
                             <constraint firstItem="Me4-JI-EcW" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="GcW-Hg-Oje"/>
@@ -259,16 +252,14 @@
                             <constraint firstItem="c3D-1X-v5e" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="lmR-bs-0gj"/>
                             <constraint firstAttribute="trailing" secondItem="Zdp-aj-ca4" secondAttribute="trailing" id="oaJ-Gc-AH8"/>
                             <constraint firstItem="TaB-mf-qpy" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="orq-oG-jeb"/>
-                            <constraint firstItem="9fW-nN-Lr5" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="50" id="pqs-ah-XZE"/>
-                            <constraint firstAttribute="trailing" secondItem="9fW-nN-Lr5" secondAttribute="trailing" constant="50" id="t5R-D6-a9y"/>
                             <constraint firstItem="c3D-1X-v5e" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="wR1-gQ-nGC"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="FvF-eE-bS4"/>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="ackLabel" destination="9fW-nN-Lr5" id="dKu-JB-ZIg"/>
                         <outlet property="contentView" destination="Zdp-aj-ca4" id="2LA-ta-P1m"/>
                         <outlet property="loadArrivalTimesView" destination="JwJ-Sf-Dwm" id="qJa-mO-KDp"/>
                         <outlet property="loadLocationsView" destination="TaB-mf-qpy" id="oqZ-EW-BWY"/>
@@ -297,11 +288,11 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4cM-Vs-8gX">
+                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4cM-Vs-8gX">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="caU-0Z-mNA">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                    <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="caU-0Z-mNA">
+                                        <rect key="frame" x="0.0" y="40" width="375" height="627"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <gestureRecognizers/>
                                     </view>
@@ -329,22 +320,33 @@
                                                 <outletCollection property="gestureRecognizers" destination="xJF-6I-D0I" appends="YES" id="jJ4-eZ-Ipo"/>
                                             </connections>
                                         </view>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <gestureRecognizers/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="qjY-2y-x95"/>
                                         </constraints>
                                         <blurEffect style="extraLight"/>
                                     </visualEffectView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1hz-c2-pft" userLabel="separator">
+                                        <rect key="frame" x="0.0" y="39.5" width="375" height="0.5"/>
+                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.19567953020134229" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="0.5" id="x9i-Mr-SHz"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="VXx-h2-sns" firstAttribute="leading" secondItem="4cM-Vs-8gX" secondAttribute="leading" id="6Qy-eU-GLY"/>
                                     <constraint firstItem="VXx-h2-sns" firstAttribute="top" secondItem="4cM-Vs-8gX" secondAttribute="top" id="8bf-Bn-TsM"/>
                                     <constraint firstItem="caU-0Z-mNA" firstAttribute="leading" secondItem="4cM-Vs-8gX" secondAttribute="leading" id="BwM-QW-8bi"/>
+                                    <constraint firstItem="caU-0Z-mNA" firstAttribute="top" secondItem="VXx-h2-sns" secondAttribute="bottom" id="C9X-xL-deJ"/>
                                     <constraint firstAttribute="trailing" secondItem="caU-0Z-mNA" secondAttribute="trailing" id="NLX-8P-iR5"/>
                                     <constraint firstAttribute="bottom" secondItem="caU-0Z-mNA" secondAttribute="bottom" id="Oai-hj-9lL"/>
                                     <constraint firstAttribute="trailing" secondItem="VXx-h2-sns" secondAttribute="trailing" id="R8i-zz-yE8"/>
-                                    <constraint firstItem="caU-0Z-mNA" firstAttribute="top" secondItem="4cM-Vs-8gX" secondAttribute="top" id="v86-42-A7j"/>
+                                    <constraint firstItem="1hz-c2-pft" firstAttribute="trailing" secondItem="VXx-h2-sns" secondAttribute="trailing" id="VQl-m9-thr"/>
+                                    <constraint firstItem="1hz-c2-pft" firstAttribute="leading" secondItem="VXx-h2-sns" secondAttribute="leading" id="bB7-xZ-89Z"/>
+                                    <constraint firstItem="1hz-c2-pft" firstAttribute="bottom" secondItem="VXx-h2-sns" secondAttribute="bottom" id="s5V-FC-o4Y"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -361,7 +363,6 @@
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
-                    <nil key="simulatedStatusBarMetrics"/>
                     <connections>
                         <outlet property="backgroundContainerView" destination="VYs-dK-vD6" id="sqI-qo-AUK"/>
                         <outlet property="sliderContainerView" destination="4cM-Vs-8gX" id="a7V-O6-rY7"/>
@@ -391,7 +392,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="GU0-0J-ufB">
+                            <mapView multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="GU0-0J-ufB">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </mapView>
                         </subviews>
@@ -417,27 +418,40 @@
                         <viewControllerLayoutGuide type="top" id="SFO-74-0ka"/>
                         <viewControllerLayoutGuide type="bottom" id="YpS-B3-21q"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="W1z-ry-bax">
+                    <view key="view" opaque="NO" contentMode="scaleToFill" id="W1z-ry-bax">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Powered by TfL Open Data" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9fW-nN-Lr5">
+                                <rect key="frame" x="50" y="42" width="275" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yLe-b0-N1Q">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <segue destination="Puk-QS-Zbe" kind="embed" identifier="TFLNearbyBusStationsControllerSegue" id="U0Q-hj-Jqo"/>
                                 </connections>
                             </containerView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="9fW-nN-Lr5" secondAttribute="trailing" constant="50" id="2fz-DW-fSu"/>
+                            <constraint firstItem="9fW-nN-Lr5" firstAttribute="top" secondItem="W1z-ry-bax" secondAttribute="topMargin" constant="42" id="EjI-YB-Hfq"/>
                             <constraint firstItem="YpS-B3-21q" firstAttribute="top" secondItem="yLe-b0-N1Q" secondAttribute="bottom" id="IKX-Nu-h5W"/>
                             <constraint firstItem="yLe-b0-N1Q" firstAttribute="leading" secondItem="W1z-ry-bax" secondAttribute="leading" id="Jhw-oF-uqt"/>
+                            <constraint firstItem="9fW-nN-Lr5" firstAttribute="leading" secondItem="W1z-ry-bax" secondAttribute="leading" constant="50" id="d1l-dS-Tdu"/>
                             <constraint firstAttribute="trailing" secondItem="yLe-b0-N1Q" secondAttribute="trailing" id="kJI-G6-gBZ"/>
                             <constraint firstItem="yLe-b0-N1Q" firstAttribute="top" secondItem="SFO-74-0ka" secondAttribute="bottom" id="oe9-Ng-l8h"/>
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <nil key="simulatedStatusBarMetrics"/>
+                    <connections>
+                        <outlet property="ackLabel" destination="9fW-nN-Lr5" id="sGL-1H-YMn"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rC1-6g-WTm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -447,7 +461,7 @@
         <scene sceneID="ffn-81-5f0">
             <objects>
                 <tableViewController storyboardIdentifier="TFLNearbyBusStationsController" automaticallyAdjustsScrollViewInsets="NO" id="Puk-QS-Zbe" customClass="TFLNearbyBusStationsController" customModule="London_Bus" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="115" sectionHeaderHeight="28" sectionFooterHeight="28" id="RUN-nl-nDM">
+                    <tableView key="view" opaque="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="115" sectionHeaderHeight="28" sectionFooterHeight="28" id="RUN-nl-nDM">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -455,7 +469,7 @@
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="gray" indentationWidth="10" reuseIdentifier="TFLBusStationArrivalsCell" rowHeight="120" id="32c-bD-0Gg" customClass="TFLBusStationArrivalsCell" customModule="London_Bus" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="120"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="32c-bD-0Gg" id="rhp-0I-pzd">
+                                <tableViewCellContentView key="contentView" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="32c-bD-0Gg" id="rhp-0I-pzd">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="120"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
@@ -574,6 +588,7 @@
                                         <constraint firstItem="JkC-Y4-Fea" firstAttribute="leading" secondItem="rhp-0I-pzd" secondAttribute="leading" constant="8" id="zXM-Qk-6kZ"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="distanceLabel" destination="e6p-57-1uC" id="n9e-lY-DXf"/>
                                     <outlet property="noDataErrorLabel" destination="2QB-MN-k33" id="ZHT-YZ-hcl"/>

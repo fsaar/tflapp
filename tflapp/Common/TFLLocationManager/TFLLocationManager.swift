@@ -24,6 +24,7 @@ class TFLLocationManager : NSObject {
     override init() {
         super.init()
         self.locationManager.delegate = self
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
         if case .none = self.enabled {
             self.locationManager.requestWhenInUseAuthorization()
         }
@@ -36,7 +37,7 @@ class TFLLocationManager : NSObject {
 
 /// MARK: Private
 
-extension TFLLocationManager {
+fileprivate extension TFLLocationManager {
     func requestLocation(using completionBlock:  TFLLocationManagerCompletionBlock?)  {
         guard self.enabled != false else {
             completionBlock?(kCLLocationCoordinate2DInvalid)
@@ -47,6 +48,7 @@ extension TFLLocationManager {
     }
 }
 
+/// MARK: CLLocationManagerDelegate
 
 extension TFLLocationManager : CLLocationManagerDelegate {
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {

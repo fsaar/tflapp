@@ -366,6 +366,7 @@
                     <connections>
                         <outlet property="backgroundContainerView" destination="VYs-dK-vD6" id="sqI-qo-AUK"/>
                         <outlet property="sliderContainerView" destination="4cM-Vs-8gX" id="a7V-O6-rY7"/>
+                        <outlet property="sliderContainerViewTopConstraint" destination="pHY-oQ-Q2n" id="Rbk-s0-U6A"/>
                         <outlet property="sliderContentContainerView" destination="caU-0Z-mNA" id="ZGb-g2-3zO"/>
                         <outlet property="sliderHandleContainerView" destination="AFU-Ck-IaZ" id="LDA-dv-Y0x"/>
                         <outlet property="sliderHandleView" destination="5Ss-Bn-3XU" id="d1s-8U-Zg1"/>
@@ -405,6 +406,9 @@
                         </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
+                    <connections>
+                        <outlet property="mapView" destination="GU0-0J-ufB" id="4ji-aP-QAr"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="28b-Gl-A0H" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

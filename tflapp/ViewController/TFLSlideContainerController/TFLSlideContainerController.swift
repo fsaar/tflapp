@@ -2,15 +2,13 @@
 import UIKit
 
 class TFLSlideContainerController: UIViewController {
-    var slideOffset : (top:CGFloat,bottom:CGFloat) = (UIApplication.shared.statusBarFrame.size.height,160)
+    var slideOffset : (top:CGFloat,bottom:CGFloat) = (0,160)
     private var yOffset : CGFloat = 0
     @IBOutlet fileprivate weak var backgroundContainerView : UIView!
-     @IBOutlet fileprivate var sliderContainerView : UIView! = nil {
-        didSet {
-        }
-    }
+    @IBOutlet fileprivate var sliderContainerView : UIView! = nil
     @IBOutlet fileprivate var sliderHandleContainerView : UIView!
     @IBOutlet fileprivate var sliderContentContainerView : UIView!
+    @IBOutlet fileprivate var sliderContainerViewTopConstraint : NSLayoutConstraint!
     @IBOutlet fileprivate var sliderHandleView : UIView! {
         didSet {
             self.sliderHandleView.layer.cornerRadius = self.sliderHandleView.frame.size.height/2
@@ -28,10 +26,13 @@ class TFLSlideContainerController: UIViewController {
         case .began:
             self.yOffset = recognizer.location(in: self.sliderHandleContainerView).y
         case .changed:
-            let statusBarHeight = UIApplication.shared.statusBarFrame.size.height
-            let newYOrigin =  p.y - yOffset
-            sliderContainerView.frame.origin.y = max(min(newYOrigin,self.view.frame.size.height - self.slideOffset.bottom + statusBarHeight),self.slideOffset.top)
+            let normalisedOrigin =  p.y - yOffset
+            let yOrigin = max(min(normalisedOrigin,self.view.frame.size.height - self.slideOffset.bottom),self.slideOffset.top)
+            self.sliderContainerViewTopConstraint.constant = yOrigin
+            self.view.layoutIfNeeded()
             updateClipsToBounds()
+        case .ended:
+            fallthrough
         default:
             break
         }
@@ -40,7 +41,7 @@ class TFLSlideContainerController: UIViewController {
 
 fileprivate extension TFLSlideContainerController {
     func updateClipsToBounds() {
-        self.sliderContainerView.clipsToBounds = sliderContainerView.frame.origin.y == UIApplication.shared.statusBarFrame.size.height ? false : true
+        self.sliderContainerView.clipsToBounds = self.sliderContainerViewTopConstraint.constant == 0 ? false : true
     }
 }
 

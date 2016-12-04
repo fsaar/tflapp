@@ -7,7 +7,7 @@ protocol TFLNearbyBusStationsControllerDelegate : class {
 
 class TFLNearbyBusStationsController : UITableViewController,TFLChangeSetProtocol {
     
-    let defaultTableViewRowHeight = CGFloat (120)
+    static let defaultTableViewRowHeight = CGFloat (120)
     fileprivate let distanceFormatter : LengthFormatter = {
         let formatter = LengthFormatter()
         formatter.unitStyle = .short
@@ -67,7 +67,7 @@ class TFLNearbyBusStationsController : UITableViewController,TFLChangeSetProtoco
         }
         
         self.tableView.rowHeight = UITableViewAutomaticDimension
-        self.tableView.estimatedRowHeight = defaultTableViewRowHeight
+        self.tableView.estimatedRowHeight = TFLNearbyBusStationsController.defaultTableViewRowHeight
     }
 
     func refreshHandler(control : UIRefreshControl) {

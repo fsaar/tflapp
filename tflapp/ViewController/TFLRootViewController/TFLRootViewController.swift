@@ -119,7 +119,7 @@ fileprivate extension TFLRootViewController {
         TFLLocationManager.sharedManager.updateLocation { [weak self] coord in
             self?.retrieveBusstops(for: coord) { busStopPredictionTuples in
                 self?.nearbyBusStationController?.busStopPredicationTuple = busStopPredictionTuples
-                self?.mapViewController?.busStopPredicationTuple = busStopPredictionTuples
+                self?.mapViewController?.busStopPredicationCoordinateTuple = (busStopPredictionTuples,coord)
                 completionBlock?()
             }
         }
@@ -285,7 +285,7 @@ fileprivate extension TFLRootViewController {
             let coords = CLLocationCoordinate2D(latitude: coords.latitude, longitude: coords.longitude + tuple.counter * 0.001)
             self?.retrieveBusstops(for: coords) { busStopPredictionTuples in
                 self?.nearbyBusStationController?.busStopPredicationTuple = busStopPredictionTuples
-                self?.mapViewController?.busStopPredicationTuple = busStopPredictionTuples
+                self?.mapViewController?.busStopPredicationCoordinateTuple = (busStopPredictionTuples,coords)
                 switch tuple {
                 case (30,_):
                     self?.startSim(tuple: (tuple.counter-1,false))

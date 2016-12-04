@@ -3,7 +3,7 @@ import UIKit
 
 class TFLSlideContainerController: UIViewController {
     var slideOffset : (top:CGFloat,bottom:CGFloat) = (UIApplication.shared.statusBarFrame.size.height,160)
-    var yOffset : CGFloat = 0
+    private var yOffset : CGFloat = 0
     @IBOutlet fileprivate weak var backgroundContainerView : UIView!
      @IBOutlet fileprivate var sliderContainerView : UIView! = nil {
         didSet {

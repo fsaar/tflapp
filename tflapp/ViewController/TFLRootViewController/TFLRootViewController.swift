@@ -114,6 +114,8 @@ class TFLRootViewController: UIViewController {
 fileprivate extension TFLRootViewController {
     func updateContentViewController(with arrivalsInfo: [TFLBusStopArrivalsInfo], and coordinate: CLLocationCoordinate2D) {
         let filteredArrivalsInfo = arrivalsInfo.filter { !$0.arrivals.isEmpty }
+        self.state = filteredArrivalsInfo.isEmpty ? .errorNoStationsNearby(coordinate: coordinate) : .noError
+
         self.nearbyBusStationController?.busStopPredicationTuple = filteredArrivalsInfo
         self.mapViewController?.busStopPredicationCoordinateTuple = (filteredArrivalsInfo,coordinate)
     }
@@ -167,7 +169,6 @@ fileprivate extension TFLRootViewController {
         }
         group.notify(queue: DispatchQueue.main) {
             let sortedStopPoints = newStopPoints.sorted { $0.busStopDistance < $1.busStopDistance }
-            self.state = sortedStopPoints.isEmpty ? .errorNoStationsNearby(coordinate: coord) : .noError
             completionBlock(sortedStopPoints)
             Crashlytics.notify()
         }

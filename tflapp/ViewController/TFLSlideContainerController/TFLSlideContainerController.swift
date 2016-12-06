@@ -4,6 +4,23 @@ import UIKit
 class TFLSlideContainerController: UIViewController {
     var slideOffset : (top:CGFloat,bottom:CGFloat) = (0,160)
     private var yOffset : CGFloat = 0
+    fileprivate lazy var shapeLayer : CAShapeLayer = {
+        let path = CGMutablePath()
+        let radius = CGFloat(20)
+        path.move(to: CGPoint(x:radius,y:0))
+        path.addLine(to: CGPoint(x:self.view.frame.size.width-radius,y:0))
+        
+        path.addArc(center: CGPoint(x:self.view.frame.size.width-radius,y:radius), radius: radius, startAngle: CGFloat(1.5 * M_PI), endAngle: 0, clockwise: false)
+        path.addLine(to: CGPoint(x:self.view.frame.size.width,y:self.sliderHandleContainerView.frame.size.height))
+        path.addLine(to: CGPoint(x:0,y:self.sliderHandleContainerView.frame.size.height))
+        path.addLine(to: CGPoint(x:0,y:radius))
+        path.addArc(center: CGPoint(x:radius,y:radius), radius: radius, startAngle: CGFloat(M_PI) , endAngle:  CGFloat(1.5 * M_PI), clockwise: false)
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.path = path
+        return shapeLayer
+    }()
+    
+    @IBOutlet fileprivate weak var effectsView : UIVisualEffectView!
     @IBOutlet fileprivate weak var backgroundContainerView : UIView!
     @IBOutlet fileprivate var sliderContainerView : UIView! = nil
     @IBOutlet fileprivate var sliderHandleContainerView : UIView!
@@ -14,6 +31,13 @@ class TFLSlideContainerController: UIViewController {
             self.sliderHandleView.layer.cornerRadius = self.sliderHandleView.frame.size.height/2
         }
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.sliderHandleContainerView.clipsToBounds = true
+        self.effectsView.layer.mask  = shapeLayer
+    }
+    
     
     func setContentControllers(with backgroundController : UIViewController,and sliderController : UIViewController) {
         add(backgroundController,to: backgroundContainerView )

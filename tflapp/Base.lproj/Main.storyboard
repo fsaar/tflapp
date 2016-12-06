@@ -293,10 +293,10 @@
                                 <subviews>
                                     <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="caU-0Z-mNA">
                                         <rect key="frame" x="0.0" y="40" width="375" height="627"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <gestureRecognizers/>
                                     </view>
-                                    <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VXx-h2-sns">
+                                    <visualEffectView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VXx-h2-sns">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="AFU-Ck-IaZ" userLabel="Slider Handle Container View">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
@@ -304,13 +304,14 @@
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Ss-Bn-3XU" userLabel="SliderHandleView">
                                                     <rect key="frame" x="127.5" y="12.5" width="120" height="15"/>
-                                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.20110633389261745" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="120" id="VgD-bP-mlv"/>
                                                         <constraint firstAttribute="height" constant="15" id="YLf-XJ-5JT"/>
                                                     </constraints>
                                                 </view>
                                             </subviews>
+                                            <color key="backgroundColor" white="0.66666666666666663" alpha="0.30049286912751677" colorSpace="calibratedWhite"/>
                                             <gestureRecognizers/>
                                             <constraints>
                                                 <constraint firstItem="5Ss-Bn-3XU" firstAttribute="centerY" secondItem="AFU-Ck-IaZ" secondAttribute="centerY" id="wq4-2M-EIG"/>
@@ -365,6 +366,7 @@
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <connections>
                         <outlet property="backgroundContainerView" destination="VYs-dK-vD6" id="sqI-qo-AUK"/>
+                        <outlet property="effectsView" destination="VXx-h2-sns" id="I3w-E0-1oV"/>
                         <outlet property="sliderContainerView" destination="4cM-Vs-8gX" id="a7V-O6-rY7"/>
                         <outlet property="sliderContainerViewTopConstraint" destination="pHY-oQ-Q2n" id="Rbk-s0-U6A"/>
                         <outlet property="sliderContentContainerView" destination="caU-0Z-mNA" id="ZGb-g2-3zO"/>

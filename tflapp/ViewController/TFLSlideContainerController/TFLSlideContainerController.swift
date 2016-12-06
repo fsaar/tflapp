@@ -10,7 +10,7 @@ enum TFLSlideContainerControllerState {
 
 class TFLSlideContainerController: UIViewController {
     var state : TFLSlideContainerControllerState?
-    lazy var slideOffset : (top:CGFloat,bottom:CGFloat) = (5,self.effectsViewContainerView.frame.size.height+20)
+    lazy var slideOffset : (top:CGFloat,bottom:CGFloat) = (10,self.effectsViewContainerView.frame.size.height+125)
     private var yOffset : CGFloat = 0
     fileprivate lazy var shapeLayer : CAShapeLayer = {
         let path = CGMutablePath()

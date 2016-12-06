@@ -7,6 +7,7 @@ class TFLBusStationArrivalsCell: UITableViewCell {
     @IBOutlet weak var distanceLabel : UILabel!
     @IBOutlet weak var predictionView : TFLBusPredictionView!
     @IBOutlet weak var noDataErrorLabel : UILabel!
+    @IBOutlet weak var busStopLabel : UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -19,6 +20,12 @@ class TFLBusStationArrivalsCell: UITableViewCell {
         self.noDataErrorLabel.text = NSLocalizedString("TFLBusStationArrivalsCell.noDataError", comment: "")
         self.noDataErrorLabel.font = UIFont.tflFont(size: 14)
         self.noDataErrorLabel.textColor = UIColor.black
+        
+        self.busStopLabel.font = UIFont.tflFont(size: 12)
+        self.busStopLabel.textColor = UIColor.white
+        self.busStopLabel.backgroundColor = UIColor.red
+        self.busStopLabel.clipsToBounds = true
+        self.busStopLabel.layer.cornerRadius = 5
         prepareForReuse()
     }
     
@@ -32,6 +39,7 @@ class TFLBusStationArrivalsCell: UITableViewCell {
     }
     
     func configure(with busStopArrivalViewModel: TFLBusStopArrivalsViewModel) {
+        self.busStopLabel.text = busStopArrivalViewModel.stopLetter
         self.stationName.text = busStopArrivalViewModel.stationName
         self.stationDetails.text  = busStopArrivalViewModel.stationDetails
         self.distanceLabel.text = busStopArrivalViewModel.distance

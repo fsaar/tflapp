@@ -69,12 +69,14 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
     }
     let identifier : String
     let stationName : String
+    let stopLetter : String
     let stationDetails : String
     let distance : String
     let arrivalTimes : [LinePredictionViewModel]
     init(with arrivalInfo: TFLBusStopArrivalsInfo, distanceFormatter: LengthFormatter, and timeFormatter: DateFormatter) {
         let towards = arrivalInfo.busStop.towards
         self.stationDetails = towards.isEmpty ? "" : NSLocalizedString("TFLBusStopArrivalsViewModel.towards", comment: "") + towards
+        self.stopLetter = arrivalInfo.busStop.stopLetter
         self.stationName = arrivalInfo.busStop.name
         self.identifier = arrivalInfo.busStop.identifier
         self.distance = distanceFormatter.string(fromValue: arrivalInfo.busStopDistance, unit: .meter)

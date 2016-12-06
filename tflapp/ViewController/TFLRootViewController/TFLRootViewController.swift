@@ -112,14 +112,19 @@ class TFLRootViewController: UIViewController {
 // MARK: Private
 
 fileprivate extension TFLRootViewController {
+    func updateContentViewController(with arrivalsInfo: [TFLBusStopArrivalsInfo], and coordinate: CLLocationCoordinate2D) {
+        let filteredArrivalsInfo = arrivalsInfo.filter { !$0.arrivals.isEmpty }
+        self.nearbyBusStationController?.busStopPredicationTuple = filteredArrivalsInfo
+        self.mapViewController?.busStopPredicationCoordinateTuple = (filteredArrivalsInfo,coordinate)
+    }
+    
     
     func loadNearbyBusstops(using completionBlock:(()->())? = nil) {
         Crashlytics.notify()
         self.state = .determineCurrentLocation
         TFLLocationManager.sharedManager.updateLocation { [weak self] coord in
             self?.retrieveBusstops(for: coord) { busStopPredictionTuples in
-                self?.nearbyBusStationController?.busStopPredicationTuple = busStopPredictionTuples
-                self?.mapViewController?.busStopPredicationCoordinateTuple = (busStopPredictionTuples,coord)
+                self?.updateContentViewController(with: busStopPredictionTuples, and: coord)
                 completionBlock?()
             }
         }
@@ -284,8 +289,7 @@ fileprivate extension TFLRootViewController {
             self?.state = .determineCurrentLocation
             let coords = CLLocationCoordinate2D(latitude: coords.latitude, longitude: coords.longitude + tuple.counter * 0.001)
             self?.retrieveBusstops(for: coords) { busStopPredictionTuples in
-                self?.nearbyBusStationController?.busStopPredicationTuple = busStopPredictionTuples
-                self?.mapViewController?.busStopPredicationCoordinateTuple = (busStopPredictionTuples,coords)
+                self?.updateContentViewController(with: busStopPredictionTuples, and: coords)
                 switch tuple {
                 case (30,_):
                     self?.startSim(tuple: (tuple.counter-1,false))

@@ -30,7 +30,6 @@ class TFLSlideContainerController: UIViewController {
             let yOrigin = max(min(normalisedOrigin,self.view.frame.size.height - self.slideOffset.bottom),self.slideOffset.top)
             self.sliderContainerViewTopConstraint.constant = yOrigin
             self.view.layoutIfNeeded()
-            updateClipsToBounds()
         case .ended:
             fallthrough
         default:
@@ -40,9 +39,6 @@ class TFLSlideContainerController: UIViewController {
 }
 
 fileprivate extension TFLSlideContainerController {
-    func updateClipsToBounds() {
-        self.sliderContainerView.clipsToBounds = self.sliderContainerViewTopConstraint.constant == 0 ? false : true
-    }
 }
 
 fileprivate extension TFLSlideContainerController {

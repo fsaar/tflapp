@@ -1,8 +1,16 @@
 
 import UIKit
 
+enum TFLSlideContainerControllerState {
+    case bottom
+    case middle
+    case top
+    
+}
+
 class TFLSlideContainerController: UIViewController {
-    var slideOffset : (top:CGFloat,bottom:CGFloat) = (0,160)
+    var state : TFLSlideContainerControllerState?
+    lazy var slideOffset : (top:CGFloat,bottom:CGFloat) = (5,self.sliderHandleContainerView.frame.size.height+20)
     private var yOffset : CGFloat = 0
     fileprivate lazy var shapeLayer : CAShapeLayer = {
         let path = CGMutablePath()
@@ -38,6 +46,10 @@ class TFLSlideContainerController: UIViewController {
         self.effectsView.layer.mask  = shapeLayer
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.updateState(to: state ?? .top)
+    }
     
     func setContentControllers(with backgroundController : UIViewController,and sliderController : UIViewController) {
         add(backgroundController,to: backgroundContainerView )
@@ -55,17 +67,58 @@ class TFLSlideContainerController: UIViewController {
             self.sliderContainerViewTopConstraint.constant = yOrigin
             self.view.layoutIfNeeded()
         case .ended:
-            fallthrough
+            let newState : TFLSlideContainerControllerState = self.state(for: self.sliderContainerViewTopConstraint.constant)
+            self.updateState(to: newState, animated: true)
         default:
             break
         }
     }
 }
 
+/// MARK: State Handling
+
 fileprivate extension TFLSlideContainerController {
+    func updateState(to state: TFLSlideContainerControllerState, animated : Bool = false) {
+        self.state = state
+        self.sliderContainerViewTopConstraint.constant = topOffset(for: state)
+        let duration = animated ? 0.25 : 0.0
+        UIView.animate(withDuration: duration, delay: 0, options: .curveEaseOut, animations: {
+            self.view.layoutIfNeeded()
+        }, completion: nil)
+    }
+    
+    func topOffset(for state: TFLSlideContainerControllerState) -> CGFloat {
+        var offset : CGFloat = 0
+        switch state {
+        case .bottom:
+            offset =  self.view.frame.size.height - self.slideOffset.bottom
+        case .top:
+            offset =  self.slideOffset.top
+        case .middle:
+            offset =  self.view.frame.size.height/3
+        }
+        return offset
+    }
+    
+    
+    func state(for topOffset: CGFloat) -> TFLSlideContainerControllerState {
+        var state : TFLSlideContainerControllerState = .middle
+        let height = self.view.frame.size.height
+        switch topOffset {
+        case 0..<height/4:
+            state = .top
+        case height/4..<(5*height/8):
+            state = .middle
+        default:
+            state = .bottom
+        }
+        return state
+    }
+
 }
 
 fileprivate extension TFLSlideContainerController {
+    
     func add(_ controller: UIViewController,to containerView: UIView) {
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         addChildViewController(controller)

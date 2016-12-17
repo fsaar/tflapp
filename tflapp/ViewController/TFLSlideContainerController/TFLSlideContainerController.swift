@@ -26,6 +26,7 @@ class TFLSlideContainerController: UIViewController {
         return shapeLayer
     }()
     @IBOutlet fileprivate weak var sliderHandleContainerView : UIView!
+    @IBOutlet fileprivate weak var sliderHandleBackgroundView : UIView!
     @IBOutlet fileprivate weak var backgroundContainerView : UIView!
     @IBOutlet fileprivate var sliderContainerView : UIView! = nil
     @IBOutlet fileprivate var sliderContentContainerView : UIView!
@@ -52,7 +53,7 @@ class TFLSlideContainerController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.sliderHandleContainerView.layer.mask = self.shapeLayer
+        self.sliderHandleBackgroundView.layer.mask = self.shapeLayer
         self.snapHandler = TFLSnapHandler(with: self.sliderHandleContainerView,in: self.view, and: self.snapPositions, using: { [weak self] _,newOrigin,final in
             self?.updateSliderContainerView(with: newOrigin, animated: final, final: final)
         })

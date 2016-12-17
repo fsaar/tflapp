@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="zaI-Wd-PX9">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="zaI-Wd-PX9">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -292,10 +292,17 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IAB-p2-IjX">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                                         <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Hr-cI-h9H">
+                                                <rect key="frame" x="0.0" y="20" width="375" height="40"/>
+                                                <color key="backgroundColor" white="0.66666666666666663" alpha="0.90000000000000002" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="40" id="iTa-Tu-qaQ"/>
+                                                </constraints>
+                                            </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Ss-Bn-3XU" userLabel="SliderHandleView">
-                                                <rect key="frame" x="127" y="12" width="120" height="15"/>
+                                                <rect key="frame" x="127" y="32.5" width="120" height="15"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.20110633389261745" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="120" id="VgD-bP-mlv"/>
@@ -303,21 +310,24 @@
                                                 </constraints>
                                             </view>
                                         </subviews>
-                                        <color key="backgroundColor" white="0.66666666666666663" alpha="0.90000000000000002" colorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <gestureRecognizers/>
                                         <constraints>
-                                            <constraint firstItem="5Ss-Bn-3XU" firstAttribute="centerY" secondItem="IAB-p2-IjX" secondAttribute="centerY" id="2a4-6t-Lpb"/>
+                                            <constraint firstItem="5Ss-Bn-3XU" firstAttribute="centerY" secondItem="0Hr-cI-h9H" secondAttribute="centerY" id="MGy-hS-zNF"/>
+                                            <constraint firstAttribute="bottom" secondItem="0Hr-cI-h9H" secondAttribute="bottom" id="O4X-6z-ge5"/>
                                             <constraint firstItem="5Ss-Bn-3XU" firstAttribute="centerX" secondItem="IAB-p2-IjX" secondAttribute="centerX" id="P5d-3M-yGN"/>
-                                            <constraint firstAttribute="height" constant="40" id="X1N-zz-2u0"/>
+                                            <constraint firstItem="0Hr-cI-h9H" firstAttribute="leading" secondItem="IAB-p2-IjX" secondAttribute="leading" id="SKR-cf-VeA"/>
+                                            <constraint firstAttribute="height" constant="60" id="X1N-zz-2u0"/>
+                                            <constraint firstAttribute="trailing" secondItem="0Hr-cI-h9H" secondAttribute="trailing" id="l3X-9f-1MN"/>
                                         </constraints>
                                     </view>
                                     <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="caU-0Z-mNA">
-                                        <rect key="frame" x="0.0" y="40" width="375" height="627"/>
+                                        <rect key="frame" x="0.0" y="60" width="375" height="607"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <gestureRecognizers/>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1hz-c2-pft" userLabel="separator">
-                                        <rect key="frame" x="0.0" y="39.5" width="375" height="0.5"/>
+                                        <rect key="frame" x="0.0" y="59.5" width="375" height="0.5"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.19567953020134229" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="0.5" id="x9i-Mr-SHz"/>
@@ -357,6 +367,7 @@
                         <outlet property="sliderContainerView" destination="4cM-Vs-8gX" id="a7V-O6-rY7"/>
                         <outlet property="sliderContainerViewTopConstraint" destination="pHY-oQ-Q2n" id="Rbk-s0-U6A"/>
                         <outlet property="sliderContentContainerView" destination="caU-0Z-mNA" id="ZGb-g2-3zO"/>
+                        <outlet property="sliderHandleBackgroundView" destination="0Hr-cI-h9H" id="7Y1-6I-rW8"/>
                         <outlet property="sliderHandleContainerView" destination="IAB-p2-IjX" id="jYM-yD-bzD"/>
                         <outlet property="sliderHandleView" destination="5Ss-Bn-3XU" id="d1s-8U-Zg1"/>
                     </connections>

@@ -9,11 +9,13 @@ extension CLLocationCoordinate2D {
 }
 
 class TFLMapViewController: UIViewController,TFLChangeSetProtocol {
+    @IBOutlet weak var coverView : UIView!
     @IBOutlet weak var mapView : MKMapView! = nil {
         didSet {
             self.mapView.delegate = self
         }
     }
+    
     static let stationlabel = { () -> UILabel in
         let label = UILabel()
         label.autoresizingMask = []

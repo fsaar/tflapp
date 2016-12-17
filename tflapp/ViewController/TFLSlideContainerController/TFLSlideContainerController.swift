@@ -4,7 +4,11 @@ import UIKit
 class TFLSlideContainerController: UIViewController {
     var snapPositions: [CGFloat] = [0.01,0.4,0.75]
     fileprivate var snapHandler : TFLSnapHandler?
-    var sliderViewUpdateBlock : ((_ slider : UIView,_ origin: CGPoint,_ final : Bool) -> ())?
+    var sliderViewUpdateBlock : ((_ slider : UIView,_ origin: CGPoint,_ final : Bool) -> ())? = nil {
+        didSet {
+            self.sliderViewUpdateBlock?(self.sliderContainerView, self.sliderContainerView.frame.origin, true)
+        }
+    }
     
     fileprivate lazy var shapeLayer : CAShapeLayer = {
         let path = CGMutablePath()
@@ -32,26 +36,28 @@ class TFLSlideContainerController: UIViewController {
         }
     }
   
+    func updateSliderContainerView(with position: CGPoint, animated : Bool, final : Bool) {
+        self.sliderContainerViewTopConstraint.constant = position.y
+        if (animated) {
+            UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseOut, animations: {
+                self.view.layoutIfNeeded()
+            }, completion: nil)
+        }
+        else
+        {
+            self.view.layoutIfNeeded()
+        }
+        self.sliderViewUpdateBlock?(view,position,final)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.sliderHandleContainerView.layer.mask = self.shapeLayer
-        self.snapHandler = TFLSnapHandler(with: self.sliderHandleContainerView,in: self.view, and: self.snapPositions, using: { [weak self] view,newOrigin,final in
-            if let strongSelf = self {
-                strongSelf.sliderContainerViewTopConstraint.constant = newOrigin.y
-                if (final) {
-                    UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseOut, animations: {
-                        strongSelf.view.layoutIfNeeded()
-                    }, completion: nil)
-                }
-                else
-                {
-                    strongSelf.view.layoutIfNeeded()
-                }
-                strongSelf.sliderViewUpdateBlock?(view,newOrigin,final)
-            }
+        self.snapHandler = TFLSnapHandler(with: self.sliderHandleContainerView,in: self.view, and: self.snapPositions, using: { [weak self] _,newOrigin,final in
+            self?.updateSliderContainerView(with: newOrigin, animated: final, final: final)
         })
-        self.sliderContainerViewTopConstraint.constant = (self.snapPositions.first ?? 0) * self.view.frame.size.height
+        let initPositionY = (self.snapPositions.first ?? 0) * self.view.frame.size.height
+        self.updateSliderContainerView(with: CGPoint(x:self.sliderContainerView.frame.origin.x,y:initPositionY), animated: false, final: true)
     }
     
     

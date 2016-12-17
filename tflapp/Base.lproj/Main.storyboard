@@ -380,17 +380,26 @@
                             <mapView multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="GU0-0J-ufB">
                                 <rect key="frame" x="0.0" y="-20" width="375" height="687"/>
                             </mapView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H3r-9O-Zpl">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="GU0-0J-ufB" secondAttribute="trailing" id="3Iz-H2-Frq"/>
+                            <constraint firstItem="H3r-9O-Zpl" firstAttribute="top" secondItem="49x-MB-PET" secondAttribute="topMargin" id="Geu-1m-GJi"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="H3r-9O-Zpl" secondAttribute="bottom" id="Vgu-hx-Umb"/>
                             <constraint firstItem="GU0-0J-ufB" firstAttribute="leading" secondItem="49x-MB-PET" secondAttribute="leading" id="WRQ-dt-mlR"/>
                             <constraint firstItem="GU0-0J-ufB" firstAttribute="top" secondItem="Pg3-04-28K" secondAttribute="bottom" constant="-20" id="Wo2-hI-q02"/>
+                            <constraint firstAttribute="trailing" secondItem="H3r-9O-Zpl" secondAttribute="trailing" id="g44-tz-w2p"/>
                             <constraint firstItem="Ity-ic-89B" firstAttribute="top" secondItem="GU0-0J-ufB" secondAttribute="bottom" id="uK2-vk-kWR"/>
+                            <constraint firstItem="H3r-9O-Zpl" firstAttribute="leading" secondItem="49x-MB-PET" secondAttribute="leading" id="wEH-Kl-91s"/>
                         </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
+                        <outlet property="coverView" destination="H3r-9O-Zpl" id="Uo2-xe-OHH"/>
                         <outlet property="mapView" destination="GU0-0J-ufB" id="4ji-aP-QAr"/>
                     </connections>
                 </viewController>

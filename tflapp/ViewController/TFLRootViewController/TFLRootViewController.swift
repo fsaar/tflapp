@@ -78,12 +78,26 @@ class TFLRootViewController: UIViewController {
     @IBOutlet weak var loadLocationsView : TFLLoadLocationView!
     @IBOutlet weak var loadNearbyStationsView : TFLLoadNearbyStationsView!
     @IBOutlet weak var contentView : UIView!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         Crashlytics.notify()
         self.navigationController?.navigationBar.isHidden = true
         if let mapViewController = self.mapViewController, let nearbyBackgroundController = self.nearbyBackgroundController {
             self.slideContainerController?.setContentControllers(with: mapViewController,and: nearbyBackgroundController)
+            self.slideContainerController?.sliderViewUpdateBlock =  { [weak self] slider, origin, final in
+                func opacity(for y: CGFloat) -> CGFloat {
+                    let y0 : CGFloat = 0.3 * (self?.view.frame.size.height ?? 0)
+                    guard y < y0 else {
+                        return 0
+                    }
+                    let baseOpacity : CGFloat = 0.5
+                    let opacity = (-baseOpacity) * y/y0 + baseOpacity
+                    return opacity
+                }
+                self?.mapViewController?.coverView.alpha = opacity(for: origin.y)
+            }
             self.nearbyBusStationController?.delegate = self
         }
         self.foregroundNotificationHandler = TFLNotificationObserver(notification: NSNotification.Name.UIApplicationWillEnterForeground.rawValue) { [weak self]  notification in

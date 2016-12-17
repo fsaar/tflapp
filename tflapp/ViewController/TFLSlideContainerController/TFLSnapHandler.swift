@@ -1,6 +1,6 @@
 import UIKit
 
-typealias TFLSnapHandlerUpdateBlock = (_ pangestureView : UIView,_ newOrigin : CGPoint, _ final : Bool) -> ()
+typealias TFLSnapHandlerUpdateBlock = (_ pangestureView : UIView,_ velocity : CGFloat, _ newOrigin : CGPoint, _ final : Bool) -> ()
 
 class TFLSnapHandler: NSObject {
     var panGestureView : UIView
@@ -19,7 +19,8 @@ class TFLSnapHandler: NSObject {
         panGestureView.addGestureRecognizer(self.gestureRecognizer!)
     }
     
-    func panGestureHandler(_ recognizer : UIGestureRecognizer) {
+    func panGestureHandler(_ recognizer : UIPanGestureRecognizer) {
+        let velocity = recognizer.velocity(in: self.containerView)
         let p = recognizer.location(in: self.containerView)
         let pGestureView = recognizer.location(in: self.panGestureView)
         switch recognizer.state {
@@ -27,11 +28,11 @@ class TFLSnapHandler: NSObject {
             self.panGestureStartY = pGestureView.y
         case .changed:
             let origin = CGPoint(x:panGestureView.frame.origin.x,y:p.y - self.panGestureStartY )
-            self.snapHandlerUpdateBlock(self.panGestureView, origin, false)
+            self.snapHandlerUpdateBlock(self.panGestureView, velocity.y,origin, false)
         case .ended:
             let originY = closestSnapPositionY(with: containerView,for: p.y - self.panGestureStartY )
             let origin = CGPoint(x:panGestureView.frame.origin.x,y:originY ?? 0)
-            self.snapHandlerUpdateBlock(self.panGestureView, origin, true)
+            self.snapHandlerUpdateBlock(self.panGestureView, velocity.y,origin, true)
         default:
             break
         }

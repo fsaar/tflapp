@@ -88,7 +88,7 @@ class TFLRootViewController: UIViewController {
             self.slideContainerController?.setContentControllers(with: mapViewController,and: nearbyBackgroundController)
             self.slideContainerController?.sliderViewUpdateBlock =  { [weak self] slider, origin, final in
                 func opacity(for y: CGFloat) -> CGFloat {
-                    let y0 : CGFloat = 0.3 * (self?.view.frame.size.height ?? 0)
+                    let y0 : CGFloat = 0.15 * (self?.view.frame.size.height ?? 0)
                     guard y < y0 else {
                         return 0
                     }

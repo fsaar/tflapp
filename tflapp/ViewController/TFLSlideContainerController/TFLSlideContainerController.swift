@@ -2,7 +2,7 @@
 import UIKit
 
 class TFLSlideContainerController: UIViewController {
-    var snapPositions: [CGFloat] = [0.01,0.4,0.75]
+    var snapPositions: [CGFloat] = [0.00,0.4,0.75]
     fileprivate var snapHandler : TFLSnapHandler?
     var sliderViewUpdateBlock : ((_ slider : UIView,_ origin: CGPoint,_ final : Bool) -> ())? = nil {
         didSet {
@@ -37,28 +37,24 @@ class TFLSlideContainerController: UIViewController {
         }
     }
   
-    func updateSliderContainerView(with position: CGPoint, animated : Bool, final : Bool) {
+    func updateSliderContainerView(with position: CGPoint, animationTime : TimeInterval, final : Bool) {
         self.sliderContainerViewTopConstraint.constant = position.y
-        if (animated) {
-            UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseOut, animations: {
-                self.view.layoutIfNeeded()
-            }, completion: nil)
-        }
-        else
-        {
+        UIView.animate(withDuration: animationTime, delay: 0, options: .curveEaseOut, animations: {
             self.view.layoutIfNeeded()
-        }
+        }, completion: nil)
         self.sliderViewUpdateBlock?(view,position,final)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.sliderHandleBackgroundView.layer.mask = self.shapeLayer
-        self.snapHandler = TFLSnapHandler(with: self.sliderHandleContainerView,in: self.view, and: self.snapPositions, using: { [weak self] _,newOrigin,final in
-            self?.updateSliderContainerView(with: newOrigin, animated: final, final: final)
+        self.snapHandler = TFLSnapHandler(with: self.sliderHandleContainerView,in: self.view, and: self.snapPositions, using: { [weak self] _,velocity,newOrigin,final in
+            let cappedVelocity = min(max(velocity,100),1500)
+            let timeInterval = TimeInterval(final ? (100/cappedVelocity) * 0.25 : 0)
+            self?.updateSliderContainerView(with: newOrigin, animationTime: timeInterval, final: final)
         })
         let initPositionY = (self.snapPositions.first ?? 0) * self.view.frame.size.height
-        self.updateSliderContainerView(with: CGPoint(x:self.sliderContainerView.frame.origin.x,y:initPositionY), animated: false, final: true)
+        self.updateSliderContainerView(with: CGPoint(x:self.sliderContainerView.frame.origin.x,y:initPositionY), animationTime: TimeInterval(0), final: true)
     }
     
     

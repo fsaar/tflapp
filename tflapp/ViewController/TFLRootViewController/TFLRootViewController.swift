@@ -22,40 +22,48 @@ class TFLRootViewController: UIViewController {
             case State.errorNoGPSAvailable:
                 Crashlytics.notify()
                 self.contentView.isHidden = true
-                self.ackLabel.isHidden = true
                 showNoGPSEnabledError()
             case State.errorNoStationsNearby(let coord):
                 Crashlytics.log("no stations for coordinate (lat,long):(\(coord.latitude),\(coord.longitude))")
                 self.contentView.isHidden = true
-                self.ackLabel.isHidden = true
                 showNoStationsFoundError()
             case State.determineCurrentLocation:
                 self.contentView.isHidden = shouldHide
-                self.ackLabel.isHidden = shouldHide
                 showLoadingCurrentLocationIfNeedBe()
             case State.retrievingNearbyStations:
-                self.contentView.isHidden = false
-                self.ackLabel.isHidden = shouldHide
+                self.contentView.isHidden = shouldHide
                 showLoadingNearbyStationsIfNeedBe()
             case State.loadingArrivals:
-                self.contentView.isHidden = false
-                self.ackLabel.isHidden = shouldHide
+                self.contentView.isHidden = shouldHide
                 showLoadingArrivalTimesIfNeedBe()
             case State.noError:
                 hideInfoViews()
-                self.ackLabel.isHidden = false
                 self.contentView.isHidden = false
             }
         }
     }
     private enum SegueIdentifier : String {
-        case nearbyBusStationController = "TFLNearbyBusStationsControllerSegue"
+        case slideContainerController = "TFLSlideContainerControllerSegue"
     }
+    fileprivate lazy var mapViewController : TFLMapViewController? = {
+        guard let controller = self.storyboard?.instantiateViewController(withIdentifier: "TFLMapViewController") as? TFLMapViewController else {
+            return nil
+        }
+        return controller
+    }()
+    
+    fileprivate var nearbyBusStationController : TFLNearbyBusStationsController? {
+        return self.nearbyBackgroundController?.nearbyBusStationController
+    }
+    
+    fileprivate lazy var nearbyBackgroundController : TFLNearbyBackgroundController? = {
+        let controller = self.storyboard?.instantiateViewController(withIdentifier: "TFLNearbyBackgroundController") as? TFLNearbyBackgroundController
+        return controller
+    }()
 
-    fileprivate var nearbyBusStationController : TFLNearbyBusStationsController?
+    fileprivate var slideContainerController : TFLSlideContainerController?
     fileprivate let tflClient = TFLClient()
     private var foregroundNotificationHandler  : TFLNotificationObserver?
-    @IBOutlet weak var ackLabel : UILabel!
     @IBOutlet weak var noGPSEnabledView : TFLNoGPSEnabledView! = nil {
         didSet {
             self.noGPSEnabledView.delegate = self
@@ -70,17 +78,34 @@ class TFLRootViewController: UIViewController {
     @IBOutlet weak var loadLocationsView : TFLLoadLocationView!
     @IBOutlet weak var loadNearbyStationsView : TFLLoadNearbyStationsView!
     @IBOutlet weak var contentView : UIView!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         Crashlytics.notify()
-        self.ackLabel.font = UIFont.tflFont(size: 14)
-        self.ackLabel.text = NSLocalizedString("TFLRootViewController.ackTitle", comment: "")
-        self.ackLabel.textColor = .black
         self.navigationController?.navigationBar.isHidden = true
+        if let mapViewController = self.mapViewController, let nearbyBackgroundController = self.nearbyBackgroundController {
+            self.slideContainerController?.setContentControllers(with: mapViewController,and: nearbyBackgroundController)
+            self.slideContainerController?.sliderViewUpdateBlock =  { [weak self] slider, origin in
+                func opacity(for y: CGFloat) -> CGFloat {
+                    let y0 : CGFloat = 0.3 * (self?.view.frame.size.height ?? 0)
+                    guard y < y0 else {
+                        return 0
+                    }
+                    let baseOpacity : CGFloat = 0.25
+                    let opacity = (-baseOpacity) * y/y0 + baseOpacity
+                    return opacity
+                }
+                self?.mapViewController?.coverView.alpha = opacity(for: origin.y)
+            }
+            self.nearbyBusStationController?.delegate = self
+        }
         self.foregroundNotificationHandler = TFLNotificationObserver(notification: NSNotification.Name.UIApplicationWillEnterForeground.rawValue) { [weak self]  notification in
             self?.loadNearbyBusstops()
         }
         self.loadNearbyBusstops()
+        
+
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -88,10 +113,9 @@ class TFLRootViewController: UIViewController {
             return
         }
         switch segueIdentifier {
-        case .nearbyBusStationController:
-            if let nearbyBusStationController = segue.destination as? TFLNearbyBusStationsController {
-                self.nearbyBusStationController = nearbyBusStationController
-                self.nearbyBusStationController?.delegate = self
+        case .slideContainerController:
+            if let slideContainerController = segue.destination as? TFLSlideContainerController {
+                self.slideContainerController = slideContainerController
             }
         }
     }
@@ -102,13 +126,21 @@ class TFLRootViewController: UIViewController {
 // MARK: Private
 
 fileprivate extension TFLRootViewController {
+    func updateContentViewController(with arrivalsInfo: [TFLBusStopArrivalsInfo], and coordinate: CLLocationCoordinate2D) {
+        let filteredArrivalsInfo = arrivalsInfo.filter { !$0.arrivals.isEmpty }
+        self.state = filteredArrivalsInfo.isEmpty ? .errorNoStationsNearby(coordinate: coordinate) : .noError
+
+        self.nearbyBusStationController?.busStopPredicationTuple = filteredArrivalsInfo
+        self.mapViewController?.busStopPredicationCoordinateTuple = (filteredArrivalsInfo,coordinate)
+    }
+    
     
     func loadNearbyBusstops(using completionBlock:(()->())? = nil) {
         Crashlytics.notify()
         self.state = .determineCurrentLocation
         TFLLocationManager.sharedManager.updateLocation { [weak self] coord in
             self?.retrieveBusstops(for: coord) { busStopPredictionTuples in
-                self?.nearbyBusStationController?.busStopPredicationTuple = busStopPredictionTuples
+                self?.updateContentViewController(with: busStopPredictionTuples, and: coord)
                 completionBlock?()
             }
         }
@@ -151,7 +183,6 @@ fileprivate extension TFLRootViewController {
         }
         group.notify(queue: DispatchQueue.main) {
             let sortedStopPoints = newStopPoints.sorted { $0.busStopDistance < $1.busStopDistance }
-            self.state = sortedStopPoints.isEmpty ? .errorNoStationsNearby(coordinate: coord) : .noError
             completionBlock(sortedStopPoints)
             Crashlytics.notify()
         }
@@ -273,7 +304,7 @@ fileprivate extension TFLRootViewController {
             self?.state = .determineCurrentLocation
             let coords = CLLocationCoordinate2D(latitude: coords.latitude, longitude: coords.longitude + tuple.counter * 0.001)
             self?.retrieveBusstops(for: coords) { busStopPredictionTuples in
-                self?.nearbyBusStationController?.busStopPredicationTuple = busStopPredictionTuples
+                self?.updateContentViewController(with: busStopPredictionTuples, and: coords)
                 switch tuple {
                 case (30,_):
                     self?.startSim(tuple: (tuple.counter-1,false))
@@ -287,9 +318,9 @@ fileprivate extension TFLRootViewController {
     }
 }
 
-// MARK: TFLNearbyBusStationsControllerDelegate
+// MARK: TFLContentControllerDelegate
 
-extension TFLRootViewController : TFLNearbyBusStationsControllerDelegate {
+extension TFLRootViewController : TFLNearbyBusStationsControllerDelegate  {
     func refresh(controller: TFLNearbyBusStationsController, using completionBlock:@escaping ()->()) {
         Crashlytics.notify()
         loadNearbyBusstops (using: completionBlock)

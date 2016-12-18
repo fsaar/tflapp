@@ -92,7 +92,7 @@ class TFLRootViewController: UIViewController {
                     guard y < y0 else {
                         return 0
                     }
-                    let baseOpacity : CGFloat = 0.3
+                    let baseOpacity : CGFloat = 0.25
                     let opacity = (-baseOpacity) * y/y0 + baseOpacity
                     return opacity
                 }

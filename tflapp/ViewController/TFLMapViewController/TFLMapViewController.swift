@@ -109,12 +109,6 @@ class TFLMapViewController: UIViewController,TFLChangeSetProtocol {
             }
         }
     }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-    }
-
 }
 
 extension TFLMapViewController : MKMapViewDelegate {

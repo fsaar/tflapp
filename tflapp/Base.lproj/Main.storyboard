@@ -89,7 +89,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Z8O-CJ-1Ps">
-                                        <rect key="frame" x="157" y="61" width="20" height="20"/>
+                                        <rect key="frame" x="158" y="61" width="20" height="20"/>
                                     </activityIndicatorView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -117,7 +117,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0ll-za-ZOY" userLabel="retryButton" customClass="TFLButton" customModule="London_Bus" customModuleProvider="target">
-                                        <rect key="frame" x="112" y="66" width="110" height="41"/>
+                                        <rect key="frame" x="113" y="66" width="110" height="41"/>
                                         <accessibility key="accessibilityConfiguration">
                                             <accessibilityTraits key="traits" none="YES"/>
                                         </accessibility>
@@ -147,7 +147,7 @@
                                 </connections>
                             </view>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JwJ-Sf-Dwm" customClass="TFLLoadArrivalTimesView" customModule="London_Bus" customModuleProvider="target">
-                                <rect key="frame" x="20" y="283" width="335" height="101"/>
+                                <rect key="frame" x="20" y="284" width="335" height="101"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading arrival times ..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I0q-qz-SWa">
                                         <rect key="frame" x="20" y="20" width="295" height="21"/>
@@ -156,7 +156,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="aaN-yJ-tcS">
-                                        <rect key="frame" x="157" y="61" width="20" height="20"/>
+                                        <rect key="frame" x="158" y="61" width="20" height="20"/>
                                     </activityIndicatorView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -175,7 +175,7 @@
                                 </connections>
                             </view>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uf8-Ej-oRB" customClass="TFLNoGPSEnabledView" customModule="London_Bus" customModuleProvider="target">
-                                <rect key="frame" x="20" y="239.5" width="335" height="189"/>
+                                <rect key="frame" x="20" y="239" width="335" height="189"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Location Services" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KQr-ak-Jig" userLabel="titleLabel">
                                         <rect key="frame" x="5" y="10" width="325" height="21"/>
@@ -190,7 +190,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fbd-zZ-kZD" customClass="TFLButton" customModule="London_Bus" customModuleProvider="target">
-                                        <rect key="frame" x="89" y="128" width="156" height="41"/>
+                                        <rect key="frame" x="90" y="128" width="156" height="41"/>
                                         <accessibility key="accessibilityConfiguration">
                                             <accessibilityTraits key="traits" none="YES"/>
                                         </accessibility>
@@ -302,7 +302,7 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Ss-Bn-3XU" userLabel="SliderHandleView">
-                                                <rect key="frame" x="127" y="32.5" width="120" height="15"/>
+                                                <rect key="frame" x="128" y="33" width="120" height="15"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.20110633389261745" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="120" id="VgD-bP-mlv"/>
@@ -327,7 +327,7 @@
                                         <gestureRecognizers/>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1hz-c2-pft" userLabel="separator">
-                                        <rect key="frame" x="0.0" y="59.5" width="375" height="0.5"/>
+                                        <rect key="frame" x="0.0" y="60" width="375" height="0.0"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.19567953020134229" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="0.5" id="x9i-Mr-SHz"/>
@@ -391,15 +391,15 @@
                             <mapView multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="GU0-0J-ufB">
                                 <rect key="frame" x="0.0" y="-20" width="375" height="687"/>
                             </mapView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H3r-9O-Zpl">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H3r-9O-Zpl">
+                                <rect key="frame" x="0.0" y="-20" width="375" height="687"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="GU0-0J-ufB" secondAttribute="trailing" id="3Iz-H2-Frq"/>
-                            <constraint firstItem="H3r-9O-Zpl" firstAttribute="top" secondItem="49x-MB-PET" secondAttribute="topMargin" id="Geu-1m-GJi"/>
+                            <constraint firstItem="H3r-9O-Zpl" firstAttribute="top" secondItem="49x-MB-PET" secondAttribute="topMargin" constant="-20" id="Geu-1m-GJi"/>
                             <constraint firstAttribute="bottomMargin" secondItem="H3r-9O-Zpl" secondAttribute="bottom" id="Vgu-hx-Umb"/>
                             <constraint firstItem="GU0-0J-ufB" firstAttribute="leading" secondItem="49x-MB-PET" secondAttribute="leading" id="WRQ-dt-mlR"/>
                             <constraint firstItem="GU0-0J-ufB" firstAttribute="top" secondItem="Pg3-04-28K" secondAttribute="bottom" constant="-20" id="Wo2-hI-q02"/>
@@ -483,7 +483,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ST" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="WRh-Nr-hrx" userLabel="stopCodeLabel">
-                                            <rect key="frame" x="5" y="29.5" width="25" height="17"/>
+                                            <rect key="frame" x="5" y="38" width="25" height="17"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="25" id="EZB-Nf-1Je"/>
                                             </constraints>
@@ -492,21 +492,21 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Picadilly Circus Station / Hay Market" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.40000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="Kkg-jU-POR" userLabel="StationName">
-                                            <rect key="frame" x="4" y="5" width="314" height="21"/>
+                                            <rect key="frame" x="4" y="5" width="352" height="21"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="towards Chiswick, Ealing or North Acton or wherever you feel you want to go" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999999999999996" translatesAutoresizingMaskIntoConstraints="NO" id="Njp-UU-MPM" userLabel="StationDetails">
-                                            <rect key="frame" x="35" y="29" width="288" height="18"/>
+                                            <rect key="frame" x="35" y="29" width="513" height="35"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="14"/>
                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <collectionView autoresizesSubviews="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" bouncesZoom="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="JkC-Y4-Fea" customClass="TFLBusPredictionView" customModule="London_Bus" customModuleProvider="target">
-                                            <rect key="frame" x="8" y="68" width="359" height="46"/>
+                                            <rect key="frame" x="8" y="68" width="584" height="46"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="46" id="Ce5-JF-JFJ"/>
@@ -529,7 +529,7 @@
                                                                 <rect key="frame" x="0.0" y="0.0" width="54" height="46"/>
                                                             </imageView>
                                                             <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="207" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="89R-yJ-7Rc" userLabel="Line">
-                                                                <rect key="frame" x="16.5" y="6" width="21" height="14"/>
+                                                                <rect key="frame" x="17" y="6" width="21" height="14"/>
                                                                 <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="11"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -563,21 +563,21 @@
                                             </cells>
                                         </collectionView>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nIB-Kw-g2i" userLabel="separator">
-                                            <rect key="frame" x="5" y="120" width="365" height="0.0"/>
+                                            <rect key="frame" x="5" y="120" width="590" height="0.0"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.20383284395973153" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="0.5" id="luD-Db-ORE"/>
                                             </constraints>
                                         </view>
                                         <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="752" text="300 m" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e6p-57-1uC" userLabel="distanceLabel">
-                                            <rect key="frame" x="323" y="7.5" width="42" height="17"/>
+                                            <rect key="frame" x="548" y="7" width="42" height="17"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label hidden="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Data available" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2QB-MN-k33" userLabel="noDataErrorLabel">
-                                            <rect key="frame" x="8" y="82" width="359" height="18"/>
+                                            <rect key="frame" x="8" y="82" width="584" height="18"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <nil key="textColor"/>

@@ -2,14 +2,15 @@
 import UIKit
 
 class TFLSlideContainerController: UIViewController {
-    var snapPositions: [CGFloat] = [0.00,0.4,0.75]
+    var snapPositions: [CGFloat] = [0.00,0.4,0.70]
     fileprivate var snapHandler : TFLSnapHandler?
-    var sliderViewUpdateBlock : ((_ slider : UIView,_ origin: CGPoint,_ final : Bool) -> ())? = nil {
+    var sliderViewUpdateBlock : ((_ slider : UIView,_ origin: CGPoint) -> ())? = nil {
         didSet {
-            self.sliderViewUpdateBlock?(self.sliderContainerView, self.sliderContainerView.frame.origin, true)
+            self.sliderViewUpdateBlock?(self.sliderContainerView, self.sliderContainerView.frame.origin)
         }
     }
-    
+    let maxVelocity : CGFloat = 100
+    let defaultVelocity : CGFloat = 10
     fileprivate lazy var shapeLayer : CAShapeLayer = {
         let path = CGMutablePath()
         let radius = CGFloat(20)
@@ -37,24 +38,31 @@ class TFLSlideContainerController: UIViewController {
         }
     }
   
-    func updateSliderContainerView(with position: CGPoint, animationTime : TimeInterval, final : Bool) {
+    func updateSliderContainerView(with position: CGPoint, animationTime : TimeInterval, velocity : CGFloat) {
         self.sliderContainerViewTopConstraint.constant = position.y
-        UIView.animate(withDuration: animationTime, delay: 0, options: .curveEaseOut, animations: {
+        let cappedVelocity = velocity > maxVelocity ? maxVelocity : velocity < -maxVelocity ? -maxVelocity : velocity
+        UIView.animate(withDuration: animationTime, delay: 0,usingSpringWithDamping: 0.7, initialSpringVelocity : cappedVelocity, options: .curveEaseOut, animations: {
             self.view.layoutIfNeeded()
         }, completion: nil)
-        self.sliderViewUpdateBlock?(view,position,final)
+        self.sliderViewUpdateBlock?(view,position)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.sliderHandleBackgroundView.layer.mask = self.shapeLayer
         self.snapHandler = TFLSnapHandler(with: self.sliderHandleContainerView,in: self.view, and: self.snapPositions, using: { [weak self] _,velocity,newOrigin,final in
-            let cappedVelocity = min(max(velocity,100),1500)
-            let timeInterval = TimeInterval(final ? (100/cappedVelocity) * 0.25 : 0)
-            self?.updateSliderContainerView(with: newOrigin, animationTime: timeInterval, final: final)
+            guard let strongSelf = self else {
+                return
+            }
+            let currentY = strongSelf.view.convert(strongSelf.sliderHandleContainerView.frame.origin, from : strongSelf.sliderHandleContainerView.superview).y
+            
+            let nonzeroVelocity = velocity != 0 ? velocity : newOrigin.y < currentY ? -strongSelf.defaultVelocity : strongSelf.defaultVelocity
+            let normalizedVelocity = final ? fabs(newOrigin.y - currentY) / nonzeroVelocity : nonzeroVelocity
+            let animationTime = final ? 0.5 : 0
+            self?.updateSliderContainerView(with: newOrigin, animationTime: animationTime, velocity: normalizedVelocity)
         })
         let initPositionY = (self.snapPositions.first ?? 0) * self.view.frame.size.height
-        self.updateSliderContainerView(with: CGPoint(x:self.sliderContainerView.frame.origin.x,y:initPositionY), animationTime: TimeInterval(0), final: true)
+        self.updateSliderContainerView(with: CGPoint(x:self.sliderContainerView.frame.origin.x,y:initPositionY), animationTime: 0, velocity:0)
     }
     
     

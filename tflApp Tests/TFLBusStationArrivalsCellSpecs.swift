@@ -139,7 +139,7 @@ class TFLBusStationArrivalsCellSpecs: QuickSpec {
 
             let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: busPredicationModels)
 
-            let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo, distanceFormatter:distanceFormatter , and: timeStampFormatter)
+            let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo)
 
             cell.configure(with: model)
             expect(cell.stationName.text) == "Abbey Road"
@@ -153,7 +153,7 @@ class TFLBusStationArrivalsCellSpecs: QuickSpec {
             let busStop = TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext)
             let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: [])
             
-            let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo, distanceFormatter:distanceFormatter , and: timeStampFormatter)
+            let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo)
             
             cell.configure(with: model)
             expect(cell.noDataErrorLabel.isHidden) == false
@@ -164,7 +164,7 @@ class TFLBusStationArrivalsCellSpecs: QuickSpec {
             
             let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: busPredicationModels)
             
-            let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo, distanceFormatter:distanceFormatter , and: timeStampFormatter)
+            let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo)
             
             cell.configure(with: model)
             expect(cell.noDataErrorLabel.isHidden) == true

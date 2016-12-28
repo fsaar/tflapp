@@ -126,12 +126,12 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
         
         context("when testing TFLBusStopArrivalsViewModel") {
             it ("should not be nil") {
-               let model = TFLBusStopArrivalsViewModel(with: busArrivalInfo, distanceFormatter: distanceFormatter, and: timeFormatter)
+               let model = TFLBusStopArrivalsViewModel(with: busArrivalInfo)
                 expect(model).notTo(beNil())
             }
             
             it ("should setup model correctly") {
-                let model = TFLBusStopArrivalsViewModel(with: busArrivalInfo, distanceFormatter: distanceFormatter, and: timeFormatter)
+                let model = TFLBusStopArrivalsViewModel(with: busArrivalInfo)
                 expect(model.identifier) == "490003029W"
                 expect(model.stationName) == "Abbey Road"
                 expect(model.stationDetails) == "towards Ealing Broadway"
@@ -139,22 +139,22 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
             }
             
             it ("models should be the same if identifier are the same") {
-                let model = TFLBusStopArrivalsViewModel(with: busArrivalInfo, distanceFormatter: distanceFormatter, and: timeFormatter)
+                let model = TFLBusStopArrivalsViewModel(with: busArrivalInfo)
                 let busStopDict =  ["naptanId": "490003029W","stopType": "NaptanPublicBusCoachTram"]
                 let busStopModel = TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext)
                 let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStopModel!, busStopDistance: 0, arrivals: [])
-                let model2 = TFLBusStopArrivalsViewModel(with: busArrivalInfo, distanceFormatter: distanceFormatter, and: timeFormatter)
+                let model2 = TFLBusStopArrivalsViewModel(with: busArrivalInfo)
                 expect(model) == model2
             }
             
             it ("should filter expired bus predictions") {
-                let model = TFLBusStopArrivalsViewModel(with: busArrivalInfo, distanceFormatter: distanceFormatter, and: timeFormatter)
+                let model = TFLBusStopArrivalsViewModel(with: busArrivalInfo)
                 expect(model.arrivalTimes.count) == 3
 
             }
             
             it ("should sort bus predictions in increasing order") {
-                let model = TFLBusStopArrivalsViewModel(with: busArrivalInfo, distanceFormatter: distanceFormatter, and: timeFormatter)
+                let model = TFLBusStopArrivalsViewModel(with: busArrivalInfo)
                 let (pred1,pred2,pred3) = (model.arrivalTimes[0],model.arrivalTimes[1],model.arrivalTimes[2])
                 expect(TFLBusStopArrivalsViewModel.LinePredictionViewModel.compare(lhs: pred1, rhs: pred2)) == true
                 expect(TFLBusStopArrivalsViewModel.LinePredictionViewModel.compare(lhs: pred2, rhs: pred3)) == true
@@ -167,13 +167,13 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
         context("when testing TFLBusStopArrivalsViewModel.LinePredictionViewModel") {
             it ("should not be nil") {
                 let prediction = TFLBusPrediction(with: busPredictions.first!)
-                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!)
+                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!,using: 0)
                 expect(model).notTo(beNil())
             }
             
             it ("should setup model correctly (1st model)") {
                 let prediction = TFLBusPrediction(with: busPredictions.first!)
-                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!)!
+                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!,using: 0)!
                 expect(model.line) == "38"
                 expect(model.eta) == "15 mins"
                 expect(model.identifier) == "1836802865"
@@ -182,7 +182,7 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
             
             it ("should setup model correctly (2nd model)") {
                 let prediction = TFLBusPrediction(with: busPredictions.last!)
-                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!)!
+                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!,using: 0)!
                 expect(model.line) == "40"
                 expect(model.eta) == "15 mins"
                 expect(model.identifier) == "1836802868"
@@ -193,7 +193,7 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
                 var dict = busPredictions.first!
                 dict["timeToStation"] = UInt(29)
                 let prediction = TFLBusPrediction(with: dict)
-                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!)!
+                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!,using: 0)!
                 expect(model.eta) == "due"
             }
             
@@ -201,7 +201,7 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
                 var dict = busPredictions.first!
                 dict["timeToStation"] = UInt(60)
                 let prediction = TFLBusPrediction(with: dict)
-                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!)!
+                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!,using: 0)!
                 expect(model.eta) == "1 min"
             }
             
@@ -209,7 +209,7 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
                 var dict = busPredictions.first!
                 dict["timeToStation"] = UInt(300)
                 let prediction = TFLBusPrediction(with: dict)
-                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!)!
+                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!,using: 0)!
                 expect(model.eta) == "5 mins"
             }
             
@@ -220,8 +220,8 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
                 dict2["id"] = "1"
                 let prediction1 = TFLBusPrediction(with: dict1)
                 let prediction2 = TFLBusPrediction(with: dict2)
-                let model1 = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction1!)
-                let model2 = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction2!)
+                let model1 = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction1!,using: 0)
+                let model2 = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction2!,using: 0)
                 expect(model1) == model2
             }
             
@@ -230,7 +230,7 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
                 dict["timeToLive"] = nil
                 let prediction = TFLBusPrediction(with: dict)
                 expect({
-                    let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!)!
+                    let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!,using: 0)!
                     expect(model).to(beNil())
                 }).notTo(raiseException())
             }

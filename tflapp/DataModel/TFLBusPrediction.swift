@@ -27,9 +27,6 @@ public struct TFLBusPrediction : CustomDebugStringConvertible,Equatable {
     
     public var debugDescription: String {
         let prefix = self.lineName + " towards " + destination
-        guard let timeToStation = timeToStation else {
-            return prefix + "\n"
-        }
         return prefix + " in " + "\(Int(timeToStation/60)) minutes [\(timeToStation) secs]\n"
     }
     let identifier : String
@@ -39,10 +36,10 @@ public struct TFLBusPrediction : CustomDebugStringConvertible,Equatable {
     let lineIdentifier : String
     let lineName : String
     let destination : String
-    let timeToStation : UInt?
+    let timeToStation : UInt
     
     init?(with dictionary: [String: Any]) {
-        guard let identifier = dictionary[Identifiers.identifier.rawValue] as? String else {
+        guard let identifier = dictionary[Identifiers.identifier.rawValue] as? String,let timeToStation = dictionary[Identifiers.timeToStation.rawValue]  as? UInt else {
             return nil
         }
         self.identifier = identifier
@@ -56,6 +53,6 @@ public struct TFLBusPrediction : CustomDebugStringConvertible,Equatable {
         self.lineIdentifier = dictionary[Identifiers.lineIdentifier.rawValue] as? String ?? ""
         self.lineName = dictionary[Identifiers.lineName.rawValue] as? String ?? ""
         self.destination = dictionary[Identifiers.destination.rawValue] as? String ?? ""
-        self.timeToStation = dictionary[Identifiers.timeToStation.rawValue] as? UInt
+        self.timeToStation = timeToStation
     }
 }

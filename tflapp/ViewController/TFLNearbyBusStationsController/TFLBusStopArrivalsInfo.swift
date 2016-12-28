@@ -30,7 +30,7 @@ public struct TFLBusStopArrivalsInfo : CustomDebugStringConvertible,Hashable {
     init(busStop: TFLCDBusStop, busStopDistance: Double, arrivals: [TFLBusPrediction]) {
         self.busStop = busStop
         self.busStopDistance = busStopDistance
-        self.arrivals = arrivals.sorted { ($0.timeToStation ?? UInt.min) < ($1.timeToStation ?? UInt.min) }
+        self.arrivals = arrivals.sorted { $0.timeToStation  < $1.timeToStation  }
     }
 }
 

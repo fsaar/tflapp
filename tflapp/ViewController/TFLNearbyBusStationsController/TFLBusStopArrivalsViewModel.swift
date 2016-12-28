@@ -86,9 +86,7 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
         self.identifier = arrivalInfo.busStop.identifier
         self.distance = TFLBusStopArrivalsViewModel.distanceFormatter.string(fromValue: arrivalInfo.busStopDistance, unit: .meter)
         let referenceTime = Date.timeIntervalSinceReferenceDate
-        let filteredPredictions = arrivalInfo.arrivals.filter { busPrediction in
-            return busPrediction.ttlSinceReferenceDate > referenceTime
-        }
+        let filteredPredictions = arrivalInfo.arrivals.filter { $0.ttlSinceReferenceDate > referenceTime }
         self.arrivalTimes = filteredPredictions.flatMap { LinePredictionViewModel(with: $0,using: referenceTime) }
     }
 

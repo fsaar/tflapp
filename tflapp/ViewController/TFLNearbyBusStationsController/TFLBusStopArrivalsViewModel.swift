@@ -3,13 +3,12 @@ import MapKit
 
 public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable {
     public struct LinePredictionViewModel :CustomDebugStringConvertible,Hashable {
-        static private let iso8601DateFormatter = ISO8601DateFormatter()
         let line : String
         let eta : String
         let identifier : String
         let timeToStation : Int
 
-        init?(with busPrediction: TFLBusPrediction) {
+        init?(with busPrediction: TFLBusPrediction,using referenceTime : TimeInterval) {
             
             func arrivalTime(in secs : Int) -> String {
                 var timeString = ""
@@ -32,10 +31,7 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
                 return nil
             }
             
-            var timeOffset = Int(0)
-            if let timeStampDate = LinePredictionViewModel.iso8601DateFormatter.date(from: busPrediction.timeStamp) {
-               timeOffset = Int(Date().timeIntervalSince(timeStampDate))
-            }
+            let timeOffset = Int(referenceTime - busPrediction.timeStampSinceReferenceDate)
             self.identifier = busPrediction.identifier
             self.line = busPrediction.lineName
             self.timeToStation = Int(timeToStation)
@@ -82,14 +78,6 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
         return formatter
     }()
     
-    fileprivate static let timeFormatter : DateFormatter = { () -> (DateFormatter) in
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX"
-        formatter.timeZone = TimeZone(secondsFromGMT: 0)
-        formatter.calendar = Calendar(identifier: .iso8601)
-        return formatter
-    }()
-    
     init(with arrivalInfo: TFLBusStopArrivalsInfo) {
         let towards = arrivalInfo.busStop.towards
         self.stationDetails = towards.isEmpty ? "" : NSLocalizedString("TFLBusStopArrivalsViewModel.towards", comment: "") + towards
@@ -97,14 +85,14 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
         self.stationName = arrivalInfo.busStop.name
         self.identifier = arrivalInfo.busStop.identifier
         self.distance = TFLBusStopArrivalsViewModel.distanceFormatter.string(fromValue: arrivalInfo.busStopDistance, unit: .meter)
-        let now = Date()
+        let referenceTime = Date.timeIntervalSinceReferenceDate
         let filteredPredictions = arrivalInfo.arrivals.filter { busPrediction in
-            guard let _ = busPrediction.timeToStation, let date = TFLBusStopArrivalsViewModel.timeFormatter.date(from: busPrediction.ttl)   else {
+            guard let _ = busPrediction.timeToStation  else {
                 return false
             }
-            return date > now
+            return busPrediction.ttlSinceReferenceDate > referenceTime
         }
-        self.arrivalTimes = filteredPredictions.flatMap { LinePredictionViewModel(with: $0) }.sorted (by:LinePredictionViewModel.compare)
+        self.arrivalTimes = filteredPredictions.flatMap { LinePredictionViewModel(with: $0,using: referenceTime) }.sorted (by:LinePredictionViewModel.compare)
     }
 
     

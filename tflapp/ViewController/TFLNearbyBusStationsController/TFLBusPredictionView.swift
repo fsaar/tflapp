@@ -82,7 +82,7 @@ fileprivate extension TFLBusPredictionView {
     func configure(_ cell: UICollectionViewCell?,at indexPath : IndexPath) {
         if let busPredictionCell = cell as? TFLBusPredictionViewCell {
             let prediction = predictions[indexPath.row]
-            busPredictionCell.configure(with: prediction)
+            busPredictionCell.configure(with: prediction,as : true)
         }
     }
 }

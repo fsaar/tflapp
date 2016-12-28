@@ -545,28 +545,29 @@
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 mins" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Sy-Fd-B0S">
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wtV-FH-gnO" customClass="TFLAnimiatedLabel" customModule="London_Bus" customModuleProvider="target">
                                                                 <rect key="frame" x="0.0" y="26" width="54" height="14"/>
-                                                                <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="11"/>
-                                                                <nil key="textColor"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
+                                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="14" id="aT5-ps-AJo"/>
+                                                                </constraints>
+                                                            </view>
                                                         </subviews>
                                                     </view>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
+                                                        <constraint firstItem="wtV-FH-gnO" firstAttribute="top" secondItem="89R-yJ-7Rc" secondAttribute="bottom" constant="6" id="8UQ-pj-Bfl"/>
                                                         <constraint firstAttribute="bottom" secondItem="9Tc-n8-OrA" secondAttribute="bottom" id="CVI-Y4-cjb"/>
                                                         <constraint firstAttribute="trailing" secondItem="9Tc-n8-OrA" secondAttribute="trailing" id="Khy-3k-kVU"/>
                                                         <constraint firstItem="89R-yJ-7Rc" firstAttribute="centerX" secondItem="sSL-d7-rLk" secondAttribute="centerX" id="Xxz-3U-xig"/>
-                                                        <constraint firstItem="9Sy-Fd-B0S" firstAttribute="top" secondItem="89R-yJ-7Rc" secondAttribute="bottom" constant="6" id="ce8-uT-3e7"/>
+                                                        <constraint firstItem="wtV-FH-gnO" firstAttribute="leading" secondItem="sSL-d7-rLk" secondAttribute="leading" id="YVw-sx-oPE"/>
                                                         <constraint firstItem="89R-yJ-7Rc" firstAttribute="top" secondItem="sSL-d7-rLk" secondAttribute="top" constant="6" id="dwh-15-GHS"/>
                                                         <constraint firstItem="9Tc-n8-OrA" firstAttribute="leading" secondItem="sSL-d7-rLk" secondAttribute="leading" id="es7-y9-gDO"/>
-                                                        <constraint firstItem="9Sy-Fd-B0S" firstAttribute="leading" secondItem="sSL-d7-rLk" secondAttribute="leading" id="kHM-l1-Wtj"/>
-                                                        <constraint firstAttribute="trailing" secondItem="9Sy-Fd-B0S" secondAttribute="trailing" id="mgH-rB-k5b"/>
+                                                        <constraint firstAttribute="trailing" secondItem="wtV-FH-gnO" secondAttribute="trailing" id="khv-f1-t5p"/>
                                                         <constraint firstItem="9Tc-n8-OrA" firstAttribute="top" secondItem="sSL-d7-rLk" secondAttribute="top" id="u4E-LN-F9H"/>
                                                     </constraints>
                                                     <connections>
-                                                        <outlet property="arrivalTime" destination="9Sy-Fd-B0S" id="RZf-ia-QhN"/>
+                                                        <outlet property="arrivalTime" destination="wtV-FH-gnO" id="aWi-e0-6PZ"/>
                                                         <outlet property="bgImage" destination="9Tc-n8-OrA" id="rWz-VF-1ZV"/>
                                                         <outlet property="line" destination="89R-yJ-7Rc" id="cLh-Jo-gId"/>
                                                     </connections>

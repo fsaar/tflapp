@@ -2,7 +2,7 @@ import UIKit
 
 class TFLBusPredictionViewCell: UICollectionViewCell {
     @IBOutlet weak var line : UILabel!
-    @IBOutlet weak var arrivalTime : UILabel!
+    @IBOutlet weak var arrivalTime : TFLAnimiatedLabel!
     @IBOutlet weak var bgImage : UIImageView!
     private let bgColor = UIColor(colorLiteralRed: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
     static var busPredictionViewBackgroundImage: UIImage = {
@@ -32,24 +32,26 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
         super.awakeFromNib()
         self.line.font = UIFont.tflFont(size: 12)
         self.line.textColor = .white
+        self.line.textAlignment = .center
         self.line.isOpaque = true
         self.line.backgroundColor = UIColor.red
         self.arrivalTime.font = UIFont.tflFont(size: 12)
         self.arrivalTime.textColor = .black
         self.arrivalTime.isOpaque = true
         self.arrivalTime.backgroundColor = bgColor
+        self.arrivalTime.textAlignment = .center
         self.bgImage.image = TFLBusPredictionViewCell.busPredictionViewBackgroundImage
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
         self.line.text = nil
-        self.arrivalTime.text = "-"
+        self.arrivalTime.setText("-", animated: false)
     }
     
-    func configure(with predictionViewModel: TFLBusStopArrivalsViewModel.LinePredictionViewModel) {
+    func configure(with predictionViewModel: TFLBusStopArrivalsViewModel.LinePredictionViewModel,as update : Bool = false) {
         self.line.text = predictionViewModel.line
-        self.arrivalTime.text =  predictionViewModel.eta
+        self.arrivalTime.setText(predictionViewModel.eta, animated: update)
     }
     
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {

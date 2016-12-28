@@ -4,6 +4,12 @@ import UIKit
 class TFLAnimiatedLabel: UIView {
 
     fileprivate var label2TopConstraint : NSLayoutConstraint?
+    var bgColor: UIColor? =  nil {
+        didSet {
+            self.labels.forEach { $0.backgroundColor = self.bgColor }
+        }
+    }
+    
     var textAlignment : NSTextAlignment = .left {
         didSet {
             self.labels.forEach { $0.textAlignment = self.textAlignment }
@@ -20,11 +26,7 @@ class TFLAnimiatedLabel: UIView {
         }
     }
     
-    var text : String = "" {
-        didSet {
-            self.setText(self.text, animated: true)
-        }
-    }
+    fileprivate(set) var text : String?
     
     fileprivate var labels : [UILabel] {
         return self.subviews.flatMap { $0 as? UILabel }
@@ -40,22 +42,23 @@ class TFLAnimiatedLabel: UIView {
         setup()
     }
     
-    func setText(_ text: String, animated : Bool = true) {
+    func setText(_ newText: String?, animated : Bool = false) {
+        self.text = newText
         if (animated)
         {
             self.label2TopConstraint?.constant = self.frame.size.height
-            self.labels.first?.text = text
+            self.labels.first?.text = newText
             UIView.animate(withDuration: 0.25, animations: {
                 self.layoutIfNeeded()
             }) { _ in
-                self.labels.last?.text = text
+                self.labels.last?.text = newText
                 self.label2TopConstraint?.constant = 0
                 self.layoutIfNeeded()
             }
         }
         else
         {
-            self.labels.last?.text = text
+            self.labels.last?.text = newText
         }
     }
 }
@@ -64,10 +67,12 @@ fileprivate extension TFLAnimiatedLabel {
     func animatedLabel() -> UILabel {
         let label = UILabel(frame: self.frame)
         label.translatesAutoresizingMaskIntoConstraints = false
+        
         label.textColor = self.textColor
         label.font = self.font
         label.textAlignment = self.textAlignment
-        label.backgroundColor = .clear
+        label.backgroundColor = self.bgColor
+        label.isOpaque = true
         return label
     }
     

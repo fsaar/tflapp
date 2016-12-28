@@ -38,7 +38,7 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
         self.arrivalTime.font = UIFont.tflFont(size: 12)
         self.arrivalTime.textColor = .black
         self.arrivalTime.isOpaque = true
-        self.arrivalTime.backgroundColor = bgColor
+        self.arrivalTime.bgColor = bgColor
         self.arrivalTime.textAlignment = .center
         self.bgImage.image = TFLBusPredictionViewCell.busPredictionViewBackgroundImage
     }
@@ -46,12 +46,15 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         self.line.text = nil
-        self.arrivalTime.setText("-", animated: false)
+        self.arrivalTime.setText("-")
     }
     
     func configure(with predictionViewModel: TFLBusStopArrivalsViewModel.LinePredictionViewModel,as update : Bool = false) {
         self.line.text = predictionViewModel.line
-        self.arrivalTime.setText(predictionViewModel.eta, animated: update)
+        let arrivalTime = self.arrivalTime.text ?? ""
+        if !update || arrivalTime != predictionViewModel.eta {
+            self.arrivalTime.setText(predictionViewModel.eta, animated: update)
+        }
     }
     
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {

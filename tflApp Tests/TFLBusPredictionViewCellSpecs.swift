@@ -17,6 +17,16 @@ fileprivate class CollectionViewDataSource : NSObject,UICollectionViewDataSource
 
 }
 
+fileprivate class TestAnimatedLabel : TFLAnimiatedLabel {
+    var textSet = false
+    
+    override func setText(_ newText: String?, animated: Bool) {
+        textSet = true
+        super.setText(newText, animated: animated)
+    }
+    
+}
+
 class TFLBusPredictionViewCellSpecs: QuickSpec {
     
     override func spec() {
@@ -175,6 +185,53 @@ class TFLBusPredictionViewCellSpecs: QuickSpec {
             cell.configure(with: model.arrivalTimes.last!)
             expect(cell.line.text) == "40"
             expect(cell.arrivalTime.text) == "29 mins"
+        }
+        
+        it("should set arrivaltime if its not an update") {
+            let testLabel = TestAnimatedLabel()
+            cell.arrivalTime = testLabel
+
+            let busStop = TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext)
+            
+            let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: busPredicationModels)
+            
+            let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo,using: referenceDate.addingTimeInterval(120))
+            
+            cell.configure(with: model.arrivalTimes.last!,as: false)
+            expect(testLabel.textSet) == true
+        }
+        
+        it("should NOT set arrivaltime if its not an update and nothing's changed") {
+            let testLabel = TestAnimatedLabel()
+            cell.arrivalTime = testLabel
+            
+            let busStop = TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext)
+            
+            let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: busPredicationModels)
+            
+            let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo,using: referenceDate.addingTimeInterval(120))
+            
+            cell.configure(with: model.arrivalTimes.last!,as: false)
+            testLabel.textSet = false
+            cell.configure(with: model.arrivalTimes.last!,as: true)
+            expect(testLabel.textSet) == false
+        }
+
+        it("should set arrivaltime if its an update but arrivaltime changed") {
+            let testLabel = TestAnimatedLabel()
+            cell.arrivalTime = testLabel
+            
+            let busStop = TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext)
+            
+            let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: busPredicationModels)
+            
+            let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo,using: referenceDate.addingTimeInterval(120))
+            
+            cell.configure(with: model.arrivalTimes.last!,as: false)
+            testLabel.textSet = false
+            let  model2 =   TFLBusStopArrivalsViewModel(with: busArrivalInfo,using: referenceDate.addingTimeInterval(180))
+            cell.configure(with: model2.arrivalTimes.last!,as: true)
+            expect(testLabel.textSet) == true
         }
         
 

@@ -16,9 +16,9 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
                 switch secs {
                 case Int.min..<30:
                     timeString = NSLocalizedString("TFLBusStopArrivalsViewModel.due", comment: "")
-                case 30..<90:
+                case 30..<60:
                     timeString = "1 " + NSLocalizedString("TFLBusStopArrivalsViewModel.min", comment: "")
-                case 90..<5940:
+                case 60..<(99*60):
                     let mins = secs/60
                     let localizedString = mins == 1 ? "TFLBusStopArrivalsViewModel.min" : "TFLBusStopArrivalsViewModel.mins"
                     timeString = "\(mins) " + NSLocalizedString(localizedString, comment: "")
@@ -64,6 +64,7 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
     let stationName : String
     let stopLetter : String
     let stationDetails : String
+    let busStopDistance : Double
     let distance : String
     let arrivalTimes : [LinePredictionViewModel]
     fileprivate static let distanceFormatter : LengthFormatter = {
@@ -74,9 +75,15 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
         return formatter
     }()
     
+    public static func compare(lhs: TFLBusStopArrivalsViewModel, rhs: TFLBusStopArrivalsViewModel) -> Bool  {
+        return lhs.busStopDistance <= rhs.busStopDistance
+    }
+
+    
     init(with arrivalInfo: TFLBusStopArrivalsInfo,using referenceDate : Date? = nil) {
         let towards = arrivalInfo.busStop.towards
         self.stationDetails = towards.isEmpty ? "" : NSLocalizedString("TFLBusStopArrivalsViewModel.towards", comment: "") + towards
+        self.busStopDistance = arrivalInfo.busStopDistance
         self.stopLetter = arrivalInfo.busStop.stopLetter
         self.stationName = arrivalInfo.busStop.name
         self.identifier = arrivalInfo.busStop.identifier

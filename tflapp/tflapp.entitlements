@@ -4,7 +4,9 @@
 <dict>
 	<key>com.apple.developer.default-data-protection</key>
 	<string>NSFileProtectionComplete</string>
-	<key>aps-environment</key>
-	<string>production</string>
+	<key>com.apple.security.application-groups</key>
+	<array>
+		<string>group.tflwidgetSharingData</string>
+	</array>
 </dict>
 </plist>

@@ -25,7 +25,7 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
             distanceFormatter.numberFormatter.maximumFractionDigits = 0
             
             timeFormatter = DateFormatter()
-            timeFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX"
+            timeFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
             timeFormatter.timeZone = TimeZone(secondsFromGMT: 0)
             timeFormatter.calendar = Calendar(identifier: .iso8601)
             
@@ -76,7 +76,7 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
                 "destinationName": "Victoria",
                 "timestamp": "2016-11-16T15:59:35Z",
                 "timeToStation": UInt(902),
-                "timeToLive": "2016-11-16T16:15:07.51239Z"],
+                "timeToLive": "2016-11-16T16:15:07Z"],
                 ["id": "1836802866",
                  "vehicleId": "LTZ1218",
                  "naptanId": "490011791K",
@@ -85,7 +85,7 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
                  "destinationName": "Victoria",
                  "timestamp": "2016-11-16T15:59:35Z",
                  "timeToStation": UInt(60),
-                 "timeToLive": "2016-11-16T16:15:07.51239Z"],
+                 "timeToLive": "2016-11-16T16:15:07Z"],
                 ["id": "1836802867",
                  "vehicleId": "LTZ1218",
                  "naptanId": "490011791K",
@@ -94,7 +94,7 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
                  "destinationName": "Victoria",
                  "timestamp": "2016-11-16T15:59:35Z",
                  "timeToStation": UInt(1902),
-                 "timeToLive": "2016-11-16T16:15:07.51239Z"],
+                 "timeToLive": "2016-11-16T16:15:07Z"],
                 ["id": "1836802868",
                  "vehicleId": "LTZ1218",
                  "naptanId": "490011791K",
@@ -105,15 +105,15 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
                  "timeToStation": UInt(902)]
             ]
             let timeStampFormatter = DateFormatter()
-            timeStampFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSXXXXX"
+            timeStampFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
             timeStampFormatter.timeZone = TimeZone(secondsFromGMT: 0)
             timeStampFormatter.calendar = Calendar(identifier: .iso8601)
             var predictions : [[String:Any]] = []
-            referenceDate  = timeFormatter.date(from: "2016-11-16T16:15:01.51239Z")
+            referenceDate  = timeFormatter.date(from: "2016-11-16T16:15:01Z")
             for dict in tempPredictions  {
                 var newDict = dict
                 newDict["timestamp"] = ISO8601DateFormatter().string(from: referenceDate)
-                timeFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSXXX"
+                timeFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
                 newDict["timeToLive"] = timeStampFormatter.string(from: Date().addingTimeInterval(TimeInterval(60)))
 
                 predictions +=  [newDict]

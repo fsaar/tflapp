@@ -40,7 +40,7 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
         self.arrivalTime.isOpaque = true
         self.arrivalTime.bgColor = bgColor
         self.arrivalTime.textAlignment = .center
-        self.bgImage.image = TFLBusPredictionViewCell.busPredictionViewBackgroundImage
+        self.bgImage.layer.contents = TFLBusPredictionViewCell.busPredictionViewBackgroundImage.cgImage
     }
     
     override func prepareForReuse() {

@@ -8,7 +8,7 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
         let identifier : String
         let timeToStation : Int
 
-        init?(with busPrediction: TFLBusPrediction,using referenceTime : TimeInterval) {
+        init(with busPrediction: TFLBusPrediction,using referenceTime : TimeInterval) {
             
             func arrivalTime(in secs : Int) -> String {
                 var timeString = ""

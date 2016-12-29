@@ -96,6 +96,7 @@ class TFLRootViewController: UIViewController {
                     let opacity = (-baseOpacity) * y/y0 + baseOpacity
                     return opacity
                 }
+                Answers.logCustomEvent(withName: Answers.TFLEventType.mapSlider.rawValue, customAttributes: nil)
                 self?.mapViewController?.coverView.alpha = opacity(for: origin.y)
             }
             self.nearbyBusStationController?.delegate = self
@@ -323,6 +324,8 @@ fileprivate extension TFLRootViewController {
 extension TFLRootViewController : TFLNearbyBusStationsControllerDelegate  {
     func refresh(controller: TFLNearbyBusStationsController, using completionBlock:@escaping ()->()) {
         Crashlytics.notify()
+        
+        Answers.logCustomEvent(withName: Answers.TFLEventType.refresh.rawValue, customAttributes: nil)
         loadNearbyBusstops (using: completionBlock)
     }
 }

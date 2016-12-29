@@ -215,6 +215,15 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
                 expect(model.eta) == "5 mins"
             }
             
+            it("should calculate timeoffset based on given reference time") {
+                var dict = busPredictions.first!
+                dict["timeToStation"] = UInt(60)
+                let prediction = TFLBusPrediction(with: dict)
+                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!,using: referenceDate.timeIntervalSinceReferenceDate+TimeInterval(31))
+                expect(model.eta) == "due"
+                
+            }
+            
             it ("models should be the same if identifier are the same") {
                 var dict1 = busPredictions.first!
                 var dict2 = busPredictions.last!

@@ -126,7 +126,6 @@ class TFLBusPredictionViewCellSpecs: QuickSpec {
             var predictions : [[String:Any]] = []
             for dict in tempPredictions  {
                 var newDict = dict
-                timeStampFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSXXXXX"
                 newDict["timestamp"] = ISO8601DateFormatter().string(from: referenceDate)
                 timeFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSXXX"
                 newDict["timeToLive"] = timeStampFormatter.string(from: referenceDate.addingTimeInterval(TimeInterval(1500)))

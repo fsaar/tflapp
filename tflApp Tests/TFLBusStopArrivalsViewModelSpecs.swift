@@ -15,6 +15,8 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
         var busStopDict : [String : Any]!
         var busPredictions : [[String:Any]]!
         var busArrivalInfo : TFLBusStopArrivalsInfo!
+        var referenceDate : Date!
+
         beforeEach {
            
             distanceFormatter = LengthFormatter()
@@ -107,10 +109,10 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
             timeStampFormatter.timeZone = TimeZone(secondsFromGMT: 0)
             timeStampFormatter.calendar = Calendar(identifier: .iso8601)
             var predictions : [[String:Any]] = []
+            referenceDate  = timeFormatter.date(from: "2016-11-16T16:15:01.51239Z")
             for dict in tempPredictions  {
                 var newDict = dict
-                timeStampFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSXXXXX"
-                newDict["timestamp"] = timeStampFormatter.string(from: Date())
+                newDict["timestamp"] = ISO8601DateFormatter().string(from: referenceDate)
                 timeFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSXXX"
                 newDict["timeToLive"] = timeStampFormatter.string(from: Date().addingTimeInterval(TimeInterval(60)))
 
@@ -167,13 +169,13 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
         context("when testing TFLBusStopArrivalsViewModel.LinePredictionViewModel") {
             it ("should not be nil") {
                 let prediction = TFLBusPrediction(with: busPredictions.first!)
-                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!,using: 0)
+                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!,using: referenceDate.timeIntervalSinceReferenceDate)
                 expect(model).notTo(beNil())
             }
             
             it ("should setup model correctly (1st model)") {
                 let prediction = TFLBusPrediction(with: busPredictions.first!)
-                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!,using: 0)!
+                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!,using: referenceDate.timeIntervalSinceReferenceDate)
                 expect(model.line) == "38"
                 expect(model.eta) == "15 mins"
                 expect(model.identifier) == "1836802865"
@@ -182,7 +184,7 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
             
             it ("should setup model correctly (2nd model)") {
                 let prediction = TFLBusPrediction(with: busPredictions.last!)
-                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!,using: 0)!
+                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!,using: referenceDate.timeIntervalSinceReferenceDate)
                 expect(model.line) == "40"
                 expect(model.eta) == "15 mins"
                 expect(model.identifier) == "1836802868"
@@ -193,7 +195,7 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
                 var dict = busPredictions.first!
                 dict["timeToStation"] = UInt(29)
                 let prediction = TFLBusPrediction(with: dict)
-                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!,using: 0)!
+                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!,using: referenceDate.timeIntervalSinceReferenceDate)
                 expect(model.eta) == "due"
             }
             
@@ -201,7 +203,7 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
                 var dict = busPredictions.first!
                 dict["timeToStation"] = UInt(60)
                 let prediction = TFLBusPrediction(with: dict)
-                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!,using: 0)!
+                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!,using: referenceDate.timeIntervalSinceReferenceDate)
                 expect(model.eta) == "1 min"
             }
             
@@ -209,7 +211,7 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
                 var dict = busPredictions.first!
                 dict["timeToStation"] = UInt(300)
                 let prediction = TFLBusPrediction(with: dict)
-                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!,using: 0)!
+                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!,using: referenceDate.timeIntervalSinceReferenceDate)
                 expect(model.eta) == "5 mins"
             }
             
@@ -220,8 +222,8 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
                 dict2["id"] = "1"
                 let prediction1 = TFLBusPrediction(with: dict1)
                 let prediction2 = TFLBusPrediction(with: dict2)
-                let model1 = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction1!,using: 0)
-                let model2 = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction2!,using: 0)
+                let model1 = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction1!,using: referenceDate.timeIntervalSinceReferenceDate)
+                let model2 = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction2!,using: referenceDate.timeIntervalSinceReferenceDate)
                 expect(model1) == model2
             }
             
@@ -230,7 +232,7 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
                 dict["timeToLive"] = nil
                 let prediction = TFLBusPrediction(with: dict)
                 expect({
-                    let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!,using: 0)!
+                    let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!,using: 0)
                     expect(model).to(beNil())
                 }).notTo(raiseException())
             }

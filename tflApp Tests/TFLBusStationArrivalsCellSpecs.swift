@@ -15,6 +15,8 @@ class TFLBusStationArrivalsCellSpecs: QuickSpec {
         var busStopDict : [String:Any]!
         var busPredicationModels : [TFLBusPrediction]!
         var managedObjectContext : NSManagedObjectContext!
+        var referenceDate : Date!
+
         beforeEach {
             
             timeStampFormatter = DateFormatter()
@@ -107,12 +109,12 @@ class TFLBusStationArrivalsCellSpecs: QuickSpec {
                  "timestamp": "2016-11-16T15:59:35Z",
                  "timeToStation": UInt(902)]
             ]
+            referenceDate  = timeFormatter.date(from: "2016-11-16T16:15:01.51239Z")
             
             var predictions : [[String:Any]] = []
             for dict in tempPredictions  {
                 var newDict = dict
-                timeStampFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSXXXXX"
-                newDict["timestamp"] = timeStampFormatter.string(from: Date())
+                newDict["timestamp"] = ISO8601DateFormatter().string(from: referenceDate)
                 timeFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSXXX"
                 newDict["timeToLive"] = timeStampFormatter.string(from: Date().addingTimeInterval(TimeInterval(60)))
                 

@@ -48,7 +48,7 @@ class TFLAnimiatedLabel: UIView {
         {
             self.label2TopConstraint?.constant = self.frame.size.height
             self.labels.first?.text = newText
-            UIView.animate(withDuration: 0.25, animations: {
+            UIView.animate(withDuration: 0.5, animations: {
                 self.layoutIfNeeded()
             }) { _ in
                 self.labels.last?.text = newText

@@ -86,7 +86,7 @@ class TFLRootViewController: UIViewController {
         self.navigationController?.navigationBar.isHidden = true
         if let mapViewController = self.mapViewController, let nearbyBackgroundController = self.nearbyBackgroundController {
             self.slideContainerController?.setContentControllers(with: mapViewController,and: nearbyBackgroundController)
-            self.slideContainerController?.sliderViewUpdateBlock =  { [weak self] slider, origin in
+            self.slideContainerController?.sliderViewUpdateBlock =  { [weak self] slider, origin,final in
                 func opacity(for y: CGFloat) -> CGFloat {
                     let y0 : CGFloat = 0.3 * (self?.view.frame.size.height ?? 0)
                     guard y < y0 else {
@@ -97,6 +97,10 @@ class TFLRootViewController: UIViewController {
                     return opacity
                 }
                 self?.mapViewController?.coverView.alpha = opacity(for: origin.y)
+                if (final)
+                {
+                    Answers.logCustomEvent(withName: Answers.TFLEventType.mapSlider.rawValue, customAttributes: nil)
+                }
             }
             self.nearbyBusStationController?.delegate = self
         }
@@ -323,6 +327,8 @@ fileprivate extension TFLRootViewController {
 extension TFLRootViewController : TFLNearbyBusStationsControllerDelegate  {
     func refresh(controller: TFLNearbyBusStationsController, using completionBlock:@escaping ()->()) {
         Crashlytics.notify()
+        
+        Answers.logCustomEvent(withName: Answers.TFLEventType.refresh.rawValue, customAttributes: nil)
         loadNearbyBusstops (using: completionBlock)
     }
 }

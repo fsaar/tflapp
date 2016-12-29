@@ -47,7 +47,7 @@ class TFLBusPredictionView: UICollectionView {
                             let movedIndexPaths = moved.map { IndexPath(item: $0.newIndex,section:0)}
                             (updatedIndexPaths+movedIndexPaths).forEach { indexPath in
                                 let cell = self?.cellForItem(at: indexPath)
-                                self?.configure(cell, at: indexPath)
+                                self?.configure(cell, at: indexPath, as : true)
                             }
                             },completion: { _ in
                                 Crashlytics.notify()
@@ -79,10 +79,10 @@ extension TFLBusPredictionView : UICollectionViewDataSource {
 // MARK: Helper
 
 fileprivate extension TFLBusPredictionView {
-    func configure(_ cell: UICollectionViewCell?,at indexPath : IndexPath) {
+    func configure(_ cell: UICollectionViewCell?,at indexPath : IndexPath,as update: Bool = false) {
         if let busPredictionCell = cell as? TFLBusPredictionViewCell {
             let prediction = predictions[indexPath.row]
-            busPredictionCell.configure(with: prediction)
+            busPredictionCell.configure(with: prediction,as : update)
         }
     }
 }

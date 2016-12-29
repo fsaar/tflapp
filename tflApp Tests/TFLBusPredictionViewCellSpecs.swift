@@ -17,6 +17,16 @@ fileprivate class CollectionViewDataSource : NSObject,UICollectionViewDataSource
 
 }
 
+fileprivate class TestAnimatedLabel : TFLAnimiatedLabel {
+    var textSet = false
+    
+    override func setText(_ newText: String?, animated: Bool) {
+        textSet = true
+        super.setText(newText, animated: animated)
+    }
+    
+}
+
 class TFLBusPredictionViewCellSpecs: QuickSpec {
     
     override func spec() {
@@ -26,8 +36,10 @@ class TFLBusPredictionViewCellSpecs: QuickSpec {
         var busStopDict : [String:Any]!
         var busPredicationModels : [TFLBusPrediction]!
         var managedObjectContext : NSManagedObjectContext!
+        var timeFormatter :  DateFormatter!
+        var referenceDate : Date!
         beforeEach {
-            
+
             timeStampFormatter = DateFormatter()
             timeStampFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSXXXXX"
             timeStampFormatter.timeZone = TimeZone(secondsFromGMT: 0)
@@ -39,11 +51,12 @@ class TFLBusPredictionViewCellSpecs: QuickSpec {
             distanceFormatter.numberFormatter.roundingMode = .halfUp
             distanceFormatter.numberFormatter.maximumFractionDigits = 0
             
-            let timeFormatter = DateFormatter()
+            timeFormatter = DateFormatter()
             timeFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX"
             timeFormatter.timeZone = TimeZone(secondsFromGMT: 0)
             timeFormatter.calendar = Calendar(identifier: .iso8601)
             
+
             busStopDict = [
                 "$type": "Tfl.Api.Presentation.Entities.StopPoint, Tfl.Api.Presentation.Entities",
                 "naptanId": "490003029W",
@@ -118,14 +131,14 @@ class TFLBusPredictionViewCellSpecs: QuickSpec {
                  "timestamp": "2016-11-16T15:59:35Z",
                  "timeToStation": UInt(902)]
             ]
-            
+            referenceDate  = timeFormatter.date(from: "2016-11-16T16:15:01.51239Z")
+
             var predictions : [[String:Any]] = []
             for dict in tempPredictions  {
                 var newDict = dict
-                timeStampFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSXXXXX"
-                newDict["timestamp"] = timeStampFormatter.string(from: Date())
+                newDict["timestamp"] = ISO8601DateFormatter().string(from: referenceDate)
                 timeFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSXXX"
-                newDict["timeToLive"] = timeStampFormatter.string(from: Date().addingTimeInterval(TimeInterval(60)))
+                newDict["timeToLive"] = timeStampFormatter.string(from: referenceDate.addingTimeInterval(TimeInterval(1500)))
                 
                 predictions +=  [newDict]
             }
@@ -151,11 +164,12 @@ class TFLBusPredictionViewCellSpecs: QuickSpec {
         }
         
         it("should configure cell correctly (test1)") {
+
             let busStop = TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext)
 
             let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: busPredicationModels)
 
-            let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo, distanceFormatter:distanceFormatter , and: timeStampFormatter)
+            let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo,using: referenceDate.addingTimeInterval(10))
 
             cell.configure(with: model.arrivalTimes.first!)
             expect(cell.line.text) == "39"
@@ -166,11 +180,58 @@ class TFLBusPredictionViewCellSpecs: QuickSpec {
             
             let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: busPredicationModels)
             
-            let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo, distanceFormatter:distanceFormatter , and: timeStampFormatter)
+            let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo,using: referenceDate.addingTimeInterval(120))
             
             cell.configure(with: model.arrivalTimes.last!)
             expect(cell.line.text) == "40"
-            expect(cell.arrivalTime.text) == "31 mins"
+            expect(cell.arrivalTime.text) == "29 mins"
+        }
+        
+        it("should set arrivaltime if its not an update") {
+            let testLabel = TestAnimatedLabel()
+            cell.arrivalTime = testLabel
+
+            let busStop = TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext)
+            
+            let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: busPredicationModels)
+            
+            let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo,using: referenceDate.addingTimeInterval(120))
+            
+            cell.configure(with: model.arrivalTimes.last!,as: false)
+            expect(testLabel.textSet) == true
+        }
+        
+        it("should NOT set arrivaltime if its not an update and nothing's changed") {
+            let testLabel = TestAnimatedLabel()
+            cell.arrivalTime = testLabel
+            
+            let busStop = TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext)
+            
+            let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: busPredicationModels)
+            
+            let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo,using: referenceDate.addingTimeInterval(120))
+            
+            cell.configure(with: model.arrivalTimes.last!,as: false)
+            testLabel.textSet = false
+            cell.configure(with: model.arrivalTimes.last!,as: true)
+            expect(testLabel.textSet) == false
+        }
+
+        it("should set arrivaltime if its an update but arrivaltime changed") {
+            let testLabel = TestAnimatedLabel()
+            cell.arrivalTime = testLabel
+            
+            let busStop = TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext)
+            
+            let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: busPredicationModels)
+            
+            let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo,using: referenceDate.addingTimeInterval(120))
+            
+            cell.configure(with: model.arrivalTimes.last!,as: false)
+            testLabel.textSet = false
+            let  model2 =   TFLBusStopArrivalsViewModel(with: busArrivalInfo,using: referenceDate.addingTimeInterval(180))
+            cell.configure(with: model2.arrivalTimes.last!,as: true)
+            expect(testLabel.textSet) == true
         }
         
 

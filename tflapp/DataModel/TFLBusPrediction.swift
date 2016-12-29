@@ -1,6 +1,16 @@
 import Foundation
 
 public struct TFLBusPrediction : CustomDebugStringConvertible,Equatable {
+    static private let iso8601DateFormatter = ISO8601DateFormatter()
+    static private let timeFormatter : DateFormatter = { () -> (DateFormatter) in
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX"
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.calendar = Calendar(identifier: .iso8601)
+        return formatter
+    }()
+    
+
     private enum Identifiers : String {
         case identifier = "id"
         case ttl = "timeToLive"
@@ -17,31 +27,32 @@ public struct TFLBusPrediction : CustomDebugStringConvertible,Equatable {
     
     public var debugDescription: String {
         let prefix = self.lineName + " towards " + destination
-        guard let timeToStation = timeToStation else {
-            return prefix + "\n"
-        }
         return prefix + " in " + "\(Int(timeToStation/60)) minutes [\(timeToStation) secs]\n"
     }
     let identifier : String
-    let ttl : String
-    let timeStamp : String
+    let ttlSinceReferenceDate : TimeInterval
+    let timeStampSinceReferenceDate : TimeInterval
     let busStopIdentifier : String
     let lineIdentifier : String
     let lineName : String
     let destination : String
-    let timeToStation : UInt?
+    let timeToStation : UInt
     
     init?(with dictionary: [String: Any]) {
-        guard let identifier = dictionary[Identifiers.identifier.rawValue] as? String else {
+        guard let identifier = dictionary[Identifiers.identifier.rawValue] as? String,let timeToStation = dictionary[Identifiers.timeToStation.rawValue]  as? UInt else {
             return nil
         }
         self.identifier = identifier
-        self.ttl = dictionary[Identifiers.ttl.rawValue] as? String ?? ""
-        self.timeStamp = dictionary[Identifiers.timeStamp.rawValue] as? String ?? ""
+        let ttl = dictionary[Identifiers.ttl.rawValue] as? String ?? ""
+        let ttlDate = TFLBusPrediction.timeFormatter.date(from: ttl)
+        self.ttlSinceReferenceDate = ttlDate?.timeIntervalSinceReferenceDate ?? 0
+        let timeStamp = dictionary[Identifiers.timeStamp.rawValue] as? String ?? ""
+        let timeStampDate = TFLBusPrediction.iso8601DateFormatter.date(from: timeStamp)
+        self.timeStampSinceReferenceDate = timeStampDate?.timeIntervalSinceReferenceDate ?? 0
         self.busStopIdentifier = dictionary[Identifiers.busStopIdentifier.rawValue] as? String ?? ""
         self.lineIdentifier = dictionary[Identifiers.lineIdentifier.rawValue] as? String ?? ""
         self.lineName = dictionary[Identifiers.lineName.rawValue] as? String ?? ""
         self.destination = dictionary[Identifiers.destination.rawValue] as? String ?? ""
-        self.timeToStation = dictionary[Identifiers.timeToStation.rawValue] as? UInt
+        self.timeToStation = timeToStation
     }
 }

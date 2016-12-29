@@ -8,21 +8,7 @@ protocol TFLNearbyBusStationsControllerDelegate : class {
 class TFLNearbyBusStationsController : UITableViewController,TFLChangeSetProtocol {
     
     static let defaultTableViewRowHeight = CGFloat (120)
-    fileprivate let distanceFormatter : LengthFormatter = {
-        let formatter = LengthFormatter()
-        formatter.unitStyle = .short
-        formatter.numberFormatter.roundingMode = .halfUp
-        formatter.numberFormatter.maximumFractionDigits = 0
-        return formatter
-    }()
-    
-    fileprivate let timeFormatter : DateFormatter = { () -> (DateFormatter) in
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX"
-        formatter.timeZone = TimeZone(secondsFromGMT: 0)
-        formatter.calendar = Calendar(identifier: .iso8601)
-        return formatter
-    }()
+
     private var foregroundNotificationHandler  : TFLNotificationObserver?
 
     
@@ -100,7 +86,7 @@ class TFLNearbyBusStationsController : UITableViewController,TFLChangeSetProtoco
 fileprivate extension TFLNearbyBusStationsController {
     fileprivate func configure(_ cell : TFLBusStationArrivalsCell,at indexPath : IndexPath) {
         let model = self.sortedBusStopPredicationTuple[indexPath.row]
-        let viewModel = TFLBusStopArrivalsViewModel(with: model,  distanceFormatter: distanceFormatter, and: timeFormatter )
+        let viewModel = TFLBusStopArrivalsViewModel(with: model)
         cell.configure(with: viewModel)
     }
 }

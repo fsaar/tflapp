@@ -38,9 +38,9 @@ class TFLBusPredictionSpecs: QuickSpec {
         it ("should instantiate model correctly") {
             let model = TFLBusPrediction(with:dict)
             expect(model!.identifier) == "1836802865"
-            expect(model!.ttl) == "2016-11-16T16:15:07.51239Z"
+            expect(model!.ttlSinceReferenceDate) > 0
             expect(model!.busStopIdentifier) == "490011791K"
-            expect(model!.timeStamp) == "2016-11-16T15:59:35Z"
+            expect(model!.timeStampSinceReferenceDate) > 0
             expect(model!.lineIdentifier) == "38"
             expect(model!.lineName) == "38"
             expect(model!.destination) == "Victoria"

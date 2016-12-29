@@ -15,3 +15,10 @@ extension Crashlytics {
         CLSLogv("%@:%@:%d",getVaList([file,function,line]))
     }
 }
+
+extension Answers {
+    enum TFLEventType : String {
+        case refresh
+        case mapSlider
+    }
+}

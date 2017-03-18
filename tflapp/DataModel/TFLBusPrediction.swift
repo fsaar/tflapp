@@ -4,7 +4,7 @@ public struct TFLBusPrediction : CustomDebugStringConvertible,Equatable {
     static private let iso8601DateFormatter = ISO8601DateFormatter()
     static private let timeFormatter : DateFormatter = { () -> (DateFormatter) in
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX"
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         formatter.timeZone = TimeZone(secondsFromGMT: 0)
         formatter.calendar = Calendar(identifier: .iso8601)
         return formatter
@@ -26,8 +26,9 @@ public struct TFLBusPrediction : CustomDebugStringConvertible,Equatable {
     }
     
     public var debugDescription: String {
+        let secondsPerMinute : UInt = 60
         let prefix = self.lineName + " towards " + destination
-        return prefix + " in " + "\(Int(timeToStation/60)) minutes [\(timeToStation) secs]\n"
+        return prefix + " in " + "\(Int(timeToStation/secondsPerMinute)) minutes [\(timeToStation) secs]\n"
     }
     let identifier : String
     let ttlSinceReferenceDate : TimeInterval

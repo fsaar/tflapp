@@ -11,19 +11,17 @@ class TFLNearbyBusStationsController : UITableViewController,TFLChangeSetProtoco
 
     private var foregroundNotificationHandler  : TFLNotificationObserver?
 
-    
     weak var delegate : TFLNearbyBusStationsControllerDelegate?
-    
-    var sortedBusStopPredicationTuple :  [TFLBusStopArrivalsInfo] = [] {
+    var busStopArrivalViewModels :  [TFLBusStopArrivalsViewModel] = [] {
         
         didSet (oldModel) {
+            
             if oldModel.isEmpty {
                 self.tableView.reloadData()
             }
             else
             {
-                Crashlytics.log("oldTuples:\(oldModel.map { $0.debugInfo }.joined(separator: ","))\nnewTuples:\(sortedBusStopPredicationTuple.map { $0.debugInfo }.joined(separator: ","))")
-                self.tableView.transition(from: oldModel, to: sortedBusStopPredicationTuple, with: TFLBusStopArrivalsInfo.compare) { updatedIndexPaths in
+                self.tableView.transition(from: oldModel, to: busStopArrivalViewModels, with: TFLBusStopArrivalsViewModel.compare) { updatedIndexPaths in
                     updatedIndexPaths.forEach { [weak self] indexPath in
                         if let cell = self?.tableView.cellForRow(at: indexPath) as? TFLBusStationArrivalsCell {
                             self?.configure(cell, at: indexPath)
@@ -36,7 +34,7 @@ class TFLNearbyBusStationsController : UITableViewController,TFLChangeSetProtoco
 
     var busStopPredicationTuple :  [TFLBusStopArrivalsInfo] = [] {
         didSet {
-            self.sortedBusStopPredicationTuple = self.busStopPredicationTuple.sorted { $0.busStopDistance < $1 .busStopDistance }
+            self.busStopArrivalViewModels = self.busStopPredicationTuple.sorted { $0.busStopDistance < $1 .busStopDistance }.map {  TFLBusStopArrivalsViewModel(with: $0) }
         }
     }
 
@@ -65,7 +63,7 @@ class TFLNearbyBusStationsController : UITableViewController,TFLChangeSetProtoco
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.sortedBusStopPredicationTuple.count
+        return self.busStopArrivalViewModels.count
     }
     
     
@@ -77,17 +75,14 @@ class TFLNearbyBusStationsController : UITableViewController,TFLChangeSetProtoco
         }
         return cell
      }
-    
-    
 }
 
 // MARK: Private
 
 fileprivate extension TFLNearbyBusStationsController {
-    fileprivate func configure(_ cell : TFLBusStationArrivalsCell,at indexPath : IndexPath) {
-        let model = self.sortedBusStopPredicationTuple[indexPath.row]
-        let viewModel = TFLBusStopArrivalsViewModel(with: model)
-        cell.configure(with: viewModel)
+    
+    func configure(_ cell : TFLBusStationArrivalsCell,at indexPath : IndexPath) {
+        cell.configure(with: busStopArrivalViewModels[indexPath.row])
     }
 }
 

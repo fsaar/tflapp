@@ -5,15 +5,24 @@ enum TFLRequestManagerErrorType : Error {
     case InvalidURL(urlString : String)
 }
 
-public final class TFLRequestManager {
+protocol TFLRequestManagerDelegate : class {
+    func didStartURLTask(with requestManager: TFLRequestManager,session : URLSession)
+    func didFinishURLTask(with requestManager: TFLRequestManager,session : URLSession)
+}
+
+public final class TFLRequestManager : NSObject {
+    weak var delegate : TFLRequestManagerDelegate?
     fileprivate let TFLRequestManagerBaseURL = "https://api.tfl.gov.uk"
-    
+    static let sessionID =  "group.tflwidgetSharingData.sessionconfiguration"
+
+    fileprivate var backgroundCompletionHandler : (session:(()->())?,caller:(()->())?)?
     fileprivate let TFLApplicationID = "PASTE_YOUR_APPLICATION_ID_HERE"
     fileprivate let TFLApplicationKey = "PASTE_YOUR_APPLICATION_KEY_HERE"
     public static let sharedManager =  TFLRequestManager()
     
-    private let session = URLSession(configuration: URLSessionConfiguration.default)
+    fileprivate let session = URLSession(configuration: URLSessionConfiguration.default)
 
+    
     public func getDataWithRelativePath(relativePath: String ,and query: String? = nil, completionBlock:@escaping ((_ data : Data?,_ error:Error?) -> Void)) {
         guard let url =  self.baseURL(withPath: relativePath,and: query) else {
             completionBlock(nil,TFLRequestManagerErrorType.InvalidURL(urlString: relativePath))
@@ -21,19 +30,30 @@ public final class TFLRequestManager {
         }
         getDataWithURL(URL: url,completionBlock: completionBlock)
     }
+    
+    func handleEventsForBackgroundURLSession(with identifier: String, completionHandler: @escaping () -> Void) {
+        guard identifier == TFLRequestManager.sessionID,case .none = backgroundCompletionHandler else {
+            return
+        }
+        self.backgroundCompletionHandler?.session = completionHandler
+    }
+    
+
 
     fileprivate func getDataWithURL(URL: URL , completionBlock:@escaping ((_ data : Data?,_ error:Error?) -> Void)) {
         let task = session.dataTask(with: URL, completionHandler: { [weak self] (data, _, error) -> (Void) in
-            self?.session.getAllTasks { tasks in
-                UIApplication.shared.isNetworkActivityIndicatorVisible = !tasks.isEmpty
-            }
             
+            if let strongSelf = self {
+                strongSelf.delegate?.didFinishURLTask(with: strongSelf, session: strongSelf.session)
+                
+            }
             completionBlock(data,error)
         })
         task.resume()
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        self.delegate?.didStartURLTask(with: self, session: session)
     }
-
+    
+    
 }
 
 

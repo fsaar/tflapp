@@ -106,8 +106,7 @@
 		566EF7D21DDB71CE006162D7 /* TFLBusStopStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusStopStack.swift; sourceTree = "<group>"; };
 		566EF7D61DDC4D14006162D7 /* TFLRootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLRootViewController.swift; sourceTree = "<group>"; };
 		566EF7E11DDC59ED006162D7 /* UIFont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
-		566EF7E31DDC5D69006162D7 /* tflapp-dev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "tflapp-dev.entitlements"; sourceTree = "<group>"; };
-		566EF7E41DDC5EE2006162D7 /* tflapp-prod.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "tflapp-prod.entitlements"; sourceTree = "<group>"; };
+		566EF7E31DDC5D69006162D7 /* tflapp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = tflapp.entitlements; sourceTree = "<group>"; };
 		56823EA51DDDA39600E79B1A /* TFLLoadLocationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLLoadLocationView.swift; sourceTree = "<group>"; };
 		56823EA71DDDA45600E79B1A /* TFLLoadNearbyStationsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLLoadNearbyStationsView.swift; sourceTree = "<group>"; };
 		56823EA91DDDA4CC00E79B1A /* TFLNoStationsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLNoStationsView.swift; sourceTree = "<group>"; };
@@ -334,7 +333,6 @@
 		56A81B2D1DD862DC001DF7F1 /* tflapp */ = {
 			isa = PBXGroup;
 			children = (
-				56AB9FAA1DE8D95000A9042A /* Extensions */,
 				56AB9FA91DE8D94000A9042A /* Protocols */,
 				566EF7C31DDA2D31006162D7 /* DataModel */,
 				565A1FC91DD8F8D1003CE960 /* Common */,
@@ -345,8 +343,7 @@
 				56A81B321DD862DC001DF7F1 /* Main.storyboard */,
 				56A81B381DD862DC001DF7F1 /* Assets.xcassets */,
 				56A81B3A1DD862DC001DF7F1 /* LaunchScreen.storyboard */,
-				566EF7E31DDC5D69006162D7 /* tflapp-dev.entitlements */,
-				566EF7E41DDC5EE2006162D7 /* tflapp-prod.entitlements */,
+				566EF7E31DDC5D69006162D7 /* tflapp.entitlements */,
 				56A81B3D1DD862DC001DF7F1 /* Info.plist */,
 				56D70D2F1DD9A7A6004CA293 /* Localization */,
 				566EF7D01DDB5679006162D7 /* TFLBusStops.sqlite */,
@@ -364,13 +361,6 @@
 				56C828911DE9859D00E52086 /* TFLTransitionable.swift */,
 			);
 			path = Protocols;
-			sourceTree = "<group>";
-		};
-		56AB9FAA1DE8D95000A9042A /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Extensions;
 			sourceTree = "<group>";
 		};
 		56D0AF311E141D0F00F466C4 /* TFLAnimatedLabel */ = {
@@ -471,7 +461,7 @@
 		56A81B231DD862DC001DF7F1 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0810;
+				LastSwiftUpdateCheck = 0820;
 				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = SAMedialabs;
 				TargetAttributes = {
@@ -487,6 +477,9 @@
 						DevelopmentTeam = RF4LJPC23U;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 0;
+							};
 							com.apple.DataProtection = {
 								enabled = 1;
 							};
@@ -785,7 +778,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BEB656AE4FFADE13DD37A13F /* Pods-tflApp Tests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "";
@@ -806,7 +798,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7A89F45A39DFA1D633B11475 /* Pods-tflApp Tests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "";
@@ -921,9 +912,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 29D20D8BDB3378F1D7CC9DAE /* Pods-tflapp.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "tflapp/tflapp-dev.entitlements";
+				CODE_SIGN_ENTITLEMENTS = tflapp/tflapp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = RF4LJPC23U;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -932,8 +925,11 @@
 				);
 				INFOPLIST_FILE = tflapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.samedialabs.tflapp;
 				PRODUCT_NAME = "London Bus";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -942,8 +938,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 09B8C602EFB434FF269AB5A9 /* Pods-tflapp.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "tflapp/tflapp-prod.entitlements";
+				CODE_SIGN_ENTITLEMENTS = tflapp/tflapp.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = RF4LJPC23U;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -951,8 +949,11 @@
 				);
 				INFOPLIST_FILE = tflapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.samedialabs.tflapp;
 				PRODUCT_NAME = "London Bus";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;

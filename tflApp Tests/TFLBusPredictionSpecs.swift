@@ -20,7 +20,7 @@ class TFLBusPredictionSpecs: QuickSpec {
                 "destinationName": "Victoria",
                 "timestamp": "2016-11-16T15:59:35Z",
                 "timeToStation": UInt(902),
-                "timeToLive": "2016-11-16T16:15:07.51239Z"]
+                "timeToLive": "2016-11-16T16:15:07Z"]
         }
         
         it ("should instantiate model with valid dicationary") {

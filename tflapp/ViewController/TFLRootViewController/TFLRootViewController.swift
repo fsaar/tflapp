@@ -107,6 +107,7 @@ class TFLRootViewController: UIViewController {
         self.foregroundNotificationHandler = TFLNotificationObserver(notification: NSNotification.Name.UIApplicationWillEnterForeground.rawValue) { [weak self]  notification in
             self?.loadNearbyBusstops()
         }
+        TFLRequestManager.sharedManager.delegate = self
         self.loadNearbyBusstops()
         
 
@@ -176,7 +177,7 @@ fileprivate extension TFLRootViewController {
         let currentLocation = CLLocation(latitude: coord.latitude, longitude: coord.longitude)
         let group = DispatchGroup()
         var newStopPoints : [TFLBusStopArrivalsInfo] = []
-        self.nearbyBusStops(with: coord).forEach { [weak self] stopPoint in
+        TFLBusStopStack.sharedDataStack.nearbyBusStops(with: coord).forEach { [weak self] stopPoint in
             group.enter()
             self?.tflClient.arrivalsForStopPoint(with: stopPoint.identifier) { predictions,_ in
                 let distance = currentLocation.distance(from: CLLocation(latitude: stopPoint.coord.latitude, longitude: stopPoint.coord.longitude))
@@ -190,35 +191,6 @@ fileprivate extension TFLRootViewController {
             completionBlock(sortedStopPoints)
             Crashlytics.notify()
         }
-    }
-    
-    func nearbyBusStops(with coordinate: CLLocationCoordinate2D, with radiusInMeter: Double = 350) -> [TFLCDBusStop] {
-        let context = TFLBusStopStack.sharedDataStack.mainQueueManagedObjectContext
-        
-        // London : long=-0.252395&lat=51.506788
-        // Latitude 1 Degree : 111.111 KM = 1/100 Degree => 1.11111 KM => 1/200 Degree ≈ 550m
-        // Longitude 1 Degree : cos(51.506788)*111.111 = 0.3235612467* 111.111 = 35.9512136821 => 1/70 Degree ≈ 500 m
-        let latOffset : Double = 1/200
-        let longOffset : Double = 1/70
-        let latLowerLimit = coordinate.latitude-latOffset
-        let latUpperLimit = coordinate.latitude+latOffset
-        let longLowerLimit = coordinate.longitude-longOffset
-        let longUpperLimit = coordinate.longitude+longOffset
-        
-
-        let fetchRequest = NSFetchRequest<TFLCDBusStop>(entityName: "TFLCDBusStop")
-        let predicate = NSPredicate(format: "(long>=%f AND long<=%f) AND (lat>=%f AND lat <= %f) AND (status == YES)",longLowerLimit,longUpperLimit,latLowerLimit,latUpperLimit)
-        fetchRequest.predicate = predicate
-        fetchRequest.returnsObjectsAsFaults = true
-        fetchRequest.shouldRefreshRefetchedObjects = true
-        var busStops : [TFLCDBusStop] = []
-        let currentLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-        context.performAndWait {
-            if let stops =  try? context.fetch(fetchRequest) {
-                busStops = stops.filter { currentLocation.distance(from: CLLocation(latitude: $0.lat, longitude: $0.long) ) < radiusInMeter }
-            }
-        }
-        return busStops
     }
 }
 
@@ -331,6 +303,23 @@ extension TFLRootViewController : TFLNearbyBusStationsControllerDelegate  {
         Answers.logCustomEvent(withName: Answers.TFLEventType.refresh.rawValue, customAttributes: nil)
         loadNearbyBusstops (using: completionBlock)
     }
+}
+
+// MARK: TFLRequestManagerDelegate
+
+extension TFLRootViewController : TFLRequestManagerDelegate {
+    func didStartURLTask(with requestManager: TFLRequestManager,session : URLSession)
+    {
+       UIApplication.shared.isNetworkActivityIndicatorVisible = true
+
+    }
+    func didFinishURLTask(with requestManager: TFLRequestManager,session : URLSession)
+    {
+        session.getAllTasks { tasks in
+            UIApplication.shared.isNetworkActivityIndicatorVisible = !tasks.isEmpty
+        }
+    }
+
 }
 
 

@@ -778,7 +778,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BEB656AE4FFADE13DD37A13F /* Pods-tflApp Tests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "";
@@ -799,7 +798,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7A89F45A39DFA1D633B11475 /* Pods-tflApp Tests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "";

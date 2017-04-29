@@ -7,7 +7,7 @@ class TFLMapViewAnnotation: NSObject,MKAnnotation {
     let subtitle: String?
     let identifier : String
     override public var debugDescription: String {
-        return "\(title) - \(subtitle) [\(identifier)]"
+        return "\(String(describing: title)) - \(String(describing: subtitle)) [\(identifier)]"
     }
     
     init(with title : String ,and subTitle: String , for coordinate: CLLocationCoordinate2D, with identifier : String) {

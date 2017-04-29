@@ -17,11 +17,11 @@ class TFLSlideContainerController: UIViewController {
         path.move(to: CGPoint(x:radius,y:0))
         path.addLine(to: CGPoint(x:self.view.frame.size.width-radius,y:0))
         
-        path.addArc(center: CGPoint(x:self.view.frame.size.width-radius,y:radius), radius: radius, startAngle: CGFloat(1.5 * M_PI), endAngle: 0, clockwise: false)
+        path.addArc(center: CGPoint(x:self.view.frame.size.width-radius,y:radius), radius: radius, startAngle: CGFloat(1.5 * Double.pi), endAngle: 0, clockwise: false)
         path.addLine(to: CGPoint(x:self.view.frame.size.width,y:self.sliderHandleContainerView.frame.size.height))
         path.addLine(to: CGPoint(x:0,y:self.sliderHandleContainerView.frame.size.height))
         path.addLine(to: CGPoint(x:0,y:radius))
-        path.addArc(center: CGPoint(x:radius,y:radius), radius: radius, startAngle: CGFloat(M_PI) , endAngle:  CGFloat(1.5 * M_PI), clockwise: false)
+        path.addArc(center: CGPoint(x:radius,y:radius), radius: radius, startAngle: CGFloat(Double.pi) , endAngle:  CGFloat(1.5 * Double.pi), clockwise: false)
         let shapeLayer = CAShapeLayer()
         shapeLayer.path = path
         return shapeLayer

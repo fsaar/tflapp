@@ -257,10 +257,10 @@ extension TFLRootViewController : TFLNoStationsViewDelegate {
     }
 }
 
+// MARK: DataBase Generation
 
 fileprivate extension TFLRootViewController {
     
-    // MARK: DataBase Generation
     func loadBusStops(of page: UInt = 0) {
         self.tflClient.busStops(with: page) { [weak self] busStops,_ in
             if let busStops = busStops, !busStops.isEmpty {

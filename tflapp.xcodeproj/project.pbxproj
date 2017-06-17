@@ -468,7 +468,7 @@
 					5657D3651DE387E6004E4CD0 = {
 						CreatedOnToolsVersion = 8.1;
 						DevelopmentTeam = RF4LJPC23U;
-						LastSwiftMigration = 0810;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 56A81B2A1DD862DC001DF7F1;
 					};
@@ -791,7 +791,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				RUN_CLANG_STATIC_ANALYZER = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/London Bus.app/London Bus";
 			};
 			name = Debug;
@@ -811,7 +812,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.samedialabs.tflApp-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				RUN_CLANG_STATIC_ANALYZER = NO;
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/London Bus.app/London Bus";
 			};
 			name = Release;

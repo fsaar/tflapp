@@ -66,7 +66,8 @@ import CoreLocation
  }]
 */
 
-@objc public class TFLCDBusStop: NSManagedObject {
+@objc(TFLCDBusStop)
+public class TFLCDBusStop: NSManagedObject {
     private enum Identifiers : String {
         case naptanId = "naptanId"
         case commonName = "commonName"

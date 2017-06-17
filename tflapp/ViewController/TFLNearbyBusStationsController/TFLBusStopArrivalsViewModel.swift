@@ -14,7 +14,7 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
                 var timeString = ""
                 
                 switch secs {
-                case Int.min..<30:
+                case ..<30:
                     timeString = NSLocalizedString("TFLBusStopArrivalsViewModel.due", comment: "")
                 case 30..<60:
                     timeString = "1 " + NSLocalizedString("TFLBusStopArrivalsViewModel.min", comment: "")

@@ -16,7 +16,7 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
         var busPredictions : [[String:Any]]!
         var busArrivalInfo : TFLBusStopArrivalsInfo!
         var referenceDate : Date!
-
+        var decoder : JSONDecoder!
         beforeEach {
            
             distanceFormatter = LengthFormatter()
@@ -119,11 +119,17 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
                 predictions +=  [newDict]
             }
             busPredictions =  predictions
+            let data1 = try! JSONSerialization.data(withJSONObject: busPredictions[0], options: [])
+            let data2 = try! JSONSerialization.data(withJSONObject: busPredictions[1], options: [])
+            let data3 = try! JSONSerialization.data(withJSONObject: busPredictions[2], options: [])
             
-            let model1 = TFLBusPrediction(with:busPredictions[0])
-            let model2 = TFLBusPrediction(with:busPredictions[1])
-            let model3 = TFLBusPrediction(with:busPredictions[2])
-            busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStopModel!, busStopDistance: 300, arrivals: [model1!,model2!,model3!])
+            decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .iso8601
+            
+            let model1 = try! decoder.decode(TFLBusPrediction.self,from: data1)
+            let model2 = try! decoder.decode(TFLBusPrediction.self,from: data2)
+            let model3 = try! decoder.decode(TFLBusPrediction.self,from: data3)
+            busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStopModel!, busStopDistance: 300, arrivals: [model1,model2,model3])
         }
         
         context("when testing TFLBusStopArrivalsViewModel") {
@@ -167,15 +173,24 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
         }
         
         context("when testing TFLBusStopArrivalsViewModel.LinePredictionViewModel") {
+            var firstPrediction : TFLBusPrediction!
+            var lastPrediction : TFLBusPrediction!
+            
+            beforeEach() {
+                let data = try! JSONSerialization.data(withJSONObject: busPredictions.first!, options: [])
+                let data2 = try! JSONSerialization.data(withJSONObject: busPredictions.last!, options: [])
+                firstPrediction = try! decoder.decode(TFLBusPrediction.self,from: data)
+                lastPrediction = try! decoder.decode(TFLBusPrediction.self,from: data2)
+                
+            }
+            
             it ("should not be nil") {
-                let prediction = TFLBusPrediction(with: busPredictions.first!)
-                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!,using: referenceDate.timeIntervalSinceReferenceDate)
+                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: firstPrediction,using: referenceDate.timeIntervalSinceReferenceDate)
                 expect(model).notTo(beNil())
             }
             
             it ("should setup model correctly (1st model)") {
-                let prediction = TFLBusPrediction(with: busPredictions.first!)
-                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!,using: referenceDate.timeIntervalSinceReferenceDate)
+                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: firstPrediction,using: referenceDate.timeIntervalSinceReferenceDate)
                 expect(model.line) == "38"
                 expect(model.eta) == "15 mins"
                 expect(model.identifier) == "1836802865"
@@ -183,8 +198,7 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
             }
             
             it ("should setup model correctly (2nd model)") {
-                let prediction = TFLBusPrediction(with: busPredictions.last!)
-                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!,using: referenceDate.timeIntervalSinceReferenceDate)
+                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: lastPrediction,using: referenceDate.timeIntervalSinceReferenceDate)
                 expect(model.line) == "40"
                 expect(model.eta) == "15 mins"
                 expect(model.identifier) == "1836802868"
@@ -194,32 +208,44 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
             it("should set time to 'due' if less than 30 secs") {
                 var dict = busPredictions.first!
                 dict["timeToStation"] = UInt(29)
-                let prediction = TFLBusPrediction(with: dict)
-                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!,using: referenceDate.timeIntervalSinceReferenceDate)
+                
+                let data = try! JSONSerialization.data(withJSONObject: dict, options: [])
+                let prediction = try! decoder.decode(TFLBusPrediction.self,from: data)
+                
+                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction,using: referenceDate.timeIntervalSinceReferenceDate)
                 expect(model.eta) == "due"
             }
             
             it("should set time to '1 min' if less than 90 secs") {
                 var dict = busPredictions.first!
                 dict["timeToStation"] = UInt(60)
-                let prediction = TFLBusPrediction(with: dict)
-                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!,using: referenceDate.timeIntervalSinceReferenceDate)
+                
+                let data = try! JSONSerialization.data(withJSONObject: dict, options: [])
+                let prediction = try! decoder.decode(TFLBusPrediction.self,from: data)
+                
+                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction, using: referenceDate.timeIntervalSinceReferenceDate)
                 expect(model.eta) == "1 min"
             }
             
             it("should set time to '5 min' if less than 301 secs") {
                 var dict = busPredictions.first!
                 dict["timeToStation"] = UInt(300)
-                let prediction = TFLBusPrediction(with: dict)
-                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!,using: referenceDate.timeIntervalSinceReferenceDate)
+                
+                let data = try! JSONSerialization.data(withJSONObject: dict, options: [])
+                let prediction = try! decoder.decode(TFLBusPrediction.self,from: data)
+                
+                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction,using: referenceDate.timeIntervalSinceReferenceDate)
                 expect(model.eta) == "5 mins"
             }
             
             it("should calculate timeoffset based on given reference time") {
                 var dict = busPredictions.first!
                 dict["timeToStation"] = UInt(60)
-                let prediction = TFLBusPrediction(with: dict)
-                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!,using: referenceDate.timeIntervalSinceReferenceDate+TimeInterval(31))
+                
+                let data = try! JSONSerialization.data(withJSONObject: dict, options: [])
+                let prediction = try! decoder.decode(TFLBusPrediction.self,from: data)
+                
+                let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction,using: referenceDate.timeIntervalSinceReferenceDate+TimeInterval(31))
                 expect(model.eta) == "due"
                 
             }
@@ -229,23 +255,17 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
                 var dict2 = busPredictions.last!
                 dict1["id"] = "1"
                 dict2["id"] = "1"
-                let prediction1 = TFLBusPrediction(with: dict1)
-                let prediction2 = TFLBusPrediction(with: dict2)
-                let model1 = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction1!,using: referenceDate.timeIntervalSinceReferenceDate)
-                let model2 = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction2!,using: referenceDate.timeIntervalSinceReferenceDate)
+                
+                
+                let data1 = try! JSONSerialization.data(withJSONObject: dict1, options: [])
+                let prediction1 = try! decoder.decode(TFLBusPrediction.self,from: data1)
+                let data2 = try! JSONSerialization.data(withJSONObject: dict2, options: [])
+                let prediction2 = try! decoder.decode(TFLBusPrediction.self,from: data2)
+                
+                let model1 = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction1,using: referenceDate.timeIntervalSinceReferenceDate)
+                let model2 = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction2,using: referenceDate.timeIntervalSinceReferenceDate)
                 expect(model1) == model2
             }
-            
-            it ("should handle predictions with invalid ttl gracefully") {
-                var dict = busPredictions.first!
-                dict["timeToLive"] = nil
-                let prediction = TFLBusPrediction(with: dict)
-                expect({
-                    let model = TFLBusStopArrivalsViewModel.LinePredictionViewModel(with: prediction!,using: 0)
-                    expect(model).to(beNil())
-                }).notTo(raiseException())
-            }
-            
         }
     }
 }

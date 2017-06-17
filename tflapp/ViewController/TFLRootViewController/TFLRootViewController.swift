@@ -316,7 +316,9 @@ extension TFLRootViewController : TFLRequestManagerDelegate {
     func didFinishURLTask(with requestManager: TFLRequestManager,session : URLSession)
     {
         session.getAllTasks { tasks in
-            UIApplication.shared.isNetworkActivityIndicatorVisible = !tasks.isEmpty
+            OperationQueue.main.addOperation {
+                UIApplication.shared.isNetworkActivityIndicatorVisible = !tasks.isEmpty
+            }
         }
     }
 

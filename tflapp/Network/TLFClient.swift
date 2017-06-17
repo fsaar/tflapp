@@ -8,30 +8,25 @@ enum TFLClientError : Error {
 }
 
 public final class TFLClient {
-    
+    static let jsonDecoder = { ()-> JSONDecoder in
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        return decoder
+    }()
     lazy var tflManager : TFLRequestManager = TFLRequestManager.sharedManager
     
     public func arrivalsForStopPoint(with identifier: String, completionBlock:@escaping (([TFLBusPrediction]?,_ error:Error?) -> ()))  {
         let arivalsPath = "/StopPoint/\(identifier)/Arrivals"
         tflManager.getDataWithRelativePath(relativePath: arivalsPath) { data, error in
-            if let data = data,
-                let jsonList = try? JSONSerialization.jsonObject(with: data as Data
-                    , options: JSONSerialization.ReadingOptions(rawValue:0)) as! [[String : Any]] {
-                        var predictions : [TFLBusPrediction] = []
-                        jsonList.forEach { dict in
-                            if let prediction = TFLBusPrediction(with: dict) {
-                                predictions += [prediction]
-                            }
-                        }
-                OperationQueue.main.addOperation {
-                    completionBlock(predictions,nil)
-                }
-            }
-            else {
-                
+            guard let data = data else {
                 OperationQueue.main.addOperation {
                     completionBlock(nil,error)
                 }
+                return
+            }
+            let predictions = try? TFLClient.jsonDecoder.decode([TFLBusPrediction].self,from: data)
+            OperationQueue.main.addOperation {
+                completionBlock(predictions,nil)
             }
         }
     }

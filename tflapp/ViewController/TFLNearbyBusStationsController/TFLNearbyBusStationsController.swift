@@ -54,7 +54,7 @@ class TFLNearbyBusStationsController : UITableViewController,TFLChangeSetProtoco
         self.tableView.estimatedRowHeight = TFLNearbyBusStationsController.defaultTableViewRowHeight
     }
 
-    func refreshHandler(control : UIRefreshControl) {
+    @objc func refreshHandler(control : UIRefreshControl) {
         control.beginRefreshing()
         self.delegate?.refresh(controller: self) {
             control.endRefreshing()

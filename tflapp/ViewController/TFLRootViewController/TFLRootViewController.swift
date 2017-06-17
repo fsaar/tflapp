@@ -166,7 +166,7 @@ fileprivate extension TFLRootViewController {
     }
     
     func updateNearbyBusStops(for currentLocation:CLLocationCoordinate2D ) {
-        self.tflClient.nearbyBusStops(with: currentLocation) { _  in
+        self.tflClient.nearbyBusStops(with: currentLocation) { _,_  in
             Crashlytics.notify()
         }
     }

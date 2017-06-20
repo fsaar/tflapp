@@ -30,12 +30,12 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.line.font = UIFont.tflFont(size: 12)
+        self.line.font = UIFont.tflFontBusLineIdentifier()
         self.line.textColor = .white
         self.line.textAlignment = .center
         self.line.isOpaque = true
         self.line.backgroundColor = UIColor.red
-        self.arrivalTime.font = UIFont.tflFont(size: 12)
+        self.arrivalTime.font = UIFont.tflFontBusArrivalTime()
         self.arrivalTime.textColor = .black
         self.arrivalTime.isOpaque = true
         self.arrivalTime.bgColor = bgColor

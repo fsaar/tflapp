@@ -11,17 +11,17 @@ class TFLBusStationArrivalsCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.stationName.font = UIFont.tflBoldFont(size: 17)
+        self.stationName.font = UIFont.tflFontStationHeader()
         self.stationName.textColor = UIColor.black
-        self.stationDetails.font = UIFont.tflFont(size: 14)
+        self.stationDetails.font = UIFont.tflFontStationDetails()
         self.stationDetails.textColor = UIColor.darkGray
-        self.distanceLabel.font = UIFont.tflFont(size: 14)
+        self.distanceLabel.font = UIFont.tflFontStationDistance()
         self.distanceLabel.textColor = UIColor.black
         self.noDataErrorLabel.text = NSLocalizedString("TFLBusStationArrivalsCell.noDataError", comment: "")
         self.noDataErrorLabel.font = UIFont.tflFont(size: 14)
         self.noDataErrorLabel.textColor = UIColor.black
         
-        self.busStopLabel.font = UIFont.tflFont(size: 12)
+        self.busStopLabel.font = UIFont.tflFontStationIdentifier()
         self.busStopLabel.textColor = UIColor.white
         self.busStopLabel.backgroundColor = UIColor.red
         self.busStopLabel.clipsToBounds = true

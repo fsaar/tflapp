@@ -10,7 +10,7 @@ class TFLNearbyBackgroundController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.ackLabel.font = UIFont.tflFont(size: 14)
+        self.ackLabel.font = UIFont.tflFontPoweredBy()
         self.ackLabel.text = NSLocalizedString("TFLRootViewController.ackTitle", comment: "")
         self.ackLabel.textColor = .black
     }

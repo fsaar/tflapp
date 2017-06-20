@@ -46,8 +46,8 @@ extension UIFont {
         return font!
     }
     
-    
-    
-    
-    
+    class func tflFontPoweredBy() -> UIFont {
+        let font = UIFont(name: "GillSans-Light", size: 17)
+        return font!
+    }
 }

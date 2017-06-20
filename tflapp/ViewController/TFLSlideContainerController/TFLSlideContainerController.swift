@@ -2,7 +2,7 @@
 import UIKit
 
 class TFLSlideContainerController: UIViewController {
-    var snapPositions: [CGFloat] = [0.00,0.4,0.70]
+    var snapPositions: [CGFloat] = [0.04,0.4,0.70]
     fileprivate var snapHandler : TFLSnapHandler?
     var sliderViewUpdateBlock : ((_ slider : UIView,_ origin: CGPoint,_ final: Bool) -> ())? = nil {
         didSet {

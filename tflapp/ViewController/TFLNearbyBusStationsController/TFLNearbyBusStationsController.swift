@@ -5,6 +5,17 @@ protocol TFLNearbyBusStationsControllerDelegate : class {
     func refresh(controller: TFLNearbyBusStationsController, using completionBlock:@escaping ()->())
 }
 
+extension MutableCollection where Index == Int, Iterator.Element == TFLBusStopArrivalsViewModel {
+    subscript(indexPath : IndexPath) -> TFLBusStopArrivalsViewModel {
+        get {
+            return self[indexPath.row]
+        }
+        set {
+            self[indexPath.row] = newValue
+        }
+    }
+}
+
 class TFLNearbyBusStationsController : UITableViewController,TFLChangeSetProtocol {
     
     static let defaultTableViewRowHeight = CGFloat (120)
@@ -82,7 +93,7 @@ class TFLNearbyBusStationsController : UITableViewController,TFLChangeSetProtoco
 fileprivate extension TFLNearbyBusStationsController {
     
     func configure(_ cell : TFLBusStationArrivalsCell,at indexPath : IndexPath) {
-        cell.configure(with: busStopArrivalViewModels[indexPath.row])
+        cell.configure(with: busStopArrivalViewModels[indexPath])
     }
 }
 

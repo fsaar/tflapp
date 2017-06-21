@@ -6,15 +6,14 @@ class TFLNearbyBackgroundController: UIViewController {
         case nearbyBusStationController = "TFLNearbyBusStationsControllerSegue"
     }
 
-    @IBOutlet weak var ackLabel : UILabel!
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.ackLabel.font = UIFont.tflFontPoweredBy()
-        self.ackLabel.text = NSLocalizedString("TFLRootViewController.ackTitle", comment: "")
-        self.ackLabel.textColor = .black
+    @IBOutlet weak var ackLabel : UILabel! = nil {
+        didSet {
+            self.ackLabel.font = UIFont.tflFontPoweredBy()
+            self.ackLabel.text = NSLocalizedString("TFLRootViewController.ackTitle", comment: "")
+            self.ackLabel.textColor = .black
+        }
     }
-    
+
     weak var delegate : TFLNearbyBusStationsControllerDelegate? = nil {
         didSet {
             self.nearbyBusStationController?.delegate = self.delegate

@@ -16,8 +16,8 @@ public final class TFLRequestManager : NSObject {
     static let sessionID =  "group.tflwidgetSharingData.sessionconfiguration"
 
     fileprivate var backgroundCompletionHandler : (session:(()->())?,caller:(()->())?)?
-    fileprivate let TFLApplicationID = "PASTE_YOUR_APPLICATION_ID_HERE"
-    fileprivate let TFLApplicationKey = "PASTE_YOUR_APPLICATION_KEY_HERE"
+    fileprivate let TFLApplicationID = "528a18f1"
+    fileprivate let TFLApplicationKey = "86f44a61de39e94b3738d9fe6cfcdf35"
     public static let sharedManager =  TFLRequestManager()
     
     fileprivate let session = URLSession(configuration: URLSessionConfiguration.default)

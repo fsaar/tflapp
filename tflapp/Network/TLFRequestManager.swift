@@ -5,22 +5,33 @@ enum TFLRequestManagerErrorType : Error {
     case InvalidURL(urlString : String)
 }
 
+
 protocol TFLRequestManagerDelegate : class {
     func didStartURLTask(with requestManager: TFLRequestManager,session : URLSession)
     func didFinishURLTask(with requestManager: TFLRequestManager,session : URLSession)
 }
 
+protocol TFLRequestManagerDataSource : class {
+    func urlSession(for requestManager : TFLRequestManager) -> URLSession
+}
+
 public final class TFLRequestManager : NSObject {
     weak var delegate : TFLRequestManagerDelegate?
+    weak var dataSource : TFLRequestManagerDataSource?
     fileprivate let TFLRequestManagerBaseURL = "https://api.tfl.gov.uk"
     static let sessionID =  "group.tflwidgetSharingData.sessionconfiguration"
 
     fileprivate var backgroundCompletionHandler : (session:(()->())?,caller:(()->())?)?
     fileprivate let TFLApplicationID = "PASTE_YOUR_APPLICATION_ID_HERE"
     fileprivate let TFLApplicationKey = "PASTE_YOUR_APPLICATION_KEY_HERE"
-    public static let sharedManager =  TFLRequestManager()
-    
-    fileprivate let session = URLSession(configuration: URLSessionConfiguration.default)
+    public static let shared =  TFLRequestManager()
+
+    fileprivate lazy var session = { () -> URLSession in
+        if let session = self.dataSource?.urlSession(for: self)  {
+            return session
+        }
+        return URLSession(configuration: URLSessionConfiguration.default)
+    }()
 
     
     public func getDataWithRelativePath(relativePath: String ,and query: String? = nil, completionBlock:@escaping ((_ data : Data?,_ error:Error?) -> Void)) {

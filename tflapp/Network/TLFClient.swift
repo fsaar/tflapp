@@ -13,7 +13,7 @@ public final class TFLClient {
         decoder.dateDecodingStrategy = .iso8601
         return decoder
     }()
-    lazy var tflManager : TFLRequestManager = TFLRequestManager.sharedManager
+    lazy var tflManager  = TFLRequestManager.shared
     
     public func arrivalsForStopPoint(with identifier: String, completionBlock:@escaping (([TFLBusPrediction]?,_ error:Error?) -> ()))  {
         let arivalsPath = "/StopPoint/\(identifier)/Arrivals"

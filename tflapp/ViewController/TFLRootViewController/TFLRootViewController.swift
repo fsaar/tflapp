@@ -107,7 +107,7 @@ class TFLRootViewController: UIViewController {
         self.foregroundNotificationHandler = TFLNotificationObserver(notification: NSNotification.Name.UIApplicationWillEnterForeground.rawValue) { [weak self]  notification in
             self?.loadNearbyBusstops()
         }
-        TFLRequestManager.sharedManager.delegate = self
+        TFLRequestManager.shared.delegate = self
         self.loadNearbyBusstops()
         
 

@@ -15,7 +15,7 @@ protocol TFLRequestManagerDataSource : class {
     func urlSession(for requestManager : TFLRequestManager) -> URLSession
 }
 
-public final class TFLRequestManager : NSObject {
+public class TFLRequestManager : NSObject {
     weak var delegate : TFLRequestManagerDelegate?
     weak var dataSource : TFLRequestManagerDataSource?
     fileprivate let TFLRequestManagerBaseURL = "https://api.tfl.gov.uk"

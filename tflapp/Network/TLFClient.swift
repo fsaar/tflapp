@@ -15,23 +15,27 @@ public final class TFLClient {
     }()
     lazy var tflManager  = TFLRequestManager.shared
     
-    public func arrivalsForStopPoint(with identifier: String, completionBlock:@escaping (([TFLBusPrediction]?,_ error:Error?) -> ()))  {
+    public func arrivalsForStopPoint(with identifier: String,
+                                     with operationQueue : OperationQueue = OperationQueue.main,
+                                     using completionBlock:@escaping (([TFLBusPrediction]?,_ error:Error?) -> ()))  {
         let arivalsPath = "/StopPoint/\(identifier)/Arrivals"
         tflManager.getDataWithRelativePath(relativePath: arivalsPath) { data, error in
             guard let data = data else {
-                OperationQueue.main.addOperation {
+                operationQueue.addOperation {
                     completionBlock(nil,error)
                 }
                 return
             }
             let predictions = try? TFLClient.jsonDecoder.decode([TFLBusPrediction].self,from: data)
-            OperationQueue.main.addOperation {
+            operationQueue.addOperation {
                 completionBlock(predictions,nil)
             }
         }
     }
     
-    public func nearbyBusStops(with coordinate: CLLocationCoordinate2D,completionBlock: @escaping (([TFLCDBusStop]?,_ error:Error?) -> ()))  {
+    public func nearbyBusStops(with coordinate: CLLocationCoordinate2D,
+                               with operationQueue : OperationQueue = OperationQueue.main,
+                               using completionBlock: @escaping (([TFLCDBusStop]?,_ error:Error?) -> ()))  {
         let busStopPath = "/StopPoint"
         let query = "lat=\(coordinate.latitude)&lon=\(coordinate.longitude)&stopTypes=NaptanPublicBusCoachTram&categories=Geo"
         let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
@@ -41,37 +45,50 @@ public final class TFLClient {
                     _ = try? context.save()
                 }
             }
-            completionBlock(stops,error)
+            operationQueue.addOperation({
+                completionBlock(stops,error)
+            })
         }
 
     }
 
-    public func busStops(with page: UInt,completionBlock: @escaping (([TFLCDBusStop]?,_ error:Error?) -> ()))  {
+    public func busStops(with page: UInt,
+                         with operationQueue : OperationQueue = OperationQueue.main,
+                         using completionBlock: @escaping (([TFLCDBusStop]?,_ error:Error?) -> ()))  {
         let busStopPath = "/StopPoint/Mode/bus"
         let query = "page=\(page+1)"
-        requestBusStops(with: busStopPath, query: query,context:TFLCoreDataStack.sharedDataStack.privateQueueManagedObjectContext, completionBlock: completionBlock)
+        requestBusStops(with: busStopPath, query: query,context:TFLCoreDataStack.sharedDataStack.privateQueueManagedObjectContext) { busstops, error in
+            operationQueue.addOperation({
+                completionBlock(busstops,error)
+            })
+        }
     }
     
 }
 
 fileprivate extension TFLClient {
-    fileprivate func requestBusStops(with relativePath: String,query: String,context: NSManagedObjectContext, completionBlock: @escaping (([TFLCDBusStop]?,_ error:Error?) -> ()))  {
+    fileprivate func requestBusStops(with relativePath: String,
+                                     query: String,context: NSManagedObjectContext,
+                                     with operationQueue : OperationQueue = OperationQueue.main,
+                                     completionBlock: @escaping (([TFLCDBusStop]?,_ error:Error?) -> ()))  {
         tflManager.getDataWithRelativePath(relativePath: relativePath,and: query) { data, error in
             if let data = data,
                 let jsonDict = try? JSONSerialization.jsonObject(with: data as Data
                     , options: JSONSerialization.ReadingOptions(rawValue:0)) as? [String : Any] {
                 if let jsonList = jsonDict?["stopPoints"] as? [[String: Any]] {
                     let stops = jsonList.flatMap { TFLCDBusStop.busStop(with: $0,and:context ) }
-                    OperationQueue.main.addOperation { completionBlock(stops,nil) }
+                    operationQueue.addOperation({
+                        OperationQueue.main.addOperation { completionBlock(stops,nil) }
+                    })
                 }
                 else {
-                    OperationQueue.main.addOperation { completionBlock(nil,TFLClientError.InvalidFormat(data: data)) }
+                    operationQueue.addOperation({
+                        OperationQueue.main.addOperation { completionBlock(nil,TFLClientError.InvalidFormat(data: data)) }
+                    })
                 }
-                
             }
             else {
-                
-                OperationQueue.main.addOperation {
+                operationQueue.addOperation {
                     completionBlock(nil,error)
                 }
             }

@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.org/fsaar/tflapp.svg?branch=develop)](https://travis-ci.org/fsaar/tflapp)
+[![Code Coverage](https://codecov.io/gh/fsaar/tflapp/coverage.svg?branch=feature/swift4)](https://codecov.io/gh/fsaar/tflapp/branch/feature%2Fswift4)
+
 # London Bus Stops
 
 An iOS app based on [TfL's unified API](https://api.tfl.gov.uk/) to show current bus stops around your current location instigated by my passion for Swift.

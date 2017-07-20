@@ -228,14 +228,27 @@ class TFLClientSpecs: QuickSpec {
                     
             }
             
-            pending("should call back on given queue on success") {
+            it("should call back on given queue on success") {
+                var completionBlockCalled = false
+                let queue = OperationQueue()
+                testRequestManager.getDataCompletionBlock = { path in
+                    return (arrivalsTestData,nil)
+                }
+                client.arrivalsForStopPoint(with:"String",
+                                            with: queue) { _,error in
+                                                expect(error).to(beNil())
+                                                expect(queue.operationCount) == 1
+                                                completionBlockCalled = true
+                }
+                expect(completionBlockCalled).toEventually(beTrue())
             }
 
             it("should call back on provided operation queue on failure") {
                 var completionBlockCalled = false
                 let queue = OperationQueue()
                 client.arrivalsForStopPoint(with:"String",
-                                            with: queue) { _,_ in
+                                            with: queue) { _,error in
+                                                expect(error).notTo(beNil())
                      expect(queue.operationCount) == 1
                     completionBlockCalled = true
                 }
@@ -244,9 +257,10 @@ class TFLClientSpecs: QuickSpec {
             }
             it("should call back on mainqueue if no operation queue provided on failure") {
                 var completionBlockCalled = false
-                client.arrivalsForStopPoint(with:"String") { _,_ in
-                                                expect(Thread.isMainThread) == true
-                                                completionBlockCalled = true
+                client.arrivalsForStopPoint(with:"String") { _,error in
+                    expect(error).notTo(beNil())
+                    expect(Thread.isMainThread) == true
+                    completionBlockCalled = true
                 }
                 expect(completionBlockCalled).toEventually(beTrue(),timeout:5)
             }
@@ -256,7 +270,8 @@ class TFLClientSpecs: QuickSpec {
                 testRequestManager.getDataCompletionBlock = { path in
                     return (arrivalsTestData,nil)
                 }
-                client.arrivalsForStopPoint(with:"String") { _,_ in
+                client.arrivalsForStopPoint(with:"String") { _,error in
+                    expect(error).to(beNil())
                     expect(Thread.isMainThread) == true
                     completionBlockCalled = true
                 }
@@ -305,7 +320,19 @@ class TFLClientSpecs: QuickSpec {
                 expect(nearbyBusStopsBlockCalled) == true
             }
             
-            pending("should call back on given queue on success") {
+            it("should call back on given queue on success") {
+                var completionBlockCalled = false
+                let queue = OperationQueue()
+                testRequestManager.getDataCompletionBlock = { path in
+                    return (nearbyBusStopsData,nil)
+                }
+                client.nearbyBusStops(with :kCLLocationCoordinate2DInvalid,
+                                      with: queue) { _,error in
+                                        expect(error).to(beNil())
+                                        expect(queue.operationCount) == 1
+                                        completionBlockCalled = true
+                }
+                expect(completionBlockCalled).toEventually(beTrue(),timeout:5)
             }
 
             
@@ -313,19 +340,35 @@ class TFLClientSpecs: QuickSpec {
                 var completionBlockCalled = false
                 let queue = OperationQueue()
                 client.nearbyBusStops(with :kCLLocationCoordinate2DInvalid,
-                                            with: queue) { _,_ in
+                                            with: queue) { _,error in
+                                                expect(error).notTo(beNil())
                                                 expect(queue.operationCount) == 1
                                                 completionBlockCalled = true
                 }
                 expect(completionBlockCalled).toEventually(beTrue(),timeout:5)
             }
 
-            pending("should call back on mainqueue if no operation queue provided on success") {
-                
+            it("should call back on mainqueue if no operation queue provided on success") {
+                var completionBlockCalled = false
+                testRequestManager.getDataCompletionBlock = { path in
+                    return (nearbyBusStopsData,nil)
+                }
+                client.nearbyBusStops(with :kCLLocationCoordinate2DInvalid) { _,error in
+                    expect(error).to(beNil())
+                    completionBlockCalled = true
+                    expect(Thread.isMainThread) == true
+                }
+                expect(completionBlockCalled).toEventually(beTrue(),timeout:5)
             }
 
-            pending("should call back on mainqueue if no operation queue provided on failure") {
-                
+            it("should call back on mainqueue if no operation queue provided on failure") {
+                var completionBlockCalled = false
+                client.nearbyBusStops(with :kCLLocationCoordinate2DInvalid) { _,error in
+                    expect(error).notTo(beNil())
+                    completionBlockCalled = true
+                    expect(Thread.isMainThread) == true
+                }
+                expect(completionBlockCalled).toEventually(beTrue(),timeout:5)
             }
 
             it("should parse model successfully") {
@@ -370,19 +413,39 @@ class TFLClientSpecs: QuickSpec {
                 }
                 expect(busStopsBlockCalled) == true
             }
-            pending("should call back on given queue if no operation queue provided on failure") {
+            it("should call back on given queue if operation queue provided on failure") {
+                var completionBlockCalled = false
+                let queue = OperationQueue()
+                client.busStops(with :1,
+                                with: queue) { _,error in
+                                    expect(error).notTo(beNil())
+                                    expect(queue.operationCount) > 0
+                                    completionBlockCalled = true
+                }
+                expect(completionBlockCalled).toEventually(beTrue(),timeout:5)
             }
             
-            pending("should call back on given queue if no operation queue provided on success") {
+            it("should call back on given queue if operation queue provided on success") {
+                var completionBlockCalled = false
+                let queue = OperationQueue()
+                testRequestManager.getDataCompletionBlock = { path in
+                    return (nearbyBusStopsData,nil)
+                }
+                client.busStops(with :1,
+                                with: queue) { _,error in
+                                    expect(error).to(beNil())
+                                    expect(queue.operationCount) > 0
+                                    completionBlockCalled = true
+                }
+                expect(completionBlockCalled).toEventually(beTrue(),timeout:5)
             }
 
             it("should call back on mainQueue if no operation queue provided on failure") {
                 var completionBlockCalled = false
-                let queue = OperationQueue()
-                client.busStops(with :1,
-                                      with: queue) { _,_ in
-                                        expect(Thread.isMainThread) == true
-                                        completionBlockCalled = true
+                client.busStops(with :1) { _,error in
+                    expect(error).notTo(beNil())
+                    expect(Thread.isMainThread) == true
+                    completionBlockCalled = true
                 }
                 expect(completionBlockCalled).toEventually(beTrue(),timeout:5)
             }
@@ -392,7 +455,8 @@ class TFLClientSpecs: QuickSpec {
                 testRequestManager.getDataCompletionBlock = { path in
                     return (nearbyBusStopsData,nil)
                 }
-                client.busStops(with :1) { _,_ in
+                client.busStops(with :1) { _,error in
+                    expect(error).to(beNil())
                     completionBlockCalled = true
                     expect(Thread.isMainThread) == true
                 }

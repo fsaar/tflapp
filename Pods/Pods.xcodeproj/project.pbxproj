@@ -45,7 +45,6 @@
 		499EF2F53452B6D2A5B7AA77EE20E826 /* AllPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CAB9B5CEB03F1CE85FCE7B33364D29B /* AllPass.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		4CDACD8A5A6CFB688838AA988E7D1E43 /* Nimble-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = F956D6F10DD5ACB44DA7326DF223994E /* Nimble-dummy.m */; };
 		4DCE88F705BBD4C4026ED090781F315C /* QCKDSL.h in Headers */ = {isa = PBXBuildFile; fileRef = 3CDAD7B653F081ED21DC1E2A728030F9 /* QCKDSL.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4EE25FA4C2596266104AE032D4844349 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32DF21EF8268E32D359CD23F2CF3EFE3 /* Foundation.framework */; };
 		50E2D93FC708DD871AD041E2D5D0C9F9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32DF21EF8268E32D359CD23F2CF3EFE3 /* Foundation.framework */; };
 		5119C703889D61372E56B0D3CB94D65D /* QuickSelectedTestSuiteBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14F2349A85F9A45D8F44404B73A95E3 /* QuickSelectedTestSuiteBuilder.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		531C54B1C10BA0F17A2B7D81D02BD390 /* CwlCatchException.h in Headers */ = {isa = PBXBuildFile; fileRef = 34846C455011015A12443767FE9C8900 /* CwlCatchException.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -290,7 +289,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4EE25FA4C2596266104AE032D4844349 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

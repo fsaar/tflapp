@@ -10,4 +10,7 @@ script:
 
 notifications:
   slack: 'samedialabs:$SLACK_SAMEDIALABS_TRAVIS_CI'
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
   

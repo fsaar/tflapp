@@ -29,7 +29,8 @@
       enableAddressSanitizer = "YES"
       enableASanStackUseAfterReturn = "YES"
       language = ""
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      codeCoverageEnabled = "YES">
       <Testables>
          <TestableReference
             skipped = "NO">

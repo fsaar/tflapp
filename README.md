@@ -7,7 +7,7 @@ An iOS app based on [TfL's unified API](https://api.tfl.gov.uk/) to show current
 
 ## Installation
 
-The project is made available under the MIT license. You need Xcode 8 since the app is based on Swift 3. To use it, you have to [setup a TfL account](https://api-portal.tfl.gov.uk/login) and create an API key and identifier. There are two ways of getting key and identifier into the app. The straightforward one is just to paste them into TFLRequestmanager. The alternate approach is to create an .env file in the project's root directory and add them in the following format:
+The project is made available under the MIT license. You need Xcode 9 since the app is based on Swift 4. To use it, you have to [setup a TfL account](https://api-portal.tfl.gov.uk/login) and create an API key and identifier. There are two ways of getting key and identifier into the app. The straightforward one is just to paste them into TFLRequestmanager. The alternate approach is to create an .env file in the project's root directory and add them in the following format:
 
     TFLApplicationID="XXXXXXX"
     TFLApplicationKey="XXXXXXXXX"

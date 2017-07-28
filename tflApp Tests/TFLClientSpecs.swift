@@ -236,11 +236,11 @@ class TFLClientSpecs: QuickSpec {
                 }
                 client.arrivalsForStopPoint(with:"String",
                                             with: queue) { _,error in
+                                                completionBlockCalled = true
                                                 expect(error).to(beNil())
                                                 expect(queue.operationCount) == 1
-                                                completionBlockCalled = true
                 }
-                expect(completionBlockCalled).toEventually(beTrue())
+                expect(completionBlockCalled).toEventually(beTrue(),timeout:5)
             }
 
             it("should call back on provided operation queue on failure") {
@@ -252,7 +252,7 @@ class TFLClientSpecs: QuickSpec {
                      expect(queue.operationCount) == 1
                     completionBlockCalled = true
                 }
-                expect(completionBlockCalled).toEventually(beTrue())
+                expect(completionBlockCalled).toEventually(beTrue(),timeout:5)
                 
             }
             it("should call back on mainqueue if no operation queue provided on failure") {
@@ -287,7 +287,7 @@ class TFLClientSpecs: QuickSpec {
                     completionBlockCalled = true
                     expect(models!.count) == 2
                 }
-                expect(completionBlockCalled).toEventually(beTrue())
+                expect(completionBlockCalled).toEventually(beTrue(),timeout:5)
             }
             
             it("should handle invalid model gracefully") {

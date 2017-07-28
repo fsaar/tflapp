@@ -78,12 +78,12 @@ fileprivate extension TFLClient {
                 if let jsonList = jsonDict?["stopPoints"] as? [[String: Any]] {
                     let stops = jsonList.flatMap { TFLCDBusStop.busStop(with: $0,and:context ) }
                     operationQueue.addOperation({
-                        OperationQueue.main.addOperation { completionBlock(stops,nil) }
+                        completionBlock(stops,nil)
                     })
                 }
                 else {
                     operationQueue.addOperation({
-                        OperationQueue.main.addOperation { completionBlock(nil,TFLClientError.InvalidFormat(data: data)) }
+                         completionBlock(nil,TFLClientError.InvalidFormat(data: data))
                     })
                 }
             }

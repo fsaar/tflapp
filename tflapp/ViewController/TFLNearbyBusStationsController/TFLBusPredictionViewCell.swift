@@ -24,7 +24,7 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
             self.bgImage.layer.contents = TFLBusPredictionViewCell.busPredictionViewBackgroundImage.cgImage
         }
     }
-    private let bgColor = UIColor(colorLiteralRed: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
+    private let bgColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
     static var busPredictionViewBackgroundImage: UIImage = {
         let bounds = CGRect(origin:.zero, size: CGSize(width: 54, height: 46))
         let busNumberRect = CGRect(x: 5, y: 4, width: 44, height: 20)
@@ -36,7 +36,7 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
             context.fill(bounds)
             
             let path = UIBezierPath(roundedRect: bounds, cornerRadius: 5)
-            let bgColor = UIColor(colorLiteralRed: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
+            let bgColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
             bgColor.setFill()
             path.fill()
             

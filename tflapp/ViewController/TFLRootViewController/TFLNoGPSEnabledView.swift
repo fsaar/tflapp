@@ -32,7 +32,7 @@ class TFLNoGPSEnabledView : UIView {
         self.layer.borderColor = UIColor.red.cgColor
         self.layer.cornerRadius = 5
         self.layer.borderWidth = 0.5
-        self.backgroundColor = UIColor(colorLiteralRed: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
+        self.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
     }
     
     @IBAction func buttonHandler(button : UIButton) {

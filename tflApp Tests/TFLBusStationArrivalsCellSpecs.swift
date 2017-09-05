@@ -16,6 +16,7 @@ class TFLBusStationArrivalsCellSpecs: QuickSpec {
         var busPredicationModels : [TFLBusPrediction]!
         var managedObjectContext : NSManagedObjectContext!
         var referenceDate : Date!
+        var decoder : JSONDecoder!
 
         beforeEach {
             
@@ -120,12 +121,18 @@ class TFLBusStationArrivalsCellSpecs: QuickSpec {
                 
                 predictions +=  [newDict]
             }
-
             
-            let model1 = TFLBusPrediction(with:predictions[0])
-            let model2 = TFLBusPrediction(with:predictions[1])
-            let model3 = TFLBusPrediction(with:predictions[2])
-            busPredicationModels = [model1!,model2!,model3!]
+            let data1 = try! JSONSerialization.data(withJSONObject: predictions[0], options: [])
+            let data2 = try! JSONSerialization.data(withJSONObject: predictions[1], options: [])
+            let data3 = try! JSONSerialization.data(withJSONObject: predictions[2], options: [])
+
+            decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .iso8601
+            
+            let model1 = try! decoder.decode(TFLBusPrediction.self,from: data1)
+            let model2 = try! decoder.decode(TFLBusPrediction.self,from: data2)
+            let model3 = try! decoder.decode(TFLBusPrediction.self,from: data3)
+            busPredicationModels = [model1,model2,model3]
             
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let controller = storyboard.instantiateViewController(withIdentifier: "TFLNearbyBusStationsController") as! TFLNearbyBusStationsController

@@ -2,7 +2,7 @@
 import UIKit
 
 class TFLSlideContainerController: UIViewController {
-    var snapPositions: [CGFloat] = [0.00,0.4,0.70]
+    var snapPositions: [CGFloat] = [0.04,0.4,0.70]
     fileprivate var snapHandler : TFLSnapHandler?
     var sliderViewUpdateBlock : ((_ slider : UIView,_ origin: CGPoint,_ final: Bool) -> ())? = nil {
         didSet {
@@ -11,23 +11,14 @@ class TFLSlideContainerController: UIViewController {
     }
     let maxVelocity : CGFloat = 100
     let defaultVelocity : CGFloat = 10
-    fileprivate lazy var shapeLayer : CAShapeLayer = {
-        let path = CGMutablePath()
-        let radius = CGFloat(20)
-        path.move(to: CGPoint(x:radius,y:0))
-        path.addLine(to: CGPoint(x:self.view.frame.size.width-radius,y:0))
-        
-        path.addArc(center: CGPoint(x:self.view.frame.size.width-radius,y:radius), radius: radius, startAngle: CGFloat(1.5 * Double.pi), endAngle: 0, clockwise: false)
-        path.addLine(to: CGPoint(x:self.view.frame.size.width,y:self.sliderHandleContainerView.frame.size.height))
-        path.addLine(to: CGPoint(x:0,y:self.sliderHandleContainerView.frame.size.height))
-        path.addLine(to: CGPoint(x:0,y:radius))
-        path.addArc(center: CGPoint(x:radius,y:radius), radius: radius, startAngle: CGFloat(Double.pi) , endAngle:  CGFloat(1.5 * Double.pi), clockwise: false)
-        let shapeLayer = CAShapeLayer()
-        shapeLayer.path = path
-        return shapeLayer
-    }()
+    
     @IBOutlet fileprivate weak var sliderHandleContainerView : UIView!
-    @IBOutlet fileprivate weak var sliderHandleBackgroundView : UIView!
+    @IBOutlet fileprivate weak var sliderHandleBackgroundView : UIView! = nil {
+        didSet {
+            self.sliderHandleBackgroundView.layer.cornerRadius = self.sliderHandleBackgroundView.frame.size.height/2
+            self.sliderHandleBackgroundView.layer.maskedCorners = [.layerMaxXMinYCorner , .layerMinXMinYCorner]
+        }
+    }
     @IBOutlet fileprivate weak var backgroundContainerView : UIView!
     @IBOutlet fileprivate var sliderContainerView : UIView! = nil
     @IBOutlet fileprivate var sliderContentContainerView : UIView!
@@ -49,7 +40,6 @@ class TFLSlideContainerController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.sliderHandleBackgroundView.layer.mask = self.shapeLayer
         self.snapHandler = TFLSnapHandler(with: self.sliderHandleContainerView,in: self.view, and: self.snapPositions, using: { [weak self] _,velocity,newOrigin,final in
             guard let strongSelf = self else {
                 return

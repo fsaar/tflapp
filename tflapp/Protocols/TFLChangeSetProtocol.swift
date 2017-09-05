@@ -9,10 +9,10 @@ extension TFLChangeSetProtocol {
     func evaluateLists<T: Hashable>(oldList : [T], newList : [T], compare: @escaping (_ lhs : T,_ rhs: T) -> (Bool))  -> (inserted : [(element:T,index:Int)],deleted : [(element:T,index:Int)], updated : [(element:T,index:Int)],moved : [(element:T,oldIndex:Int,newIndex:Int)])
     {
         guard !oldList.isEmpty else {
-            return (newList.enumerated().map { ($1,$0) },[],[],[])
+            return (newList.enumerated().map { ($0.1,$0.0) },[],[],[])
         }
         guard !newList.isEmpty else {
-            return ([],oldList.enumerated().map { ($1,$0) },[],[])
+            return ([],oldList.enumerated().map { ($0.1,$0.0) },[],[])
         }
         
         let sortedOldList = oldList.sorted(by: compare)
@@ -49,7 +49,9 @@ extension TFLChangeSetProtocol {
                 }
                 return newList[index]
             }
-            inserted.forEach { element,index in
+            inserted.forEach { (arg) in
+                
+                let (element, index) = arg
                 updatedList.insert(element, at: index)
             }
             let movedTypes = innerFindMoveTypes(list: updatedList)
@@ -64,12 +66,12 @@ extension TFLChangeSetProtocol {
         
         let insertedTypes = newList.filter { insertedSet.contains($0) }.map { $0 }
         let insertedIndices = insertedTypes.flatMap { sortedNewList.index(of:$0) }
-        let inserted = zip(insertedTypes,insertedIndices).map { ($0,$1) }
+        let inserted = zip(insertedTypes,insertedIndices).map { $0 }
         
         
         let deletedTypes = oldList.filter { deletedSet.contains($0) }.map { $0 }
         let deletedIndices = deletedTypes.flatMap { sortedOldList.index(of:$0) }
-        let deleted = zip(deletedTypes,deletedIndices).map { ($0,$1) }
+        let deleted = zip(deletedTypes,deletedIndices).map { $0 }
         
         let movedTypes = findMovedTypes(inserted: inserted ,deleted: deleted)
         let moved = movedTypes.flatMap { (el : T) -> (T,Int,Int)? in

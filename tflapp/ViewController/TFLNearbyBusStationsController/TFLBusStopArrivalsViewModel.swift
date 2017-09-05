@@ -14,7 +14,7 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
                 var timeString = ""
                 
                 switch secs {
-                case Int.min..<30:
+                case ..<30:
                     timeString = NSLocalizedString("TFLBusStopArrivalsViewModel.due", comment: "")
                 case 30..<60:
                     timeString = "1 " + NSLocalizedString("TFLBusStopArrivalsViewModel.min", comment: "")
@@ -27,7 +27,8 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
                 }
                 return timeString
             }
-            let timeOffset = Int(referenceTime - busPrediction.timeStampSinceReferenceDate)
+            let timeStampSinceReferenceDate = busPrediction.timeStamp.timeIntervalSinceReferenceDate
+            let timeOffset = Int(referenceTime - timeStampSinceReferenceDate)
             self.identifier = busPrediction.identifier
             self.line = busPrediction.lineName
             self.timeToStation = Int(busPrediction.timeToStation)
@@ -88,8 +89,8 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
         self.stationName = arrivalInfo.busStop.name
         self.identifier = arrivalInfo.busStop.identifier
         self.distance = TFLBusStopArrivalsViewModel.distanceFormatter.string(fromValue: arrivalInfo.busStopDistance, unit: .meter)
-        let referenceTime = referenceDate?.timeIntervalSinceReferenceDate ?? Date.timeIntervalSinceReferenceDate
-        let filteredPredictions = arrivalInfo.arrivals.filter { $0.ttlSinceReferenceDate > referenceTime }
+        let referenceTime = referenceDate?.timeIntervalSinceReferenceDate ?? Date.timeIntervalSinceReferenceDate        
+        let filteredPredictions = arrivalInfo.arrivals.filter { $0.timeToLive.timeIntervalSinceReferenceDate > referenceTime }
         self.arrivalTimes = filteredPredictions.map { LinePredictionViewModel(with: $0,using: referenceTime) }
     }
 

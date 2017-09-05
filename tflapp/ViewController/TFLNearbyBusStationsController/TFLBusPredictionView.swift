@@ -1,6 +1,17 @@
 import UIKit
 import Crashlytics
 
+extension MutableCollection where Index == Int, Iterator.Element == TFLBusStopArrivalsViewModel.LinePredictionViewModel {
+    subscript(indexPath : IndexPath) -> TFLBusStopArrivalsViewModel.LinePredictionViewModel {
+        get {
+            return self[indexPath.row]
+        }
+        set {
+           self[indexPath.row] = newValue
+        }
+    }
+}
+
 class TFLBusPredictionView: UICollectionView {
     
     override func awakeFromNib() {
@@ -81,7 +92,7 @@ extension TFLBusPredictionView : UICollectionViewDataSource {
 fileprivate extension TFLBusPredictionView {
     func configure(_ cell: UICollectionViewCell?,at indexPath : IndexPath,as update: Bool = false) {
         if let busPredictionCell = cell as? TFLBusPredictionViewCell {
-            let prediction = predictions[indexPath.row]
+            let prediction = predictions[indexPath]
             busPredictionCell.configure(with: prediction,as : update)
         }
     }

@@ -1,7 +1,13 @@
 import UIKit
 
 class TFLLoadLocationView : UIView {
-    @IBOutlet weak var infoLabel : UILabel!
+    @IBOutlet weak var infoLabel : UILabel! = nil {
+        didSet {
+            self.infoLabel.font = UIFont.tflFont(size: 17)
+            self.infoLabel.textColor = .black
+            self.infoLabel.text = NSLocalizedString("TFLLoadLocationView.title", comment: "")
+        }
+    }
     @IBOutlet weak var indicator : UIActivityIndicatorView!
     
     override var isHidden: Bool  {
@@ -16,13 +22,5 @@ class TFLLoadLocationView : UIView {
                 }
             }
         }
-        
-    }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        self.infoLabel.font = UIFont.tflFont(size: 17)
-        self.infoLabel.textColor = .black
-        self.infoLabel.text = NSLocalizedString("TFLLoadLocationView.title", comment: "")
     }
 }

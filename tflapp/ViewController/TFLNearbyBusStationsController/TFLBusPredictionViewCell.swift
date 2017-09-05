@@ -1,10 +1,30 @@
 import UIKit
 
 class TFLBusPredictionViewCell: UICollectionViewCell {
-    @IBOutlet weak var line : UILabel!
-    @IBOutlet weak var arrivalTime : TFLAnimiatedLabel!
-    @IBOutlet weak var bgImage : UIImageView!
-    private let bgColor = UIColor(colorLiteralRed: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
+    @IBOutlet weak var line : UILabel! = nil {
+        didSet {
+            self.line.font = UIFont.tflFontBusLineIdentifier()
+            self.line.textColor = .white
+            self.line.textAlignment = .center
+            self.line.isOpaque = true
+            self.line.backgroundColor = UIColor.red
+        }
+    }
+    @IBOutlet weak var arrivalTime : TFLAnimiatedLabel! = nil {
+        didSet {
+            self.arrivalTime.font = UIFont.tflFontBusArrivalTime()
+            self.arrivalTime.textColor = .black
+            self.arrivalTime.isOpaque = true
+            self.arrivalTime.bgColor = bgColor
+            self.arrivalTime.textAlignment = .center
+        }
+    }
+    @IBOutlet weak var bgImage : UIImageView! = nil {
+        didSet {
+            self.bgImage.layer.contents = TFLBusPredictionViewCell.busPredictionViewBackgroundImage.cgImage
+        }
+    }
+    private let bgColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
     static var busPredictionViewBackgroundImage: UIImage = {
         let bounds = CGRect(origin:.zero, size: CGSize(width: 54, height: 46))
         let busNumberRect = CGRect(x: 5, y: 4, width: 44, height: 20)
@@ -16,7 +36,7 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
             context.fill(bounds)
             
             let path = UIBezierPath(roundedRect: bounds, cornerRadius: 5)
-            let bgColor = UIColor(colorLiteralRed: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
+            let bgColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
             bgColor.setFill()
             path.fill()
             
@@ -27,21 +47,6 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
             busNumberRectPath.stroke()
         }
     }()
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        self.line.font = UIFont.tflFont(size: 12)
-        self.line.textColor = .white
-        self.line.textAlignment = .center
-        self.line.isOpaque = true
-        self.line.backgroundColor = UIColor.red
-        self.arrivalTime.font = UIFont.tflFont(size: 12)
-        self.arrivalTime.textColor = .black
-        self.arrivalTime.isOpaque = true
-        self.arrivalTime.bgColor = bgColor
-        self.arrivalTime.textAlignment = .center
-        self.bgImage.layer.contents = TFLBusPredictionViewCell.busPredictionViewBackgroundImage.cgImage
-    }
     
     override func prepareForReuse() {
         super.prepareForReuse()

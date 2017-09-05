@@ -107,7 +107,7 @@ class TFLRootViewController: UIViewController {
         self.foregroundNotificationHandler = TFLNotificationObserver(notification: NSNotification.Name.UIApplicationWillEnterForeground.rawValue) { [weak self]  notification in
             self?.loadNearbyBusstops()
         }
-        TFLRequestManager.sharedManager.delegate = self
+        TFLRequestManager.shared.delegate = self
         self.loadNearbyBusstops()
         
 
@@ -166,7 +166,7 @@ fileprivate extension TFLRootViewController {
     }
     
     func updateNearbyBusStops(for currentLocation:CLLocationCoordinate2D ) {
-        self.tflClient.nearbyBusStops(with: currentLocation) { _  in
+        self.tflClient.nearbyBusStops(with: currentLocation) { _,_  in
             Crashlytics.notify()
         }
     }
@@ -257,10 +257,10 @@ extension TFLRootViewController : TFLNoStationsViewDelegate {
     }
 }
 
+// MARK: DataBase Generation
 
 fileprivate extension TFLRootViewController {
     
-    // MARK: DataBase Generation
     func loadBusStops(of page: UInt = 0) {
         self.tflClient.busStops(with: page) { [weak self] busStops,_ in
             if let busStops = busStops, !busStops.isEmpty {
@@ -316,7 +316,9 @@ extension TFLRootViewController : TFLRequestManagerDelegate {
     func didFinishURLTask(with requestManager: TFLRequestManager,session : URLSession)
     {
         session.getAllTasks { tasks in
-            UIApplication.shared.isNetworkActivityIndicatorVisible = !tasks.isEmpty
+            OperationQueue.main.addOperation {
+                UIApplication.shared.isNetworkActivityIndicatorVisible = !tasks.isEmpty
+            }
         }
     }
 

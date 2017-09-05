@@ -2,7 +2,7 @@ language: objective-c
 
 osx_image: xcode9
 script:
-- xcrun  instruments -w "iPhone 7 (11.0) [5BABCDC9-5EAF-4E60-96C0-F78309091348] (Simulator)" || true
+- xcrun  instruments -w "iPhone 7 (11.0) [BEB8639E-3AA9-46F3-B725-77F8E2D32F8C] (Simulator)" || true
 
 - xcodebuild -workspace tflapp.xcworkspace -scheme tflapp -destination 'platform=iOS Simulator,name=iPhone 7' -sdk iphonesimulator build CODE_SIGNING_REQUIRED=NO  ONLY_ACTIVE_ARCH=NO  RUN_CLANG_STATIC_ANALYZER=YES GCC_TREAT_WARNINGS_AS_ERRORS=YES
 - xcodebuild -workspace tflapp.xcworkspace -scheme tflapp -destination 'platform=iOS Simulator,name=iPhone 7' -sdk iphonesimulator build CODE_SIGNING_REQUIRED=NO  ONLY_ACTIVE_ARCH=NO  GCC_TREAT_WARNINGS_AS_ERRORS=YES test

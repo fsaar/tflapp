@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0820"
+   LastUpgradeVersion = "0900"
    version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -26,7 +26,11 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      enableAddressSanitizer = "YES"
+      enableASanStackUseAfterReturn = "YES"
+      language = ""
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      codeCoverageEnabled = "YES">
       <Testables>
          <TestableReference
             skipped = "NO">
@@ -55,12 +59,15 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      language = ""
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
+      stopOnEveryMainThreadCheckerIssue = "YES"
       debugServiceExtension = "internal"
-      allowLocationSimulation = "NO">
+      enableGPUFrameCaptureMode = "3"
+      allowLocationSimulation = "YES">
       <BuildableProductRunnable
          runnableDebuggingMode = "0">
          <BuildableReference

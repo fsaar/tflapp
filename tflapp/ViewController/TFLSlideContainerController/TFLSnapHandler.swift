@@ -19,7 +19,7 @@ class TFLSnapHandler: NSObject {
         panGestureView.addGestureRecognizer(self.gestureRecognizer!)
     }
     
-    func panGestureHandler(_ recognizer : UIPanGestureRecognizer) {
+    @objc func panGestureHandler(_ recognizer : UIPanGestureRecognizer) {
         let velocity = recognizer.velocity(in: self.containerView)
         let p = recognizer.location(in: self.containerView)
         let pGestureView = recognizer.location(in: self.panGestureView)

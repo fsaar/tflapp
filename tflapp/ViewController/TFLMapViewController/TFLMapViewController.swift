@@ -24,7 +24,7 @@ class TFLMapViewController: UIViewController,TFLChangeSetProtocol {
         label.adjustsFontSizeToFitWidth = true
         label.textAlignment = .center
         label.textColor = .white
-        label.font = UIFont.tflBoldFont(size: 10)
+        label.font = UIFont.tflFontMapBusStationIdentifier()
         return label
     }()
 

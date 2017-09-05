@@ -16,6 +16,7 @@ class TFLBusStationArrivalsCellSpecs: QuickSpec {
         var busPredicationModels : [TFLBusPrediction]!
         var managedObjectContext : NSManagedObjectContext!
         var referenceDate : Date!
+        var decoder : JSONDecoder!
 
         beforeEach {
             
@@ -72,7 +73,7 @@ class TFLBusStationArrivalsCellSpecs: QuickSpec {
             managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
             managedObjectContext.persistentStoreCoordinator = coordinator
             
-            let tempPredictions = [
+            let dict1 : [String:Any] =
                 ["id": "1836802865",
                  "vehicleId": "LTZ1218",
                  "naptanId": "490011791K",
@@ -81,7 +82,8 @@ class TFLBusStationArrivalsCellSpecs: QuickSpec {
                  "destinationName": "Victoria",
                  "timestamp": "2016-11-16T15:59:35Z",
                  "timeToStation": UInt(902),
-                 "timeToLive": "2016-11-16T16:15:07Z"],
+                 "timeToLive": "2016-11-16T16:15:07Z"]
+            let dict2 : [String:Any] =
                 ["id": "1836802866",
                  "vehicleId": "LTZ1218",
                  "naptanId": "490011791K",
@@ -90,7 +92,8 @@ class TFLBusStationArrivalsCellSpecs: QuickSpec {
                  "destinationName": "Victoria",
                  "timestamp": "2016-11-16T15:59:35Z",
                  "timeToStation": UInt(60),
-                 "timeToLive": "2016-11-16T16:15:07Z"],
+                 "timeToLive": "2016-11-16T16:15:07Z"]
+            let dict3 : [String:Any] =
                 ["id": "1836802867",
                  "vehicleId": "LTZ1218",
                  "naptanId": "490011791K",
@@ -99,7 +102,8 @@ class TFLBusStationArrivalsCellSpecs: QuickSpec {
                  "destinationName": "Victoria",
                  "timestamp": "2016-11-16T15:59:35Z",
                  "timeToStation": UInt(1902),
-                 "timeToLive": "2016-11-16T16:15:07Z"],
+                 "timeToLive": "2016-11-16T16:15:07Z"]
+            let dict4 : [String:Any] = 
                 ["id": "1836802868",
                  "vehicleId": "LTZ1218",
                  "naptanId": "490011791K",
@@ -108,7 +112,7 @@ class TFLBusStationArrivalsCellSpecs: QuickSpec {
                  "destinationName": "Victoria",
                  "timestamp": "2016-11-16T15:59:35Z",
                  "timeToStation": UInt(902)]
-            ]
+            let tempPredictions = [dict1,dict2,dict3,dict4]
             referenceDate  = timeFormatter.date(from: "2016-11-16T16:15:01Z")
             
             var predictions : [[String:Any]] = []
@@ -120,12 +124,18 @@ class TFLBusStationArrivalsCellSpecs: QuickSpec {
                 
                 predictions +=  [newDict]
             }
-
             
-            let model1 = TFLBusPrediction(with:predictions[0])
-            let model2 = TFLBusPrediction(with:predictions[1])
-            let model3 = TFLBusPrediction(with:predictions[2])
-            busPredicationModels = [model1!,model2!,model3!]
+            let data1 = try! JSONSerialization.data(withJSONObject: predictions[0], options: [])
+            let data2 = try! JSONSerialization.data(withJSONObject: predictions[1], options: [])
+            let data3 = try! JSONSerialization.data(withJSONObject: predictions[2], options: [])
+
+            decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .iso8601
+            
+            let model1 = try! decoder.decode(TFLBusPrediction.self,from: data1)
+            let model2 = try! decoder.decode(TFLBusPrediction.self,from: data2)
+            let model3 = try! decoder.decode(TFLBusPrediction.self,from: data3)
+            busPredicationModels = [model1,model2,model3]
             
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let controller = storyboard.instantiateViewController(withIdentifier: "TFLNearbyBusStationsController") as! TFLNearbyBusStationsController

@@ -1,49 +1,70 @@
 import UIKit
 
 class TFLBusPredictionViewCell: UICollectionViewCell {
-    @IBOutlet weak var line : UILabel!
-    @IBOutlet weak var arrivalTime : UILabel!
-    @IBOutlet weak var lineBackground : UIView!
-    private let bgColor = UIColor.init(colorLiteralRed: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        self.lineBackground.isHidden = true
-        self.line.font = UIFont.tflFont(size: 12)
-        self.line.textColor = .white
-        self.line.isOpaque = true
-        self.line.backgroundColor = UIColor.red
-        self.arrivalTime.font = UIFont.tflFont(size: 12)
-        self.arrivalTime.textColor = .black
-        self.arrivalTime.isOpaque = true
-        self.arrivalTime.backgroundColor = bgColor
+    @IBOutlet weak var line : UILabel! = nil {
+        didSet {
+            self.line.font = UIFont.tflFontBusLineIdentifier()
+            self.line.textColor = .white
+            self.line.textAlignment = .center
+            self.line.isOpaque = true
+            self.line.backgroundColor = UIColor.red
+        }
     }
+    @IBOutlet weak var arrivalTime : TFLAnimiatedLabel! = nil {
+        didSet {
+            self.arrivalTime.font = UIFont.tflFontBusArrivalTime()
+            self.arrivalTime.textColor = .black
+            self.arrivalTime.isOpaque = true
+            self.arrivalTime.bgColor = bgColor
+            self.arrivalTime.textAlignment = .center
+        }
+    }
+    @IBOutlet weak var bgImage : UIImageView! = nil {
+        didSet {
+            self.bgImage.layer.contents = TFLBusPredictionViewCell.busPredictionViewBackgroundImage.cgImage
+        }
+    }
+    private let bgColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
+    static var busPredictionViewBackgroundImage: UIImage = {
+        let bounds = CGRect(origin:.zero, size: CGSize(width: 54, height: 46))
+        let busNumberRect = CGRect(x: 5, y: 4, width: 44, height: 20)
+        let format = UIGraphicsImageRendererFormat()
+        format.opaque = true
+        let renderer = UIGraphicsImageRenderer(bounds: bounds,format: format)
+        return renderer.image { context in
+            UIColor.white.setFill()
+            context.fill(bounds)
+            
+            let path = UIBezierPath(roundedRect: bounds, cornerRadius: 5)
+            let bgColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
+            bgColor.setFill()
+            path.fill()
+            
+            let busNumberRectPath = UIBezierPath(roundedRect: busNumberRect , cornerRadius: busNumberRect.size.height/2)
+            UIColor.red.setFill()
+            UIColor.white.setStroke()
+            busNumberRectPath.fill()
+            busNumberRectPath.stroke()
+        }
+    }()
     
     override func prepareForReuse() {
         super.prepareForReuse()
         self.line.text = nil
-        self.arrivalTime.text = "-"
+        self.arrivalTime.setText("-")
     }
     
-    func configure(with predictionViewModel: TFLBusStopArrivalsViewModel.LinePredictionViewModel) {
+    func configure(with predictionViewModel: TFLBusStopArrivalsViewModel.LinePredictionViewModel,as update : Bool = false) {
         self.line.text = predictionViewModel.line
-        self.arrivalTime.text =  predictionViewModel.eta
+        let arrivalTime = self.arrivalTime.text ?? ""
+        if !update || arrivalTime != predictionViewModel.eta {
+            self.arrivalTime.setText(predictionViewModel.eta, animated: update)
+        }
     }
     
-    override func draw(_ rect: CGRect) {
-        let context = UIGraphicsGetCurrentContext()
-        if let context = context {
-            let path = UIBezierPath(roundedRect:  self.bounds, cornerRadius: 5)
-            context.setFillColor(bgColor.cgColor)
-            path.fill()
-            
-            let lineBgFrame = self.lineBackground.frame
-            let lineBgPath = UIBezierPath(roundedRect: lineBgFrame , cornerRadius: lineBgFrame.size.height/2)
-            context.setFillColor(UIColor.red.cgColor)
-            context.setStrokeColor(UIColor.white.cgColor)
-            lineBgPath.fill()
-            lineBgPath.stroke()
-        }
-        
+    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+        return layoutAttributes
     }
+    
 }
 

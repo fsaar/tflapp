@@ -6,20 +6,27 @@ protocol TFLNoStationsViewDelegate : class {
 
 
 class TFLNoStationsView : UIView {
-    @IBOutlet weak var infoLabel : UILabel!
-    @IBOutlet weak var retryButton : UIButton!
+    @IBOutlet weak var infoLabel : UILabel! = nil {
+        didSet {
+            self.infoLabel.font = UIFont.tflBoldFont(size: 18)
+            self.infoLabel.textColor = .white
+            self.infoLabel.text = NSLocalizedString("TFLNoStationsView.title", comment: "")
+        }
+    }
+    @IBOutlet weak var retryButton : TFLButton! = nil {
+        didSet {
+            self.retryButton.setTitle(NSLocalizedString("TFLNoStationsView.retryButtonTitle", comment: ""), for: UIControlState.normal)
+            self.retryButton.titleLabel?.font = UIFont.tflFont(size: 17)
+        }
+    }
     weak var delegate : TFLNoStationsViewDelegate?
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.infoLabel.font = UIFont.tflFont(size: 17)
-        self.infoLabel.textColor = .black
-        self.infoLabel.text = NSLocalizedString("TFLNoStationsView.title", comment: "")
-        
-        self.retryButton.setTitle(NSLocalizedString("TFLNoStationsView.retryButtonTitle", comment: ""), for: UIControlState.normal)
-        self.retryButton.titleLabel?.font = UIFont.tflFont(size: 17)
-        self.retryButton.setTitleColor(.black, for: .normal)
-
+        self.layer.borderColor = UIColor.red.cgColor
+        self.layer.cornerRadius = 5
+        self.layer.borderWidth = 0.5
+        self.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
     }
 
     @IBAction func buttonHandler(button : UIButton) {

@@ -1,60 +1,71 @@
 import UIKit
 import MapKit
-
+import Crashlytics
 protocol TFLNearbyBusStationsControllerDelegate : class {
     func refresh(controller: TFLNearbyBusStationsController, using completionBlock:@escaping ()->())
 }
 
-class TFLNearbyBusStationsController : UITableViewController {
-    let defaultTableViewRowHeight = CGFloat (119)
-    private let distanceFormatter : LengthFormatter = {
-        let formatter = LengthFormatter()
-        formatter.unitStyle = .short
-        formatter.numberFormatter.roundingMode = .halfUp
-        formatter.numberFormatter.maximumFractionDigits = 0
-        return formatter
-    }()
-    
-    private let timeFormatter : DateFormatter = { () -> (DateFormatter) in
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX"
-        formatter.timeZone = TimeZone(secondsFromGMT: 0)
-        formatter.calendar = Calendar(identifier: .iso8601)
-        return formatter
-    }()
-    private var foregroundNotificationHandler  : TFLNotificationObserver?
-
-    
-    weak var delegate : TFLNearbyBusStationsControllerDelegate?
-    
-    fileprivate var busStopArrivalsViewModel : [TFLBusStopArrivalsViewModel] = [] {
-        didSet  {
-            self.tableView.reloadData()
+extension MutableCollection where Index == Int, Iterator.Element == TFLBusStopArrivalsViewModel {
+    subscript(indexPath : IndexPath) -> TFLBusStopArrivalsViewModel {
+        get {
+            return self[indexPath.row]
+        }
+        set {
+            self[indexPath.row] = newValue
         }
     }
+}
+
+class TFLNearbyBusStationsController : UITableViewController,TFLChangeSetProtocol {
+    
+    static let defaultTableViewRowHeight = CGFloat (120)
+
+    private var foregroundNotificationHandler  : TFLNotificationObserver?
+
+    weak var delegate : TFLNearbyBusStationsControllerDelegate?
+    var busStopArrivalViewModels :  [TFLBusStopArrivalsViewModel] = [] {
+        
+        didSet (oldModel) {
+            
+            if oldModel.isEmpty {
+                self.tableView.reloadData()
+            }
+            else
+            {
+                self.tableView.transition(from: oldModel, to: busStopArrivalViewModels, with: TFLBusStopArrivalsViewModel.compare) { updatedIndexPaths in
+                    updatedIndexPaths.forEach { [weak self] indexPath in
+                        if let cell = self?.tableView.cellForRow(at: indexPath) as? TFLBusStationArrivalsCell {
+                            self?.configure(cell, at: indexPath)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     var busStopPredicationTuple :  [TFLBusStopArrivalsInfo] = [] {
         didSet {
-            self.busStopArrivalsViewModel = self.busStopPredicationTuple.sorted { $0.busStopDistance < $1 .busStopDistance }.map { TFLBusStopArrivalsViewModel(with: $0,  distanceFormatter: distanceFormatter, and: timeFormatter ) }
+            self.busStopArrivalViewModels = self.busStopPredicationTuple.sorted { $0.busStopDistance < $1 .busStopDistance }.map {  TFLBusStopArrivalsViewModel(with: $0) }
         }
     }
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(self.refreshHandler(control:)), for: .valueChanged)
         self.refreshControl = refreshControl
+        self.refreshControl?.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
         
         self.foregroundNotificationHandler = TFLNotificationObserver(notification: NSNotification.Name.UIApplicationWillEnterForeground.rawValue) { [weak self]  notification in
             self?.busStopPredicationTuple = self?.busStopPredicationTuple ?? []
         }
         
         self.tableView.rowHeight = UITableViewAutomaticDimension
-        self.tableView.estimatedRowHeight = defaultTableViewRowHeight
+        self.tableView.estimatedRowHeight = TFLNearbyBusStationsController.defaultTableViewRowHeight
     }
 
-    func refreshHandler(control : UIRefreshControl) {
+    @objc func refreshHandler(control : UIRefreshControl) {
         control.beginRefreshing()
         self.delegate?.refresh(controller: self) {
             control.endRefreshing()
@@ -63,7 +74,7 @@ class TFLNearbyBusStationsController : UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.busStopArrivalsViewModel.count
+        return self.busStopArrivalViewModels.count
     }
     
     
@@ -71,20 +82,18 @@ class TFLNearbyBusStationsController : UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing:TFLBusStationArrivalsCell.self), for: indexPath)
         
         if let arrivalsCell = cell as? TFLBusStationArrivalsCell {
-            let viewModel = busStopArrivalsViewModel[indexPath.row]
-            arrivalsCell.configure(with: viewModel)
+            configure(arrivalsCell, at: indexPath)
         }
         return cell
      }
-    
-    
 }
 
 // MARK: Private
 
-private extension TFLNearbyBusStationsController {
-    func validateArrivalTimes() {
-        
+fileprivate extension TFLNearbyBusStationsController {
+    
+    func configure(_ cell : TFLBusStationArrivalsCell,at indexPath : IndexPath) {
+        cell.configure(with: busStopArrivalViewModels[indexPath])
     }
 }
 

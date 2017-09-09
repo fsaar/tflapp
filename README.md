@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/fsaar/tflapp.svg?branch=develop)](https://travis-ci.org/fsaar/tflapp)
+[![Travis Build Status](https://travis-ci.org/fsaar/tflapp.svg?branch=develop)](https://travis-ci.org/fsaar/tflapp)
+[![Bitrise Build Status](https://www.bitrise.io/app/57e558f6294006e4/status.svg?token=DDsEZOktnPuT6q5sZJrbwQ&branch=develop)](https://www.bitrise.io/app/57e558f6294006e4)
 [![Code Coverage](https://codecov.io/gh/fsaar/tflapp/coverage.svg?branch=develop)](https://codecov.io/gh/fsaar/tflapp/branch/develop)
 
 # London Bus Stops

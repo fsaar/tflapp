@@ -1,6 +1,7 @@
 # TAILOR configuration file (https://github.com/sleekbyte/tailor)
-
-
+exclude:
+ - Pods
+ - tflApp Tests
 only:
  - upper-camel-case
  - lower-camel-case

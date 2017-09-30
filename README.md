@@ -2,6 +2,7 @@
 [![Bitrise Build Status](https://www.bitrise.io/app/57e558f6294006e4/status.svg?token=DDsEZOktnPuT6q5sZJrbwQ&branch=develop)](https://www.bitrise.io/app/57e558f6294006e4)
 [![Code Coverage](https://codecov.io/gh/fsaar/tflapp/coverage.svg?branch=develop)](https://codecov.io/gh/fsaar/tflapp/branch/develop)
 [![Code Climate](https://codeclimate.com/github/fsaar/tflapp/badges/gpa.svg)](https://codeclimate.com/github/fsaar/tflapp)
+[![codebeat badge](https://codebeat.co/badges/4ab21651-9ae0-423b-a49f-412427a2d2d5)](https://codebeat.co/projects/github-com-fsaar-tflapp-master)
 
 # London Bus Stops
 

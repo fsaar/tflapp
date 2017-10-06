@@ -81,79 +81,131 @@ class TFLCDBusStopSpecs: QuickSpec {
             context.persistentStoreCoordinator = coordinator
         }
         
-        it ("should instantiate model with valid dictionary") {
-            
-            let model = TFLCDBusStop.busStop(with: dict, and: context)
-            expect(model).notTo(beNil())
+        it("should instantiate model with valid dictionary") {
+            var calledBack = false
+            TFLCDBusStop.busStop(with: dict, and: context) { model in
+                expect(model).notTo(beNil())
+                calledBack = true
+            }
+            expect(calledBack).toEventually(beTrue(),timeout:5)
         }
         
         it ("should not instantiate model if identifier is missing") {
             var newDict = dict
             newDict!["naptanId"] = nil
-            let model = TFLCDBusStop.busStop(with: newDict!, and: context)
-            expect(model).to(beNil())
+            var calledBack = false
+            TFLCDBusStop.busStop(with: newDict!, and: context) { model in
+                expect(model).to(beNil())
+                calledBack = true
+            }
+            expect(calledBack).toEventually(beTrue(),timeout:5)
+
         }
         
         it ("should not instantiate model if stoptype is missing") {
             var newDict = dict
             newDict!["stopType"] = nil
-            let model = TFLCDBusStop.busStop(with: newDict!, and: context)
-            expect(model).to(beNil())
+            var calledBack = false
+            TFLCDBusStop.busStop(with: newDict!, and: context) { model in
+                expect(model).to(beNil())
+                calledBack = true
+            }
+            expect(calledBack).toEventually(beTrue(),timeout:5)
         }
 
         it ("should not instantiate model if stoptype is NOT NaptanPublicBusCoachTram") {
             var newDict = dict
             newDict!["stopType"] = "NaptanOnstreetBusCoachStopPair"
-            let model = TFLCDBusStop.busStop(with: newDict!, and: context)
-            expect(model).to(beNil())
+            var calledBack = false
+            TFLCDBusStop.busStop(with: newDict!, and: context) { model in
+                expect(model).to(beNil())
+                calledBack = true
+            }
+            expect(calledBack).toEventually(beTrue(),timeout:5)
         }
 
         it ("should instantiate new model if model with identifier doesn't not exist") {
-            _ = TFLCDBusStop.busStop(with: dict, and: context)
+            let group = DispatchGroup()
             var newDict = dict
             newDict!["naptanId"] = "490G00011972"
-            _ = TFLCDBusStop.busStop(with: dict!, and: context)
-            _  = TFLCDBusStop.busStop(with: newDict!, and: context)
+            group.enter()
+            TFLCDBusStop.busStop(with: dict!, and: context) { _ in
+                group.leave()
+            }
+           
+            group.enter()
+            TFLCDBusStop.busStop(with: newDict!, and: context) { _ in
+                group.leave()
+            }
             _ = try! context.save()
-            let fetchRequest = NSFetchRequest<TFLCDBusStop>(entityName:"TFLCDBusStop")
-            let count = try! context.count(for: fetchRequest)
-            expect(count) == 2
+            var groupNotified = false
+            group.notify(queue: .main) {
+                let fetchRequest = NSFetchRequest<TFLCDBusStop>(entityName:"TFLCDBusStop")
+                let count = try! context.count(for: fetchRequest)
+                expect(count) == 2
+                groupNotified = true
+            }
+            expect(groupNotified).toEventually(beTrue(),timeout:5)
 
         }
         it ("should update existing model with updated model if there is already a model with same identifier") {
-            _ = TFLCDBusStop.busStop(with: dict!, and: context)
-            let model  = TFLCDBusStop.busStop(with: dict2!, and: context)
+            var model  : TFLCDBusStop?
+            let group = DispatchGroup()
+            group.enter()
+            TFLCDBusStop.busStop(with: dict!, and: context) { _ in
+                group.leave()
+            }
+            group.enter()
+            TFLCDBusStop.busStop(with: dict2!, and: context) { stop in
+                group.leave()
+                model = stop
+            }
             _ = try! context.save()
-            let fetchRequest = NSFetchRequest<TFLCDBusStop>(entityName:"TFLCDBusStop")
-            let count = try! context.count(for: fetchRequest)
-            expect(count) == 1
-            expect(model!.lat) == 51.510515
-            expect(model!.long) == -0.134197
-            expect(model!.identifier) == "490003029W"
-            expect(model!.stopLetter) == "H"
-            expect(model!.towards) == "Ealing Broadway"
-            expect(model!.name) == "Trocadero / Haymarket"
-            expect(model!.status) == false
+            var groupNotified = false
+            group.notify(queue: .main) {
+                let fetchRequest = NSFetchRequest<TFLCDBusStop>(entityName:"TFLCDBusStop")
+                let count = try! context.count(for: fetchRequest)
+                expect(count) == 1
+                expect(model!.lat) == 51.510515
+                expect(model!.long) == -0.134197
+                expect(model!.identifier) == "490003029W"
+                expect(model!.stopLetter) == "H"
+                expect(model!.towards) == "Ealing Broadway"
+                expect(model!.name) == "Trocadero / Haymarket"
+                expect(model!.status) == false
+                groupNotified = true
+            }
+            expect(groupNotified).toEventually(beTrue(),timeout:5)
+
             
         }
         
         it ("should instantiate model correctly") {
-            let model = TFLCDBusStop.busStop(with: dict, and: context)
-            expect(model!.lat) == 51.538675
-            expect(model!.long) == -0.279163
-            expect(model!.identifier) == "490003029W"
-            expect(model!.stopLetter) == "->W"
-            expect(model!.towards) == "Ealing Broadway"
-            expect(model!.name) == "Abbey Road"
-            expect(model!.status) == true
+            var groupNotified = false
+            TFLCDBusStop.busStop(with: dict, and: context) { model in
+                expect(model!.lat) == 51.538675
+                expect(model!.long) == -0.279163
+                expect(model!.identifier) == "490003029W"
+                expect(model!.stopLetter) == "->W"
+                expect(model!.towards) == "Ealing Broadway"
+                expect(model!.name) == "Abbey Road"
+                expect(model!.status) == true
+                groupNotified = true
+            }
+            expect(groupNotified).toEventually(beTrue(),timeout:5)
         }
         
         it("should not have updated model if there was nothing to update") {
-            _ = TFLCDBusStop.busStop(with: dict!, and: context)
-            _ = try! context.save()
-            _  = TFLCDBusStop.busStop(with: dict!, and: context)
-            expect(context.hasChanges) == false
-            
+            var groupNotified = false
+
+            TFLCDBusStop.busStop(with: dict!, and: context) { _ in
+                _ = try! context.save()
+                TFLCDBusStop.busStop(with: dict!, and: context) { _ in
+                    expect(context.hasChanges) == false
+                    groupNotified = true
+                }
+            }
+             expect(groupNotified).toEventually(beTrue(),timeout:5)
         }
     }
 }

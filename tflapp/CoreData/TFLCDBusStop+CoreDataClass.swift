@@ -91,51 +91,54 @@ public class TFLCDBusStop: NSManagedObject {
         return CLLocationCoordinate2DMake(self.lat, self.long)
     }
     
-    class func busStopEntity(with identifier: String,and managedObjectContext: NSManagedObjectContext) -> (TFLCDBusStop?) {
+    class func busStopEntity(with identifier: String,and managedObjectContext: NSManagedObjectContext,using completionBlock :@escaping (_ busStop : TFLCDBusStop?) -> () ) {
         let fetchRequest = NSFetchRequest<TFLCDBusStop>(entityName: String(describing: TFLCDBusStop.self))
         fetchRequest.fetchBatchSize = 1
         fetchRequest.returnsObjectsAsFaults = true
         fetchRequest.predicate = NSPredicate(format: "identifier = %@", identifier)
-        var busStop : TFLCDBusStop?
-        managedObjectContext.performAndWait {
-            busStop = (try? managedObjectContext.fetch(fetchRequest) )?.first
-        }
+        managedObjectContext.perform {
+            var busStop = (try? managedObjectContext.fetch(fetchRequest) )?.first
         
-        if case .none = busStop {
-            busStop = NSEntityDescription.insertNewObject(forEntityName: String(describing:self), into: managedObjectContext) as? TFLCDBusStop
-            busStop?.identifier = identifier
+            if case .none = busStop {
+                busStop = NSEntityDescription.insertNewObject(forEntityName: String(describing:self), into: managedObjectContext) as? TFLCDBusStop
+                busStop?.identifier = identifier
+            }
+            completionBlock(busStop)
         }
-        return busStop
     }
     
-    class func busStop(with dictionary: [String: Any], and managedObjectContext: NSManagedObjectContext) -> (TFLCDBusStop?) {
+    class func busStop(with dictionary: [String: Any], and managedObjectContext: NSManagedObjectContext,using completionBlock : @escaping (_ busStop : TFLCDBusStop?) -> () ) {
         guard let identifier = dictionary[Identifiers.naptanId.rawValue] as? String,
-        let stopType = dictionary[Identifiers.stopType.rawValue] as? String, stopType == "NaptanPublicBusCoachTram" else {
-            return nil
+            let stopType = dictionary[Identifiers.stopType.rawValue] as? String, stopType == "NaptanPublicBusCoachTram" else {
+                completionBlock(nil)
+                return
         }
-        guard  let busStop = self.busStopEntity(with: identifier, and: managedObjectContext) else {
-            return nil
-        }
-      
-        let status = dictionary[Identifiers.status.rawValue] as? Bool ?? false
-        let name = dictionary[Identifiers.commonName.rawValue] as? String ?? ""
-        let long = dictionary[Identifiers.longitude.rawValue] as? Double ?? kCLLocationCoordinate2DInvalid.longitude
-        let lat = dictionary[Identifiers.latitude.rawValue] as? Double ?? kCLLocationCoordinate2DInvalid.latitude
-        let stopLetter = dictionary[Identifiers.stopLetter.rawValue] as? String ?? ""
-        var towards = ""
-        if let additionalProperties = dictionary[Identifiers.additionalProperties.rawValue] as? [[String:String]] {
-            let towardsDict = additionalProperties.filter { $0["key"] ==  Identifiers.towardsKeyValue.rawValue }.first
-            if let towardsDict = towardsDict?["value"]  {
-                towards = towardsDict
+        self.busStopEntity(with: identifier, and: managedObjectContext) { busStop in
+            managedObjectContext.perform {
+                if let busStop = busStop {
+                    let status = dictionary[Identifiers.status.rawValue] as? Bool ?? false
+                    let name = dictionary[Identifiers.commonName.rawValue] as? String ?? ""
+                    let long = dictionary[Identifiers.longitude.rawValue] as? Double ?? kCLLocationCoordinate2DInvalid.longitude
+                    let lat = dictionary[Identifiers.latitude.rawValue] as? Double ?? kCLLocationCoordinate2DInvalid.latitude
+                    let stopLetter = dictionary[Identifiers.stopLetter.rawValue] as? String ?? ""
+                    var towards = ""
+                    if let additionalProperties = dictionary[Identifiers.additionalProperties.rawValue] as? [[String:String]] {
+                        let towardsDict = additionalProperties.filter { $0["key"] ==  Identifiers.towardsKeyValue.rawValue }.first
+                        if let towardsDict = towardsDict?["value"]  {
+                            towards = towardsDict
+                        }
+                    }
+                    
+                    if busStop.status != status { busStop.status = status }
+                    if busStop.name != name && (!name.isEmpty || (busStop.name == .none)) { busStop.name = name }
+                    if busStop.long != long && long != kCLLocationCoordinate2DInvalid.longitude { busStop.long = long }
+                    if busStop.lat != lat && lat != kCLLocationCoordinate2DInvalid.latitude { busStop.lat = lat }
+                    if busStop.stopLetter != stopLetter && (!stopLetter.isEmpty || (busStop.stopLetter == .none))   { busStop.stopLetter = stopLetter }
+                    if busStop.towards != towards && (!towards.isEmpty || (busStop.towards == .none)) { busStop.towards = towards }
+                }
+                completionBlock(busStop)
             }
         }
-
-        if busStop.status != status { busStop.status = status }
-        if busStop.name != name && (!name.isEmpty || (busStop.name == .none)) { busStop.name = name }
-        if busStop.long != long && long != kCLLocationCoordinate2DInvalid.longitude { busStop.long = long }
-        if busStop.lat != lat && lat != kCLLocationCoordinate2DInvalid.latitude { busStop.lat = lat }
-        if busStop.stopLetter != stopLetter && (!stopLetter.isEmpty || (busStop.stopLetter == .none))   { busStop.stopLetter = stopLetter }
-        if busStop.towards != towards && (!towards.isEmpty || (busStop.towards == .none)) { busStop.towards = towards }
-        return busStop
     }
+    
 }

@@ -188,7 +188,7 @@ class TFLBusPredictionViewCellSpecs: QuickSpec {
                 expect(cell.arrivalTime.text) == "1 min"
                 completionBlockCalled = true
             }
-            expect(completionBlockCalled).toEventually(beTrue(),timeout:5)
+            expect(completionBlockCalled).toEventually(beTrue(),timeout:20)
         }
         it("should configure cell correctly (test2)") {
             var completionBlockCalled = false
@@ -203,7 +203,7 @@ class TFLBusPredictionViewCellSpecs: QuickSpec {
                 expect(cell.arrivalTime.text) == "29 mins"
                  completionBlockCalled = true
             }
-            expect(completionBlockCalled).toEventually(beTrue(),timeout:5)
+            expect(completionBlockCalled).toEventually(beTrue(),timeout:20)
         }
         
         it("should set arrivaltime if its not an update") {
@@ -222,7 +222,7 @@ class TFLBusPredictionViewCellSpecs: QuickSpec {
                 expect(testLabel.textSet) == true
                  completionBlockCalled = true
             }
-            expect(completionBlockCalled).toEventually(beTrue(),timeout:5)
+            expect(completionBlockCalled).toEventually(beTrue(),timeout:20)
         }
         
         it("should NOT set arrivaltime if its not an update and nothing's changed") {
@@ -242,7 +242,7 @@ class TFLBusPredictionViewCellSpecs: QuickSpec {
                 expect(testLabel.textSet) == false
                  completionBlockCalled = true
             }
-            expect(completionBlockCalled).toEventually(beTrue(),timeout:5)
+            expect(completionBlockCalled).toEventually(beTrue(),timeout:20)
         }
 
         it("should set arrivaltime if its an update but arrivaltime changed") {
@@ -262,7 +262,7 @@ class TFLBusPredictionViewCellSpecs: QuickSpec {
                 expect(testLabel.textSet) == true
                 completionBlockCalled = true
             }
-            expect(completionBlockCalled).toEventually(beTrue(),timeout:5)
+            expect(completionBlockCalled).toEventually(beTrue(),timeout:20)
         }
         
 

@@ -161,7 +161,7 @@ class TFLBusStationArrivalsCellSpecs: QuickSpec {
                 expect(cell.noDataErrorLabel.text) == NSLocalizedString("TFLBusStationArrivalsCell.noDataError", comment: "")
                 completionBlockCalled = true
             }
-            expect(completionBlockCalled).toEventually(beTrue(),timeout:5)
+            expect(completionBlockCalled).toEventually(beTrue(),timeout:20)
         }
         
         it("should hide noDataErrorLabel if arrivalTimes is  empty") {
@@ -175,7 +175,7 @@ class TFLBusStationArrivalsCellSpecs: QuickSpec {
                 expect(cell.noDataErrorLabel.isHidden) == false
                 completionBlockCalled = true
             }
-            expect(completionBlockCalled).toEventually(beTrue(),timeout:5)
+            expect(completionBlockCalled).toEventually(beTrue(),timeout:20)
         }
         
         it("should hide noDataErrorLabel if arrivalTimes is empty") {
@@ -190,7 +190,7 @@ class TFLBusStationArrivalsCellSpecs: QuickSpec {
                 expect(cell.noDataErrorLabel.isHidden) == true
                 completionBlockCalled = true
             }
-            expect(completionBlockCalled).toEventually(beTrue(),timeout:5)
+            expect(completionBlockCalled).toEventually(beTrue(),timeout:20)
         }
     }
 }

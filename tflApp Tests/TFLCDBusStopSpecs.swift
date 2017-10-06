@@ -87,7 +87,7 @@ class TFLCDBusStopSpecs: QuickSpec {
                 expect(model).notTo(beNil())
                 calledBack = true
             }
-            expect(calledBack).toEventually(beTrue(),timeout:5)
+            expect(calledBack).toEventually(beTrue(),timeout:20)
         }
         
         it ("should not instantiate model if identifier is missing") {
@@ -98,7 +98,7 @@ class TFLCDBusStopSpecs: QuickSpec {
                 expect(model).to(beNil())
                 calledBack = true
             }
-            expect(calledBack).toEventually(beTrue(),timeout:5)
+            expect(calledBack).toEventually(beTrue(),timeout:20)
 
         }
         
@@ -110,7 +110,7 @@ class TFLCDBusStopSpecs: QuickSpec {
                 expect(model).to(beNil())
                 calledBack = true
             }
-            expect(calledBack).toEventually(beTrue(),timeout:5)
+            expect(calledBack).toEventually(beTrue(),timeout:20)
         }
 
         it ("should not instantiate model if stoptype is NOT NaptanPublicBusCoachTram") {
@@ -121,7 +121,7 @@ class TFLCDBusStopSpecs: QuickSpec {
                 expect(model).to(beNil())
                 calledBack = true
             }
-            expect(calledBack).toEventually(beTrue(),timeout:5)
+            expect(calledBack).toEventually(beTrue(),timeout:20)
         }
 
         it ("should instantiate new model if model with identifier doesn't not exist") {
@@ -145,7 +145,7 @@ class TFLCDBusStopSpecs: QuickSpec {
                 expect(count) == 2
                 groupNotified = true
             }
-            expect(groupNotified).toEventually(beTrue(),timeout:5)
+            expect(groupNotified).toEventually(beTrue(),timeout:20)
 
         }
         it ("should update existing model with updated model if there is already a model with same identifier") {
@@ -175,7 +175,7 @@ class TFLCDBusStopSpecs: QuickSpec {
                 expect(model!.status) == false
                 groupNotified = true
             }
-            expect(groupNotified).toEventually(beTrue(),timeout:5)
+            expect(groupNotified).toEventually(beTrue(),timeout:20)
 
             
         }
@@ -192,7 +192,7 @@ class TFLCDBusStopSpecs: QuickSpec {
                 expect(model!.status) == true
                 groupNotified = true
             }
-            expect(groupNotified).toEventually(beTrue(),timeout:5)
+            expect(groupNotified).toEventually(beTrue(),timeout:20)
         }
         
         it("should not have updated model if there was nothing to update") {
@@ -205,7 +205,7 @@ class TFLCDBusStopSpecs: QuickSpec {
                     groupNotified = true
                 }
             }
-             expect(groupNotified).toEventually(beTrue(),timeout:5)
+             expect(groupNotified).toEventually(beTrue(),timeout:20)
         }
     }
 }

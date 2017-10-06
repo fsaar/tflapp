@@ -142,7 +142,7 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
                     expect(model).notTo(beNil())
                     completionBlockCalled = true
                 }
-                expect(completionBlockCalled).toEventually(beTrue(),timeout:5)
+                expect(completionBlockCalled).toEventually(beTrue(),timeout:20)
             }
             
             it ("should setup model correctly") {
@@ -155,7 +155,7 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
                     expect(model.distance) == "300m"
                     completionBlockCalled = true
                 }
-                expect(completionBlockCalled).toEventually(beTrue(),timeout:5)
+                expect(completionBlockCalled).toEventually(beTrue(),timeout:20)
             }
             
             it ("models should be the same if identifier are the same") {
@@ -170,7 +170,7 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
                         completionBlockCalled = true
                     }
                 }
-                expect(completionBlockCalled).toEventually(beTrue(),timeout:5)
+                expect(completionBlockCalled).toEventually(beTrue(),timeout:20)
             }
             
             it ("should filter expired bus predictions") {
@@ -180,7 +180,7 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
                     expect(model.arrivalTimes.count) == 3
                     completionBlockCalled = true
                 }
-                expect(completionBlockCalled).toEventually(beTrue(),timeout:5)
+                expect(completionBlockCalled).toEventually(beTrue(),timeout:20)
             }
             
             it ("should sort bus predictions in increasing order") {
@@ -192,7 +192,7 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
                     expect(TFLBusStopArrivalsViewModel.LinePredictionViewModel.compare(lhs: pred2, rhs: pred3)) == true
                     completionBlockCalled = true
                 }
-                expect(completionBlockCalled).toEventually(beTrue(),timeout:5)
+                expect(completionBlockCalled).toEventually(beTrue(),timeout:20)
             }
             
 

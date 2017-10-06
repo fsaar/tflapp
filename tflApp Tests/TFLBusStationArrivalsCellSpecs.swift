@@ -147,39 +147,50 @@ class TFLBusStationArrivalsCellSpecs: QuickSpec {
         }
         
         it("should configure cell correctly") {
-            let busStop = TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext)
+            var completionBlockCalled = false
+            TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext) { busStop in
+                let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: busPredicationModels)
+                let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo)
 
-            let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: busPredicationModels)
-
-            let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo)
-
-            cell.configure(with: model)
-            expect(cell.stationName.text) == "Abbey Road"
-            expect(cell.stationDetails.text) == "towards Ealing Broadway"
-            expect(cell.distanceLabel.text) == "300m"
-            expect(cell.predictionView.predictions.count) == 3
-            expect(cell.noDataErrorLabel.text) == NSLocalizedString("TFLBusStationArrivalsCell.noDataError", comment: "")
+                
+                cell.configure(with: model)
+                expect(cell.stationName.text) == "Abbey Road"
+                expect(cell.stationDetails.text) == "towards Ealing Broadway"
+                expect(cell.distanceLabel.text) == "300m"
+                expect(cell.predictionView.predictions.count) == 3
+                expect(cell.noDataErrorLabel.text) == NSLocalizedString("TFLBusStationArrivalsCell.noDataError", comment: "")
+                completionBlockCalled = true
+            }
+            expect(completionBlockCalled).toEventually(beTrue(),timeout:20)
         }
         
         it("should hide noDataErrorLabel if arrivalTimes is  empty") {
-            let busStop = TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext)
-            let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: [])
-            
-            let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo)
-            
-            cell.configure(with: model)
-            expect(cell.noDataErrorLabel.isHidden) == false
+            var completionBlockCalled = false
+            TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext) { busStop in
+                let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: [])
+                
+                let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo)
+                
+                cell.configure(with: model)
+                expect(cell.noDataErrorLabel.isHidden) == false
+                completionBlockCalled = true
+            }
+            expect(completionBlockCalled).toEventually(beTrue(),timeout:20)
         }
         
         it("should hide noDataErrorLabel if arrivalTimes is empty") {
-            let busStop = TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext)
-            
-            let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: busPredicationModels)
-            
-            let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo)
-            
-            cell.configure(with: model)
-            expect(cell.noDataErrorLabel.isHidden) == true
+            var completionBlockCalled = false
+            TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext) { busStop in
+                
+                let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: busPredicationModels)
+                
+                let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo)
+                
+                cell.configure(with: model)
+                expect(cell.noDataErrorLabel.isHidden) == true
+                completionBlockCalled = true
+            }
+            expect(completionBlockCalled).toEventually(beTrue(),timeout:20)
         }
     }
 }

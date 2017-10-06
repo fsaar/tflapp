@@ -39,15 +39,17 @@ public final class TFLClient {
         let busStopPath = "/StopPoint"
         let query = "lat=\(coordinate.latitude)&lon=\(coordinate.longitude)&stopTypes=NaptanPublicBusCoachTram&categories=Geo"
         let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
-        requestBusStops(with: busStopPath, query: query,context:context) {stops,error in
-            if context.hasChanges {
-                context.perform {
+        let queue = OperationQueue()
+        queue.qualityOfService = QualityOfService.userInitiated
+        requestBusStops(with: busStopPath, query: query,context:context, with: queue) {stops,error in
+            context.perform {
+                if context.hasChanges {
                     _ = try? context.save()
                 }
+                operationQueue.addOperation({
+                    completionBlock(stops,error)
+                })
             }
-            operationQueue.addOperation({
-                completionBlock(stops,error)
-            })
         }
 
     }
@@ -67,19 +69,20 @@ public final class TFLClient {
 }
 
 fileprivate extension TFLClient {
-    fileprivate func requestBusStops(with relativePath: String,
+    func requestBusStops(with relativePath: String,
                                      query: String,context: NSManagedObjectContext,
                                      with operationQueue : OperationQueue = OperationQueue.main,
                                      completionBlock: @escaping (([TFLCDBusStop]?,_ error:Error?) -> ()))  {
-        tflManager.getDataWithRelativePath(relativePath: relativePath,and: query) { data, error in
+        tflManager.getDataWithRelativePath(relativePath: relativePath,and: query) {  [weak self] data, error in
             if let data = data,
                 let jsonDict = try? JSONSerialization.jsonObject(with: data as Data
                     , options: JSONSerialization.ReadingOptions(rawValue:0)) as? [String : Any] {
                 if let jsonList = jsonDict?["stopPoints"] as? [[String: Any]] {
-                    let stops = jsonList.flatMap { TFLCDBusStop.busStop(with: $0,and:context ) }
-                    operationQueue.addOperation({
-                        completionBlock(stops,nil)
-                    })
+                    self?.stopPoints(from: jsonList, context: context) { stops in
+                        operationQueue.addOperation({
+                            completionBlock(stops,nil)
+                        })
+                    }
                 }
                 else {
                     operationQueue.addOperation({
@@ -92,6 +95,23 @@ fileprivate extension TFLClient {
                     completionBlock(nil,error)
                 }
             }
+        }
+    }
+    
+    func stopPoints(from dictionaryList : [[String: Any]],context: NSManagedObjectContext, using completionBlock : @escaping (_ stopPoints : [TFLCDBusStop]) -> ()) {
+        var stops : [TFLCDBusStop] = []
+        let group = DispatchGroup()
+        dictionaryList.forEach {
+            group.enter()
+            TFLCDBusStop.busStop(with: $0,and:context) { busStop in
+                if let busStop = busStop {
+                    stops += [busStop]
+                }
+                group.leave()
+            }
+        }
+        group.notify(queue: DispatchQueue.global()) {
+            completionBlock(stops)
         }
     }
 }

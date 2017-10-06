@@ -177,74 +177,92 @@ class TFLBusPredictionViewCellSpecs: QuickSpec {
         }
         
         it("should configure cell correctly (test1)") {
-
-            let busStop = TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext)
-
-            let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: busPredicationModels)
-
-            let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo,using: referenceDate.addingTimeInterval(10))
-
-            cell.configure(with: model.arrivalTimes.first!)
-            expect(cell.line.text) == "39"
-            expect(cell.arrivalTime.text) == "1 min"
+            var completionBlockCalled = false
+            TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext) { busStop in
+                let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: busPredicationModels)
+                
+                let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo,using: referenceDate.addingTimeInterval(10))
+                
+                cell.configure(with: model.arrivalTimes.first!)
+                expect(cell.line.text) == "39"
+                expect(cell.arrivalTime.text) == "1 min"
+                completionBlockCalled = true
+            }
+            expect(completionBlockCalled).toEventually(beTrue(),timeout:20)
         }
         it("should configure cell correctly (test2)") {
-            let busStop = TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext)
-            
-            let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: busPredicationModels)
-            
-            let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo,using: referenceDate.addingTimeInterval(120))
-            
-            cell.configure(with: model.arrivalTimes.last!)
-            expect(cell.line.text) == "40"
-            expect(cell.arrivalTime.text) == "29 mins"
+            var completionBlockCalled = false
+            TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext) { busStop in
+                
+                let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: busPredicationModels)
+                
+                let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo,using: referenceDate.addingTimeInterval(120))
+                
+                cell.configure(with: model.arrivalTimes.last!)
+                expect(cell.line.text) == "40"
+                expect(cell.arrivalTime.text) == "29 mins"
+                 completionBlockCalled = true
+            }
+            expect(completionBlockCalled).toEventually(beTrue(),timeout:20)
         }
         
         it("should set arrivaltime if its not an update") {
             let testLabel = TestAnimatedLabel()
             cell.arrivalTime = testLabel
-
-            let busStop = TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext)
             
-            let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: busPredicationModels)
-            
-            let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo,using: referenceDate.addingTimeInterval(120))
-            
-            cell.configure(with: model.arrivalTimes.last!,as: false)
-            expect(testLabel.textSet) == true
+            var completionBlockCalled = false
+            TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext) { busStop in
+                
+                
+                let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: busPredicationModels)
+                
+                let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo,using: referenceDate.addingTimeInterval(120))
+                
+                cell.configure(with: model.arrivalTimes.last!,as: false)
+                expect(testLabel.textSet) == true
+                 completionBlockCalled = true
+            }
+            expect(completionBlockCalled).toEventually(beTrue(),timeout:20)
         }
         
         it("should NOT set arrivaltime if its not an update and nothing's changed") {
             let testLabel = TestAnimatedLabel()
             cell.arrivalTime = testLabel
             
-            let busStop = TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext)
-            
-            let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: busPredicationModels)
-            
-            let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo,using: referenceDate.addingTimeInterval(120))
-            
-            cell.configure(with: model.arrivalTimes.last!,as: false)
-            testLabel.textSet = false
-            cell.configure(with: model.arrivalTimes.last!,as: true)
-            expect(testLabel.textSet) == false
+            var completionBlockCalled = false
+            TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext) { busStop in
+                
+                let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: busPredicationModels)
+                
+                let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo,using: referenceDate.addingTimeInterval(120))
+                
+                cell.configure(with: model.arrivalTimes.last!,as: false)
+                testLabel.textSet = false
+                cell.configure(with: model.arrivalTimes.last!,as: true)
+                expect(testLabel.textSet) == false
+                 completionBlockCalled = true
+            }
+            expect(completionBlockCalled).toEventually(beTrue(),timeout:20)
         }
 
         it("should set arrivaltime if its an update but arrivaltime changed") {
             let testLabel = TestAnimatedLabel()
             cell.arrivalTime = testLabel
             
-            let busStop = TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext)
-            
-            let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: busPredicationModels)
-            
-            let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo,using: referenceDate.addingTimeInterval(120))
-            
-            cell.configure(with: model.arrivalTimes.last!,as: false)
-            testLabel.textSet = false
-            let  model2 =   TFLBusStopArrivalsViewModel(with: busArrivalInfo,using: referenceDate.addingTimeInterval(180))
-            cell.configure(with: model2.arrivalTimes.last!,as: true)
-            expect(testLabel.textSet) == true
+            var completionBlockCalled = false
+            TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext) { busStop in
+                let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: busPredicationModels)
+                
+                let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo,using: referenceDate.addingTimeInterval(120))
+                
+                cell.configure(with: model.arrivalTimes.last!,as: false)
+                testLabel.textSet = false
+                let  model2 =   TFLBusStopArrivalsViewModel(with: busArrivalInfo,using: referenceDate.addingTimeInterval(180))
+                cell.configure(with: model2.arrivalTimes.last!,as: true)
+                expect(testLabel.textSet) == true
+                completionBlockCalled = true
+            }
+            expect(completionBlockCalled).toEventually(beTrue(),timeout:20)
         }
         
 

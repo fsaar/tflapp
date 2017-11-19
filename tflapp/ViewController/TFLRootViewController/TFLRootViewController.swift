@@ -263,13 +263,16 @@ fileprivate extension TFLRootViewController {
     
     func loadBusStops(of page: UInt = 0) {
         self.tflClient.busStops(with: page) { [weak self] busStops,_ in
+            let context = TFLCoreDataStack.sharedDataStack.privateQueueManagedObjectContext
+            context.perform {
+                try! context.save()
+            }
             if let busStops = busStops, !busStops.isEmpty {
                 print (page)
                 self?.loadBusStops(of: page+1)
             }
-            let context = TFLCoreDataStack.sharedDataStack.privateQueueManagedObjectContext
-            context.perform {
-                try? context.save()
+            else {
+                print ("Done")
             }
         }
     }

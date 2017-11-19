@@ -153,31 +153,32 @@ class TFLCDBusStopSpecs: QuickSpec {
             let group = DispatchGroup()
             group.enter()
             TFLCDBusStop.busStop(with: dict!, and: context) { _ in
+                try! context.save()
                 group.leave()
             }
-            group.enter()
-            TFLCDBusStop.busStop(with: dict2!, and: context) { stop in
-                group.leave()
-                model = stop
-            }
-            _ = try! context.save()
             var groupNotified = false
             group.notify(queue: .main) {
-                let fetchRequest = NSFetchRequest<TFLCDBusStop>(entityName:"TFLCDBusStop")
-                let count = try! context.count(for: fetchRequest)
-                expect(count) == 1
-                expect(model!.lat) == 51.510515
-                expect(model!.long) == -0.134197
-                expect(model!.identifier) == "490003029W"
-                expect(model!.stopLetter) == "H"
-                expect(model!.towards) == "Ealing Broadway"
-                expect(model!.name) == "Trocadero / Haymarket"
-                expect(model!.status) == false
-                groupNotified = true
+                group.enter()
+                TFLCDBusStop.busStop(with: dict2!, and: context) { stop in
+                    group.leave()
+                    model = stop
+                }
+                _ = try! context.save()
+                group.notify(queue: .main) {
+                    let fetchRequest = NSFetchRequest<TFLCDBusStop>(entityName:"TFLCDBusStop")
+                    let count = try! context.count(for: fetchRequest)
+                    expect(count) == 1
+                    expect(model!.lat) == 51.510515
+                    expect(model!.long) == -0.134197
+                    expect(model!.identifier) == "490003029W"
+                    expect(model!.stopLetter) == "H"
+                    expect(model!.towards) == "Ealing Broadway"
+                    expect(model!.name) == "Trocadero / Haymarket"
+                    expect(model!.status) == false
+                    groupNotified = true
+                }
             }
             expect(groupNotified).toEventually(beTrue(),timeout:20)
-
-            
         }
         
         it ("should instantiate model correctly") {

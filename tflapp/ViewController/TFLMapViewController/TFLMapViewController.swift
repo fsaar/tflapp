@@ -98,14 +98,8 @@ class TFLMapViewController: UIViewController,TFLChangeSetProtocol {
                 let toBeInsertedAnnotations =  inserted.map { $0.0.busStop }
                                                 .map { TFLMapViewAnnotation(with: $0.name, and: $0.towards, for: $0.coord , with: $0.identifier) }
                 self.mapView.addAnnotations(toBeInsertedAnnotations)
-
-                let offsetCoordinate = coords + defaultCoordinateOffset
-                if CLLocationCoordinate2DIsValid(offsetCoordinate) {
-                    let region = MKCoordinateRegion(center: offsetCoordinate, span: defaultCoordinateSpan)
-                    let animated = (oldTuple?.0 ?? []).isEmpty   ? false : true
-                    self.mapView.setRegion(region, animated: animated)
-                }
-                
+                let animated = (oldTuple?.0 ?? []).isEmpty   ? false : true
+                centerMapView(at: coords,animated)
             }
         }
     }
@@ -137,6 +131,14 @@ extension TFLMapViewController : MKMapViewDelegate {
 }
 
 fileprivate extension TFLMapViewController {
+    func centerMapView(at coordinates: CLLocationCoordinate2D,_ animated: Bool = false) {
+        let offsetCoordinate = coordinates + defaultCoordinateOffset
+        if CLLocationCoordinate2DIsValid(offsetCoordinate) {
+            let region = MKCoordinateRegion(center: offsetCoordinate, span: defaultCoordinateSpan)
+            self.mapView.setRegion(region, animated: animated)
+        }
+    }
+    
     func stationAnnotationImage(with stopCode: String) -> UIImage {
         let bounds = CGRect(origin:.zero, size: CGSize(width: 20, height: 30))
         let format = UIGraphicsImageRendererFormat()

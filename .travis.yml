@@ -1,6 +1,6 @@
 language: objective-c
 
-osx_image: xcode9.2
+osx_image: xcode9.3beta 
 script:
 - xcrun  instruments -w "iPhone 7 (11.0) [5BABCDC9-5EAF-4E60-96C0-F78309091348] (Simulator)" || true
 

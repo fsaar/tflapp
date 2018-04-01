@@ -17,7 +17,7 @@ class TFLAnimationLabelSpecs: QuickSpec {
         }
         
         it("should have 2 labels as subviews") {
-            let labels = label.subviews.flatMap { $0 as? UILabel }
+            let labels = label.subviews.compactMap { $0 as? UILabel }
             expect(labels.count) == 2
         }
         
@@ -25,7 +25,7 @@ class TFLAnimationLabelSpecs: QuickSpec {
             var label1 : UILabel!
             var label2 : UILabel!
             beforeEach() {
-                let labels = label.subviews.flatMap { $0 as? UILabel }
+                let labels = label.subviews.compactMap { $0 as? UILabel }
                 label1 = labels.first!
                 label2 = labels.last!
             }

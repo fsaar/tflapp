@@ -43,7 +43,7 @@ extension TFLChangeSetProtocol {
             }
             let deletedTypes = deleted.map { $0.element }
             let reducedOldList = oldList.filter { !deletedTypes.contains($0) }
-            var updatedList = reducedOldList.flatMap { (el: T) -> (T?) in
+            var updatedList = reducedOldList.compactMap { (el: T) -> (T?) in
                 guard let index = newList.index(of: el) else {
                     return nil
                 }
@@ -65,16 +65,16 @@ extension TFLChangeSetProtocol {
         
         
         let insertedTypes = newList.filter { insertedSet.contains($0) }.map { $0 }
-        let insertedIndices = insertedTypes.flatMap { sortedNewList.index(of:$0) }
+        let insertedIndices = insertedTypes.compactMap { sortedNewList.index(of:$0) }
         let inserted = zip(insertedTypes,insertedIndices).map { $0 }
         
         
         let deletedTypes = oldList.filter { deletedSet.contains($0) }.map { $0 }
-        let deletedIndices = deletedTypes.flatMap { sortedOldList.index(of:$0) }
+        let deletedIndices = deletedTypes.compactMap { sortedOldList.index(of:$0) }
         let deleted = zip(deletedTypes,deletedIndices).map { $0 }
         
         let movedTypes = findMovedTypes(inserted: inserted ,deleted: deleted)
-        let moved = movedTypes.flatMap { (el : T) -> (T,Int,Int)? in
+        let moved = movedTypes.compactMap { (el : T) -> (T,Int,Int)? in
             guard let oldIndex = sortedOldList.index(of: el), let newIndex = sortedNewList.index(of: el) else {
                 return nil
             }
@@ -82,7 +82,7 @@ extension TFLChangeSetProtocol {
         }
         
         let updatedTypes = Array(unchangedSet.subtracting(Set(movedTypes)))
-        let updated : [(T,Int)] = updatedTypes.flatMap { el in
+        let updated : [(T,Int)] = updatedTypes.compactMap { el in
             guard let index = sortedNewList.index(of:el) else  {
                 return nil
             }

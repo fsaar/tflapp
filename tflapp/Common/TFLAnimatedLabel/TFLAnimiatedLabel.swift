@@ -29,7 +29,7 @@ class TFLAnimiatedLabel: UIView {
     fileprivate(set) var text : String?
     
     fileprivate var labels : [UILabel] {
-        return self.subviews.flatMap { $0 as? UILabel }
+        return self.subviews.compactMap { $0 as? UILabel }
     }
     
     required init?(coder aDecoder: NSCoder) {

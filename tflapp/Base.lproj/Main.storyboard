@@ -1,28 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13156.6" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="zaI-Wd-PX9">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="zaI-Wd-PX9">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13137.5"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <array key="Verdana.ttf">
-            <string>Verdana</string>
-        </array>
-        <array key="VerdanaBold.ttf">
-            <string>Verdana-Bold</string>
-        </array>
-    </customFonts>
     <scenes>
         <!--Navigation Controller-->
         <scene sceneID="6Ha-RB-gZa">
             <objects>
                 <navigationController id="zaI-Wd-PX9" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="VWs-ZC-sqq">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -41,28 +33,17 @@
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                    <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zdp-aj-ca4">
+                            <containerView opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zdp-aj-ca4">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <segue destination="goP-9S-1cr" kind="embed" identifier="TFLSlideContainerControllerSegue" id="VIA-hh-WRJ"/>
                                 </connections>
                             </containerView>
-                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HN6-mp-Vc7">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="20"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="jOZ-9D-edh">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="20"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                </view>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="20" id="HAS-vv-O8I"/>
-                                </constraints>
-                                <blurEffect style="extraLight"/>
-                            </visualEffectView>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Me4-JI-EcW" customClass="TFLLoadNearbyStationsView" customModule="London_Bus" customModuleProvider="target">
                                 <rect key="frame" x="20" y="303" width="335" height="61"/>
                                 <subviews>
@@ -246,11 +227,8 @@
                             <constraint firstAttribute="bottom" secondItem="Zdp-aj-ca4" secondAttribute="bottom" id="VZL-4k-aJK"/>
                             <constraint firstItem="JwJ-Sf-Dwm" firstAttribute="centerY" secondItem="Zdp-aj-ca4" secondAttribute="centerY" id="ViN-6y-gSM"/>
                             <constraint firstItem="Me4-JI-EcW" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="Vlc-wK-Nus"/>
-                            <constraint firstItem="HN6-mp-Vc7" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="WIA-eM-T6I"/>
                             <constraint firstItem="TaB-mf-qpy" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="ZP9-1G-Bgb"/>
                             <constraint firstItem="c3D-1X-v5e" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="bK3-mD-5ug"/>
-                            <constraint firstAttribute="trailing" secondItem="HN6-mp-Vc7" secondAttribute="trailing" id="bjP-vw-qbC"/>
-                            <constraint firstItem="HN6-mp-Vc7" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="e06-Ge-MUD"/>
                             <constraint firstItem="TaB-mf-qpy" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="eWt-Ey-xsw"/>
                             <constraint firstItem="JwJ-Sf-Dwm" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="fcb-Ce-D57"/>
                             <constraint firstItem="JwJ-Sf-Dwm" firstAttribute="centerX" secondItem="Zdp-aj-ca4" secondAttribute="centerX" id="gXV-mK-9OV"/>
@@ -287,16 +265,16 @@
                         <viewControllerLayoutGuide type="top" id="GQ4-vI-crG"/>
                         <viewControllerLayoutGuide type="bottom" id="F6n-Bv-y7S"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Gke-Cu-WTl">
+                    <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Gke-Cu-WTl">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VYs-dK-vD6">
+                            <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VYs-dK-vD6">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4cM-Vs-8gX">
-                                <rect key="frame" x="0.0" y="100" width="375" height="567"/>
+                            <view opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4cM-Vs-8gX">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IAB-p2-IjX">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
@@ -329,7 +307,7 @@
                                         </constraints>
                                     </view>
                                     <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="caU-0Z-mNA">
-                                        <rect key="frame" x="0.0" y="60" width="375" height="507"/>
+                                        <rect key="frame" x="0.0" y="60" width="375" height="607"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <gestureRecognizers/>
                                     </view>
@@ -360,7 +338,7 @@
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="4cM-Vs-8gX" secondAttribute="bottom" id="FKH-n9-FpJ"/>
                             <constraint firstAttribute="trailing" secondItem="4cM-Vs-8gX" secondAttribute="trailing" id="L8L-HE-ikT"/>
-                            <constraint firstItem="4cM-Vs-8gX" firstAttribute="top" secondItem="Gke-Cu-WTl" secondAttribute="top" constant="100" id="hB8-Jz-Nyo" userLabel="Top Constraint"/>
+                            <constraint firstItem="4cM-Vs-8gX" firstAttribute="top" secondItem="Gke-Cu-WTl" secondAttribute="top" id="hB8-Jz-Nyo" userLabel="Top Constraint"/>
                             <constraint firstAttribute="trailing" secondItem="VYs-dK-vD6" secondAttribute="trailing" id="i4K-fn-Fy5"/>
                             <constraint firstItem="VYs-dK-vD6" firstAttribute="top" secondItem="Gke-Cu-WTl" secondAttribute="top" id="j0c-Pe-UtR"/>
                             <constraint firstAttribute="bottom" secondItem="VYs-dK-vD6" secondAttribute="bottom" id="lee-lT-ZSc"/>
@@ -391,15 +369,15 @@
                         <viewControllerLayoutGuide type="top" id="Pg3-04-28K"/>
                         <viewControllerLayoutGuide type="bottom" id="Ity-ic-89B"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="49x-MB-PET">
+                    <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="49x-MB-PET">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="GU0-0J-ufB">
-                                <rect key="frame" x="0.0" y="-20" width="375" height="687"/>
+                            <mapView multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="GU0-0J-ufB">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </mapView>
                             <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H3r-9O-Zpl">
-                                <rect key="frame" x="0.0" y="-20" width="375" height="687"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
@@ -407,10 +385,10 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="GU0-0J-ufB" secondAttribute="trailing" id="3Iz-H2-Frq"/>
                             <constraint firstAttribute="bottom" secondItem="GU0-0J-ufB" secondAttribute="bottom" id="Fpn-Qk-aAV"/>
-                            <constraint firstItem="H3r-9O-Zpl" firstAttribute="top" secondItem="49x-MB-PET" secondAttribute="topMargin" constant="-20" id="Geu-1m-GJi"/>
+                            <constraint firstItem="GU0-0J-ufB" firstAttribute="top" secondItem="49x-MB-PET" secondAttribute="top" id="GPL-3l-Iwk"/>
+                            <constraint firstItem="H3r-9O-Zpl" firstAttribute="top" secondItem="49x-MB-PET" secondAttribute="topMargin" id="Geu-1m-GJi"/>
                             <constraint firstAttribute="bottomMargin" secondItem="H3r-9O-Zpl" secondAttribute="bottom" id="Vgu-hx-Umb"/>
                             <constraint firstItem="GU0-0J-ufB" firstAttribute="leading" secondItem="49x-MB-PET" secondAttribute="leading" id="WRQ-dt-mlR"/>
-                            <constraint firstItem="GU0-0J-ufB" firstAttribute="top" secondItem="49x-MB-PET" secondAttribute="top" constant="-20" id="aUd-ou-Nla"/>
                             <constraint firstAttribute="trailing" secondItem="H3r-9O-Zpl" secondAttribute="trailing" id="g44-tz-w2p"/>
                             <constraint firstItem="H3r-9O-Zpl" firstAttribute="leading" secondItem="49x-MB-PET" secondAttribute="leading" id="wEH-Kl-91s"/>
                         </constraints>
@@ -438,7 +416,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Powered by TfL Open Data" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9fW-nN-Lr5">
-                                <rect key="frame" x="50" y="42" width="275" height="21"/>
+                                <rect key="frame" x="50" y="62" width="275" height="21"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>

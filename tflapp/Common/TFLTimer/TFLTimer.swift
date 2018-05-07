@@ -1,7 +1,6 @@
 import Foundation
 
 typealias TFLTimerHandler = (_ timer : TFLTimer)->()
-private let TFLimerHandlerDefaultTimerTolerance: Float = 1.0
 
  @objc public final class TFLTimer: NSObject {
     private var timerInterval : TimeInterval = 0.0

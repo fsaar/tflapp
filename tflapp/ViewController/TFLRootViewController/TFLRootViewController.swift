@@ -13,7 +13,7 @@ class TFLRootViewController: UIViewController {
         case loadingArrivals
         case noError
     }
-
+    fileprivate(set) var DefaultRefreshInterval : TimeInterval = 15
     fileprivate var state : State = .noError {
         didSet {
             let shouldHide = self.nearbyBusStationController?.busStopPredicationTuple.isEmpty ?? true
@@ -64,6 +64,7 @@ class TFLRootViewController: UIViewController {
     fileprivate var slideContainerController : TFLSlideContainerController?
     fileprivate let tflClient = TFLClient()
     private var foregroundNotificationHandler  : TFLNotificationObserver?
+    private var backgroundNotificationHandler  : TFLNotificationObserver?
     @IBOutlet weak var noGPSEnabledView : TFLNoGPSEnabledView! = nil {
         didSet {
             self.noGPSEnabledView.delegate = self
@@ -79,6 +80,11 @@ class TFLRootViewController: UIViewController {
     @IBOutlet weak var loadNearbyStationsView : TFLLoadNearbyStationsView!
     @IBOutlet weak var contentView : UIView!
     
+    fileprivate(set) lazy var refreshTimer : TFLTimer? = {
+        return TFLTimer(timerInterVal: DefaultRefreshInterval) { [weak self] _ in
+            self?.loadNearbyBusstops()
+        }
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -106,11 +112,14 @@ class TFLRootViewController: UIViewController {
         }
         self.foregroundNotificationHandler = TFLNotificationObserver(notification: NSNotification.Name.UIApplicationWillEnterForeground.rawValue) { [weak self]  notification in
             self?.loadNearbyBusstops()
+            self?.refreshTimer?.start()
+        }
+        self.backgroundNotificationHandler = TFLNotificationObserver(notification:NSNotification.Name.UIApplicationDidEnterBackground.rawValue) { [weak self]  notification in
+            self?.refreshTimer?.stop()
         }
         TFLRequestManager.shared.delegate = self
         self.loadNearbyBusstops()
-        
-
+        self.refreshTimer?.start()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

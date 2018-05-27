@@ -96,7 +96,7 @@ class TFLMapViewController: UIViewController,TFLChangeSetProtocol {
                 self.mapView.removeAnnotations(toBeDeletedAnnotations)
                 
                 let toBeInsertedAnnotations =  inserted.map { $0.0.busStop }
-                                                .map { TFLMapViewAnnotation(with: $0.name, and: $0.towards, for: $0.coord , with: $0.identifier) }
+                                                .map { TFLMapViewAnnotation(with: $0.name, and: $0.towards ?? "", for: $0.coord , with: $0.identifier) }
                 self.mapView.addAnnotations(toBeInsertedAnnotations)
 
                 let offsetCoordinate = coords + defaultCoordinateOffset
@@ -121,7 +121,7 @@ extension TFLMapViewController : MKMapViewDelegate {
                 annotationView.image = self.userAnnotationViewImage
             default:
                 if let (busStopPredictionTuples,_) = busStopPredicationCoordinateTuple, let stationInfo = busStopPredictionTuples.filter ({ mapViewAnnotation.identifier == $0.busStop.identifier }).first {
-                    annotationView.image = self.stationAnnotationImage(with: stationInfo.busStop.stopLetter)
+                    annotationView.image = self.stationAnnotationImage(with: stationInfo.busStop.stopLetter ?? "")
                     annotationView.centerOffset = CGPoint(x:0,y:-15)
                 }
                 else

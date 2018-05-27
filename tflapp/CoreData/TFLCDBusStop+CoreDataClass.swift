@@ -78,13 +78,14 @@ public class TFLCDBusStop: NSManagedObject {
         case towardsKeyValue = "Towards"
         case status = "status"
         case additionalProperties = "additionalProperties"
+        case lines = "lines"
     }
     static func ==(lhs : TFLCDBusStop,rhs: TFLCDBusStop) -> (Bool) {
         return lhs.identifier == lhs.identifier
     }
     
     override public var debugDescription: String {
-        return "\n"+name + "[\(identifier)] towards " + towards + "status:\(status):\n"
+        return "\n"+name + "[\(identifier)] towards " + (towards ?? "") + "status:\(status):\n"
     }
 
     var coord : CLLocationCoordinate2D {

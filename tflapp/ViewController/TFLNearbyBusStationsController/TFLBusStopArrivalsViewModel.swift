@@ -82,10 +82,10 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
 
     
     init(with arrivalInfo: TFLBusStopArrivalsInfo,using referenceDate : Date? = nil) {
-        let towards = arrivalInfo.busStop.towards
+        let towards = arrivalInfo.busStop.towards ?? ""
         self.stationDetails = towards.isEmpty ? "" : NSLocalizedString("TFLBusStopArrivalsViewModel.towards", comment: "") + towards
         self.busStopDistance = arrivalInfo.busStopDistance
-        self.stopLetter = arrivalInfo.busStop.stopLetter
+        self.stopLetter = arrivalInfo.busStop.stopLetter ?? ""
         self.stationName = arrivalInfo.busStop.name
         self.identifier = arrivalInfo.busStop.identifier
         self.distance = TFLBusStopArrivalsViewModel.distanceFormatter.string(fromValue: arrivalInfo.busStopDistance, unit: .meter)

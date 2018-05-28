@@ -120,6 +120,10 @@ class TFLRootViewController: UIViewController {
         TFLRequestManager.shared.delegate = self
         self.loadNearbyBusstops()
         self.refreshTimer?.start()
+//        loadBusStops { [weak self] in
+//            self?.loadLineStations()
+//        }
+        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -269,13 +273,56 @@ extension TFLRootViewController : TFLNoStationsViewDelegate {
 // MARK: DataBase Generation
 
 fileprivate extension TFLRootViewController {
-    
-    func loadBusStops(of page: UInt = 0) {
-        self.tflClient.busStops(with: page) { [weak self] busStops,_ in
-            if let busStops = busStops, !busStops.isEmpty {
-                print (page)
-                self?.loadBusStops(of: page+1)
+    func loadLineStations() {
+        self.linesFromBusStops { [weak self] lines in
+            self?.load(lines: Array(lines), index: 0) {
+                let context = TFLCoreDataStack.sharedDataStack.privateQueueManagedObjectContext
+                context.performAndWait {
+                    try? context.save()
+                }
             }
+        }
+    }
+    
+    func linesFromBusStops(using completionBlock : ((_ lines : Set<String>) -> Void )?)  {
+        var lines : Set<String> = []
+        let context = TFLCoreDataStack.sharedDataStack.privateQueueManagedObjectContext
+        let fetchRequest = NSFetchRequest<TFLCDBusStop>(entityName:String(describing: TFLCDBusStop.self))
+        fetchRequest.includesSubentities = false
+        fetchRequest.includesPropertyValues = false
+        fetchRequest.propertiesToFetch = ["lines"]
+        context.perform {
+            if let stops = try? context.fetch(fetchRequest) as [TFLCDBusStop] {
+                let lineList = stops.reduce([]) { sum,stop in
+                    return sum + (stop.lines ?? [])
+                }
+                lines = Set(lineList)
+                completionBlock?(lines)
+            }
+        }
+    }
+    func load(lines : [String],index : Int = 0,using completionBlock: (()->())? = nil) {
+        guard index < lines.count else {
+            completionBlock?()
+            return
+        }
+        let line = lines[index]
+        print("\(index). \(line)")
+        self.tflClient.lineStationInfo(for: line) { [weak self] _,_ in
+            self?.load(lines: lines, index: index+1,using:completionBlock)
+        }
+    }
+
+// MARK: DataBase Generation (BusStops)
+
+    func loadBusStops(of page: UInt = 0,using completionBlock: (()->())?) {
+        self.tflClient.busStops(with: page) { [weak self] busStops,_ in
+            guard let busStops = busStops, !busStops.isEmpty else {
+                completionBlock?()
+                return
+            }
+            print (page)
+            self?.loadBusStops(of: page+1,using:completionBlock)
             let context = TFLCoreDataStack.sharedDataStack.privateQueueManagedObjectContext
             context.perform {
                 try? context.save()
@@ -319,7 +366,9 @@ extension TFLRootViewController : TFLNearbyBusStationsControllerDelegate  {
 extension TFLRootViewController : TFLRequestManagerDelegate {
     func didStartURLTask(with requestManager: TFLRequestManager,session : URLSession)
     {
-       UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        OperationQueue.main.addOperation {
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        }
 
     }
     func didFinishURLTask(with requestManager: TFLRequestManager,session : URLSession)

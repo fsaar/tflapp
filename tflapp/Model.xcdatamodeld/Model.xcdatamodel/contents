@@ -13,7 +13,12 @@
             <fetchIndexElement property="identifier" type="Binary" order="ascending"/>
         </fetchIndex>
     </entity>
+    <entity name="TFLCDLineInfo" representedClassName="TFLCDLineInfo" syncable="YES">
+        <attribute name="identifier" attributeType="String" syncable="YES"/>
+        <attribute name="stations" optional="YES" attributeType="Transformable" syncable="YES"/>
+    </entity>
     <elements>
         <element name="TFLCDBusStop" positionX="-63" positionY="-18" width="128" height="165"/>
+        <element name="TFLCDLineInfo" positionX="-54" positionY="54" width="128" height="75"/>
     </elements>
 </model>

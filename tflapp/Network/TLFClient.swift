@@ -5,6 +5,7 @@ import CoreData
 
 enum TFLClientError : Error {
     case InvalidFormat(data : Data?)
+    case InvalidLine
 }
 
 public final class TFLClient {
@@ -66,9 +67,54 @@ public final class TFLClient {
         }
     }
     
+    public func lineStationInfo(for line: String,
+                         with operationQueue : OperationQueue = OperationQueue.main,
+                         using completionBlock: @escaping ((TFLCDLineInfo?,_ error:Error?) -> ()))  {
+        guard !line.isEmpty else {
+            operationQueue.addOperation {
+                completionBlock(nil,TFLClientError.InvalidLine)
+            }
+            return
+        }
+        let lineStationPath = "/Line/\(line)/Route/Sequence/all"
+        lineStationInfo(with: lineStationPath, query: "serviceTypes=Regular&excludeCrowding=true", context: TFLCoreDataStack.sharedDataStack.privateQueueManagedObjectContext) { lineInfo , error in
+            operationQueue.addOperation({
+                completionBlock(lineInfo,error)
+            })
+        }
+    }
+    
 }
 
 fileprivate extension TFLClient {
+    func lineStationInfo(with relativePath: String,
+                         query: String,context: NSManagedObjectContext,
+                         with operationQueue : OperationQueue = OperationQueue.main,
+                         completionBlock: @escaping ((TFLCDLineInfo?,_ error:Error?) -> ()))  {
+        tflManager.getDataWithRelativePath(relativePath: relativePath,and: query) {  data, error in
+            if let data = data,let jsonDict = try? JSONSerialization.jsonObject(with: data as Data
+                , options: JSONSerialization.ReadingOptions(rawValue:0)) as? [String : Any] {
+                if let jsonDict = jsonDict {
+                    TFLCDLineInfo.lineInfo(with: jsonDict, and: context) { lineInfo in
+                        operationQueue.addOperation {
+                            completionBlock(lineInfo,nil)
+                        }
+                        
+                    }
+                } else {
+                    operationQueue.addOperation({
+                        completionBlock(nil,TFLClientError.InvalidFormat(data: data))
+                    })
+                }
+            } else {
+                operationQueue.addOperation({
+                    completionBlock(nil,TFLClientError.InvalidFormat(data: data))
+                })
+            }
+        }
+    }
+    
+    
     func requestBusStops(with relativePath: String,
                                      query: String,context: NSManagedObjectContext,
                                      with operationQueue : OperationQueue = OperationQueue.main,

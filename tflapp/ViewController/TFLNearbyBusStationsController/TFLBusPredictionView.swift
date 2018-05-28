@@ -1,4 +1,5 @@
 import UIKit
+import CoreData
 import Crashlytics
 
 extension MutableCollection where Index == Int, Iterator.Element == TFLBusStopArrivalsViewModel.LinePredictionViewModel {
@@ -17,6 +18,7 @@ class TFLBusPredictionView: UICollectionView {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.dataSource = self
+        self.delegate = self
     }
     
     var maxVisibleCells : Int {
@@ -85,6 +87,24 @@ extension TFLBusPredictionView : UICollectionViewDataSource {
         return cell
     }
 
+}
+
+// MARK: UICollectionViewDelegate
+
+extension TFLBusPredictionView : UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let prediction = predictions[indexPath]
+        let line = prediction.line
+        let context = TFLBusStopStack.sharedDataStack.mainQueueManagedObjectContext
+        context.performAndWait {
+            let fetchRequest = NSFetchRequest<TFLCDLineInfo>(entityName: String(describing: TFLCDLineInfo.self))
+            let predicate = NSPredicate(format: "identifier == %@",line)
+            fetchRequest.predicate = predicate
+            if let lineInfo = try? context.fetch(fetchRequest).first {
+                print(lineInfo?.stations ?? "")
+            }
+        }
+    }
 }
 
 // MARK: Helper

@@ -123,11 +123,18 @@ public class TFLCDBusStop: NSManagedObject {
                     let lat = dictionary[Identifiers.latitude.rawValue] as? Double ?? kCLLocationCoordinate2DInvalid.latitude
                     let stopLetter = dictionary[Identifiers.stopLetter.rawValue] as? String ?? ""
                     var towards = ""
+                    var lines : [String] = []
                     if let additionalProperties = dictionary[Identifiers.additionalProperties.rawValue] as? [[String:String]] {
                         let towardsDict = additionalProperties.filter { $0["key"] ==  Identifiers.towardsKeyValue.rawValue }.first
                         if let towardsDict = towardsDict?["value"]  {
                             towards = towardsDict
                         }
+                    }
+                    if let linesDictList = dictionary[Identifiers.lines.rawValue] as? [[String:Any]] {
+                        if let lineIdentifiers = (linesDictList.compactMap { $0["id"] }) as? [String] {
+                            lines = lineIdentifiers
+                        }
+                        
                     }
                     
                     if busStop.status != status { busStop.status = status }
@@ -136,6 +143,7 @@ public class TFLCDBusStop: NSManagedObject {
                     if busStop.lat != lat && lat != kCLLocationCoordinate2DInvalid.latitude { busStop.lat = lat }
                     if busStop.stopLetter != stopLetter && (!stopLetter.isEmpty || (busStop.stopLetter == .none))   { busStop.stopLetter = stopLetter }
                     if busStop.towards != towards && (!towards.isEmpty || (busStop.towards == .none)) { busStop.towards = towards }
+                    if busStop.lines != lines && (!lines.isEmpty || (busStop.lines == .none)) { busStop.lines = lines   }
                 }
                 completionBlock(busStop)
             }

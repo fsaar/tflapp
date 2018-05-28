@@ -3,6 +3,7 @@
     <entity name="TFLCDBusStop" representedClassName="TFLCDBusStop" syncable="YES">
         <attribute name="identifier" attributeType="String" syncable="YES"/>
         <attribute name="lat" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="lines" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="long" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="status" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
@@ -13,6 +14,6 @@
         </fetchIndex>
     </entity>
     <elements>
-        <element name="TFLCDBusStop" positionX="-63" positionY="-18" width="128" height="150"/>
+        <element name="TFLCDBusStop" positionX="-63" positionY="-18" width="128" height="165"/>
     </elements>
 </model>

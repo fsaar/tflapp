@@ -1,8 +1,9 @@
 //
 //  TFLCDBusStop+CoreDataProperties.swift
-//  
+//  tflapp
 //
-//  Created by Frank Saar on 27/05/2018.
+//  Created by Frank Saar on 28/05/2018.
+//  Copyright © 2018 SAMedialabs. All rights reserved.
 //
 //
 
@@ -23,5 +24,6 @@ extension TFLCDBusStop {
     @NSManaged public var status: Bool
     @NSManaged public var stopLetter: String?
     @NSManaged public var towards: String?
+    @NSManaged public var lines: [String]?
 
 }

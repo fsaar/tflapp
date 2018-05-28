@@ -21,8 +21,15 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
     }
     @IBOutlet weak var bgImage : UIImageView! = nil {
         didSet {
-            self.bgImage.layer.contents = TFLBusPredictionViewCell.busPredictionViewBackgroundImage.cgImage
+            self.bgImage.image = TFLBusPredictionViewCell.busPredictionViewBackgroundImage
         }
+    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        self.selectedBackgroundView = nil
+        prepareForReuse()
+        
     }
     private let bgColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
     static var busPredictionViewBackgroundImage: UIImage = {

@@ -13,8 +13,12 @@ extension MutableCollection where Index == Int, Iterator.Element == TFLBusStopAr
     }
 }
 
+protocol TFLBusPredictionViewDelegate : class {
+    func busPredictionView(_ busPredictionView: TFLBusPredictionView,didSelectLine line: String)
+}
+
 class TFLBusPredictionView: UICollectionView {
-    
+    weak var busPredictionViewDelegate : TFLBusPredictionViewDelegate?
     override func awakeFromNib() {
         super.awakeFromNib()
         self.dataSource = self
@@ -94,16 +98,7 @@ extension TFLBusPredictionView : UICollectionViewDataSource {
 extension TFLBusPredictionView : UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let prediction = predictions[indexPath]
-        let line = prediction.line
-        let context = TFLBusStopStack.sharedDataStack.mainQueueManagedObjectContext
-        context.performAndWait {
-            let fetchRequest = NSFetchRequest<TFLCDLineInfo>(entityName: String(describing: TFLCDLineInfo.self))
-            let predicate = NSPredicate(format: "identifier == %@",line)
-            fetchRequest.predicate = predicate
-            if let lineInfo = try? context.fetch(fetchRequest).first {
-                print(lineInfo?.stations ?? "")
-            }
-        }
+        self.busPredictionViewDelegate?.busPredictionView(self, didSelectLine: prediction.line)
     }
 }
 

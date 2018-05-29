@@ -15,7 +15,6 @@ public class TFLCDLineInfo: NSManagedObject {
     private enum Identifiers : String {
         case lineId = "lineId"
         case stations = "stations"
-        case stationId = "id"
     }
     class func lineInfoEntity(with identifier: String,and managedObjectContext: NSManagedObjectContext,using completionBlock :@escaping (_ lineInfo : TFLCDLineInfo?) -> () ) {
         let fetchRequest = NSFetchRequest<TFLCDLineInfo>(entityName: String(describing: self))
@@ -41,17 +40,37 @@ public class TFLCDLineInfo: NSManagedObject {
         self.lineInfoEntity(with: identifier, and: managedObjectContext) { lineInfo in
             managedObjectContext.perform {
                 if let lineInfo = lineInfo {
-                    var stations : [String] = []
                     if let stationDictList = dictionary[Identifiers.stations.rawValue] as? [[String:Any]] {
-                        if let stationIdentifiers = (stationDictList.compactMap { $0[Identifiers.stationId.rawValue] }) as? [String] {
-                            stations = stationIdentifiers
+                        let group = DispatchGroup()
+                        for dict in  stationDictList {
+                            group.enter()
+                            TFLCDStation.station(with: dict, and: managedObjectContext) { station in
+                                if let station = station {
+                                    lineInfo.addToStations(station)
+                                }
+                                group.leave()
+                            }
                         }
-                        
+                        group.notify(queue: .global()) {
+                            completionBlock(lineInfo)
+                        }
                     }
-                    if lineInfo.stations != stations && (!stations.isEmpty || (lineInfo.stations == .none)) { lineInfo.stations = stations   }
+                    else {
+                        completionBlock(lineInfo)
+                    }
                 }
-                completionBlock(lineInfo)
             }
         }
+    }
+    
+    class func lineInfo(with identifier: String,and managedObjectContext: NSManagedObjectContext) -> TFLCDLineInfo? {
+        var lineInfo : TFLCDLineInfo?
+        managedObjectContext.performAndWait {
+            let fetchRequest = NSFetchRequest<TFLCDLineInfo>(entityName: String(describing: TFLCDLineInfo.self))
+            let predicate = NSPredicate(format: "identifier == %@",identifier)
+            fetchRequest.predicate = predicate
+            lineInfo =  (try? managedObjectContext.fetch(fetchRequest))?.first
+        }
+        return lineInfo
     }
 }

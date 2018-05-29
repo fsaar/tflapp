@@ -12,8 +12,36 @@ class TFLRootViewController: UIViewController {
         case retrievingNearbyStations
         case loadingArrivals
         case noError
+        
+        var isErrorState : Bool {
+            switch self {
+            case .errorNoGPSAvailable,.errorNoStationsNearby:
+                return true
+            default:
+                return false
+                
+            }
+        }
+        var isDeterminingCurrentLocation : Bool {
+            if case .determineCurrentLocation = self {
+                return true
+            }
+            return false
+        }
+        var isComplete : Bool {
+            switch self {
+            case .errorNoGPSAvailable,.errorNoStationsNearby:
+                return true
+            case .noError:
+                return true
+            default:
+                return false
+                
+            }
+        }
     }
     fileprivate(set) var DefaultRefreshInterval : TimeInterval = 15
+    
     fileprivate var state : State = .noError {
         didSet {
             let shouldHide = self.nearbyBusStationController?.busStopPredicationTuple.isEmpty ?? true
@@ -89,7 +117,6 @@ class TFLRootViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         Crashlytics.notify()
-        self.navigationController?.navigationBar.isHidden = true
         if let mapViewController = self.mapViewController, let nearbyBackgroundController = self.nearbyBackgroundController {
             self.slideContainerController?.setContentControllers(with: mapViewController,and: nearbyBackgroundController)
             self.slideContainerController?.sliderViewUpdateBlock =  { [weak self] slider, origin,final in
@@ -126,6 +153,11 @@ class TFLRootViewController: UIViewController {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let identifier = segue.identifier , let segueIdentifier = SegueIdentifier(rawValue: identifier) else {
             return
@@ -157,9 +189,15 @@ fileprivate extension TFLRootViewController {
         Crashlytics.notify()
         self.state = .determineCurrentLocation
         TFLLocationManager.sharedManager.updateLocation { [weak self] coord in
-            self?.retrieveBusstops(for: coord) { busStopPredictionTuples in
-                self?.updateContentViewController(with: busStopPredictionTuples, and: coord)
-                completionBlock?()
+            guard let state = self?.state else {
+                return
+            }
+            if state.isComplete || state.isDeterminingCurrentLocation {
+                self?.retrieveBusstops(for: coord) { busStopPredictionTuples in
+                    self?.updateContentViewController(with: busStopPredictionTuples, and: coord)
+                    completionBlock?()
+                }
+
             }
         }
     }

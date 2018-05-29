@@ -70,6 +70,7 @@ import CoreLocation
 public class TFLCDBusStop: NSManagedObject {
     private enum Identifiers : String {
         case naptanId = "naptanId"
+        case stationNaptan = "stationNaptan"
         case commonName = "commonName"
         case latitude = "lat"
         case longitude = "lon"
@@ -117,6 +118,7 @@ public class TFLCDBusStop: NSManagedObject {
         self.busStopEntity(with: identifier, and: managedObjectContext) { busStop in
             managedObjectContext.perform {
                 if let busStop = busStop {
+                    let stationIdentifier = dictionary[Identifiers.stationNaptan.rawValue] as? String ?? ""
                     let status = dictionary[Identifiers.status.rawValue] as? Bool ?? false
                     let name = dictionary[Identifiers.commonName.rawValue] as? String ?? ""
                     let long = dictionary[Identifiers.longitude.rawValue] as? Double ?? kCLLocationCoordinate2DInvalid.longitude
@@ -144,10 +146,22 @@ public class TFLCDBusStop: NSManagedObject {
                     if busStop.stopLetter != stopLetter && (!stopLetter.isEmpty || (busStop.stopLetter == .none))   { busStop.stopLetter = stopLetter }
                     if busStop.towards != towards && (!towards.isEmpty || (busStop.towards == .none)) { busStop.towards = towards }
                     if busStop.lines != lines && (!lines.isEmpty || (busStop.lines == .none)) { busStop.lines = lines   }
+                    if busStop.stationIdentifier != stationIdentifier && (!stationIdentifier.isEmpty || (busStop.stationIdentifier == .none)) { busStop.stationIdentifier = stationIdentifier   }
                 }
                 completionBlock(busStop)
             }
         }
+    }
+    
+    class func busStops(with identifiers: [String],and managedObjectContext: NSManagedObjectContext) -> [TFLCDBusStop] {
+        var busStops : [TFLCDBusStop] = []
+        managedObjectContext.performAndWait {
+            let fetchRequest = NSFetchRequest<TFLCDBusStop>(entityName: String(describing: TFLCDBusStop.self))
+            let predicate = NSPredicate(format: "stationIdentifier in (%@)",identifiers)
+            fetchRequest.predicate = predicate
+            busStops =  (try? managedObjectContext.fetch(fetchRequest)) ?? []
+        }
+        return busStops
     }
     
 }

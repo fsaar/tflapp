@@ -624,10 +624,64 @@
                     </tableView>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <nil key="simulatedStatusBarMetrics"/>
+                    <connections>
+                        <segue destination="Oga-ig-WMN" kind="show" identifier="TFLStationDetailSegue" id="rs8-Tw-mGC"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jZ7-L3-Irz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2503" y="343"/>
+        </scene>
+        <!--Station Detail Controller-->
+        <scene sceneID="NYI-60-RBx">
+            <objects>
+                <viewController id="Oga-ig-WMN" customClass="TFLStationDetailController" customModule="London_Bus" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="L8v-WY-C56"/>
+                        <viewControllerLayoutGuide type="bottom" id="SUs-gL-kmw"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="6WQ-Ji-O8d">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="pHv-Ns-9sf"/>
+                    <connections>
+                        <outlet property="titleHeaderView" destination="H3D-7y-WZd" id="cap-5E-p3H"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="85U-xH-Xnv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H3D-7y-WZd" customClass="TFLStationDetailHeaderView" customModule="London_Bus" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rcT-4b-owK" userLabel="backgroundImage">
+                            <rect key="frame" x="87" y="47.5" width="66" height="33"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="66" id="3C3-f5-bLt"/>
+                                <constraint firstAttribute="height" constant="33" id="WYW-PE-4Yu"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Niz-5g-CIO" userLabel="titleLabel">
+                            <rect key="frame" x="99" y="53" width="42" height="21"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="rcT-4b-owK" firstAttribute="centerX" secondItem="H3D-7y-WZd" secondAttribute="centerX" id="19b-UY-hRi"/>
+                        <constraint firstItem="rcT-4b-owK" firstAttribute="centerY" secondItem="H3D-7y-WZd" secondAttribute="centerY" id="CC7-6p-yzY"/>
+                        <constraint firstItem="Niz-5g-CIO" firstAttribute="centerX" secondItem="H3D-7y-WZd" secondAttribute="centerX" id="M80-6F-Ybm"/>
+                        <constraint firstItem="Niz-5g-CIO" firstAttribute="centerY" secondItem="H3D-7y-WZd" secondAttribute="centerY" id="W0U-vW-ZxX"/>
+                    </constraints>
+                    <connections>
+                        <outlet property="backgroundImageView" destination="rcT-4b-owK" id="5vl-xy-LeW"/>
+                        <outlet property="titleLabel" destination="Niz-5g-CIO" id="1Rm-Wp-Fu2"/>
+                    </connections>
+                </view>
+            </objects>
+            <point key="canvasLocation" x="3454" y="342"/>
         </scene>
     </scenes>
 </document>

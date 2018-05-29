@@ -2,12 +2,17 @@ import UIKit
 
 extension UIFont {
     class func tflBoldFont(size : CGFloat) -> UIFont {
-        let font = UIFont(name: "GillSans-Light", size: size)
+        let font = UIFont(name: "GillSans-Bold", size: size)
         return font!
     }
     
     class func tflFont(size : CGFloat) -> UIFont {
         let font = UIFont(name: "GillSans", size: size)
+        return font!
+    }
+    
+    class func tflStationDetailHeader() -> UIFont {
+        let font = UIFont(name: "GillSans", size: 20)
         return font!
     }
     

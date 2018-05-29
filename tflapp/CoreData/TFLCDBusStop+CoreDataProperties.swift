@@ -18,6 +18,7 @@ extension TFLCDBusStop {
     }
 
     @NSManaged public var identifier: String
+    @NSManaged public var stationIdentifier: String
     @NSManaged public var lat: Double
     @NSManaged public var long: Double
     @NSManaged public var name: String

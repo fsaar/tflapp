@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 
 class TFLStationDetailTableViewController: UITableViewController {
-
+    let sectionHeaderDefaultHeight = CGFloat(50)
     var viewModels : [TFLStationDetailTableViewModel] = [] {
         didSet {
             self.tableView.reloadData() 
@@ -19,7 +19,7 @@ class TFLStationDetailTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.sectionHeaderHeight = 50
+        self.tableView.sectionHeaderHeight = sectionHeaderDefaultHeight
         let sectionNib = UINib(nibName: String(describing: TFLStationDetailSectionHeaderView.self), bundle: nil)
         self.tableView.register(sectionNib, forHeaderFooterViewReuseIdentifier: String(describing: TFLStationDetailSectionHeaderView.self))
     }

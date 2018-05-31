@@ -29,7 +29,7 @@ class TFLStationDetailController: UIViewController {
             let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
             context.perform {
                 let lineInfo =  TFLCDLineInfo.lineInfo(with: line, and: context)
-                let routes = lineInfo?.route?.array as? [TFLLineRoute] ?? []
+                let routes = lineInfo?.routes?.array as? [TFLCDLineRoute] ?? []
                 var models : [TFLStationDetailTableViewModel] = []
                 for route in routes {
                     let busStops = TFLCDBusStop.busStops(with: route.stations ?? [], and: context)

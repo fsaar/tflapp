@@ -359,7 +359,89 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9ki-L5-Iju" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="431" y="18"/>
+            <point key="canvasLocation" x="474" y="18"/>
+        </scene>
+        <!--Station Detail Table View Controller-->
+        <scene sceneID="0ot-SE-ydR">
+            <objects>
+                <tableViewController storyboardIdentifier="TFLStationDetailTableViewController" id="LvP-II-7wb" customClass="TFLStationDetailTableViewController" customModule="London_Bus" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="mUa-PF-orz">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TFLStationDetailTableViewCell" rowHeight="40" id="jEU-He-LqK" customClass="TFLStationDetailTableViewCell" customModule="London_Bus" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="40"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="jEU-He-LqK" id="Uly-2b-PIo">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zY3-4s-FS4" userLabel="nameLabel">
+                                            <rect key="frame" x="58" y="10" width="307" height="20.5"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wvy-xF-A11" userLabel="upperPath">
+                                            <rect key="frame" x="33" y="0.0" width="2" height="16"/>
+                                            <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="16" id="Pmh-oi-awY"/>
+                                                <constraint firstAttribute="width" constant="2" id="h0x-JH-TUi"/>
+                                            </constraints>
+                                        </view>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="omP-Wl-SR2" userLabel="middlePath">
+                                            <rect key="frame" x="30" y="16" width="8" height="8"/>
+                                            <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="8" id="395-yd-pip"/>
+                                                <constraint firstAttribute="height" constant="8" id="D0K-wN-jJK"/>
+                                            </constraints>
+                                        </view>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vgU-fD-dTx" userLabel="lowerPath">
+                                            <rect key="frame" x="33" y="24" width="2" height="16"/>
+                                            <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="2" id="U9h-Xx-Zod"/>
+                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="16" id="mJv-2H-awc"/>
+                                            </constraints>
+                                        </view>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="omP-Wl-SR2" firstAttribute="centerY" secondItem="Uly-2b-PIo" secondAttribute="centerY" id="EIW-pm-VqB"/>
+                                        <constraint firstItem="Wvy-xF-A11" firstAttribute="top" secondItem="Uly-2b-PIo" secondAttribute="top" id="GDs-FP-ncl"/>
+                                        <constraint firstItem="vgU-fD-dTx" firstAttribute="centerX" secondItem="omP-Wl-SR2" secondAttribute="centerX" id="P4n-2g-GTE"/>
+                                        <constraint firstItem="Wvy-xF-A11" firstAttribute="bottom" secondItem="omP-Wl-SR2" secondAttribute="top" id="Thc-aC-UrU"/>
+                                        <constraint firstItem="Wvy-xF-A11" firstAttribute="centerX" secondItem="omP-Wl-SR2" secondAttribute="centerX" id="YDE-Gc-7yB"/>
+                                        <constraint firstAttribute="trailing" secondItem="zY3-4s-FS4" secondAttribute="trailing" constant="10" id="YVi-zi-Dwz"/>
+                                        <constraint firstAttribute="bottom" secondItem="vgU-fD-dTx" secondAttribute="bottom" id="cbe-hi-u1b"/>
+                                        <constraint firstItem="zY3-4s-FS4" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Uly-2b-PIo" secondAttribute="top" constant="5" id="ejc-vF-71k"/>
+                                        <constraint firstItem="zY3-4s-FS4" firstAttribute="leading" secondItem="omP-Wl-SR2" secondAttribute="trailing" constant="20" id="ew6-Dg-LKM"/>
+                                        <constraint firstItem="omP-Wl-SR2" firstAttribute="leading" secondItem="Uly-2b-PIo" secondAttribute="leading" constant="30" id="gMG-qw-uDw"/>
+                                        <constraint firstItem="vgU-fD-dTx" firstAttribute="top" secondItem="omP-Wl-SR2" secondAttribute="bottom" id="gUA-t9-nL1"/>
+                                        <constraint firstItem="zY3-4s-FS4" firstAttribute="centerY" secondItem="Uly-2b-PIo" secondAttribute="centerY" id="r8y-2T-UN4"/>
+                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="zY3-4s-FS4" secondAttribute="bottom" constant="5" id="tTL-YM-2Vz"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="lowerStationPath" destination="vgU-fD-dTx" id="TTd-b3-g8f"/>
+                                    <outlet property="middleStationPath" destination="omP-Wl-SR2" id="tH0-yE-wMg"/>
+                                    <outlet property="stationName" destination="zY3-4s-FS4" id="0jF-Ev-LBq"/>
+                                    <outlet property="upperStationPath" destination="Wvy-xF-A11" id="t6V-se-rFF"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="LvP-II-7wb" id="eMu-fh-dzF"/>
+                            <outlet property="delegate" destination="LvP-II-7wb" id="8DG-7F-OSt"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WtR-K6-0YT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4404" y="341.37931034482762"/>
         </scene>
         <!--Map View Controller-->
         <scene sceneID="wcZ-Uc-Vhc">
@@ -643,7 +725,21 @@
                     <view key="view" contentMode="scaleToFill" id="6WQ-Ji-O8d">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IX6-SD-LEi">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <connections>
+                                    <segue destination="LvP-II-7wb" kind="embed" identifier="TFLStationDetailTableViewControllerSegue" id="tvn-7A-mGa"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="IX6-SD-LEi" secondAttribute="trailing" id="Tf6-dC-RSI"/>
+                            <constraint firstAttribute="bottom" secondItem="IX6-SD-LEi" secondAttribute="bottom" id="Trt-1S-a2F"/>
+                            <constraint firstItem="IX6-SD-LEi" firstAttribute="leading" secondItem="6WQ-Ji-O8d" secondAttribute="leading" id="Wvz-s2-H5T"/>
+                            <constraint firstItem="IX6-SD-LEi" firstAttribute="top" secondItem="6WQ-Ji-O8d" secondAttribute="top" id="XPL-mj-faA"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="pHv-Ns-9sf"/>
                     <connections>

@@ -1,9 +1,8 @@
 //
 //  TFLCDLineInfo+CoreDataProperties.swift
-//  tflapp
+//  
 //
-//  Created by Frank Saar on 29/05/2018.
-//  Copyright © 2018 SAMedialabs. All rights reserved.
+//  Created by Frank Saar on 31/05/2018.
 //
 //
 
@@ -18,41 +17,41 @@ extension TFLCDLineInfo {
     }
 
     @NSManaged public var identifier: String
-    @NSManaged public var stations: NSOrderedSet?
+    @NSManaged public var route: NSOrderedSet?
 
 }
 
-// MARK: Generated accessors for stations
+// MARK: Generated accessors for route
 extension TFLCDLineInfo {
 
-    @objc(insertObject:inStationsAtIndex:)
-    @NSManaged public func insertIntoStations(_ value: TFLCDStation, at idx: Int)
+    @objc(insertObject:inRouteAtIndex:)
+    @NSManaged public func insertIntoRoute(_ value: TFLLineRoute, at idx: Int)
 
-    @objc(removeObjectFromStationsAtIndex:)
-    @NSManaged public func removeFromStations(at idx: Int)
+    @objc(removeObjectFromRouteAtIndex:)
+    @NSManaged public func removeFromRoute(at idx: Int)
 
-    @objc(insertStations:atIndexes:)
-    @NSManaged public func insertIntoStations(_ values: [TFLCDStation], at indexes: NSIndexSet)
+    @objc(insertRoute:atIndexes:)
+    @NSManaged public func insertIntoRoute(_ values: [TFLLineRoute], at indexes: NSIndexSet)
 
-    @objc(removeStationsAtIndexes:)
-    @NSManaged public func removeFromStations(at indexes: NSIndexSet)
+    @objc(removeRouteAtIndexes:)
+    @NSManaged public func removeFromRoute(at indexes: NSIndexSet)
 
-    @objc(replaceObjectInStationsAtIndex:withObject:)
-    @NSManaged public func replaceStations(at idx: Int, with value: TFLCDStation)
+    @objc(replaceObjectInRouteAtIndex:withObject:)
+    @NSManaged public func replaceRoute(at idx: Int, with value: TFLLineRoute)
 
-    @objc(replaceStationsAtIndexes:withStations:)
-    @NSManaged public func replaceStations(at indexes: NSIndexSet, with values: [TFLCDStation])
+    @objc(replaceRouteAtIndexes:withRoute:)
+    @NSManaged public func replaceRoute(at indexes: NSIndexSet, with values: [TFLLineRoute])
 
-    @objc(addStationsObject:)
-    @NSManaged public func addToStations(_ value: TFLCDStation)
+    @objc(addRouteObject:)
+    @NSManaged public func addToRoute(_ value: TFLLineRoute)
 
-    @objc(removeStationsObject:)
-    @NSManaged public func removeFromStations(_ value: TFLCDStation)
+    @objc(removeRouteObject:)
+    @NSManaged public func removeFromRoute(_ value: TFLLineRoute)
 
-    @objc(addStations:)
-    @NSManaged public func addToStations(_ values: NSOrderedSet)
+    @objc(addRoute:)
+    @NSManaged public func addToRoute(_ values: NSOrderedSet)
 
-    @objc(removeStations:)
-    @NSManaged public func removeFromStations(_ values: NSOrderedSet)
+    @objc(removeRoute:)
+    @NSManaged public func removeFromRoute(_ values: NSOrderedSet)
 
 }

@@ -157,7 +157,7 @@ public class TFLCDBusStop: NSManagedObject {
         var busStops : [TFLCDBusStop] = []
         managedObjectContext.performAndWait {
             let fetchRequest = NSFetchRequest<TFLCDBusStop>(entityName: String(describing: TFLCDBusStop.self))
-            let predicate = NSPredicate(format: "stationIdentifier in (%@)",identifiers)
+            let predicate = NSPredicate(format: "identifier in (%@)",identifiers)
             fetchRequest.predicate = predicate
             busStops =  (try? managedObjectContext.fetch(fetchRequest)) ?? []
         }

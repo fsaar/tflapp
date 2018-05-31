@@ -14,7 +14,7 @@ import CoreData
 public class TFLCDLineInfo: NSManagedObject {
     private enum Identifiers : String {
         case lineId = "lineId"
-        case stations = "stations"
+        case routes = "orderedLineRoutes"
     }
     class func lineInfoEntity(with identifier: String,and managedObjectContext: NSManagedObjectContext,using completionBlock :@escaping (_ lineInfo : TFLCDLineInfo?) -> () ) {
         let fetchRequest = NSFetchRequest<TFLCDLineInfo>(entityName: String(describing: self))
@@ -40,24 +40,28 @@ public class TFLCDLineInfo: NSManagedObject {
         self.lineInfoEntity(with: identifier, and: managedObjectContext) { lineInfo in
             managedObjectContext.perform {
                 if let lineInfo = lineInfo {
-                    if let stationDictList = dictionary[Identifiers.stations.rawValue] as? [[String:Any]] {
+                    if let routeDictList = dictionary[Identifiers.routes.rawValue] as? [[String:Any]] {
                         let group = DispatchGroup()
-                        for dict in  stationDictList {
+                        for routeDict in  routeDictList {
                             group.enter()
-                            TFLCDStation.station(with: dict, and: managedObjectContext) { station in
-                                if let station = station {
-                                    lineInfo.addToStations(station)
+                            TFLLineRoute.route(with: routeDict, and: managedObjectContext) { route in
+                                if let route = route {
+                                    lineInfo.addToRoute(route)
                                 }
                                 group.leave()
                             }
                         }
                         group.notify(queue: .global()) {
+                            print("notiffy")
                             completionBlock(lineInfo)
                         }
                     }
                     else {
                         completionBlock(lineInfo)
                     }
+                }
+                else {
+                    completionBlock(nil)
                 }
             }
         }

@@ -17,8 +17,8 @@ extension MutableCollection where Index == Int, Iterator.Element == TFLBusStopAr
 }
 
 class TFLNearbyBusStationsController : UITableViewController,TFLChangeSetProtocol {
-    enum Segue : String {
-        case TFLStationDetailSegue =  "TFLStationDetailSegue"
+    enum SegueIdentifier : String {
+        case stationDetailSegue =  "TFLStationDetailSegue"
     }
     static let defaultTableViewRowHeight = CGFloat (120)
 
@@ -68,11 +68,11 @@ class TFLNearbyBusStationsController : UITableViewController,TFLChangeSetProtoco
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let identifier = segue.identifier, let segueIdentifier = TFLNearbyBusStationsController.Segue(rawValue:identifier) else {
+        guard let identifier = segue.identifier, let segueIdentifier = TFLNearbyBusStationsController.SegueIdentifier(rawValue:identifier) else {
             return
         }
         switch segueIdentifier {
-        case .TFLStationDetailSegue:
+        case .stationDetailSegue:
             if let controller = segue.destination as? TFLStationDetailController, let line = sender as? String {
                 controller.line = line
             }
@@ -105,7 +105,7 @@ class TFLNearbyBusStationsController : UITableViewController,TFLChangeSetProtoco
 
 extension TFLNearbyBusStationsController : TFLBusStationArrivalCellDelegate {
     func busStationArrivalCell(_ busStationArrivalCell: TFLBusStationArrivalsCell,didSelectLine line: String) {
-        self.performSegue(withIdentifier: Segue.TFLStationDetailSegue.rawValue, sender: line)
+        self.performSegue(withIdentifier: SegueIdentifier.stationDetailSegue.rawValue, sender: line)
     }
 }
 

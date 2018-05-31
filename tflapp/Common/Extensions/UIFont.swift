@@ -15,7 +15,12 @@ extension UIFont {
         let font = UIFont(name: "GillSans", size: 20)
         return font!
     }
-    
+
+    class func tflStationDetailTitle() -> UIFont {
+        let font = UIFont(name: "GillSans-Light", size: 17)
+        return font!
+    }
+
     class func tflFontStationHeader() -> UIFont {
         let font = UIFont(name: "GillSans-Light", size: 17)
         return font!

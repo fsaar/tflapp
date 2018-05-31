@@ -16,18 +16,17 @@
     </entity>
     <entity name="TFLCDLineInfo" representedClassName="TFLCDLineInfo" syncable="YES">
         <attribute name="identifier" attributeType="String" syncable="YES"/>
-        <relationship name="stations" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="TFLCDStation" inverseName="lineInfos" inverseEntity="TFLCDStation" syncable="YES"/>
+        <relationship name="route" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="TFLLineRoute" inverseName="line" inverseEntity="TFLLineRoute" syncable="YES"/>
     </entity>
-    <entity name="TFLCDStation" representedClassName="TFLCDStation" syncable="YES">
-        <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="lat" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="long" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="lineInfos" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TFLCDLineInfo" inverseName="stations" inverseEntity="TFLCDLineInfo" syncable="YES"/>
+    <entity name="TFLLineRoute" representedClassName="TFLLineRoute" syncable="YES">
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="serviceType" attributeType="String" syncable="YES"/>
+        <attribute name="stations" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <relationship name="line" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TFLCDLineInfo" inverseName="route" inverseEntity="TFLCDLineInfo" syncable="YES"/>
     </entity>
     <elements>
         <element name="TFLCDBusStop" positionX="-63" positionY="-18" width="128" height="180"/>
         <element name="TFLCDLineInfo" positionX="-54" positionY="54" width="128" height="75"/>
-        <element name="TFLCDStation" positionX="-36" positionY="72" width="128" height="120"/>
+        <element name="TFLLineRoute" positionX="-27" positionY="81" width="128" height="105"/>
     </elements>
 </model>

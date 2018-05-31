@@ -30,15 +30,7 @@ class TFLStationDetailController: UIViewController {
             context.perform {
                 let lineInfo =  TFLCDLineInfo.lineInfo(with: line, and: context)
                 let routes = lineInfo?.routes?.array as? [TFLCDLineRoute] ?? []
-                var models : [TFLStationDetailTableViewModel] = []
-                for route in routes {
-                    let busStops = TFLCDBusStop.busStops(with: route.stations ?? [], and: context)
-                    if !busStops.isEmpty {
-                        let tuples = busStops.map { ($0.stopLetter ?? "",$0.name) }
-                        let model = TFLStationDetailTableViewModel(routeName: route.name, stations: tuples)
-                        models += [model]
-                    }
-                }
+                let models : [TFLStationDetailTableViewModel] =  routes.compactMap { TFLStationDetailTableViewModel(with: $0) }
                 OperationQueue.main.addOperation({
                     self.viewModels = models
                 })

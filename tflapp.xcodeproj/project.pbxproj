@@ -53,6 +53,8 @@
 		5685ADC41DEF8DDC009FD6A5 /* TFLBusPredictionViewCellSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5685ADC31DEF8DDC009FD6A5 /* TFLBusPredictionViewCellSpecs.swift */; };
 		5689612220C074AE00335DEB /* TFLCDLineRoute+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5689612020C074AE00335DEB /* TFLCDLineRoute+CoreDataClass.swift */; };
 		5689612320C074AE00335DEB /* TFLCDLineRoute+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5689612120C074AE00335DEB /* TFLCDLineRoute+CoreDataProperties.swift */; };
+		5689612520C089CF00335DEB /* TFLStationDetailSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5689612420C089CE00335DEB /* TFLStationDetailSectionHeaderView.swift */; };
+		5689612720C08AFC00335DEB /* TFLStationDetailSectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5689612620C08AFC00335DEB /* TFLStationDetailSectionHeaderView.xib */; };
 		5692B5001DF2E26300C56A3C /* TFLSlideContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5692B4FF1DF2E26300C56A3C /* TFLSlideContainerController.swift */; };
 		5692B5031DF2E4EB00C56A3C /* TFLMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5692B5021DF2E4EB00C56A3C /* TFLMapViewController.swift */; };
 		5692B5071DF2F15F00C56A3C /* TFLNearbyBackgroundController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5692B5061DF2F15F00C56A3C /* TFLNearbyBackgroundController.swift */; };
@@ -139,6 +141,8 @@
 		5685ADC31DEF8DDC009FD6A5 /* TFLBusPredictionViewCellSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusPredictionViewCellSpecs.swift; sourceTree = "<group>"; };
 		5689612020C074AE00335DEB /* TFLCDLineRoute+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TFLCDLineRoute+CoreDataClass.swift"; sourceTree = "<group>"; };
 		5689612120C074AE00335DEB /* TFLCDLineRoute+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TFLCDLineRoute+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		5689612420C089CE00335DEB /* TFLStationDetailSectionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLStationDetailSectionHeaderView.swift; sourceTree = "<group>"; };
+		5689612620C08AFC00335DEB /* TFLStationDetailSectionHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TFLStationDetailSectionHeaderView.xib; sourceTree = "<group>"; };
 		5692B4FF1DF2E26300C56A3C /* TFLSlideContainerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLSlideContainerController.swift; sourceTree = "<group>"; };
 		5692B5021DF2E4EB00C56A3C /* TFLMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLMapViewController.swift; sourceTree = "<group>"; };
 		5692B5061DF2F15F00C56A3C /* TFLNearbyBackgroundController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLNearbyBackgroundController.swift; sourceTree = "<group>"; };
@@ -335,6 +339,8 @@
 			children = (
 				567F534820BF13030022FEFF /* TFLStationDetailTableViewController.swift */,
 				567F533C20BDB34E0022FEFF /* TFLStationDetailController.swift */,
+				5689612420C089CE00335DEB /* TFLStationDetailSectionHeaderView.swift */,
+				5689612620C08AFC00335DEB /* TFLStationDetailSectionHeaderView.xib */,
 				567F533E20BDB9C40022FEFF /* TFLStationDetailHeaderView.swift */,
 				567F534620BECA1B0022FEFF /* TFLStationDetailTableViewCell.swift */,
 				567F534A20BF19350022FEFF /* TFLStationDetailTableViewModel.swift */,
@@ -583,6 +589,7 @@
 			files = (
 				566EF7D11DDB5685006162D7 /* TFLBusStops.sqlite in Resources */,
 				56A81B3C1DD862DC001DF7F1 /* LaunchScreen.storyboard in Resources */,
+				5689612720C08AFC00335DEB /* TFLStationDetailSectionHeaderView.xib in Resources */,
 				56D70D351DD9A7A6004CA293 /* Localizable.strings in Resources */,
 				56A81B391DD862DC001DF7F1 /* Assets.xcassets in Resources */,
 				56A81B341DD862DC001DF7F1 /* Main.storyboard in Resources */,
@@ -777,6 +784,7 @@
 				567F533920BC20610022FEFF /* TFLCDLineInfo+CoreDataClass.swift in Sources */,
 				56823EA61DDDA39600E79B1A /* TFLLoadLocationView.swift in Sources */,
 				562DBF5A1E05B6780028F3CD /* TFLSnapHandler.swift in Sources */,
+				5689612520C089CF00335DEB /* TFLStationDetailSectionHeaderView.swift in Sources */,
 				56D0AF331E141D2C00F466C4 /* TFLAnimiatedLabel.swift in Sources */,
 				565A1FC81DD8F6E6003CE960 /* TFLCoreDataStack.swift in Sources */,
 				565A1FD21DD8FB2A003CE960 /* Model.xcdatamodeld in Sources */,

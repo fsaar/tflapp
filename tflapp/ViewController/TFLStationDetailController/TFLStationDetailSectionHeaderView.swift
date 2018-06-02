@@ -16,11 +16,27 @@ class TFLStationDetailSectionHeaderView: UITableViewHeaderFooterView {
             self.titleLabel.textColor = UIColor.black
         }
     }
-
     
-    func configure(with model: TFLStationDetailTableViewModel) {
-        let attributedText = NSMutableAttributedString(attributedString: model.routeName)
-        attributedText.setAttributes([NSAttributedStringKey.font : UIFont.tflStationDetailSectionHeaderTitle(),NSAttributedStringKey.foregroundColor: UIColor.black], range: NSMakeRange(0,attributedText.length))
-        self.titleLabel.attributedText = attributedText
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        let tapHandler = UITapGestureRecognizer(target: self, action: #selector(self.didTapSection))
+        self.addGestureRecognizer(tapHandler)
     }
+    
+    override func prepareForReuse() {
+        self.titleLabel.text = nil
+    }
+
+    var tapHandler : (()->())?
+    func configure(with model: TFLStationDetailTableViewModel, using tapHandler: (()->())? = nil) {
+        let attributedString = (try? NSMutableAttributedString(data:  model.routeName.data(using: .utf8)!, options:[.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil)) ?? NSMutableAttributedString(string: "")
+        attributedString.setAttributes([NSAttributedStringKey.font : UIFont.tflStationDetailSectionHeaderTitle(),NSAttributedStringKey.foregroundColor: UIColor.black], range: NSMakeRange(0,attributedString.length))
+        self.titleLabel.attributedText = attributedString
+        self.tapHandler = tapHandler
+    }
+    
+    @objc func didTapSection() {
+        tapHandler?()
+    }
+    
 }

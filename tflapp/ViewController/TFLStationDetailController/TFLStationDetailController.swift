@@ -20,7 +20,14 @@ class TFLStationDetailController: UIViewController {
     }
     @IBOutlet weak var titleHeaderView : TFLStationDetailHeaderView!
     var tableViewController : TFLStationDetailTableViewController?
-    
+    lazy var backBarButtonItem : UIBarButtonItem = {
+        let button = UIButton(frame: .zero)
+        button.addTarget(self, action: #selector(self.backBarButtonHandler), for: .touchUpInside)
+        button.tintColor = .red
+        let image = #imageLiteral(resourceName:"back")
+        button.setImage(image, for: .normal)
+        return UIBarButtonItem(customView: button)
+    }()
     var line : String? = nil {
         didSet {
             guard let line = line else {
@@ -42,8 +49,10 @@ class TFLStationDetailController: UIViewController {
         super.viewDidLoad()
         self.titleHeaderView.title = line ?? ""
         self.navigationItem.titleView = self.titleHeaderView
-
+        self.navigationItem.leftBarButtonItem = self.backBarButtonItem
     }
+
+    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let identifier = segue.identifier, let segueIdentifier = SegueIdentifier(rawValue: identifier) else {
@@ -58,5 +67,11 @@ class TFLStationDetailController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+}
+/// MARK: Private
+fileprivate extension TFLStationDetailController {
+    @objc func backBarButtonHandler() {
+        self.navigationController?.popViewController(animated: true)
     }
 }

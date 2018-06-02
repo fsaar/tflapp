@@ -7,9 +7,9 @@
 "TFLLoadNearbyStationsView.title" = "Loading nearby stations ...";
 "TFLNoStationsView.title" = "No stations found for your current location";
 "TFLNoStationsView.retryButtonTitle" = "Try again";
-"TFLStationDetailTalbeViewModel.title" = "Name not available";
+"TFLStationDetailTableViewModel.towards" = "towards";
 "TFLLoadArrivalTimesView.title" = "Loading bus schedules ...";
 "TFLNoGPSEnabledView.title" = "For this app to function properly location services need to be enabled in settings.";
 "TFLNoGPSEnabledView.settingsButtonTitle" = "Go to Settings";
 "TFLNoGPSEnabledView.headerTitle" = "No Location Services";
-"TFLRootViewController.ackTitle" = "Powered by TfL Open Data";
+"TFLRootViewController.ackTitle" = "Powered by TfL Open Data";"

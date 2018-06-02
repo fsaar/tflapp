@@ -28,10 +28,9 @@ class TFLStationDetailSectionHeaderView: UITableViewHeaderFooterView {
     }
 
     var tapHandler : (()->())?
+    
     func configure(with model: TFLStationDetailTableViewModel, using tapHandler: (()->())? = nil) {
-        let attributedString = (try? NSMutableAttributedString(data:  model.routeName.data(using: .utf8)!, options:[.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil)) ?? NSMutableAttributedString(string: "")
-        attributedString.setAttributes([NSAttributedStringKey.font : UIFont.tflStationDetailSectionHeaderTitle(),NSAttributedStringKey.foregroundColor: UIColor.black], range: NSMakeRange(0,attributedString.length))
-        self.titleLabel.attributedText = attributedString
+        self.titleLabel.text = model.routeName
         self.tapHandler = tapHandler
     }
     

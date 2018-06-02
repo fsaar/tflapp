@@ -2,12 +2,15 @@ import UIKit
 import CoreData
 
 struct TFLStationDetailTableViewModel {
- 
+    
     let routeName : String
     let stations : [(stopCode: String,name : String)]
         
     
     init?(with route: TFLCDLineRoute) {
+        enum HtmlEncodings : String {
+            case towards = "&harr;"
+        }
         guard let managedObjectContext = route.managedObjectContext else {
             return nil
         }
@@ -16,7 +19,10 @@ struct TFLStationDetailTableViewModel {
         let busStopsDict = Dictionary(grouping: busStops) { $0.identifier }
         let sortedBusStops = routeStations.compactMap { busStopsDict[$0]?.first }
         let tuples = sortedBusStops.map { ($0.stopLetter ?? "",$0.name) }
-        routeName = route.name
+        let towards = NSLocalizedString("TFLStationDetailTableViewModel.towards", comment: "")
+        let tempName = route.name.replacingOccurrences(of: HtmlEncodings.towards.rawValue, with: towards)
+        let tempNameComponents = tempName.split(separator: " ").map { $0.trimmingCharacters(in: .whitespaces ) }.filter { !$0.isEmpty }
+        routeName = tempNameComponents.joined(separator: " ")
         stations = tuples
     }
 }

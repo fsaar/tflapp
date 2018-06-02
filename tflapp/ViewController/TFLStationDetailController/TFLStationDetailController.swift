@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Foundation
 import CoreData
 
 class TFLStationDetailController: UIViewController {
@@ -21,7 +22,7 @@ class TFLStationDetailController: UIViewController {
     @IBOutlet weak var titleHeaderView : TFLStationDetailHeaderView!
     var tableViewController : TFLStationDetailTableViewController?
     lazy var backBarButtonItem : UIBarButtonItem = {
-        let button = UIButton(frame: .zero)
+        let button = UIButton(frame: CGRect(x:0,y:0,width:40,height:40))
         button.addTarget(self, action: #selector(self.backBarButtonHandler), for: .touchUpInside)
         button.tintColor = .red
         let image = #imageLiteral(resourceName:"back")

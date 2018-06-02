@@ -15,42 +15,65 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
+                <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xLx-sK-mFg">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                    <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="6zw-yp-luC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    </view>
+                    <blurEffect style="light"/>
+                </visualEffectView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="59X-cO-sC0" userLabel="contentView">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
                     <subviews>
                         <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Label" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="5A0-sS-Qdj">
                             <rect key="frame" x="20" y="15" width="42" height="20.5"/>
-                            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jFb-vL-zO5" userLabel="separator">
                             <rect key="frame" x="0.0" y="49" width="375" height="1"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <gestureRecognizers/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="1" id="KZs-uJ-H8g"/>
+                                <constraint firstAttribute="height" constant="0.5" id="KZs-uJ-H8g"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eHs-wJ-zRb" userLabel="separator">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <gestureRecognizers/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="0.5" id="HC2-mx-1EW"/>
                             </constraints>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="jFb-vL-zO5" secondAttribute="bottom" id="2F3-sy-DNz"/>
                         <constraint firstItem="5A0-sS-Qdj" firstAttribute="leading" secondItem="59X-cO-sC0" secondAttribute="leading" constant="20" id="Bkc-vW-GbP"/>
                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="5A0-sS-Qdj" secondAttribute="trailing" constant="20" id="HOe-9J-j9y"/>
                         <constraint firstAttribute="trailing" secondItem="jFb-vL-zO5" secondAttribute="trailing" id="eLm-8c-9yG"/>
                         <constraint firstItem="5A0-sS-Qdj" firstAttribute="centerY" secondItem="59X-cO-sC0" secondAttribute="centerY" id="iiw-d4-OCX"/>
+                        <constraint firstAttribute="trailing" secondItem="eHs-wJ-zRb" secondAttribute="trailing" id="kvM-eD-Mvq"/>
                         <constraint firstItem="jFb-vL-zO5" firstAttribute="leading" secondItem="59X-cO-sC0" secondAttribute="leading" id="tCx-6w-kOJ"/>
+                        <constraint firstItem="eHs-wJ-zRb" firstAttribute="top" secondItem="59X-cO-sC0" secondAttribute="top" id="wnu-l2-0Ds"/>
+                        <constraint firstItem="eHs-wJ-zRb" firstAttribute="leading" secondItem="59X-cO-sC0" secondAttribute="leading" id="zus-S2-Xim"/>
                     </constraints>
                 </view>
             </subviews>
             <gestureRecognizers/>
             <constraints>
+                <constraint firstAttribute="top" secondItem="xLx-sK-mFg" secondAttribute="top" id="4EL-Km-zel"/>
                 <constraint firstAttribute="trailing" secondItem="59X-cO-sC0" secondAttribute="trailing" id="F9e-wy-7ih"/>
+                <constraint firstAttribute="trailing" secondItem="xLx-sK-mFg" secondAttribute="trailing" id="Jxc-YZ-OpZ"/>
                 <constraint firstItem="59X-cO-sC0" firstAttribute="leading" secondItem="FMd-AH-MKc" secondAttribute="leading" id="Wnl-ad-R6s"/>
                 <constraint firstItem="bdN-0e-Ipa" firstAttribute="bottom" secondItem="59X-cO-sC0" secondAttribute="bottom" id="Zst-5O-QT2"/>
+                <constraint firstItem="xLx-sK-mFg" firstAttribute="bottom" secondItem="FMd-AH-MKc" secondAttribute="bottom" id="cid-1b-2HZ"/>
                 <constraint firstItem="59X-cO-sC0" firstAttribute="top" secondItem="bdN-0e-Ipa" secondAttribute="top" id="dGs-Xt-66W"/>
+                <constraint firstItem="xLx-sK-mFg" firstAttribute="leading" secondItem="FMd-AH-MKc" secondAttribute="leading" id="vur-QY-9ap"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="bdN-0e-Ipa"/>

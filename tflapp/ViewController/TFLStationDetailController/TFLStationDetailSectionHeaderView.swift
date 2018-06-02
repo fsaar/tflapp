@@ -17,25 +17,11 @@ class TFLStationDetailSectionHeaderView: UITableViewHeaderFooterView {
         }
     }
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        let tapHandler = UITapGestureRecognizer(target: self, action: #selector(self.didTapSection))
-        self.addGestureRecognizer(tapHandler)
-    }
-    
     override func prepareForReuse() {
         self.titleLabel.text = nil
     }
-
-    var tapHandler : (()->())?
     
-    func configure(with model: TFLStationDetailTableViewModel, using tapHandler: (()->())? = nil) {
+    func configure(with model: TFLStationDetailTableViewModel) {
         self.titleLabel.text = model.routeName
-        self.tapHandler = tapHandler
     }
-    
-    @objc func didTapSection() {
-        tapHandler?()
-    }
-    
 }

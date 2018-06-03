@@ -154,14 +154,17 @@ public class TFLCDBusStop: NSManagedObject {
     }
     
     class func busStops(with identifiers: [String],and managedObjectContext: NSManagedObjectContext) -> [TFLCDBusStop] {
-        var busStops : [TFLCDBusStop] = []
+        var sortedBusStops : [TFLCDBusStop] = []
         managedObjectContext.performAndWait {
             let fetchRequest = NSFetchRequest<TFLCDBusStop>(entityName: String(describing: TFLCDBusStop.self))
             let predicate = NSPredicate(format: "identifier in (%@)",identifiers)
             fetchRequest.predicate = predicate
-            busStops =  (try? managedObjectContext.fetch(fetchRequest)) ?? []
+            let busStops =  (try? managedObjectContext.fetch(fetchRequest)) ?? []
+            let busStopsDict = Dictionary(grouping: busStops) { $0.identifier }
+            sortedBusStops = identifiers.compactMap { busStopsDict[$0]?.first }
+
         }
-        return busStops
+        return sortedBusStops
     }
     
 }

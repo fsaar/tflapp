@@ -13,6 +13,7 @@ import CoreData
 class TFLStationDetailController: UIViewController {
     enum SegueIdentifier : String {
         case tableViewControllerSegue =  "TFLStationDetailTableViewControllerSegue"
+        case mapViewControllerSegue = "TFLStationDetailMapViewControllerSegue"
     }
     fileprivate var viewModels : [TFLStationDetailTableViewModel] = [] {
         didSet {
@@ -20,12 +21,12 @@ class TFLStationDetailController: UIViewController {
         }
     }
     @IBOutlet weak var titleHeaderView : TFLStationDetailHeaderView!
+    var mapViewController : TFLStationDetailMapViewController!
     var tableViewController : TFLStationDetailTableViewController?
     lazy var backBarButtonItem : UIBarButtonItem = {
-        let button = UIButton(frame: CGRect(x:0,y:0,width:40,height:40))
+        let image = #imageLiteral(resourceName: "back")
+        let button = UIButton(frame: CGRect(origin:.zero,size:image.size))
         button.addTarget(self, action: #selector(self.backBarButtonHandler), for: .touchUpInside)
-        button.tintColor = .red
-        let image = #imageLiteral(resourceName:"back")
         button.setImage(image, for: .normal)
         return UIBarButtonItem(customView: button)
     }()
@@ -62,6 +63,8 @@ class TFLStationDetailController: UIViewController {
         switch segueIdentifier {
         case .tableViewControllerSegue:
             tableViewController = segue.destination as? TFLStationDetailTableViewController
+        case .mapViewControllerSegue:
+            mapViewController = segue.destination as? TFLStationDetailMapViewController
         }
     }
     

@@ -10,7 +10,7 @@ class TFLMapViewAnnotation: NSObject,MKAnnotation {
         return "\(String(describing: title)) - \(String(describing: subtitle)) [\(identifier)]"
     }
     
-    init(with title : String ,and subTitle: String , for coordinate: CLLocationCoordinate2D, with identifier : String) {
+    init(for coordinate: CLLocationCoordinate2D, with identifier : String,with title : String? = nil ,and subTitle: String? = nil) {
         self.coordinate = coordinate
         self.title = title
         self.subtitle = subTitle

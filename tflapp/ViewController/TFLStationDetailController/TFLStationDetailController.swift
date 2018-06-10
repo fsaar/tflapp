@@ -61,6 +61,7 @@ class TFLStationDetailController: UIViewController {
         switch segueIdentifier {
         case .tableViewControllerSegue:
             tableViewController = segue.destination as? TFLStationDetailTableViewController
+            tableViewController?.delegate = self
         case .mapViewControllerSegue:
             mapViewController = segue.destination as? TFLStationDetailMapViewController
         }
@@ -75,5 +76,11 @@ class TFLStationDetailController: UIViewController {
 fileprivate extension TFLStationDetailController {
     @objc func backBarButtonHandler() {
         self.navigationController?.popViewController(animated: true)
+    }
+}
+
+extension TFLStationDetailController : TFLStationDetailTableViewControllerDelegate {
+    func tflStationDetailTableViewController(_ controller: TFLStationDetailTableViewController, didShowSection section: Int) {
+        self.mapViewController.showRouteForModel(at: section, animated: true)
     }
 }

@@ -9,8 +9,12 @@
 import UIKit
 import CoreData
 
+protocol TFLStationDetailTableViewControllerDelegate : class {
+    func tflStationDetailTableViewController(_ controller: TFLStationDetailTableViewController,didShowSection section: Int)
+}
+
 class TFLStationDetailTableViewController: UITableViewController {
-    
+    weak var delegate : TFLStationDetailTableViewControllerDelegate?
     let sectionHeaderDefaultHeight = CGFloat(50)
    
     var viewModels : [TFLStationDetailTableViewModel] = [] {
@@ -18,8 +22,6 @@ class TFLStationDetailTableViewController: UITableViewController {
             self.tableView.reloadData()
         }
     }
-    
-   
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +45,7 @@ extension TFLStationDetailTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        self.delegate?.tflStationDetailTableViewController(self, didShowSection: section)
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: String(describing: TFLStationDetailSectionHeaderView.self)) as? TFLStationDetailSectionHeaderView
          let model = viewModels[section]
         header?.configure(with: model)

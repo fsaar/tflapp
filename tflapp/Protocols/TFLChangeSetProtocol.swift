@@ -1,7 +1,7 @@
 import UIKit
 
 protocol TFLChangeSetProtocol  {
-    func evaluateLists<T: Equatable & Hashable >(oldList : [T], newList : [T], compare: @escaping (_ lhs : T,_ rhs: T) -> (Bool)) -> (inserted : [(element:T,index:Int)],deleted : [(element:T,index:Int)],updated : [(element:T,index:Int)], moved : [(element:T,oldIndex:Int,newIndex:Int)])
+    func evaluateLists<T: Hashable >(oldList : [T], newList : [T], compare: @escaping (_ lhs : T,_ rhs: T) -> (Bool)) -> (inserted : [(element:T,index:Int)],deleted : [(element:T,index:Int)],updated : [(element:T,index:Int)], moved : [(element:T,oldIndex:Int,newIndex:Int)])
 }
 
 
@@ -52,7 +52,9 @@ extension TFLChangeSetProtocol {
             inserted.forEach { (arg) in
                 
                 let (element, index) = arg
-                updatedList.insert(element, at: index)
+                if 0..<updatedList.count ~= index {
+                    updatedList.insert(element, at: index)
+                }
             }
             let movedTypes = innerFindMoveTypes(list: updatedList)
             return movedTypes

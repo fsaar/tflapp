@@ -1,9 +1,10 @@
 import UIKit
 import CoreData
+import MapKit
 
 struct TFLStationDetailMapViewModel {
     
-    let stations : [(stopCode: String,name : String)]
+    let stations : [(stopCode: String,coords : CLLocationCoordinate2D)]
         
     
     init?(with route: TFLCDLineRoute) {
@@ -12,7 +13,7 @@ struct TFLStationDetailMapViewModel {
         }
         let routeStations = route.stations ?? []
         let busStops = TFLCDBusStop.busStops(with: routeStations, and: managedObjectContext)
-        let tuples = busStops.map { ($0.stopLetter ?? "",$0.name) }
+        let tuples = busStops.map { ($0.stopLetter ?? "",CLLocationCoordinate2DMake($0.lat, $0.long)) }.filter { CLLocationCoordinate2DIsValid($0.1) }
         stations = tuples
     }
 }

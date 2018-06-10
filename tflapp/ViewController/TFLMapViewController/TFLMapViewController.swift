@@ -12,21 +12,11 @@ class TFLMapViewController: UIViewController,TFLChangeSetProtocol {
     @IBOutlet weak var coverView : UIView!
     @IBOutlet weak var mapView : MKMapView! = nil {
         didSet {
-            self.mapView.delegate = self
+            mapView.delegate = self
+            mapView.register(MKAnnotationView.self, forAnnotationViewWithReuseIdentifier: String(describing: MKAnnotationView.self))
         }
     }
     
-    static let stationlabel = { () -> UILabel in
-        let label = UILabel()
-        label.autoresizingMask = []
-        label.numberOfLines = 1
-        label.backgroundColor = .clear
-        label.adjustsFontSizeToFitWidth = true
-        label.textAlignment = .center
-        label.textColor = .white
-        label.font = UIFont.tflFontMapBusStationIdentifier()
-        return label
-    }()
 
     lazy var userAnnotationViewImage: UIImage = {
         let bounds = CGRect(origin:.zero, size: CGSize(width: 16, height: 16))
@@ -51,34 +41,11 @@ class TFLMapViewController: UIViewController,TFLChangeSetProtocol {
         }
     }()
 
-    static var stationAnnotationBackgroundImage: UIImage = {
-        let bounds = CGRect(origin:.zero, size: CGSize(width: 20, height: 30))
-        let format = UIGraphicsImageRendererFormat()
-        format.opaque = false
-        let renderer = UIGraphicsImageRenderer(bounds: bounds,format: format)
-        return renderer.image { context in
-            let upperBounds =  CGRect(origin:.zero, size: CGSize(width: 20, height: 20))
-            let path = UIBezierPath(roundedRect:upperBounds,cornerRadius:5)
-            UIColor.white.setFill()
-            path.fill()
-            
-            let innerBounds = upperBounds.insetBy(dx: 1, dy: 1)
-            let innerPath = UIBezierPath(roundedRect: innerBounds,cornerRadius:5)
-            UIColor.red.setFill()
-            innerPath.fill()
-            
-            let lowerBounds = CGRect(x:9,y:18,width:2,height:10)
-            let lowerPath = UIBezierPath(rect: lowerBounds)
-            UIColor.red.setFill()
-            UIColor.red.setStroke()
-            lowerPath.stroke()
-            lowerPath.fill()
-        }
-    }()
+   
     
     static fileprivate let userAnnotationIdentifier = "userAnnotationIdentifier"
     var userAnnotation = { () -> TFLMapViewAnnotation in
-        let annotation = TFLMapViewAnnotation(with: "", and: "", for: kCLLocationCoordinate2DInvalid, with:TFLMapViewController.userAnnotationIdentifier)
+        let annotation = TFLMapViewAnnotation(for: kCLLocationCoordinate2DInvalid, with:TFLMapViewController.userAnnotationIdentifier)
         return annotation
     }()
     let defaultCoordinateOffset = CLLocationCoordinate2D(latitude: -1/300, longitude: 0)
@@ -96,7 +63,7 @@ class TFLMapViewController: UIViewController,TFLChangeSetProtocol {
                 self.mapView.removeAnnotations(toBeDeletedAnnotations)
                 
                 let toBeInsertedAnnotations =  inserted.map { $0.0.busStop }
-                                                .map { TFLMapViewAnnotation(with: $0.name, and: $0.towards ?? "", for: $0.coord , with: $0.identifier) }
+                    .map { TFLMapViewAnnotation(for: $0.coord , with: $0.identifier,with: $0.name, and: $0.towards) }
                 self.mapView.addAnnotations(toBeInsertedAnnotations)
 
                 let offsetCoordinate = coords + defaultCoordinateOffset
@@ -114,19 +81,18 @@ class TFLMapViewController: UIViewController,TFLChangeSetProtocol {
 extension TFLMapViewController : MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if let mapViewAnnotation = annotation as? TFLMapViewAnnotation {
-            let annotationView = self.annotationView(with: mapViewAnnotation)
-            
+            let annotationView =  self.mapView.dequeueReusableAnnotationView(withIdentifier:  String(describing: MKAnnotationView.self))
             switch mapViewAnnotation {
             case self.userAnnotation:
-                annotationView.image = self.userAnnotationViewImage
+                annotationView?.image = self.userAnnotationViewImage
             default:
                 if let (busStopPredictionTuples,_) = busStopPredicationCoordinateTuple, let stationInfo = busStopPredictionTuples.filter ({ mapViewAnnotation.identifier == $0.busStop.identifier }).first {
-                    annotationView.image = self.stationAnnotationImage(with: stationInfo.busStop.stopLetter ?? "")
-                    annotationView.centerOffset = CGPoint(x:0,y:-15)
+                    annotationView?.image = MKMapView.stationAnnotationImage(with: stationInfo.busStop.stopLetter ?? "")
+                    annotationView?.centerOffset = CGPoint(x:0,y:-15)
                 }
                 else
                 {
-                     annotationView.image = self.stationAnnotationImage(with: "X")
+                     annotationView?.image = MKMapView.stationAnnotationImage(with: "X")
                 }
             }
             return annotationView
@@ -137,36 +103,12 @@ extension TFLMapViewController : MKMapViewDelegate {
 }
 
 fileprivate extension TFLMapViewController {
-    func stationAnnotationImage(with stopCode: String) -> UIImage {
-        let bounds = CGRect(origin:.zero, size: CGSize(width: 20, height: 30))
-        let format = UIGraphicsImageRendererFormat()
-        format.opaque = false
-        let renderer = UIGraphicsImageRenderer(bounds: bounds,format: format)
-        return renderer.image { context in
-            TFLMapViewController.stationAnnotationBackgroundImage.draw(in: bounds)
-            if !stopCode.isEmpty {
-                let label = TFLMapViewController.stationlabel
-                label.text = stopCode
-                label.frame = CGRect(x:2,y:1,width:16,height:18)
-                label.drawText(in: label.frame)
-                
-            }
-        }
-    }
     
-    func annotationView(with annotation: TFLMapViewAnnotation) -> MKAnnotationView {
-        let annotationView =  self.mapView.dequeueReusableAnnotationView(withIdentifier: annotation.identifier) ??
-            MKAnnotationView(annotation: annotation, reuseIdentifier: annotation.identifier)
-        annotationView.annotation = annotation
-        return annotationView
-    }
-    
-
     func setUserAnnotationIfNeedBe(with coordinate: CLLocationCoordinate2D) {
         
         if CLLocationCoordinate2DIsValid(self.userAnnotation.coordinate) {
             self.mapView.removeAnnotation(self.userAnnotation)
-            self.userAnnotation =  TFLMapViewAnnotation(with : "",and : "",for: coordinate, with: TFLMapViewController.userAnnotationIdentifier)
+            self.userAnnotation =  TFLMapViewAnnotation(for: coordinate, with: TFLMapViewController.userAnnotationIdentifier)
             if CLLocationCoordinate2DIsValid(coordinate) {
                 self.mapView.addAnnotation(userAnnotation)
             }
@@ -174,7 +116,7 @@ fileprivate extension TFLMapViewController {
         else
         {
             if CLLocationCoordinate2DIsValid(coordinate) {
-                self.userAnnotation =  TFLMapViewAnnotation(with : "",and : "",for: coordinate, with: TFLMapViewController.userAnnotationIdentifier)
+                self.userAnnotation =  TFLMapViewAnnotation(for: coordinate, with: TFLMapViewController.userAnnotationIdentifier)
                 self.mapView.addAnnotation(userAnnotation)
             }
         }

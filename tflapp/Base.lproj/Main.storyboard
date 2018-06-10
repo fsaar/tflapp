@@ -810,6 +810,10 @@
         <scene sceneID="LrV-LR-q1s">
             <objects>
                 <viewController storyboardIdentifier="TFLStationDetailMapViewController" id="P10-pz-4KX" customClass="TFLStationDetailMapViewController" customModule="London_Bus" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="gLt-Sz-RmL"/>
+                        <viewControllerLayoutGuide type="bottom" id="oaF-o2-T1o"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="X3f-Cr-bLh">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

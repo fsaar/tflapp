@@ -38,7 +38,6 @@ class TFLStationDetailMapViewController: UIViewController {
             let mapRect = overlays.reduce(MKMapRectNull) { MKMapRectUnion($0, $1.boundingMapRect) }
             let insetRect = MKMapRectInset(mapRect, -10000, -10000)
             self.mapView.region = MKCoordinateRegionForMapRect(insetRect)
-            showRouteForModel(at: 0, animated: false)
         }
     }
     

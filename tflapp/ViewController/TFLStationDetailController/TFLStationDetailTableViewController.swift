@@ -16,7 +16,21 @@ protocol TFLStationDetailTableViewControllerDelegate : class {
 class TFLStationDetailTableViewController: UITableViewController {
     weak var delegate : TFLStationDetailTableViewControllerDelegate?
     let sectionHeaderDefaultHeight = CGFloat(50)
-   
+    fileprivate var currentSection : Int? = nil {
+        didSet {
+            self.delegate?.tflStationDetailTableViewController(self, didShowSection: currentSection!)
+        }
+    }
+    
+    fileprivate var visibleSections : Set<Int> = [] {
+        didSet {
+            let newSection = visibleSections.min()
+            let oldSection = oldValue.min()
+            if  newSection != oldSection, let currentSection = newSection {
+                self.currentSection = currentSection
+            }
+        }
+    }
     var viewModels : [TFLStationDetailTableViewModel] = [] {
         didSet {
             self.tableView.reloadData()
@@ -45,12 +59,14 @@ extension TFLStationDetailTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        self.delegate?.tflStationDetailTableViewController(self, didShowSection: section)
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: String(describing: TFLStationDetailSectionHeaderView.self)) as? TFLStationDetailSectionHeaderView
+        header?.delegate = self
          let model = viewModels[section]
-        header?.configure(with: model)
+        header?.configure(with: model,for: section)
         return header
     }
+    
+    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
@@ -63,3 +79,23 @@ extension TFLStationDetailTableViewController {
     }
 }
 
+// MARK: UITableViewDelegate
+
+extension TFLStationDetailTableViewController {
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        visibleSections = visibleSections.union([section])
+    }
+    
+    override func tableView(_ tableView: UITableView, didEndDisplayingHeaderView view: UIView, forSection section: Int) {
+        visibleSections = visibleSections.subtracting([section])
+    }
+}
+
+extension TFLStationDetailTableViewController : TFLStationDetailSectionHeaderViewDelegate {
+    func panEnabledForHeaderView(_ headerView : TFLStationDetailSectionHeaderView) -> Bool {
+        return headerView.section == self.currentSection
+    }
+    func didPanForHeaderView(_ headerView : TFLStationDetailSectionHeaderView,with distance : Float) {
+        
+    }
+}

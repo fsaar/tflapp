@@ -20,6 +20,7 @@ class TFLStationDetailTableViewController: UITableViewController {
     fileprivate var currentSection : Int? = nil {
         didSet {
             self.delegate?.tflStationDetailTableViewController(self, didShowSection: currentSection!)
+            self.tableView.bounces = (currentSection ?? 0) > 0
         }
     }
     

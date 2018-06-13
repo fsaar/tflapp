@@ -365,7 +365,7 @@
         <scene sceneID="0ot-SE-ydR">
             <objects>
                 <tableViewController storyboardIdentifier="TFLStationDetailTableViewController" id="LvP-II-7wb" customClass="TFLStationDetailTableViewController" customModule="London_Bus" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="mUa-PF-orz">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="mUa-PF-orz">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="367"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -742,7 +742,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J9I-GQ-b8b" userLabel="mapViewContainerView">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="300" id="3uR-td-tmi"/>
+                                </constraints>
                                 <connections>
                                     <segue destination="P10-pz-4KX" kind="embed" identifier="TFLStationDetailMapViewControllerSegue" id="amj-qK-MaV"/>
                                 </connections>
@@ -758,17 +761,16 @@
                         <constraints>
                             <constraint firstItem="J9I-GQ-b8b" firstAttribute="leading" secondItem="6WQ-Ji-O8d" secondAttribute="leading" id="2fA-UL-VYF"/>
                             <constraint firstAttribute="trailing" secondItem="J9I-GQ-b8b" secondAttribute="trailing" id="60z-Pe-edN"/>
-                            <constraint firstItem="IX6-SD-LEi" firstAttribute="top" secondItem="6WQ-Ji-O8d" secondAttribute="top" constant="300" identifier="heightConstraint" id="Fiy-WQ-0Qc" userLabel="heightConstraint"/>
                             <constraint firstItem="J9I-GQ-b8b" firstAttribute="top" secondItem="6WQ-Ji-O8d" secondAttribute="top" id="ORg-ki-JXl"/>
                             <constraint firstAttribute="trailing" secondItem="IX6-SD-LEi" secondAttribute="trailing" id="Tf6-dC-RSI"/>
                             <constraint firstAttribute="bottom" secondItem="IX6-SD-LEi" secondAttribute="bottom" id="Trt-1S-a2F"/>
                             <constraint firstItem="IX6-SD-LEi" firstAttribute="leading" secondItem="6WQ-Ji-O8d" secondAttribute="leading" id="Wvz-s2-H5T"/>
-                            <constraint firstAttribute="bottom" secondItem="J9I-GQ-b8b" secondAttribute="bottom" id="moT-Gv-sr6"/>
+                            <constraint firstItem="IX6-SD-LEi" firstAttribute="top" secondItem="J9I-GQ-b8b" secondAttribute="bottom" id="mJ5-Sk-se9"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="pHv-Ns-9sf"/>
                     <connections>
-                        <outlet property="heightConstraint" destination="Fiy-WQ-0Qc" id="MLH-ZX-GHT"/>
+                        <outlet property="heightConstraint" destination="3uR-td-tmi" id="EDI-Qd-p0b"/>
                         <outlet property="titleHeaderView" destination="H3D-7y-WZd" id="cap-5E-p3H"/>
                     </connections>
                 </viewController>
@@ -814,11 +816,11 @@
                         <viewControllerLayoutGuide type="bottom" id="oaF-o2-T1o"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="X3f-Cr-bLh">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="A69-fB-bDv">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
                             </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

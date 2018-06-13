@@ -15,7 +15,7 @@ class TFLStationDetailController: UIViewController {
         case tableViewControllerSegue =  "TFLStationDetailTableViewControllerSegue"
         case mapViewControllerSegue = "TFLStationDetailMapViewControllerSegue"
     }
-    
+    @IBOutlet weak var heightConstraint : NSLayoutConstraint!
     @IBOutlet weak var titleHeaderView : TFLStationDetailHeaderView!
     var mapViewController : TFLStationDetailMapViewController!
     var tableViewController : TFLStationDetailTableViewController?
@@ -82,5 +82,9 @@ fileprivate extension TFLStationDetailController {
 extension TFLStationDetailController : TFLStationDetailTableViewControllerDelegate {
     func tflStationDetailTableViewController(_ controller: TFLStationDetailTableViewController, didShowSection section: Int) {
         self.mapViewController.showRouteForModel(at: section, animated: true)
+    }
+    func tflStationDetailTableViewController(_ controller: TFLStationDetailTableViewController,didPanBy distance: CGFloat) {
+        self.heightConstraint.constant += distance
+        self.view.layoutIfNeeded()
     }
 }

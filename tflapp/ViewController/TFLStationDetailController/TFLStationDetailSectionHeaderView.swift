@@ -10,12 +10,14 @@ import UIKit
 
 protocol TFLStationDetailSectionHeaderViewDelegate : class {
     func panEnabledForHeaderView(_ headerView : TFLStationDetailSectionHeaderView) -> Bool
-    func didPanForHeaderView(_ headerView : TFLStationDetailSectionHeaderView,with distance : Float)
+    func didPanForHeaderView(_ headerView : TFLStationDetailSectionHeaderView,with distance : CGFloat)
 }
 
 class TFLStationDetailSectionHeaderView: UITableViewHeaderFooterView {
     weak var delegate : TFLStationDetailSectionHeaderViewDelegate?
     var section : Int = 0
+    var oldValue : CGFloat = 0
+    var startPanY : CGFloat = 0
     @IBOutlet weak var titleLabel : UILabel! = nil {
         didSet {
             self.titleLabel.font = UIFont.tflStationDetailSectionHeaderTitle()
@@ -40,17 +42,14 @@ class TFLStationDetailSectionHeaderView: UITableViewHeaderFooterView {
     }
     
     @objc func panGestureHandler(_ gestureRecognizer: UIPanGestureRecognizer) {
+        let p = gestureRecognizer.location(in: self.window)
         switch gestureRecognizer.state {
         case .began:
-            print("began")
-            break
+            startPanY = p.y
         case .changed:
-            self.delegate?.didPanForHeaderView(self, with: 0)
-            print("changed")
-            break
-        case .ended:
-            print("ended")
-            break
+            let distance = p.y - startPanY
+            self.delegate?.didPanForHeaderView(self, with: distance)
+            startPanY =  p.y
         default:
             break
         }

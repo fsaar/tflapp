@@ -17,11 +17,21 @@ protocol TFLStationDetailTableViewControllerDelegate : class {
 class TFLStationDetailTableViewController: UITableViewController {
     weak var delegate : TFLStationDetailTableViewControllerDelegate?
     let sectionHeaderDefaultHeight = CGFloat(50)
-    fileprivate var currentSection : Int? = nil {
+    fileprivate var currentSection : Int = 0 {
         didSet {
-            self.delegate?.tflStationDetailTableViewController(self, didShowSection: currentSection!)
-            self.tableView.bounces = (currentSection ?? 0) > 0
+            self.delegate?.tflStationDetailTableViewController(self, didShowSection: currentSection)
+            self.tableView.bounces = currentSection  > 0
+            showHeaderView(true,for: self.currentSection)
+            showHeaderView(false,for: oldValue)
         }
+    }
+    
+    func showHeaderView(_ show : Bool,for section: Int?) {
+        guard let section = section else {
+            return
+        }
+        let headerView = self.tableView.headerView(forSection: section) as? TFLStationDetailSectionHeaderView
+        headerView?.showBarView(show, animated: true)
     }
     
     fileprivate var visibleSections : Set<Int> = [] {
@@ -64,7 +74,7 @@ extension TFLStationDetailTableViewController {
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: String(describing: TFLStationDetailSectionHeaderView.self)) as? TFLStationDetailSectionHeaderView
         header?.delegate = self
          let model = viewModels[section]
-        header?.configure(with: model,for: section)
+        header?.configure(with: model,for: section,and: section <= self.currentSection)
         return header
     }
     

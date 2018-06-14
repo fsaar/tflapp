@@ -16,8 +16,9 @@ protocol TFLStationDetailSectionHeaderViewDelegate : class {
 class TFLStationDetailSectionHeaderView: UITableViewHeaderFooterView {
     weak var delegate : TFLStationDetailSectionHeaderViewDelegate?
     var section : Int = 0
-    var oldValue : CGFloat = 0
     var startPanY : CGFloat = 0
+    @IBOutlet weak var barView : UIImageView! 
+
     @IBOutlet weak var titleLabel : UILabel! = nil {
         didSet {
             self.titleLabel.font = UIFont.tflStationDetailSectionHeaderTitle()
@@ -27,6 +28,7 @@ class TFLStationDetailSectionHeaderView: UITableViewHeaderFooterView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.barView.alpha = 0
         let recognizer = UIPanGestureRecognizer(target: self, action: #selector(panGestureHandler(_:)))
         recognizer.delegate = self
         self.addGestureRecognizer(recognizer)
@@ -34,11 +36,13 @@ class TFLStationDetailSectionHeaderView: UITableViewHeaderFooterView {
     
     override func prepareForReuse() {
         self.titleLabel.text = nil
+        self.barView.alpha = 0
     }
     
-    func configure(with model: TFLStationDetailTableViewModel, for section: Int) {
+    func configure(with model: TFLStationDetailTableViewModel, for section: Int,and indicatorVisible : Bool ) {
         self.titleLabel.text = model.routeName
         self.section = section
+        showBarView(indicatorVisible, animated: false)
     }
     
     @objc func panGestureHandler(_ gestureRecognizer: UIPanGestureRecognizer) {
@@ -52,6 +56,13 @@ class TFLStationDetailSectionHeaderView: UITableViewHeaderFooterView {
             startPanY =  p.y
         default:
             break
+        }
+    }
+    
+    func showBarView(_ show: Bool, animated: Bool = true) {
+        let duration = animated ? 0.5 : 0.0
+        UIView.animate(withDuration: duration) {
+            self.barView.alpha = show ? 1.0 : 0.0
         }
     }
 }

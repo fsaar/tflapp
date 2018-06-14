@@ -34,6 +34,9 @@ class TFLStationDetailMapViewController: UIViewController {
     var viewModels : [TFLStationDetailMapViewModel] = [] {
         didSet {
             self.mapView.removeOverlays(self.mapView.overlays)
+            guard !viewModels.isEmpty else {
+                return
+            }
             overlays = self.viewModels.compactMap { TFLStationDetailMapBusRouteOverLay($0) }
             let mapRect = overlays.reduce(MKMapRectNull) { MKMapRectUnion($0, $1.boundingMapRect) }
             let insetRect = MKMapRectInset(mapRect, -10000, -10000)

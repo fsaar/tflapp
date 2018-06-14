@@ -83,8 +83,10 @@ extension TFLStationDetailController : TFLStationDetailTableViewControllerDelega
     func tflStationDetailTableViewController(_ controller: TFLStationDetailTableViewController, didShowSection section: Int) {
         self.mapViewController.showRouteForModel(at: section, animated: true)
     }
-    func tflStationDetailTableViewController(_ controller: TFLStationDetailTableViewController,didPanBy distance: CGFloat) {
-        self.heightConstraint.constant += distance
+    func tflStationDetailTableViewController(_ controller: TFLStationDetailTableViewController,with header: UITableViewHeaderFooterView, didPanBy distance: CGFloat) {
+        let newHeightOffset = self.heightConstraint.constant + distance
+        let maxHeightOffset = self.view.frame.size.height - header.frame.size.height
+        self.heightConstraint.constant = min(newHeightOffset,maxHeightOffset)
         self.view.layoutIfNeeded()
     }
 }

@@ -11,7 +11,7 @@ import CoreData
 
 protocol TFLStationDetailTableViewControllerDelegate : class {
     func tflStationDetailTableViewController(_ controller: TFLStationDetailTableViewController,didShowSection section: Int)
-    func tflStationDetailTableViewController(_ controller: TFLStationDetailTableViewController,didPanBy distance: CGFloat)
+    func tflStationDetailTableViewController(_ controller: TFLStationDetailTableViewController,with header: UITableViewHeaderFooterView, didPanBy distance: CGFloat)
 }
 
 class TFLStationDetailTableViewController: UITableViewController {
@@ -109,6 +109,6 @@ extension TFLStationDetailTableViewController : TFLStationDetailSectionHeaderVie
     }
     
     func didPanForHeaderView(_ headerView : TFLStationDetailSectionHeaderView,with distance : CGFloat) {
-        self.delegate?.tflStationDetailTableViewController(self, didPanBy: distance)
+        self.delegate?.tflStationDetailTableViewController(self,with: headerView, didPanBy: distance)
     }
 }

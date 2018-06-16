@@ -17,6 +17,7 @@ class TFLStationDetailMapViewController: UIViewController {
             mapView.register(TFLStationDetailBusStopAnnotationView.self, forAnnotationViewWithReuseIdentifier: String(describing: MKMapViewDefaultAnnotationViewReuseIdentifier.self))
             mapView.mapType = .mutedStandard
             mapView.showsUserLocation = false
+            mapView.showsCompass = false
         }
     }
     fileprivate var selectedOverlayIndex : Int? = nil {

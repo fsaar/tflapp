@@ -14,7 +14,9 @@ class TFLStationDetailMapViewController: UIViewController {
     @IBOutlet weak var mapView : MKMapView! = nil {
         didSet {
             mapView.delegate = self
-            mapView.register(MKAnnotationView.self, forAnnotationViewWithReuseIdentifier: String(describing: MKAnnotationView.self))
+            mapView.register(TFLStationDetailBusStopAnnotationView.self, forAnnotationViewWithReuseIdentifier: String(describing: MKMapViewDefaultAnnotationViewReuseIdentifier.self))
+            mapView.mapType = .mutedStandard
+            mapView.showsUserLocation = false
         }
     }
     fileprivate var selectedOverlayIndex : Int? = nil {
@@ -23,7 +25,11 @@ class TFLStationDetailMapViewController: UIViewController {
                 let overlay = overlays[index]
                 let stations = overlay.model.stations
                 mapView.add(overlay)
-                let annotations =  stations.map { TFLMapViewAnnotation(for: $0.coords, with: $0.stopCode) }
+                var annotations : [TFLStationDetailMapViewAnnotation] = []
+                for tuple in stations.enumerated() {
+                    annotations += [TFLStationDetailMapViewAnnotation(with: tuple.1.stopCode, coordinate: tuple.1.coords, and: tuple.0)]
+                }
+    
                 self.mapView.addAnnotations(annotations)
             }
 
@@ -68,13 +74,11 @@ extension TFLStationDetailMapViewController : MKMapViewDelegate {
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        if let mapViewAnnotation = annotation as? TFLMapViewAnnotation {
-            let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier:String(describing: String(describing: MKAnnotationView.self)))
-            annotationView?.image = MKMapView.stationAnnotationImage(with: mapViewAnnotation.identifier)
-            annotationView?.centerOffset = CGPoint(x:0,y:-15)
-            return annotationView
+        guard let mapViewAnnotation = annotation as? TFLStationDetailMapViewAnnotation else {
+            return nil
         }
-        return nil
+       
+        return TFLStationDetailBusStopAnnotationView(annotation: mapViewAnnotation, reuseIdentifier: String(describing: TFLStationDetailBusStopAnnotationView.self))
     }
 }
 

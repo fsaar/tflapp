@@ -38,7 +38,6 @@
 		566EF7D31DDB71CE006162D7 /* TFLBusStopStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566EF7D21DDB71CE006162D7 /* TFLBusStopStack.swift */; };
 		566EF7D71DDC4D14006162D7 /* TFLRootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566EF7D61DDC4D14006162D7 /* TFLRootViewController.swift */; };
 		566EF7E21DDC59ED006162D7 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566EF7E11DDC59ED006162D7 /* UIFont.swift */; };
-		567224F920CD7EC1007DA481 /* MKMapView+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567224F820CD7EC1007DA481 /* MKMapView+Helper.swift */; };
 		567224FB20CD8EE3007DA481 /* TFLStationDetailMapBusRouteOverLay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567224FA20CD8EE3007DA481 /* TFLStationDetailMapBusRouteOverLay.swift */; };
 		567224FD20D564BF007DA481 /* TFLMapViewAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567224FC20D564BE007DA481 /* TFLMapViewAnnotation.swift */; };
 		567224FF20D570A5007DA481 /* TFLBusStopAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567224FE20D570A5007DA481 /* TFLBusStopAnnotationView.swift */; };
@@ -71,6 +70,7 @@
 		56A81B3C1DD862DC001DF7F1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56A81B3A1DD862DC001DF7F1 /* LaunchScreen.storyboard */; };
 		56AB9FAC1DE8D95A00A9042A /* TFLChangeSetProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AB9FAB1DE8D95A00A9042A /* TFLChangeSetProtocol.swift */; };
 		56B86EAD1DE4FED000A89D16 /* TFLBusStopArrivalsViewModelSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B86EAC1DE4FED000A89D16 /* TFLBusStopArrivalsViewModelSpecs.swift */; };
+		56C0944C20D9AE0C00581995 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 56C0944B20D9ADD800581995 /* Settings.bundle */; };
 		56C2D6DC1DE5D6B000F43628 /* TFLBusStopArrivalsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564EC7031DE1917D008CFD11 /* TFLBusStopArrivalsViewModel.swift */; };
 		56C6A3471DF44F6A00067D06 /* TFLStationDetailMapViewAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C6A3461DF44F6A00067D06 /* TFLStationDetailMapViewAnnotation.swift */; };
 		56C828901DE8E9FA00E52086 /* TFLChangeSetProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C8288F1DE8E9FA00E52086 /* TFLChangeSetProtocol.swift */; };
@@ -133,7 +133,6 @@
 		566EF7D61DDC4D14006162D7 /* TFLRootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLRootViewController.swift; sourceTree = "<group>"; };
 		566EF7E11DDC59ED006162D7 /* UIFont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
 		566EF7E31DDC5D69006162D7 /* tflapp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = tflapp.entitlements; sourceTree = "<group>"; };
-		567224F820CD7EC1007DA481 /* MKMapView+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MKMapView+Helper.swift"; sourceTree = "<group>"; };
 		567224FA20CD8EE3007DA481 /* TFLStationDetailMapBusRouteOverLay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLStationDetailMapBusRouteOverLay.swift; sourceTree = "<group>"; };
 		567224FC20D564BE007DA481 /* TFLMapViewAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLMapViewAnnotation.swift; sourceTree = "<group>"; };
 		567224FE20D570A5007DA481 /* TFLBusStopAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLBusStopAnnotationView.swift; sourceTree = "<group>"; };
@@ -168,6 +167,7 @@
 		56A81B3D1DD862DC001DF7F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		56AB9FAB1DE8D95A00A9042A /* TFLChangeSetProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLChangeSetProtocol.swift; sourceTree = "<group>"; };
 		56B86EAC1DE4FED000A89D16 /* TFLBusStopArrivalsViewModelSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusStopArrivalsViewModelSpecs.swift; sourceTree = "<group>"; };
+		56C0944B20D9ADD800581995 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		56C6A3461DF44F6A00067D06 /* TFLStationDetailMapViewAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLStationDetailMapViewAnnotation.swift; sourceTree = "<group>"; };
 		56C8288F1DE8E9FA00E52086 /* TFLChangeSetProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLChangeSetProtocol.swift; sourceTree = "<group>"; };
 		56C828911DE9859D00E52086 /* TFLTransitionable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLTransitionable.swift; sourceTree = "<group>"; };
@@ -344,7 +344,6 @@
 			children = (
 				564EC6FC1DE10272008CFD11 /* Crashlytics.swift */,
 				566EF7E11DDC59ED006162D7 /* UIFont.swift */,
-				567224F820CD7EC1007DA481 /* MKMapView+Helper.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -421,6 +420,7 @@
 				56A81B381DD862DC001DF7F1 /* Assets.xcassets */,
 				56A81B3A1DD862DC001DF7F1 /* LaunchScreen.storyboard */,
 				566EF7E31DDC5D69006162D7 /* tflapp.entitlements */,
+				56C0944B20D9ADD800581995 /* Settings.bundle */,
 				56A81B3D1DD862DC001DF7F1 /* Info.plist */,
 				56D70D2F1DD9A7A6004CA293 /* Localization */,
 				566EF7D01DDB5679006162D7 /* TFLBusStops.sqlite */,
@@ -608,6 +608,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				56C0944C20D9AE0C00581995 /* Settings.bundle in Resources */,
 				566EF7D11DDB5685006162D7 /* TFLBusStops.sqlite in Resources */,
 				56A81B3C1DD862DC001DF7F1 /* LaunchScreen.storyboard in Resources */,
 				5689612720C08AFC00335DEB /* TFLStationDetailSectionHeaderView.xib in Resources */,
@@ -803,7 +804,6 @@
 				56DD190020A0B0C1003335D1 /* TFLTimer.swift in Sources */,
 				566EF7C71DDA3A2B006162D7 /* TFLBusPrediction.swift in Sources */,
 				56C2D6DC1DE5D6B000F43628 /* TFLBusStopArrivalsViewModel.swift in Sources */,
-				567224F920CD7EC1007DA481 /* MKMapView+Helper.swift in Sources */,
 				566EF7CC1DDB0851006162D7 /* TFLCDBusStop+CoreDataClass.swift in Sources */,
 				564EC6F51DE0A2A0008CFD11 /* TFLButton.swift in Sources */,
 				567F533920BC20610022FEFF /* TFLCDLineInfo+CoreDataClass.swift in Sources */,

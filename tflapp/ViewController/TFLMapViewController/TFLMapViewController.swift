@@ -25,7 +25,7 @@ class TFLMapViewController: UIViewController,TFLChangeSetProtocol {
             if let busStopPredicationCoordinateTuple = self.busStopPredicationCoordinateTuple  {
                 let (busStopPredictionTuples,coords) = busStopPredicationCoordinateTuple
                 
-                let (inserted ,deleted ,_, _) = self.evaluateLists(oldList: oldTuple?.0 ?? [], newList: busStopPredictionTuples, compare : TFLBusStopArrivalsInfo.compare)
+                let (inserted ,deleted ,_, _) = self.evaluateLists(oldList: oldTuple?.0 ?? [], newList: busStopPredictionTuples, sortedBy : TFLBusStopArrivalsInfo.compare)
                 
                 let toBeDeletedIdentifierSet = Set(deleted.map { $0.element.identifier } )
                 let toBeDeletedAnnotations = self.mapView.annotations.compactMap { $0 as? TFLMapViewAnnotation}.filter { toBeDeletedIdentifierSet.contains ($0.identifier) }

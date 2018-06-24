@@ -58,7 +58,7 @@ class TFLTransitionableSpecs : QuickSpec {
             func insertionTest(tableView : TFLTransitionableTableView, oldList : [M],newList : [M]) -> (Bool) {
                 let changeSetHandler = TFLChangeSetHandler()
                 var hasCorrectIndexPaths = false
-                let (inserted ,_ ,_, _)  = changeSetHandler.evaluateLists(oldList: oldList, newList: newList, compare : M.compare)
+                let (inserted ,_ ,_, _)  = changeSetHandler.evaluateLists(oldList: oldList, newList: newList, sortedBy : M.compare)
                 let insertedIndexPaths = inserted.map { IndexPath(row: $0.index,section:0) }
                 tableView.insertedBlock = { indexPaths in
                     hasCorrectIndexPaths = Set(insertedIndexPaths) == Set(indexPaths)
@@ -69,7 +69,7 @@ class TFLTransitionableSpecs : QuickSpec {
             func deletionTest(tableView : TFLTransitionableTableView, oldList : [M],newList : [M]) -> (Bool) {
                 let changeSetHandler = TFLChangeSetHandler()
                 var hasCorrectIndexPaths = false
-                let (_ ,deleted ,_, _)  = changeSetHandler.evaluateLists(oldList: oldList, newList: newList, compare : M.compare)
+                let (_ ,deleted ,_, _)  = changeSetHandler.evaluateLists(oldList: oldList, newList: newList, sortedBy : M.compare)
                 let deletedIndexPaths = deleted.map { IndexPath(row: $0.index,section:0) }
                 tableView.deletedBlock = { indexPaths in
                     hasCorrectIndexPaths = Set(deletedIndexPaths) == Set(indexPaths)
@@ -81,7 +81,7 @@ class TFLTransitionableSpecs : QuickSpec {
             func updateTest(tableView : TFLTransitionableTableView, oldList : [M],newList : [M]) -> (Bool) {
                 let changeSetHandler = TFLChangeSetHandler()
                 var hasCorrectIndexPaths = false
-                let (_ ,_ ,updated, moved)  = changeSetHandler.evaluateLists(oldList: oldList, newList: newList, compare : M.compare)
+                let (_ ,_ ,updated, moved)  = changeSetHandler.evaluateLists(oldList: oldList, newList: newList, sortedBy : M.compare)
                 let updatedIndexPaths = updated.map { IndexPath(row: $0.index,section:0) }
                 let movedIndexPaths = moved.map { IndexPath(row: $0.newIndex,section:0) }
                 tableView.transition(from: oldList, to: newList, with: M.compare) { indexPaths in
@@ -92,7 +92,7 @@ class TFLTransitionableSpecs : QuickSpec {
             
             func moveTest(tableView : TFLTransitionableTableView, oldList : [M],newList : [M]) -> (Bool) {
                 let changeSetHandler = TFLChangeSetHandler()
-                let (_ ,_ ,_, moved)  = changeSetHandler.evaluateLists(oldList: oldList, newList: newList, compare : M.compare)
+                let (_ ,_ ,_, moved)  = changeSetHandler.evaluateLists(oldList: oldList, newList: newList, sortedBy : M.compare)
                 var oldMovedIndexPathContainer : [IndexPath] = []
                 var newMovedIndexPathContainer : [IndexPath] = []
                 let newMovedIndexPaths = moved.map { IndexPath(row: $0.newIndex,section:0) }

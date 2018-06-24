@@ -44,7 +44,7 @@ class TFLBusPredictionView: UICollectionView {
         else {
             Crashlytics.log("oldTuples:\(self.predictions.map { $0.identifier }.joined(separator: ","))\nnewTuples:\(visiblePredictions.map { $0.identifier }.joined(separator: ","))")
             
-            let (inserted ,deleted ,updated, moved) = self.evaluateLists(oldList: self.predictions, newList: visiblePredictions, compare : TFLBusStopArrivalsViewModel.LinePredictionViewModel.compare)
+            let (inserted ,deleted ,updated, moved) = self.evaluateLists(oldList: self.predictions, newList: visiblePredictions, sortedBy : TFLBusStopArrivalsViewModel.LinePredictionViewModel.compare)
             if inserted.isEmpty && moved.isEmpty && deleted.isEmpty {
                 self.reloadData()
             }

@@ -9,8 +9,8 @@
 			<string>Title_Copy</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
-            <key>FooterText</key>
-            <string>FooterText_Copy</string>
+			<key>FooterText</key>
+			<string>FooterText_Copy</string>
 		</dict>
 		<dict>
 			<key>Type</key>
@@ -24,9 +24,9 @@
 			<key>MaximumValue</key>
 			<integer>1000</integer>
 			<key>MinimumValueImage</key>
-			<string>location_min.png</string>
+			<string>location_min</string>
 			<key>MaximumValueImage</key>
-			<string>location_max.png</string>
+			<string>location_max</string>
 		</dict>
 	</array>
 	<key>StringsTable</key>

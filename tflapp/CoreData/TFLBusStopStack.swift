@@ -99,8 +99,11 @@ private let groupID =  "group.tflwidgetSharingData"
         // London : long=-0.252395&lat=51.506788
         // Latitude 1 Degree : 111.111 KM = 1/100 Degree => 1.11111 KM => 1/200 Degree ≈ 550m
         // Longitude 1 Degree : cos(51.506788)*111.111 = 0.3235612467* 111.111 = 35.9512136821 => 1/70 Degree ≈ 500 m
-        let latOffset : Double = 1/200
-        let longOffset : Double = 1/70
+        
+        let latDivisor  = 111.111 / radiusInMeter
+        let longDivisor = 0.3235612467 *  111.111 / radiusInMeter
+        let latOffset : Double =  1/latDivisor       // 1/200
+        let longOffset : Double =  1/longDivisor    // 1/70
         let latLowerLimit = coordinate.latitude-latOffset
         let latUpperLimit = coordinate.latitude+latOffset
         let longLowerLimit = coordinate.longitude-longOffset

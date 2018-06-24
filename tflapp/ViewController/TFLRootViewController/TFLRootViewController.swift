@@ -5,6 +5,7 @@ import Crashlytics
 
 
 class TFLRootViewController: UIViewController {
+    fileprivate static let searchParameter  : (min:Double,initial:Double) = (100,350)
     fileprivate enum State {
         case errorNoGPSAvailable
         case errorNoStationsNearby(coordinate : CLLocationCoordinate2D)
@@ -137,6 +138,7 @@ class TFLRootViewController: UIViewController {
             }
             self.nearbyBusStationController?.delegate = self
         }
+        
         self.foregroundNotificationHandler = TFLNotificationObserver(notification: NSNotification.Name.UIApplicationWillEnterForeground.rawValue) { [weak self]  notification in
             self?.loadNearbyBusstops()
             self?.refreshTimer?.start()
@@ -189,16 +191,14 @@ fileprivate extension TFLRootViewController {
         Crashlytics.notify()
         self.state = .determineCurrentLocation
         TFLLocationManager.sharedManager.updateLocation { [weak self] coord in
-            guard let state = self?.state else {
+            guard let state = self?.state,state.isComplete || state.isDeterminingCurrentLocation  else {
                 return
             }
-            if state.isComplete || state.isDeterminingCurrentLocation {
-                self?.retrieveBusstops(for: coord) { busStopPredictionTuples in
-                    self?.updateContentViewController(with: busStopPredictionTuples, and: coord)
-                    completionBlock?()
-                }
-
+            self?.retrieveBusstops(for: coord) { busStopPredictionTuples in
+                self?.updateContentViewController(with: busStopPredictionTuples, and: coord)
+                completionBlock?()
             }
+
         }
     }
     
@@ -206,7 +206,11 @@ fileprivate extension TFLRootViewController {
     func retrieveBusstops(for location:CLLocationCoordinate2D, using completionBlock:@escaping ([TFLBusStopArrivalsInfo])->()) {
         self.state = .retrievingNearbyStations
         if CLLocationCoordinate2DIsValid(location) {
-            self.loadArrivalTimesForStoreStopPoints(with: location, using: completionBlock)
+            let userDefaultRadius = UserDefaults.standard.double(forKey: "Distance")
+            let searchParam = TFLRootViewController.searchParameter
+            let radius = userDefaultRadius < searchParam.min ? searchParam.initial : userDefaultRadius
+            print(radius)
+            self.loadArrivalTimesForStoreStopPoints(with: location,with: radius, using: completionBlock)
             self.updateNearbyBusStops(for: location)
         }
         else
@@ -222,13 +226,15 @@ fileprivate extension TFLRootViewController {
         }
     }
     
-    func loadArrivalTimesForStoreStopPoints(with coord: CLLocationCoordinate2D, using completionBlock:@escaping ([TFLBusStopArrivalsInfo])->()) {
+    func loadArrivalTimesForStoreStopPoints(with coord: CLLocationCoordinate2D,
+                                            with distance : Double = TFLRootViewController.searchParameter.initial,
+                                            using completionBlock:@escaping ([TFLBusStopArrivalsInfo])->()) {
         Crashlytics.notify()
         self.state = .loadingArrivals
         let currentLocation = CLLocation(latitude: coord.latitude, longitude: coord.longitude)
         let group = DispatchGroup()
         var newStopPoints : [TFLBusStopArrivalsInfo] = []
-        TFLBusStopStack.sharedDataStack.nearbyBusStops(with: coord).forEach { [weak self] stopPoint in
+        TFLBusStopStack.sharedDataStack.nearbyBusStops(with: coord,with: distance).forEach { [weak self] stopPoint in
             group.enter()
             self?.tflClient.arrivalsForStopPoint(with: stopPoint.identifier) { predictions,_ in
                 let distance = currentLocation.distance(from: CLLocation(latitude: stopPoint.coord.latitude, longitude: stopPoint.coord.longitude))

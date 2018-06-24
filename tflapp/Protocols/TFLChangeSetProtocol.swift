@@ -28,21 +28,27 @@ extension TFLChangeSetProtocol {
         let deletedSet = oldSet.subtracting(newSet)
         
         
-        let insertedTypes = newList.filter { insertedSet.contains($0) }.map { $0 }
-        let insertedIndices = insertedTypes.compactMap { sortedNewList.index(of:$0) }
-        let inserted = zip(insertedTypes,insertedIndices).map { $0 }
+        let inserted : [(T,Int)] = insertedSet.compactMap { el in
+            guard let index = sortedNewList.index(of:el) else {
+                return nil
+            }
+            return (el,index)
+        }
+
+        let deleted : [(T,Int)] = deletedSet.compactMap { el in
+            guard let index = sortedOldList.index(of:el) else {
+                return nil
+            }
+            return (el,index)
+        }
         
         
-        let deletedTypes = oldList.filter { deletedSet.contains($0) }.map { $0 }
-        let deletedIndices = deletedTypes.compactMap { sortedOldList.index(of:$0) }
-        let deleted = zip(deletedTypes,deletedIndices).map { $0 }
-        
-        let movedTypes = findMovedTypes(in: oldList,and: newList,inserted: inserted ,deleted: deleted,sortedBy: compare)
-        let moved = movedTypes.compactMap { (el : T) -> (T,Int,Int)? in
+        let movedTypes = findMovedElements(in: oldList,and: newList,inserted: inserted ,deleted: deleted,sortedBy: compare)
+        let moved : [(T,Int,Int)] = movedTypes.compactMap { el in
             guard let oldIndex = sortedOldList.index(of: el), let newIndex = sortedNewList.index(of: el) else {
                 return nil
             }
-            return (el,Int(oldIndex),Int(newIndex))
+            return (el,oldIndex,newIndex)
         }
         
         let updatedTypes = Array(unchangedSet.subtracting(Set(movedTypes)))
@@ -60,24 +66,23 @@ extension TFLChangeSetProtocol {
 
 fileprivate extension TFLChangeSetProtocol {
     
-    func findMovedTypes<T: Hashable>(in oldList : [T],
+    func findMovedElements<T: Hashable>(in oldList : [T],
                                      and newList : [T],
                                      inserted : [(element:T,index:Int)],
                                      deleted : [(element:T,index:Int)],
                                      sortedBy compare: @escaping TFLChangeSetCompare<T>) -> [T] {
         
-        func innerFindMoveTypes(list : [T],movedTypes : [T] = []) -> [T] {
-            guard list.count > 1 else {
+        func identifyMovedElementsFrom(unorderedList : [T],movedTypes : [T] = []) -> [T] {
+            guard unorderedList.count > 1 else {
                 return movedTypes
             }
-            // index is alwyays < list.count - 1. Why Check?
-            for (index,el1) in list.enumerated() where index < list.count-1 {
-                let el2 = list[index+1] // This should crash. Why doesn't it??
+            let tuples = zip(unorderedList,unorderedList.dropFirst())
+            for (el1,el2) in tuples {
                 if !compare(el1,el2) {
-                    let lhsList = list.filter { $0 != el1 }
-                    let rhsList = list.filter { $0 != el2 }
-                    let lhsMovedTypes = innerFindMoveTypes(list: lhsList, movedTypes: movedTypes + [el1])
-                    let rhsMovedTypes = innerFindMoveTypes(list: rhsList, movedTypes: movedTypes + [el2])
+                    let lhsList = unorderedList.filter { $0 != el1 }
+                    let rhsList = unorderedList.filter { $0 != el2 }
+                    let lhsMovedTypes = identifyMovedElementsFrom(unorderedList: lhsList, movedTypes: movedTypes + [el1])
+                    let rhsMovedTypes = identifyMovedElementsFrom(unorderedList: rhsList, movedTypes: movedTypes + [el2])
                     let newMovedTypes = lhsMovedTypes.count <= rhsMovedTypes.count ? lhsMovedTypes : rhsMovedTypes
                     return newMovedTypes
                 }
@@ -85,31 +90,25 @@ fileprivate extension TFLChangeSetProtocol {
             return movedTypes
             
         }
-        // Reconstruct the newList: newList = oldList - deletedItems + InsertedItems & updatedItems
+        // Reconstruct the unordered newList
         // 1. delete items from old list
+        // 2. insert new items
         
         let deletedTypes = deleted.map { $0.element }
         let reducedOldList = oldList.filter { !deletedTypes.contains($0) }
-        var updatedList = reducedOldList.compactMap { (el: T) -> (T?) in
+        var updatedList : [T] = reducedOldList.compactMap { el in
             guard let index = newList.index(of: el) else {
                 return nil
             }
             return newList[index]
         }
-        // updatedList contains list of updated items. If there are no updated items. inserted
-        
-        // insert new elements into updated,
-        // condition to only insert items and fall into updatedList's range. Correct?
-        // to determined moved Items I can ignore new items that have been added after the last moved elements
-        inserted.forEach { (arg) in
-            // updated list is gonna grow here every time I insert something
-            // inserted items need to be sorted by index before adding them into updated list
+       
+        let sortedInsertedByIndex = inserted.sorted { $0.1 < $1.1 }
+        sortedInsertedByIndex.forEach { (arg) in
             let (element, index) = arg
-            if 0..<updatedList.count ~= index {
-                updatedList.insert(element, at: index)
-            }
+            updatedList.insert(element, at: index)
         }
-        let movedTypes = innerFindMoveTypes(list: updatedList)
+        let movedTypes = identifyMovedElementsFrom(unorderedList: updatedList)
         return movedTypes
     }
     

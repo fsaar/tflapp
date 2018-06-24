@@ -52,7 +52,7 @@ fileprivate struct MovedPos : Hashable {
 }
 
 
-fileprivate struct M : CustomDebugStringConvertible,Hashable {
+fileprivate struct M : Hashable {
     let id : String
     let x : Int
     public static func ==(lhs: M, rhs: M) -> Bool {
@@ -66,7 +66,7 @@ fileprivate struct M : CustomDebugStringConvertible,Hashable {
         self.x = x
     }
     
-    var debugDescription: String { return "[\(id)]\(x)" } //tempList
+   // var debugDescription: String { return "[\(id)]\(x)" } //tempList
     var hashValue: Int  { return id.hashValue }
 }
 
@@ -174,11 +174,11 @@ class TFLChangeSetProtocolSpecs : QuickSpec {
             expect(Set(moved.map { MovedPos($0) })) == Set([MovedPos(M("7",1),3,1)])
         }
         
-        xit("should return the correct tuple when moved 5 to the end plus 2 new inserts: ([5] -> [1,2,5]") {
-            let oldList = [5].map { M("\($0)",$0) }
-            let newList =  [M("1",1),M("2",2),M("5",5)]
+        fit("should return the correct tuple when moved 5 to the end plus 2 new inserts: ([3,5] -> [3,1,2,5]") {
+            let oldList = [1,5].map { M("\($0)",$0) }
+            let newList =  [M("1",1),M("2",2),M("3",3),M("5",5)]
             let (inserted ,deleted ,updated, moved)  = changeSetHandler.evaluateLists(oldList: oldList, newList: newList, sortedBy : M.compare)
-            expect(Set(inserted.map { Pos($0) })) == Set([Pos(M("1",1),0),Pos(M("2",2),1)])
+            expect(Set(inserted.map { Pos($0) })) == Set([Pos(M("2",2),1),Pos(M("3",3),2)])
             expect(Set(deleted.map { Pos($0) })) == Set([])
             expect(Set(updated.map { Pos($0) })) == Set([])
             expect(Set(moved.map { MovedPos($0) })) == Set([MovedPos(M("5",5),0,2)])

@@ -209,7 +209,6 @@ fileprivate extension TFLRootViewController {
             let userDefaultRadius = UserDefaults.standard.double(forKey: "Distance")
             let searchParam = TFLRootViewController.searchParameter
             let radius = userDefaultRadius < searchParam.min ? searchParam.initial : userDefaultRadius
-            print(radius)
             self.loadArrivalTimesForStoreStopPoints(with: location,with: radius, using: completionBlock)
             self.updateNearbyBusStops(for: location)
         }

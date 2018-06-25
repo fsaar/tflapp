@@ -1076,6 +1076,7 @@
 				PRODUCT_NAME = "London Bus";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				STRIP_SWIFT_SYMBOLS = NO;
 				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;

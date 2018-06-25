@@ -2,7 +2,7 @@
 import UIKit
 import Foundation
 
-protocol Transitionable : TFLChangeSetProtocol {
+protocol Transitionable  {
     func transition<T : Hashable>(from oldArrivalInfo: [T], to newArrivalInfo: [T],with compare: @escaping (_ lhs : T,_ rhs: T) -> (Bool), using updateBlock: ([IndexPath]) -> ())
 }
 
@@ -10,7 +10,7 @@ protocol Transitionable : TFLChangeSetProtocol {
 extension UITableView : Transitionable {
     func transition<T : Hashable>(from oldArrivalInfo: [T], to newArrivalInfo: [T],with compare: @escaping (_ lhs : T,_ rhs: T) -> (Bool), using updateBlock: ([IndexPath]) -> ()) {
         
-        let (inserted ,deleted ,updated, moved) = self.evaluateLists(oldList: oldArrivalInfo, newList: newArrivalInfo, sortedBy : compare)
+        let (inserted ,deleted ,updated, moved) = oldArrivalInfo.transformTo(newList: newArrivalInfo, sortedBy : compare)
         
         self.beginUpdates()
         let insertedIndexPaths = inserted.map { IndexPath(row: $0.index,section:0)}

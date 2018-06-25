@@ -16,7 +16,7 @@ extension MutableCollection where Index == Int, Iterator.Element == TFLBusStopAr
     }
 }
 
-class TFLNearbyBusStationsController : UITableViewController,TFLChangeSetProtocol {
+class TFLNearbyBusStationsController : UITableViewController {
     enum SegueIdentifier : String {
         case stationDetailSegue =  "TFLStationDetailSegue"
     }

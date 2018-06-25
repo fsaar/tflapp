@@ -8,7 +8,7 @@ extension CLLocationCoordinate2D {
     }
 }
 
-class TFLMapViewController: UIViewController,TFLChangeSetProtocol {
+class TFLMapViewController: UIViewController {
     @IBOutlet weak var coverView : UIView!
     @IBOutlet weak var mapView : MKMapView! = nil {
         didSet {
@@ -24,8 +24,8 @@ class TFLMapViewController: UIViewController,TFLChangeSetProtocol {
         didSet (oldTuple) {
             if let busStopPredicationCoordinateTuple = self.busStopPredicationCoordinateTuple  {
                 let (busStopPredictionTuples,coords) = busStopPredicationCoordinateTuple
-                
-                let (inserted ,deleted ,_, _) = self.evaluateLists(oldList: oldTuple?.0 ?? [], newList: busStopPredictionTuples, sortedBy : TFLBusStopArrivalsInfo.compare)
+                let oldList = oldTuple?.0 ?? []
+                let (inserted ,deleted ,_, _) = oldList.transformTo(newList: busStopPredictionTuples, sortedBy : TFLBusStopArrivalsInfo.compare)
                 
                 let toBeDeletedIdentifierSet = Set(deleted.map { $0.element.identifier } )
                 let toBeDeletedAnnotations = self.mapView.annotations.compactMap { $0 as? TFLMapViewAnnotation}.filter { toBeDeletedIdentifierSet.contains ($0.identifier) }

@@ -93,7 +93,7 @@ private let groupID =  "group.tflwidgetSharingData"
         
     }
     
-    func nearbyBusStops(with coordinate: CLLocationCoordinate2D, with radiusInMeter: Double = 350) -> [TFLCDBusStop] {
+    func nearbyBusStops(with coordinate: CLLocationCoordinate2D, with radiusInMeter: Double = 350,using completionBlock : @escaping ([TFLCDBusStop])->())  {
         let context = TFLBusStopStack.sharedDataStack.mainQueueManagedObjectContext
         
         // London : long=-0.252395&lat=51.506788
@@ -113,12 +113,18 @@ private let groupID =  "group.tflwidgetSharingData"
         self.busStopFetchRequest.predicate = predicate
         var busStops : [TFLCDBusStop] = []
         let currentLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-        context.performAndWait {
+        TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext.perform  {
             if let stops =  try? context.fetch(self.busStopFetchRequest) {
-                busStops = stops.filter { currentLocation.distance(from: CLLocation(latitude: $0.lat, longitude: $0.long) ) < radiusInMeter }
+                let locations = stops.map { ($0.objectID, CLLocation(latitude: $0.lat, longitude: $0.long))}
+                var filteredIDs : Set<NSManagedObjectID> = []
+                DispatchQueue.global().sync {
+                    let filteredLocations = locations.filter { currentLocation.distance(from: $0.1 ) < radiusInMeter }
+                    filteredIDs = Set(filteredLocations.map { $0.0 })
+                }
+                busStops = stops.filter { filteredIDs.contains($0.objectID) }
             }
+            completionBlock(busStops)
         }
-        return busStops
     }
 }
 

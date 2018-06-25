@@ -27,21 +27,10 @@ extension TFLChangeSetProtocol {
         let unchangedSet = newSet.intersection(oldSet)
         let deletedSet = oldSet.subtracting(newSet)
         
+       
+        let inserted = insertedSet.indexedList(basedOn: sortedNewList)
         
-        let inserted : [(T,Int)] = insertedSet.compactMap { el in
-            guard let index = sortedNewList.index(of:el) else {
-                return nil
-            }
-            return (el,index)
-        }
-
-        let deleted : [(T,Int)] = deletedSet.compactMap { el in
-            guard let index = sortedOldList.index(of:el) else {
-                return nil
-            }
-            return (el,index)
-        }
-        
+        let deleted = deletedSet.indexedList(basedOn: sortedOldList)
         
         let movedTypes = findMovedElements(in: oldList,and: newList,inserted: inserted ,deleted: deleted,sortedBy: compare)
         let moved : [(T,Int,Int)] = movedTypes.compactMap { el in
@@ -51,20 +40,29 @@ extension TFLChangeSetProtocol {
             return (el,oldIndex,newIndex)
         }
         
-        let updatedTypes = Array(unchangedSet.subtracting(Set(movedTypes)))
-        let updated : [(T,Int)] = updatedTypes.compactMap { el in
-            guard let index = sortedNewList.index(of:el) else  {
-                return nil
-            }
-            return  (el,index)
-        }
+        let updatedTypes = unchangedSet.subtracting(Set(movedTypes))
+        let updated = updatedTypes.indexedList(basedOn: sortedNewList)
+        
         
         return (inserted,deleted,updated,moved)
     }
     
 }
 
+fileprivate extension Set {
+    func indexedList(basedOn list:[Element]) -> [(Element,Int)] {
+        let indexList : [(Element,Int)] = self.compactMap { el in
+            guard let index = list.index(of:el) else {
+                return nil
+            }
+            return (el,index)
+        }
+        return indexList
+    }
+}
+
 fileprivate extension TFLChangeSetProtocol {
+    
     
     func findMovedElements<T: Hashable>(in oldList : [T],
                                      and newList : [T],

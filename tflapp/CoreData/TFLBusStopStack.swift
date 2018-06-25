@@ -115,15 +115,12 @@ private let groupID =  "group.tflwidgetSharingData"
         let currentLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
         TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext.perform  {
             if let stops =  try? context.fetch(self.busStopFetchRequest) {
-                let locations = stops.map { ($0.objectID, CLLocation(latitude: $0.lat, longitude: $0.long))}
-                var filteredIDs : Set<NSManagedObjectID> = []
-                DispatchQueue.global().sync {
-                    let filteredLocations = locations.filter { currentLocation.distance(from: $0.1 ) < radiusInMeter }
-                    filteredIDs = Set(filteredLocations.map { $0.0 })
-                }
-                busStops = stops.filter { filteredIDs.contains($0.objectID) }
+                busStops = stops.filter { currentLocation.distance(from: CLLocation(latitude: $0.lat, longitude: $0.long) ) < radiusInMeter }
             }
-            completionBlock(busStops)
+            context.perform  {
+                let importedStops = busStops.map { context.object(with:$0.objectID) } as? [TFLCDBusStop] ?? []
+                completionBlock(importedStops)
+            }
         }
     }
 }

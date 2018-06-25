@@ -25,7 +25,10 @@ class TFLMapViewController: UIViewController {
             if let busStopPredicationCoordinateTuple = self.busStopPredicationCoordinateTuple  {
                 let (busStopPredictionTuples,coords) = busStopPredicationCoordinateTuple
                 let oldList = oldTuple?.0 ?? []
-                let (inserted ,deleted ,_, _) = oldList.transformTo(newList: busStopPredictionTuples, sortedBy : TFLBusStopArrivalsInfo.compare)
+                var (inserted ,deleted ,_, _) : (inserted : [(element:TFLBusStopArrivalsInfo,index:Int)],deleted : [(element:TFLBusStopArrivalsInfo,index:Int)], updated : [(element:TFLBusStopArrivalsInfo,index:Int)],moved : [(element:TFLBusStopArrivalsInfo,oldIndex:Int,newIndex:Int)]) = ([],[],[],[])
+                DispatchQueue.global().sync {
+                    (inserted ,deleted ,_, _) = oldList.transformTo(newList: busStopPredictionTuples, sortedBy : TFLBusStopArrivalsInfo.compare)
+                }
                 
                 let toBeDeletedIdentifierSet = Set(deleted.map { $0.element.identifier } )
                 let toBeDeletedAnnotations = self.mapView.annotations.compactMap { $0 as? TFLMapViewAnnotation}.filter { toBeDeletedIdentifierSet.contains ($0.identifier) }
@@ -34,14 +37,13 @@ class TFLMapViewController: UIViewController {
                 let toBeInsertedAnnotations =  inserted.map { $0.0 }
                     .map { TFLMapViewAnnotation(with: $0) }
                 self.mapView.addAnnotations(toBeInsertedAnnotations)
-
-                let offsetCoordinate = coords + defaultCoordinateOffset
+                
+                let offsetCoordinate = coords + self.defaultCoordinateOffset
                 if CLLocationCoordinate2DIsValid(offsetCoordinate) {
-                    let region = MKCoordinateRegion(center: offsetCoordinate, span: defaultCoordinateSpan)
+                    let region = MKCoordinateRegion(center: offsetCoordinate, span: self.defaultCoordinateSpan)
                     let animated = (oldTuple?.0 ?? []).isEmpty   ? false : true
                     self.mapView.setRegion(region, animated: animated)
                 }
-                
             }
         }
     }

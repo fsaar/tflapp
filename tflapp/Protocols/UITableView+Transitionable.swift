@@ -3,15 +3,17 @@ import UIKit
 import Foundation
 
 protocol Transitionable  {
-    func transition<T : Hashable>(from oldArrivalInfo: [T], to newArrivalInfo: [T],with compare: @escaping (_ lhs : T,_ rhs: T) -> (Bool), using updateBlock: ([IndexPath]) -> ())
+    func transition<T : Hashable>(from oldArrivalInfo: [T], to newArrivalInfo: [T],with compare: @escaping (_ lhs : T,_ rhs: T) -> (Bool), using updateBlock: @escaping  ([IndexPath]) -> ())
 }
 
 
 extension UITableView : Transitionable {
-    func transition<T : Hashable>(from oldArrivalInfo: [T], to newArrivalInfo: [T],with compare: @escaping (_ lhs : T,_ rhs: T) -> (Bool), using updateBlock: ([IndexPath]) -> ()) {
+    func transition<T : Hashable>(from oldArrivalInfo: [T], to newArrivalInfo: [T],with compare: @escaping (_ lhs : T,_ rhs: T) -> (Bool), using updateBlock: @escaping  ([IndexPath]) -> ()) {
         
-        let (inserted ,deleted ,updated, moved) = oldArrivalInfo.transformTo(newList: newArrivalInfo, sortedBy : compare)
-        
+        var (inserted ,deleted ,updated, moved) : (inserted : [(element:T,index:Int)],deleted : [(element:T,index:Int)], updated : [(element:T,index:Int)],moved : [(element:T,oldIndex:Int,newIndex:Int)]) = ([],[],[],[])
+        DispatchQueue.global().sync {
+            (inserted ,deleted ,updated, moved) = oldArrivalInfo.transformTo(newList: newArrivalInfo, sortedBy : compare)
+        }
         self.beginUpdates()
         let insertedIndexPaths = inserted.map { IndexPath(row: $0.index,section:0)}
         self.insertRows(at: insertedIndexPaths , with: .automatic)
@@ -25,6 +27,7 @@ extension UITableView : Transitionable {
         let movedIndexPaths = moved.map { IndexPath(row: $0.newIndex,section:0)}
         updateBlock(updatedIndexPaths+movedIndexPaths)
         self.endUpdates()
+        
     }
     
 }

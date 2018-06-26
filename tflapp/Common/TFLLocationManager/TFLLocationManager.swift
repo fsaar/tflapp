@@ -24,7 +24,7 @@ class TFLLocationManager : NSObject {
     override init() {
         super.init()
         self.locationManager.delegate = self
-        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
         if case .none = self.enabled {
             self.locationManager.requestWhenInUseAuthorization()
         }

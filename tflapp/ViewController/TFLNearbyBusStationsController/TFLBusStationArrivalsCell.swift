@@ -1,6 +1,10 @@
 import UIKit
 import MapKit
 
+protocol TFLBusStationArrivalCellDelegate : class {
+    func busStationArrivalCell(_ busStationArrivalCell: TFLBusStationArrivalsCell,didSelectLine line: String)
+}
+
 class TFLBusStationArrivalsCell: UITableViewCell {
     @IBOutlet weak var stationName : UILabel! = nil {
         didSet {
@@ -38,9 +42,11 @@ class TFLBusStationArrivalsCell: UITableViewCell {
             self.busStopLabel.layer.cornerRadius = 5
         }
     }
-
+    weak var delegate : TFLBusStationArrivalCellDelegate?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
+        predictionView.busPredictionViewDelegate = self
         prepareForReuse()
     }
     
@@ -63,4 +69,10 @@ class TFLBusStationArrivalsCell: UITableViewCell {
     }
     
 
+}
+
+extension TFLBusStationArrivalsCell : TFLBusPredictionViewDelegate {
+    func busPredictionView(_ busPredictionView: TFLBusPredictionView, didSelectLine line: String) {
+        self.delegate?.busStationArrivalCell(self, didSelectLine: line)
+    }
 }

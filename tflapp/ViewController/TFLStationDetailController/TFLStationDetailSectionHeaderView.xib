@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view opaque="NO" contentMode="scaleToFill" id="FMd-AH-MKc" customClass="TFLStationDetailSectionHeaderView" customModule="London_Bus" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xLx-sK-mFg">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                    <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="6zw-yp-luC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    </view>
+                    <blurEffect style="light"/>
+                </visualEffectView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="59X-cO-sC0" userLabel="contentView">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                    <subviews>
+                        <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Label" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="5A0-sS-Qdj">
+                            <rect key="frame" x="20" y="15" width="295" height="20.5"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jFb-vL-zO5" userLabel="separator">
+                            <rect key="frame" x="0.0" y="49" width="375" height="1"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <gestureRecognizers/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="0.5" id="KZs-uJ-H8g"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eHs-wJ-zRb" userLabel="separator">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <gestureRecognizers/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="0.5" id="HC2-mx-1EW"/>
+                            </constraints>
+                        </view>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bars" translatesAutoresizingMaskIntoConstraints="NO" id="Fs6-Xb-t1d">
+                            <rect key="frame" x="330" y="5" width="40" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="40" id="4YK-sX-cyb"/>
+                                <constraint firstAttribute="height" constant="40" id="Mrt-Ay-Yso"/>
+                            </constraints>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="jFb-vL-zO5" secondAttribute="bottom" id="2F3-sy-DNz"/>
+                        <constraint firstItem="5A0-sS-Qdj" firstAttribute="leading" secondItem="59X-cO-sC0" secondAttribute="leading" constant="20" id="Bkc-vW-GbP"/>
+                        <constraint firstAttribute="trailing" secondItem="Fs6-Xb-t1d" secondAttribute="trailing" constant="5" id="Do7-Ew-ehH"/>
+                        <constraint firstItem="5A0-sS-Qdj" firstAttribute="trailing" secondItem="59X-cO-sC0" secondAttribute="trailing" constant="-60" id="HOe-9J-j9y"/>
+                        <constraint firstItem="Fs6-Xb-t1d" firstAttribute="centerY" secondItem="59X-cO-sC0" secondAttribute="centerY" id="ZJR-a3-Nj8"/>
+                        <constraint firstAttribute="trailing" secondItem="jFb-vL-zO5" secondAttribute="trailing" id="eLm-8c-9yG"/>
+                        <constraint firstItem="5A0-sS-Qdj" firstAttribute="centerY" secondItem="59X-cO-sC0" secondAttribute="centerY" id="iiw-d4-OCX"/>
+                        <constraint firstAttribute="trailing" secondItem="eHs-wJ-zRb" secondAttribute="trailing" id="kvM-eD-Mvq"/>
+                        <constraint firstItem="jFb-vL-zO5" firstAttribute="leading" secondItem="59X-cO-sC0" secondAttribute="leading" id="tCx-6w-kOJ"/>
+                        <constraint firstItem="eHs-wJ-zRb" firstAttribute="top" secondItem="59X-cO-sC0" secondAttribute="top" id="wnu-l2-0Ds"/>
+                        <constraint firstItem="eHs-wJ-zRb" firstAttribute="leading" secondItem="59X-cO-sC0" secondAttribute="leading" id="zus-S2-Xim"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <gestureRecognizers/>
+            <constraints>
+                <constraint firstAttribute="top" secondItem="xLx-sK-mFg" secondAttribute="top" id="4EL-Km-zel"/>
+                <constraint firstAttribute="trailing" secondItem="59X-cO-sC0" secondAttribute="trailing" id="F9e-wy-7ih"/>
+                <constraint firstAttribute="trailing" secondItem="xLx-sK-mFg" secondAttribute="trailing" id="Jxc-YZ-OpZ"/>
+                <constraint firstItem="59X-cO-sC0" firstAttribute="leading" secondItem="FMd-AH-MKc" secondAttribute="leading" id="Wnl-ad-R6s"/>
+                <constraint firstItem="bdN-0e-Ipa" firstAttribute="bottom" secondItem="59X-cO-sC0" secondAttribute="bottom" id="Zst-5O-QT2"/>
+                <constraint firstItem="xLx-sK-mFg" firstAttribute="bottom" secondItem="FMd-AH-MKc" secondAttribute="bottom" id="cid-1b-2HZ"/>
+                <constraint firstItem="59X-cO-sC0" firstAttribute="top" secondItem="bdN-0e-Ipa" secondAttribute="top" id="dGs-Xt-66W"/>
+                <constraint firstItem="xLx-sK-mFg" firstAttribute="leading" secondItem="FMd-AH-MKc" secondAttribute="leading" id="vur-QY-9ap"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="bdN-0e-Ipa"/>
+            <connections>
+                <outlet property="barView" destination="Fs6-Xb-t1d" id="IGD-j8-BrX"/>
+                <outlet property="titleLabel" destination="5A0-sS-Qdj" id="z9B-1F-y5Q"/>
+            </connections>
+            <point key="canvasLocation" x="34" y="54"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="bars" width="85" height="85"/>
+    </resources>
+</document>

@@ -21,7 +21,7 @@
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
-        <string>PASTE_YOUR_FABRIC_API_KEY_HERE</string>
+		<string>PASTE_YOUR_FABRIC_API_KEY_HERE</string>
 		<key>Kits</key>
 		<array>
 			<dict>
@@ -50,5 +50,10 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoadsInWebContent</key>
+		<false/>
+	</dict>
 </dict>
 </plist>

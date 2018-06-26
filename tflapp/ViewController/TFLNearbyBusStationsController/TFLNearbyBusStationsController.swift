@@ -16,8 +16,10 @@ extension MutableCollection where Index == Int, Iterator.Element == TFLBusStopAr
     }
 }
 
-class TFLNearbyBusStationsController : UITableViewController,TFLChangeSetProtocol {
-    
+class TFLNearbyBusStationsController : UITableViewController {
+    enum SegueIdentifier : String {
+        case stationDetailSegue =  "TFLStationDetailSegue"
+    }
     static let defaultTableViewRowHeight = CGFloat (120)
 
     private var foregroundNotificationHandler  : TFLNotificationObserver?
@@ -64,6 +66,18 @@ class TFLNearbyBusStationsController : UITableViewController,TFLChangeSetProtoco
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = TFLNearbyBusStationsController.defaultTableViewRowHeight
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let identifier = segue.identifier, let segueIdentifier = TFLNearbyBusStationsController.SegueIdentifier(rawValue:identifier) else {
+            return
+        }
+        switch segueIdentifier {
+        case .stationDetailSegue:
+            if let controller = segue.destination as? TFLStationDetailController, let line = sender as? String {
+                controller.line = line
+            }
+        }
+    }
 
     @objc func refreshHandler(control : UIRefreshControl) {
         control.beginRefreshing()
@@ -83,9 +97,16 @@ class TFLNearbyBusStationsController : UITableViewController,TFLChangeSetProtoco
         
         if let arrivalsCell = cell as? TFLBusStationArrivalsCell {
             configure(arrivalsCell, at: indexPath)
+            arrivalsCell.delegate = self
         }
         return cell
      }
+}
+
+extension TFLNearbyBusStationsController : TFLBusStationArrivalCellDelegate {
+    func busStationArrivalCell(_ busStationArrivalCell: TFLBusStationArrivalsCell,didSelectLine line: String) {
+        self.performSegue(withIdentifier: SegueIdentifier.stationDetailSegue.rawValue, sender: line)
+    }
 }
 
 // MARK: Private

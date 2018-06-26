@@ -5,6 +5,7 @@ import Crashlytics
 
 
 class TFLRootViewController: UIViewController {
+    fileprivate static let searchParameter  : (min:Double,initial:Double) = (100,350)
     fileprivate enum State {
         case errorNoGPSAvailable
         case errorNoStationsNearby(coordinate : CLLocationCoordinate2D)
@@ -12,8 +13,36 @@ class TFLRootViewController: UIViewController {
         case retrievingNearbyStations
         case loadingArrivals
         case noError
+        
+        var isErrorState : Bool {
+            switch self {
+            case .errorNoGPSAvailable,.errorNoStationsNearby:
+                return true
+            default:
+                return false
+                
+            }
+        }
+        var isDeterminingCurrentLocation : Bool {
+            if case .determineCurrentLocation = self {
+                return true
+            }
+            return false
+        }
+        var isComplete : Bool {
+            switch self {
+            case .errorNoGPSAvailable,.errorNoStationsNearby:
+                return true
+            case .noError:
+                return true
+            default:
+                return false
+                
+            }
+        }
     }
     fileprivate(set) var DefaultRefreshInterval : TimeInterval = 15
+    
     fileprivate var state : State = .noError {
         didSet {
             let shouldHide = self.nearbyBusStationController?.busStopPredicationTuple.isEmpty ?? true
@@ -89,7 +118,6 @@ class TFLRootViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         Crashlytics.notify()
-        self.navigationController?.navigationBar.isHidden = true
         if let mapViewController = self.mapViewController, let nearbyBackgroundController = self.nearbyBackgroundController {
             self.slideContainerController?.setContentControllers(with: mapViewController,and: nearbyBackgroundController)
             self.slideContainerController?.sliderViewUpdateBlock =  { [weak self] slider, origin,final in
@@ -110,6 +138,7 @@ class TFLRootViewController: UIViewController {
             }
             self.nearbyBusStationController?.delegate = self
         }
+        
         self.foregroundNotificationHandler = TFLNotificationObserver(notification: NSNotification.Name.UIApplicationWillEnterForeground.rawValue) { [weak self]  notification in
             self?.loadNearbyBusstops()
             self?.refreshTimer?.start()
@@ -120,6 +149,15 @@ class TFLRootViewController: UIViewController {
         TFLRequestManager.shared.delegate = self
         self.loadNearbyBusstops()
         self.refreshTimer?.start()
+//        loadBusStops { [weak self] in
+//            self?.loadLineStations()
+//        }
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -153,10 +191,14 @@ fileprivate extension TFLRootViewController {
         Crashlytics.notify()
         self.state = .determineCurrentLocation
         TFLLocationManager.sharedManager.updateLocation { [weak self] coord in
+            guard let state = self?.state,state.isComplete || state.isDeterminingCurrentLocation  else {
+                return
+            }
             self?.retrieveBusstops(for: coord) { busStopPredictionTuples in
                 self?.updateContentViewController(with: busStopPredictionTuples, and: coord)
                 completionBlock?()
             }
+
         }
     }
     
@@ -164,7 +206,10 @@ fileprivate extension TFLRootViewController {
     func retrieveBusstops(for location:CLLocationCoordinate2D, using completionBlock:@escaping ([TFLBusStopArrivalsInfo])->()) {
         self.state = .retrievingNearbyStations
         if CLLocationCoordinate2DIsValid(location) {
-            self.loadArrivalTimesForStoreStopPoints(with: location, using: completionBlock)
+            let userDefaultRadius = UserDefaults.standard.double(forKey: "Distance")
+            let searchParam = TFLRootViewController.searchParameter
+            let radius = userDefaultRadius < searchParam.min ? searchParam.initial : userDefaultRadius
+            self.loadArrivalTimesForStoreStopPoints(with: location,with: radius, using: completionBlock)
             self.updateNearbyBusStops(for: location)
         }
         else
@@ -180,25 +225,29 @@ fileprivate extension TFLRootViewController {
         }
     }
     
-    func loadArrivalTimesForStoreStopPoints(with coord: CLLocationCoordinate2D, using completionBlock:@escaping ([TFLBusStopArrivalsInfo])->()) {
+    func loadArrivalTimesForStoreStopPoints(with coord: CLLocationCoordinate2D,
+                                            with distance : Double = TFLRootViewController.searchParameter.initial,
+                                            using completionBlock:@escaping ([TFLBusStopArrivalsInfo])->()) {
         Crashlytics.notify()
         self.state = .loadingArrivals
         let currentLocation = CLLocation(latitude: coord.latitude, longitude: coord.longitude)
         let group = DispatchGroup()
         var newStopPoints : [TFLBusStopArrivalsInfo] = []
-        TFLBusStopStack.sharedDataStack.nearbyBusStops(with: coord).forEach { [weak self] stopPoint in
-            group.enter()
-            self?.tflClient.arrivalsForStopPoint(with: stopPoint.identifier) { predictions,_ in
-                let distance = currentLocation.distance(from: CLLocation(latitude: stopPoint.coord.latitude, longitude: stopPoint.coord.longitude))
-                let tuple = TFLBusStopArrivalsInfo(busStop: stopPoint, busStopDistance: distance, arrivals: predictions ?? [])
-                newStopPoints += [tuple]
-                group.leave()
+        TFLBusStopStack.sharedDataStack.nearbyBusStops(with: coord,with: distance) { busStops in
+            busStops.forEach { [weak self] stopPoint in
+                group.enter()
+                self?.tflClient.arrivalsForStopPoint(with: stopPoint.identifier) { predictions,_ in
+                    let distance = currentLocation.distance(from: CLLocation(latitude: stopPoint.coord.latitude, longitude: stopPoint.coord.longitude))
+                    let tuple = TFLBusStopArrivalsInfo(busStop: stopPoint, busStopDistance: distance, arrivals: predictions ?? [])
+                    newStopPoints += [tuple]
+                    group.leave()
+                }
             }
-        }
-        group.notify(queue: DispatchQueue.main) {
-            let sortedStopPoints = newStopPoints.sorted { $0.busStopDistance < $1.busStopDistance }
-            completionBlock(sortedStopPoints)
-            Crashlytics.notify()
+            group.notify(queue: DispatchQueue.main) {
+                let sortedStopPoints = newStopPoints.sorted { $0.busStopDistance < $1.busStopDistance }
+                completionBlock(sortedStopPoints)
+                Crashlytics.notify()
+            }
         }
     }
 }
@@ -269,13 +318,56 @@ extension TFLRootViewController : TFLNoStationsViewDelegate {
 // MARK: DataBase Generation
 
 fileprivate extension TFLRootViewController {
-    
-    func loadBusStops(of page: UInt = 0) {
-        self.tflClient.busStops(with: page) { [weak self] busStops,_ in
-            if let busStops = busStops, !busStops.isEmpty {
-                print (page)
-                self?.loadBusStops(of: page+1)
+    func loadLineStations() {
+        self.linesFromBusStops { [weak self] lines in
+            self?.load(lines: Array(lines), index: 0) {
+                let context = TFLCoreDataStack.sharedDataStack.privateQueueManagedObjectContext
+                context.performAndWait {
+                    try? context.save()
+                }
             }
+        }
+    }
+    
+    func linesFromBusStops(using completionBlock : ((_ lines : Set<String>) -> Void )?)  {
+        var lines : Set<String> = []
+        let context = TFLCoreDataStack.sharedDataStack.privateQueueManagedObjectContext
+        let fetchRequest = NSFetchRequest<TFLCDBusStop>(entityName:String(describing: TFLCDBusStop.self))
+        fetchRequest.includesSubentities = false
+        fetchRequest.includesPropertyValues = false
+        fetchRequest.propertiesToFetch = ["lines"]
+        context.perform {
+            if let stops = try? context.fetch(fetchRequest) as [TFLCDBusStop] {
+                let lineList = stops.reduce([]) { sum,stop in
+                    return sum + (stop.lines ?? [])
+                }
+                lines = Set(lineList)
+                completionBlock?(lines)
+            }
+        }
+    }
+    func load(lines : [String],index : Int = 0,using completionBlock: (()->())? = nil) {
+        guard index < lines.count else {
+            completionBlock?()
+            return
+        }
+        let line = lines[index]
+        print("\(index). \(line)")
+        self.tflClient.lineStationInfo(for: line) { [weak self] _,_ in
+            self?.load(lines: lines, index: index+1,using:completionBlock)
+        }
+    }
+
+// MARK: DataBase Generation (BusStops)
+
+    func loadBusStops(of page: UInt = 0,using completionBlock: (()->())?) {
+        self.tflClient.busStops(with: page) { [weak self] busStops,_ in
+            guard let busStops = busStops, !busStops.isEmpty else {
+                completionBlock?()
+                return
+            }
+            print (page)
+            self?.loadBusStops(of: page+1,using:completionBlock)
             let context = TFLCoreDataStack.sharedDataStack.privateQueueManagedObjectContext
             context.perform {
                 try? context.save()
@@ -319,7 +411,9 @@ extension TFLRootViewController : TFLNearbyBusStationsControllerDelegate  {
 extension TFLRootViewController : TFLRequestManagerDelegate {
     func didStartURLTask(with requestManager: TFLRequestManager,session : URLSession)
     {
-       UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        OperationQueue.main.addOperation {
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        }
 
     }
     func didFinishURLTask(with requestManager: TFLRequestManager,session : URLSession)

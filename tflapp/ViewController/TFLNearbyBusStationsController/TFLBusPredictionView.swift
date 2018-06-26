@@ -1,4 +1,5 @@
 import UIKit
+import CoreData
 import Crashlytics
 
 extension MutableCollection where Index == Int, Iterator.Element == TFLBusStopArrivalsViewModel.LinePredictionViewModel {
@@ -12,11 +13,16 @@ extension MutableCollection where Index == Int, Iterator.Element == TFLBusStopAr
     }
 }
 
+protocol TFLBusPredictionViewDelegate : class {
+    func busPredictionView(_ busPredictionView: TFLBusPredictionView,didSelectLine line: String)
+}
+
 class TFLBusPredictionView: UICollectionView {
-    
+    weak var busPredictionViewDelegate : TFLBusPredictionViewDelegate?
     override func awakeFromNib() {
         super.awakeFromNib()
         self.dataSource = self
+        self.delegate = self
     }
     
     var maxVisibleCells : Int {
@@ -37,8 +43,12 @@ class TFLBusPredictionView: UICollectionView {
         }
         else {
             Crashlytics.log("oldTuples:\(self.predictions.map { $0.identifier }.joined(separator: ","))\nnewTuples:\(visiblePredictions.map { $0.identifier }.joined(separator: ","))")
+            var (inserted ,deleted ,updated, moved) : (inserted : [(element:TFLBusStopArrivalsViewModel.LinePredictionViewModel,index:Int)],deleted : [(element:TFLBusStopArrivalsViewModel.LinePredictionViewModel,index:Int)], updated : [(element:TFLBusStopArrivalsViewModel.LinePredictionViewModel,index:Int)],moved : [(element:TFLBusStopArrivalsViewModel.LinePredictionViewModel,oldIndex:Int,newIndex:Int)]) = ([],[],[],[])
             
-            let (inserted ,deleted ,updated, moved) = self.evaluateLists(oldList: self.predictions, newList: visiblePredictions, compare : TFLBusStopArrivalsViewModel.LinePredictionViewModel.compare)
+            DispatchQueue.global().sync {
+                (inserted ,deleted ,updated, moved) = self.predictions.transformTo(newList:visiblePredictions, sortedBy:TFLBusStopArrivalsViewModel.LinePredictionViewModel.compare)
+            }
+            
             if inserted.isEmpty && moved.isEmpty && deleted.isEmpty {
                 self.reloadData()
             }
@@ -85,6 +95,15 @@ extension TFLBusPredictionView : UICollectionViewDataSource {
         return cell
     }
 
+}
+
+// MARK: UICollectionViewDelegate
+
+extension TFLBusPredictionView : UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let prediction = predictions[indexPath]
+        self.busPredictionViewDelegate?.busPredictionView(self, didSelectLine: prediction.line)
+    }
 }
 
 // MARK: Helper

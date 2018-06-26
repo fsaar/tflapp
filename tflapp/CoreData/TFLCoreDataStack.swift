@@ -39,8 +39,6 @@ import CoreData
             self?.privateQueueManagedObjectContext.performAndWait {
                 _ = try? self?.privateQueueManagedObjectContext.save()
             }
-            });
+            })
     }
 }
-
-

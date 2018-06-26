@@ -71,6 +71,3 @@ extension TFLLocationManager : CLLocationManagerDelegate {
         requestLocation(using: self.completionBlock)
     }
 }
-
-
-

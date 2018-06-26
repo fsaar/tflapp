@@ -56,13 +56,10 @@ private extension TFLCollectionFlowLayout {
             return .scale
         }
 
-        let indices = Array<Int>(indexPath.item..<itemCount)
+        let indices = Array(indexPath.item..<itemCount)
         let insertedIndices = self.insertIndexPaths[startIndex..<self.insertIndexPaths.count].map { $0.item }
         let subtractedSet = Set(indices).subtracting(insertedIndices)
         let animationType : TFLCollectionFlowLayoutAppearingItemAnimationType = subtractedSet.isEmpty ? .translate : .scale
         return animationType
     }
 }
-
-
-

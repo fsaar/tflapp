@@ -12,5 +12,3 @@ class TFLButton: UIButton {
 
     }
 }
-
-

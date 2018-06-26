@@ -117,5 +117,3 @@ fileprivate extension TFLNearbyBusStationsController {
         cell.configure(with: busStopArrivalViewModels[indexPath])
     }
 }
-
-

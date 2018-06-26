@@ -33,4 +33,3 @@ public struct TFLBusStopArrivalsInfo : CustomDebugStringConvertible,Hashable {
         self.arrivals = arrivals.sorted { $0.timeToStation  < $1.timeToStation  }
     }
 }
-

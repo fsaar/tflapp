@@ -105,4 +105,3 @@ fileprivate extension Collection where Element : Hashable{
     }
 
 }
-

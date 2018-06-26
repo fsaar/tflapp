@@ -100,4 +100,3 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
 
 
 }
-

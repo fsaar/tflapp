@@ -124,5 +124,3 @@ private let groupID =  "group.tflwidgetSharingData"
         }
     }
 }
-
-

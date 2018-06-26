@@ -426,7 +426,3 @@ extension TFLRootViewController : TFLRequestManagerDelegate {
     }
 
 }
-
-
-
-

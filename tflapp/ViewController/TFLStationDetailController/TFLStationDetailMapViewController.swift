@@ -82,4 +82,3 @@ extension TFLStationDetailMapViewController : MKMapViewDelegate {
         return TFLStationDetailBusStopAnnotationView(annotation: mapViewAnnotation, reuseIdentifier: String(describing: TFLStationDetailBusStopAnnotationView.self))
     }
 }
-

@@ -35,6 +35,7 @@ class TFLStationDetailSectionHeaderView: UITableViewHeaderFooterView {
     }
 
     override func prepareForReuse() {
+        super.prepareForReuse()
         self.titleLabel.text = nil
         self.barView.alpha = 0
     }

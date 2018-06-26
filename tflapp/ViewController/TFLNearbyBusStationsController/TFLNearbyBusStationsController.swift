@@ -59,7 +59,7 @@ class TFLNearbyBusStationsController : UITableViewController {
         self.refreshControl = refreshControl
         self.refreshControl?.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
 
-        self.foregroundNotificationHandler = TFLNotificationObserver(notification: NSNotification.Name.UIApplicationWillEnterForeground.rawValue) { [weak self]  notification in
+        self.foregroundNotificationHandler = TFLNotificationObserver(notification: NSNotification.Name.UIApplicationWillEnterForeground.rawValue) { [weak self]  _ in
             self?.busStopPredicationTuple = self?.busStopPredicationTuple ?? []
         }
 

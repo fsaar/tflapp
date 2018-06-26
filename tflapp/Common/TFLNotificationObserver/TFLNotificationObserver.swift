@@ -45,7 +45,7 @@ extension TFLNotificationObserver {
         NotificationCenter.default.removeObserver(self)
     }
 
-    @objc func notificationHandler(_ notification : Notification!)
+    @objc func notificationHandler(_ notification : Notification)
     {
         if (enabled)
         {

@@ -17,7 +17,7 @@ class TFLStationDetailController: UIViewController {
     }
     @IBOutlet weak var heightConstraint : NSLayoutConstraint!
     @IBOutlet weak var titleHeaderView : TFLStationDetailHeaderView!
-    var mapViewController : TFLStationDetailMapViewController!
+    var mapViewController : TFLStationDetailMapViewController?
     var tableViewController : TFLStationDetailTableViewController?
     lazy var backBarButtonItem : UIBarButtonItem = {
         let image = #imageLiteral(resourceName: "back")
@@ -81,7 +81,7 @@ fileprivate extension TFLStationDetailController {
 
 extension TFLStationDetailController : TFLStationDetailTableViewControllerDelegate {
     func tflStationDetailTableViewController(_ controller: TFLStationDetailTableViewController, didShowSection section: Int) {
-        self.mapViewController.showRouteForModel(at: section, animated: true)
+        self.mapViewController?.showRouteForModel(at: section, animated: true)
     }
     func tflStationDetailTableViewController(_ controller: TFLStationDetailTableViewController,with header: UITableViewHeaderFooterView, didPanBy distance: CGFloat) {
         let newHeightOffset = self.heightConstraint.constant + distance

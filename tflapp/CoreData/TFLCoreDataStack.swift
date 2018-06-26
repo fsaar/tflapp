@@ -35,7 +35,7 @@ import CoreData
         _ = initCoreData(storeCoordinator)
 
         super.init()
-        self.backgroundNotificationObserver = TFLNotificationObserver(notification: NSNotification.Name.UIApplicationDidEnterBackground.rawValue, handlerBlock: { [weak self] (notification) in
+        self.backgroundNotificationObserver = TFLNotificationObserver(notification: NSNotification.Name.UIApplicationDidEnterBackground.rawValue, handlerBlock: { [weak self] _ in
             self?.privateQueueManagedObjectContext.performAndWait {
                 _ = try? self?.privateQueueManagedObjectContext.save()
             }

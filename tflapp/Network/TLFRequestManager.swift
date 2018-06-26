@@ -52,14 +52,14 @@ public class TFLRequestManager : NSObject {
 
 
     fileprivate func getDataWithURL(URL: URL , completionBlock:@escaping ((_ data : Data?,_ error:Error?) -> Void)) {
-        let task = session.dataTask(with: URL, completionHandler: { [weak self] (data, _, error) -> (Void) in
+        let task = session.dataTask(with: URL) { [weak self] data, _, error in
 
             if let strongSelf = self {
                 strongSelf.delegate?.didFinishURLTask(with: strongSelf, session: strongSelf.session)
 
             }
             completionBlock(data,error)
-        })
+        }
         task.resume()
         self.delegate?.didStartURLTask(with: self, session: session)
     }
@@ -68,7 +68,7 @@ public class TFLRequestManager : NSObject {
 }
 
 
-// MARK : Private
+// MARK: Private
 
 extension TFLRequestManager {
     fileprivate func baseURL(withPath path: String,and query: String? = nil) -> URL? {

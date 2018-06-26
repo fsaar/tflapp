@@ -91,7 +91,7 @@ fileprivate extension TFLClient {
                          query: String,context: NSManagedObjectContext,
                          with operationQueue : OperationQueue = OperationQueue.main,
                          completionBlock: @escaping ((TFLCDLineInfo?,_ error:Error?) -> ()))  {
-        tflManager.getDataWithRelativePath(relativePath: relativePath,and: query) {  data, error in
+        tflManager.getDataWithRelativePath(relativePath: relativePath,and: query) {  data, _ in
             if let data = data,let jsonDict = try? JSONSerialization.jsonObject(with: data as Data
                 , options: JSONSerialization.ReadingOptions(rawValue:0)) as? [String : Any] {
                 if let jsonDict = jsonDict {

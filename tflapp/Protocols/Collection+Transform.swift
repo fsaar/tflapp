@@ -96,7 +96,7 @@ fileprivate extension Collection where Element : Hashable{
         }
 
         let sortedInsertedByIndex = inserted.sorted { $0.1 < $1.1 }
-        sortedInsertedByIndex.forEach { (arg) in
+        sortedInsertedByIndex.forEach { arg in
             let (element, index) = arg
             updatedList.insert(element, at: index)
         }

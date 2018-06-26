@@ -9,7 +9,7 @@ class TFLLoadArrivalTimesView : UIView {
         }
     }
     @IBOutlet weak var indicator : UIActivityIndicatorView!
-    
+
     override var isHidden: Bool  {
         didSet {
             if let indicator = self.indicator {

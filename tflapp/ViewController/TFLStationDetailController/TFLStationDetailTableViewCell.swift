@@ -45,14 +45,14 @@ class TFLStationDetailTableViewCell: UITableViewCell {
         self.middleStationPath.isHidden = false
         prepareForReuse()
     }
-    
+
     override func prepareForReuse() {
         super.prepareForReuse()
         self.stationName.text = nil
         self.upperStationPath.isHidden = true
         self.lowerStationPath.isHidden = true
     }
-    
+
     func configure(with model: TFLStationDetailTableViewModel, at index: Int) {
         let tuple = model.stations[index]
         self.stationName.text = tuple.name

@@ -22,7 +22,7 @@ class TFLStationDetailHeaderView: UIView {
             self.titleLabel.textColor = .white
         }
     }
-    
+
     var title : String?  {
         set {
             self.titleLabel.text  = newValue
@@ -32,7 +32,7 @@ class TFLStationDetailHeaderView: UIView {
         }
     }
 
-    
+
     var titleBackgroundImage: UIImage {
         let bounds = self.backgroundImageView.bounds
         let format = UIGraphicsImageRendererFormat()
@@ -41,11 +41,11 @@ class TFLStationDetailHeaderView: UIView {
         return renderer.image { context in
             UIColor.clear.setFill()
             context.fill(bounds)
-            
+
             let borderPath = UIBezierPath(roundedRect: bounds , cornerRadius: bounds.size.height/2)
             UIColor.white.setFill()
             borderPath.fill()
-            
+
             let innerRect = bounds.insetBy(dx: 1, dy: 1)
             let busNumberRectPath = UIBezierPath(roundedRect: innerRect , cornerRadius: innerRect.size.height/2)
             UIColor.red.setFill()

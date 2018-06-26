@@ -14,7 +14,7 @@ class TFLStationDetailMapViewAnnotation: NSObject, MKAnnotation {
     override public var debugDescription: String {
         return "\(String(describing: title)) [\(identifier)]"
     }
-    
+
     init(with stopCode : String,coordinate: CLLocationCoordinate2D,and index : Int) {
         self.stopCode = stopCode
         self.coordinate = coordinate

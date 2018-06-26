@@ -44,7 +44,7 @@ class TFLStationDetailController: UIViewController {
             }
         }
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.titleHeaderView.title = line ?? ""
@@ -52,8 +52,8 @@ class TFLStationDetailController: UIViewController {
         self.navigationItem.leftBarButtonItem = self.backBarButtonItem
     }
 
-    
-    
+
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let identifier = segue.identifier, let segueIdentifier = SegueIdentifier(rawValue: identifier) else {
             return
@@ -66,7 +66,7 @@ class TFLStationDetailController: UIViewController {
             mapViewController = segue.destination as? TFLStationDetailMapViewController
         }
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(false, animated: animated)

@@ -15,7 +15,7 @@ public final class TFLClient {
         return decoder
     }()
     lazy var tflManager  = TFLRequestManager.shared
-    
+
     public func arrivalsForStopPoint(with identifier: String,
                                      with operationQueue : OperationQueue = OperationQueue.main,
                                      using completionBlock:@escaping (([TFLBusPrediction]?,_ error:Error?) -> ()))  {
@@ -33,7 +33,7 @@ public final class TFLClient {
             }
         }
     }
-    
+
     public func nearbyBusStops(with coordinate: CLLocationCoordinate2D,
                                with operationQueue : OperationQueue = OperationQueue.main,
                                using completionBlock: @escaping (([TFLCDBusStop]?,_ error:Error?) -> ()))  {
@@ -66,7 +66,7 @@ public final class TFLClient {
             })
         }
     }
-    
+
     public func lineStationInfo(for line: String,
                          with operationQueue : OperationQueue = OperationQueue.main,
                          using completionBlock: @escaping ((TFLCDLineInfo?,_ error:Error?) -> ()))  {
@@ -83,7 +83,7 @@ public final class TFLClient {
             })
         }
     }
-    
+
 }
 
 fileprivate extension TFLClient {
@@ -99,7 +99,7 @@ fileprivate extension TFLClient {
                         operationQueue.addOperation {
                             completionBlock(lineInfo,nil)
                         }
-                        
+
                     }
                 } else {
                     operationQueue.addOperation({
@@ -113,8 +113,8 @@ fileprivate extension TFLClient {
             }
         }
     }
-    
-    
+
+
     func requestBusStops(with relativePath: String,
                                      query: String,context: NSManagedObjectContext,
                                      with operationQueue : OperationQueue = OperationQueue.main,
@@ -143,7 +143,7 @@ fileprivate extension TFLClient {
             }
         }
     }
-    
+
     func stopPoints(from dictionaryList : [[String: Any]],context: NSManagedObjectContext, using completionBlock : @escaping (_ stopPoints : [TFLCDBusStop]) -> ()) {
         var stops : [TFLCDBusStop] = []
         let group = DispatchGroup()

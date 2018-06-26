@@ -84,7 +84,7 @@ public class TFLCDBusStop: NSManagedObject {
     static func ==(lhs : TFLCDBusStop,rhs: TFLCDBusStop) -> (Bool) {
         return lhs.identifier == lhs.identifier
     }
-    
+
     override public var debugDescription: String {
         return "\n"+name + "[\(identifier)] towards " + (towards ?? "") + "status:\(status):\n"
     }
@@ -92,7 +92,7 @@ public class TFLCDBusStop: NSManagedObject {
     var coord : CLLocationCoordinate2D {
         return CLLocationCoordinate2DMake(self.lat, self.long)
     }
-    
+
     class func busStopEntity(with identifier: String,and managedObjectContext: NSManagedObjectContext,using completionBlock :@escaping (_ busStop : TFLCDBusStop?) -> () ) {
         let fetchRequest = NSFetchRequest<TFLCDBusStop>(entityName: String(describing: TFLCDBusStop.self))
         fetchRequest.fetchBatchSize = 1
@@ -100,7 +100,7 @@ public class TFLCDBusStop: NSManagedObject {
         fetchRequest.predicate = NSPredicate(format: "identifier = %@", identifier)
         managedObjectContext.perform {
             var busStop = (try? managedObjectContext.fetch(fetchRequest) )?.first
-        
+
             if case .none = busStop {
                 busStop = NSEntityDescription.insertNewObject(forEntityName: String(describing:self), into: managedObjectContext) as? TFLCDBusStop
                 busStop?.identifier = identifier
@@ -108,7 +108,7 @@ public class TFLCDBusStop: NSManagedObject {
             completionBlock(busStop)
         }
     }
-    
+
     class func busStop(with dictionary: [String: Any], and managedObjectContext: NSManagedObjectContext,using completionBlock : @escaping (_ busStop : TFLCDBusStop?) -> () ) {
         guard let identifier = dictionary[Identifiers.naptanId.rawValue] as? String,
             let stopType = dictionary[Identifiers.stopType.rawValue] as? String, stopType == "NaptanPublicBusCoachTram" else {
@@ -136,9 +136,9 @@ public class TFLCDBusStop: NSManagedObject {
                         if let lineIdentifiers = (linesDictList.compactMap { $0["id"] }) as? [String] {
                             lines = lineIdentifiers
                         }
-                        
+
                     }
-                    
+
                     if busStop.status != status { busStop.status = status }
                     if busStop.name != name && (!name.isEmpty || (busStop.name == .none)) { busStop.name = name }
                     if busStop.long != long && long != kCLLocationCoordinate2DInvalid.longitude { busStop.long = long }
@@ -152,7 +152,7 @@ public class TFLCDBusStop: NSManagedObject {
             }
         }
     }
-    
+
     class func busStops(with identifiers: [String],and managedObjectContext: NSManagedObjectContext) -> [TFLCDBusStop] {
         var sortedBusStops : [TFLCDBusStop] = []
         managedObjectContext.performAndWait {
@@ -166,5 +166,5 @@ public class TFLCDBusStop: NSManagedObject {
         }
         return sortedBusStops
     }
-    
+
 }

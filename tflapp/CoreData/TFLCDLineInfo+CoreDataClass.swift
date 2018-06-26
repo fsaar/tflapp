@@ -23,7 +23,7 @@ public class TFLCDLineInfo: NSManagedObject {
         fetchRequest.predicate = NSPredicate(format: "identifier = %@", identifier)
         managedObjectContext.perform {
             var lineInfo = (try? managedObjectContext.fetch(fetchRequest) )?.first
-            
+
             if case .none = lineInfo {
                 lineInfo = NSEntityDescription.insertNewObject(forEntityName: String(describing:self), into: managedObjectContext) as? TFLCDLineInfo
                 lineInfo?.identifier = identifier
@@ -31,7 +31,7 @@ public class TFLCDLineInfo: NSManagedObject {
             completionBlock(lineInfo)
         }
     }
-    
+
     class func lineInfo(with dictionary: [String: Any], and managedObjectContext: NSManagedObjectContext,using completionBlock : @escaping (_ lineInfo : TFLCDLineInfo?) -> () ) {
         guard let identifier = dictionary[Identifiers.lineId.rawValue] as? String else {
             completionBlock(nil)
@@ -66,7 +66,7 @@ public class TFLCDLineInfo: NSManagedObject {
             }
         }
     }
-    
+
     class func lineInfo(with identifier: String,and managedObjectContext: NSManagedObjectContext) -> TFLCDLineInfo? {
         var lineInfo : TFLCDLineInfo?
         managedObjectContext.performAndWait {

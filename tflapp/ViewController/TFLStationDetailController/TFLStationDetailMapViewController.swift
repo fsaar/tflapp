@@ -30,14 +30,14 @@ class TFLStationDetailMapViewController: UIViewController {
                 for tuple in stations.enumerated() {
                     annotations += [TFLStationDetailMapViewAnnotation(with: tuple.1.stopCode, coordinate: tuple.1.coords, and: tuple.0)]
                 }
-    
+
                 self.mapView.addAnnotations(annotations)
             }
 
         }
     }
     fileprivate var overlays : [TFLStationDetailMapBusRouteOverLay] = []
-    
+
     var viewModels : [TFLStationDetailMapViewModel] = [] {
         didSet {
             self.mapView.removeOverlays(self.mapView.overlays)
@@ -50,7 +50,7 @@ class TFLStationDetailMapViewController: UIViewController {
             self.mapView.region = MKCoordinateRegionForMapRect(insetRect)
         }
     }
-    
+
     func showRouteForModel(at index: Int, animated: Bool) {
         guard index < overlays.count else {
             return
@@ -73,12 +73,12 @@ extension TFLStationDetailMapViewController : MKMapViewDelegate {
         renderer.strokeColor = .red
         return renderer
     }
-    
+
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         guard let mapViewAnnotation = annotation as? TFLStationDetailMapViewAnnotation else {
             return nil
         }
-       
+
         return TFLStationDetailBusStopAnnotationView(annotation: mapViewAnnotation, reuseIdentifier: String(describing: TFLStationDetailBusStopAnnotationView.self))
     }
 }

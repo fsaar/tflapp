@@ -27,7 +27,7 @@ class TFLStationDetailMapBusRouteOverLay : NSObject, MKOverlay {
         let p2 = MKMapPointForCoordinate(CLLocationCoordinate2D(latitude: maxLat, longitude: maxLong))
 
         boundingMapRect = MKMapRectMake(fmin(p1.x,p2.x), fmin(p1.y,p2.y), fabs(p1.x-p2.x), fabs(p1.y-p2.y))
-        
+
     }
 }
 

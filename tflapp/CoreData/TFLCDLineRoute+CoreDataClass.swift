@@ -24,7 +24,7 @@ public class TFLCDLineRoute: NSManagedObject {
         fetchRequest.predicate = NSPredicate(format: "name = %@", name)
         managedObjectContext.perform {
             var route = (try? managedObjectContext.fetch(fetchRequest) )?.first
-            
+
             if case .none = route {
                 route = NSEntityDescription.insertNewObject(forEntityName: String(describing:self), into: managedObjectContext) as? TFLCDLineRoute
                 route?.name = name
@@ -32,7 +32,7 @@ public class TFLCDLineRoute: NSManagedObject {
             completionBlock(route)
         }
     }
-    
+
     class func route(with dictionary: [String: Any], and managedObjectContext: NSManagedObjectContext,using completionBlock : @escaping (_ route : TFLCDLineRoute?) -> () ) {
         guard let name = dictionary[Identifiers.name.rawValue] as? String else {
             completionBlock(nil)

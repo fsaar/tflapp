@@ -25,7 +25,7 @@ class TFLBusStationArrivalsCell: UITableViewCell {
         }
     }
     @IBOutlet weak var predictionView : TFLBusPredictionView!
-    
+
     @IBOutlet weak var noDataErrorLabel : UILabel! = nil {
         didSet {
             self.noDataErrorLabel.text = NSLocalizedString("TFLBusStationArrivalsCell.noDataError", comment: "")
@@ -43,13 +43,13 @@ class TFLBusStationArrivalsCell: UITableViewCell {
         }
     }
     weak var delegate : TFLBusStationArrivalCellDelegate?
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         predictionView.busPredictionViewDelegate = self
         prepareForReuse()
     }
-    
+
     override func prepareForReuse() {
         super.prepareForReuse()
         self.stationName.text = nil
@@ -58,7 +58,7 @@ class TFLBusStationArrivalsCell: UITableViewCell {
         self.noDataErrorLabel.isHidden = true
         self.predictionView.setPredictions(predictions: [],animated: false)
     }
-    
+
     func configure(with busStopArrivalViewModel: TFLBusStopArrivalsViewModel) {
         self.busStopLabel.text = busStopArrivalViewModel.stopLetter
         self.stationName.text = busStopArrivalViewModel.stationName
@@ -67,7 +67,7 @@ class TFLBusStationArrivalsCell: UITableViewCell {
         self.predictionView.setPredictions(predictions: busStopArrivalViewModel.arrivalTimes,animated: true)
         self.noDataErrorLabel.isHidden = !busStopArrivalViewModel.arrivalTimes.isEmpty
     }
-    
+
 
 }
 

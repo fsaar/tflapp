@@ -3,10 +3,10 @@ import CoreData
 import MapKit
 
 struct TFLStationDetailMapViewModel {
-    
+
     let stations : [(stopCode: String,coords : CLLocationCoordinate2D)]
-        
-    
+
+
     init?(with route: TFLCDLineRoute) {
         guard let managedObjectContext = route.managedObjectContext else {
             return nil

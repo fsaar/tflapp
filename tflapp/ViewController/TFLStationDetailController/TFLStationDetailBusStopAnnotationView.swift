@@ -25,12 +25,12 @@ class TFLStationDetailBusStopAnnotationView: MKMarkerAnnotationView {
         titleVisibility = .hidden
         displayPriority = priority
     }
-    
+
     @available(iOS,unavailable)
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-  
+
+
 
 }

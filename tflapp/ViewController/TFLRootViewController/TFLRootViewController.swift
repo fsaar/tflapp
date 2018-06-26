@@ -13,14 +13,14 @@ class TFLRootViewController: UIViewController {
         case retrievingNearbyStations
         case loadingArrivals
         case noError
-        
+
         var isErrorState : Bool {
             switch self {
             case .errorNoGPSAvailable,.errorNoStationsNearby:
                 return true
             default:
                 return false
-                
+
             }
         }
         var isDeterminingCurrentLocation : Bool {
@@ -37,12 +37,12 @@ class TFLRootViewController: UIViewController {
                 return true
             default:
                 return false
-                
+
             }
         }
     }
     fileprivate(set) var DefaultRefreshInterval : TimeInterval = 15
-    
+
     fileprivate var state : State = .noError {
         didSet {
             let shouldHide = self.nearbyBusStationController?.busStopPredicationTuple.isEmpty ?? true
@@ -80,11 +80,11 @@ class TFLRootViewController: UIViewController {
         }
         return controller
     }()
-    
+
     fileprivate var nearbyBusStationController : TFLNearbyBusStationsController? {
         return self.nearbyBackgroundController?.nearbyBusStationController
     }
-    
+
     fileprivate lazy var nearbyBackgroundController : TFLNearbyBackgroundController? = {
         let controller = self.storyboard?.instantiateViewController(withIdentifier: "TFLNearbyBackgroundController") as? TFLNearbyBackgroundController
         return controller
@@ -108,13 +108,13 @@ class TFLRootViewController: UIViewController {
     @IBOutlet weak var loadLocationsView : TFLLoadLocationView!
     @IBOutlet weak var loadNearbyStationsView : TFLLoadNearbyStationsView!
     @IBOutlet weak var contentView : UIView!
-    
+
     fileprivate(set) lazy var refreshTimer : TFLTimer? = {
         return TFLTimer(timerInterVal: DefaultRefreshInterval) { [weak self] _ in
             self?.loadNearbyBusstops()
         }
     }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         Crashlytics.notify()
@@ -138,7 +138,7 @@ class TFLRootViewController: UIViewController {
             }
             self.nearbyBusStationController?.delegate = self
         }
-        
+
         self.foregroundNotificationHandler = TFLNotificationObserver(notification: NSNotification.Name.UIApplicationWillEnterForeground.rawValue) { [weak self]  notification in
             self?.loadNearbyBusstops()
             self?.refreshTimer?.start()
@@ -152,14 +152,14 @@ class TFLRootViewController: UIViewController {
 //        loadBusStops { [weak self] in
 //            self?.loadLineStations()
 //        }
-        
+
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let identifier = segue.identifier , let segueIdentifier = SegueIdentifier(rawValue: identifier) else {
             return
@@ -185,8 +185,8 @@ fileprivate extension TFLRootViewController {
         self.nearbyBusStationController?.busStopPredicationTuple = filteredArrivalsInfo
         self.mapViewController?.busStopPredicationCoordinateTuple = (filteredArrivalsInfo,coordinate)
     }
-    
-    
+
+
     func loadNearbyBusstops(using completionBlock:(()->())? = nil) {
         Crashlytics.notify()
         self.state = .determineCurrentLocation
@@ -201,8 +201,8 @@ fileprivate extension TFLRootViewController {
 
         }
     }
-    
-  
+
+
     func retrieveBusstops(for location:CLLocationCoordinate2D, using completionBlock:@escaping ([TFLBusStopArrivalsInfo])->()) {
         self.state = .retrievingNearbyStations
         if CLLocationCoordinate2DIsValid(location) {
@@ -218,13 +218,13 @@ fileprivate extension TFLRootViewController {
             completionBlock([])
         }
     }
-    
+
     func updateNearbyBusStops(for currentLocation:CLLocationCoordinate2D ) {
         self.tflClient.nearbyBusStops(with: currentLocation) { _,_  in
             Crashlytics.notify()
         }
     }
-    
+
     func loadArrivalTimesForStoreStopPoints(with coord: CLLocationCoordinate2D,
                                             with distance : Double = TFLRootViewController.searchParameter.initial,
                                             using completionBlock:@escaping ([TFLBusStopArrivalsInfo])->()) {
@@ -263,7 +263,7 @@ fileprivate extension TFLRootViewController {
         self.loadLocationsView.isHidden = true
         self.loadNearbyStationsView.isHidden = true
     }
-    
+
     func showNoGPSEnabledError() {
         hideInfoViews()
         noGPSEnabledView.isHidden = false
@@ -288,7 +288,7 @@ fileprivate extension TFLRootViewController {
         hideInfoViews()
         loadNearbyStationsView.isHidden = isContentAvailable()
     }
-    
+
     func isContentAvailable() -> Bool {
         return !(self.nearbyBusStationController?.busStopPredicationTuple.isEmpty ?? true)
     }
@@ -328,7 +328,7 @@ fileprivate extension TFLRootViewController {
             }
         }
     }
-    
+
     func linesFromBusStops(using completionBlock : ((_ lines : Set<String>) -> Void )?)  {
         var lines : Set<String> = []
         let context = TFLCoreDataStack.sharedDataStack.privateQueueManagedObjectContext
@@ -374,7 +374,7 @@ fileprivate extension TFLRootViewController {
             }
         }
     }
-    
+
     func startSim(tuple : (counter:Double,up:Bool) = (0,true) ) {
         let coords = CLLocationCoordinate2D(latitude: 51.556700, longitude: -0.102136)
         _ = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { [weak self] _ in
@@ -400,7 +400,7 @@ fileprivate extension TFLRootViewController {
 extension TFLRootViewController : TFLNearbyBusStationsControllerDelegate  {
     func refresh(controller: TFLNearbyBusStationsController, using completionBlock:@escaping ()->()) {
         Crashlytics.notify()
-        
+
         Answers.logCustomEvent(withName: Answers.TFLEventType.refresh.rawValue, customAttributes: nil)
         loadNearbyBusstops (using: completionBlock)
     }

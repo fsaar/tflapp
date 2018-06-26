@@ -1,6 +1,6 @@
 import UIKit
 import MapKit
-      
+
 class TFLMapViewAnnotation: NSObject, MKAnnotation {
     var coordinate: CLLocationCoordinate2D {
         return arrivalsInfo.busStop.coord
@@ -15,7 +15,7 @@ class TFLMapViewAnnotation: NSObject, MKAnnotation {
     override public var debugDescription: String {
         return "\(String(describing: title)) [\(identifier)]"
     }
-    
+
     init(with arrivalsInfo: TFLBusStopArrivalsInfo) {
         self.arrivalsInfo = arrivalsInfo
         super.init()
@@ -30,5 +30,5 @@ extension TFLMapViewAnnotation {
     override public var hashValue: Int {
         return self.identifier.hashValue
     }
-    
+
 }

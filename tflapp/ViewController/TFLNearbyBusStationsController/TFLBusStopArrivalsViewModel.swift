@@ -13,7 +13,7 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
         init(with busPrediction: TFLBusPrediction,using referenceTime : TimeInterval) {
             func arrivalTime(in secs : Int) -> String {
                 var timeString = ""
-                
+
                 switch secs {
                 case ..<30:
                     timeString = NSLocalizedString("TFLBusStopArrivalsViewModel.due", comment: "")
@@ -41,7 +41,7 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
         public static func ==(lhs: LinePredictionViewModel,rhs :LinePredictionViewModel) -> (Bool) {
             return lhs.identifier == rhs.identifier
         }
-        
+
         public static func compare(lhs: LinePredictionViewModel, rhs: LinePredictionViewModel) -> Bool {
             return lhs.timeToStation <= rhs.timeToStation
         }
@@ -53,7 +53,7 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
         }
 
 
-        
+
     }
     public static func ==(lhs: TFLBusStopArrivalsViewModel,rhs :TFLBusStopArrivalsViewModel) -> (Bool) {
         return lhs.identifier == rhs.identifier
@@ -78,12 +78,12 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
         formatter.numberFormatter.maximumFractionDigits = 0
         return formatter
     }()
-    
+
     public static func compare(lhs: TFLBusStopArrivalsViewModel, rhs: TFLBusStopArrivalsViewModel) -> Bool  {
         return lhs.busStopDistance <= rhs.busStopDistance
     }
 
-    
+
     init(with arrivalInfo: TFLBusStopArrivalsInfo,using referenceDate : Date? = nil) {
         let towards = arrivalInfo.busStop.towards ?? ""
         self.stationDetails = towards.isEmpty ? "" : NSLocalizedString("TFLBusStopArrivalsViewModel.towards", comment: "") + towards
@@ -98,6 +98,6 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
         self.arrivalTimes = filteredPredictions.map { LinePredictionViewModel(with: $0,using: referenceTime) }
     }
 
-    
+
 }
 

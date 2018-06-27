@@ -13,7 +13,7 @@ typealias TFLTimerHandler = (_ timer : TFLTimer)->()
         let enabled = self.timer == nil ? false : true
         return (enabled)
     }
-    
+
     init?(timerInterVal: TimeInterval,timerHandler:TFLTimerHandler?) {
         self.timerInterval = TimeInterval(timerInterVal)
         self.timerHandler = timerHandler
@@ -25,7 +25,7 @@ typealias TFLTimerHandler = (_ timer : TFLTimer)->()
             return (nil)
         }
     }
-        
+
     func start()
     {
         stop()
@@ -33,12 +33,12 @@ typealias TFLTimerHandler = (_ timer : TFLTimer)->()
             timerHandler?(self)
         }
     }
-    
+
     deinit
     {
         stop()
     }
-    
+
     func stop()
     {
         self.timer?.invalidate()

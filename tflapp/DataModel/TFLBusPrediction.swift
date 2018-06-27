@@ -34,7 +34,7 @@ import Foundation
  
  */
 public struct TFLBusPrediction : Equatable,Codable,CustomStringConvertible {
-    
+
     private enum CodingKeys : String,CodingKey {
         case identifier = "id"
         case timeToLive = "timeToLive"
@@ -48,7 +48,7 @@ public struct TFLBusPrediction : Equatable,Codable,CustomStringConvertible {
     public static func ==(lhs: TFLBusPrediction,rhs: TFLBusPrediction) -> (Bool) {
         return lhs.identifier == rhs.identifier
     }
-    
+
     public var description: String {
         let secondsPerMinute : UInt = 60
         let prefix = self.lineName + " towards " + destination

@@ -17,7 +17,7 @@ class TFLMapViewController: UIViewController {
             mapView.showsUserLocation = true
         }
     }
-    
+
     let defaultCoordinateOffset = CLLocationCoordinate2D(latitude: -1/300, longitude: 0)
     let defaultCoordinateSpan = MKCoordinateSpan(latitudeDelta: 1/300, longitudeDelta: 1/90)
     var busStopPredicationCoordinateTuple :  ([TFLBusStopArrivalsInfo], CLLocationCoordinate2D)? = nil {
@@ -29,15 +29,15 @@ class TFLMapViewController: UIViewController {
                 DispatchQueue.global().sync {
                     (inserted ,deleted ,_, _) = oldList.transformTo(newList: busStopPredictionTuples, sortedBy : TFLBusStopArrivalsInfo.compare)
                 }
-                
+
                 let toBeDeletedIdentifierSet = Set(deleted.map { $0.element.identifier } )
                 let toBeDeletedAnnotations = self.mapView.annotations.compactMap { $0 as? TFLMapViewAnnotation}.filter { toBeDeletedIdentifierSet.contains ($0.identifier) }
                 self.mapView.removeAnnotations(toBeDeletedAnnotations)
-                
+
                 let toBeInsertedAnnotations =  inserted.map { $0.0 }
                     .map { TFLMapViewAnnotation(with: $0) }
                 self.mapView.addAnnotations(toBeInsertedAnnotations)
-                
+
                 let offsetCoordinate = coords + self.defaultCoordinateOffset
                 if CLLocationCoordinate2DIsValid(offsetCoordinate) {
                     let region = MKCoordinateRegion(center: offsetCoordinate, span: self.defaultCoordinateSpan)
@@ -58,4 +58,3 @@ extension TFLMapViewController : MKMapViewDelegate {
     }
 
 }
-

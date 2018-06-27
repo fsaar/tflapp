@@ -18,7 +18,7 @@ class TFLLocationManager : NSObject {
             enabled = true
         }
         return enabled
-        
+
     }
     let locationManager =  CLLocationManager()
     override init() {
@@ -29,7 +29,7 @@ class TFLLocationManager : NSObject {
             self.locationManager.requestWhenInUseAuthorization()
         }
     }
-    
+
     func updateLocation(completionBlock: @escaping  TFLLocationManagerCompletionBlock)  {
         requestLocation(using: completionBlock)
     }
@@ -71,6 +71,3 @@ extension TFLLocationManager : CLLocationManagerDelegate {
         requestLocation(using: self.completionBlock)
     }
 }
-
-
-

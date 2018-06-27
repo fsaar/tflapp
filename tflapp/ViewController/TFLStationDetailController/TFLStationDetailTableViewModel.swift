@@ -2,11 +2,11 @@ import UIKit
 import CoreData
 
 struct TFLStationDetailTableViewModel {
-    
+
     let routeName : String
     let stations : [(stopCode: String,name : String)]
-        
-    
+
+
     init?(with route: TFLCDLineRoute) {
         enum HtmlEncodings : String {
             case towards = "&harr;"

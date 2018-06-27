@@ -24,7 +24,7 @@ class TFLBusPredictionView: UICollectionView {
         self.dataSource = self
         self.delegate = self
     }
-    
+
     var maxVisibleCells : Int {
         guard let flowLayout = self.collectionViewLayout as? UICollectionViewFlowLayout else {
             return Int.max
@@ -34,7 +34,7 @@ class TFLBusPredictionView: UICollectionView {
         let maxVisisbleCells = Int((availableWith+distance) / (flowLayout.itemSize.width+distance))
         return maxVisisbleCells
     }
-    
+
     func setPredictions( predictions : [TFLBusStopArrivalsViewModel.LinePredictionViewModel], animated: Bool = false) {
         let visiblePredictions = Array(predictions[0..<min(predictions.count,self.maxVisibleCells)])
         if  !animated || self.predictions.isEmpty || self.predictions ==  visiblePredictions {
@@ -44,11 +44,11 @@ class TFLBusPredictionView: UICollectionView {
         else {
             Crashlytics.log("oldTuples:\(self.predictions.map { $0.identifier }.joined(separator: ","))\nnewTuples:\(visiblePredictions.map { $0.identifier }.joined(separator: ","))")
             var (inserted ,deleted ,updated, moved) : (inserted : [(element:TFLBusStopArrivalsViewModel.LinePredictionViewModel,index:Int)],deleted : [(element:TFLBusStopArrivalsViewModel.LinePredictionViewModel,index:Int)], updated : [(element:TFLBusStopArrivalsViewModel.LinePredictionViewModel,index:Int)],moved : [(element:TFLBusStopArrivalsViewModel.LinePredictionViewModel,oldIndex:Int,newIndex:Int)]) = ([],[],[],[])
-            
+
             DispatchQueue.global().sync {
                 (inserted ,deleted ,updated, moved) = self.predictions.transformTo(newList:visiblePredictions, sortedBy:TFLBusStopArrivalsViewModel.LinePredictionViewModel.compare)
             }
-            
+
             if inserted.isEmpty && moved.isEmpty && deleted.isEmpty {
                 self.reloadData()
             }
@@ -74,11 +74,11 @@ class TFLBusPredictionView: UICollectionView {
                                 Crashlytics.notify()
                         })
                 })
-                
+
             }
         }
     }
-    public var predictions : [TFLBusStopArrivalsViewModel.LinePredictionViewModel] = [] 
+    public var predictions : [TFLBusStopArrivalsViewModel.LinePredictionViewModel] = []
 }
 
 // MARK: UICollectionViewDataSource
@@ -89,7 +89,7 @@ extension TFLBusPredictionView : UICollectionViewDataSource {
         return count
     }
 
-    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {        
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: TFLBusPredictionViewCell.self), for: indexPath)
         configure(cell, at: indexPath)
         return cell

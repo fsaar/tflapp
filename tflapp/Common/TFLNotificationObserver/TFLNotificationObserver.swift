@@ -7,7 +7,7 @@ private extension Selector {
 public typealias TFLNotificationObserverBlock = (_ notification : Notification)-> Void
 
 @objc public final class TFLNotificationObserver: NSObject {
-    
+
     fileprivate let handlerBlock : TFLNotificationObserverBlock
     fileprivate var notification : String
     fileprivate var object : AnyObject? = nil
@@ -20,12 +20,12 @@ public typealias TFLNotificationObserverBlock = (_ notification : Notification)-
         super.init()
         __addObserver()
     }
-    
+
     public convenience init(notification: String,handlerBlock: @escaping TFLNotificationObserverBlock)
     {
         self.init(notification: notification,object: nil,handlerBlock: handlerBlock)
     }
-    
+
     deinit
     {
         __removeObserver()
@@ -39,13 +39,13 @@ extension TFLNotificationObserver {
     {
         NotificationCenter.default.addObserver(self, selector: .notificationHandler, name:NSNotification.Name(rawValue: self.notification), object: self.object)
     }
-    
+
     fileprivate func __removeObserver()
     {
         NotificationCenter.default.removeObserver(self)
     }
-    
-    @objc func notificationHandler(_ notification : Notification!)
+
+    @objc func notificationHandler(_ notification : Notification)
     {
         if (enabled)
         {

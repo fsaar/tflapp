@@ -15,10 +15,11 @@ class TFLSnapHandler: NSObject {
         self.snapHandlerUpdateBlock = snapHandlerUpdateBlock
         self.snapPositions  = snapPositions
         super.init()
-        self.gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(panGestureHandler(_:)))
-        panGestureView.addGestureRecognizer(self.gestureRecognizer!)
+        let recognizer =  UIPanGestureRecognizer(target: self, action: #selector(panGestureHandler(_:)))
+        self.gestureRecognizer = recognizer
+        panGestureView.addGestureRecognizer(recognizer)
     }
-    
+
     @objc func panGestureHandler(_ recognizer : UIPanGestureRecognizer) {
         let velocity = recognizer.velocity(in: self.containerView)
         let p = recognizer.location(in: self.containerView)

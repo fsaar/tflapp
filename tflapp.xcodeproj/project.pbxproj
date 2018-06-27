@@ -530,6 +530,7 @@
 				564EC6F61DE0DA8D008CFD11 /* Fabrics */,
 				5CCA668F6EB7B436258B28AA /* [CP] Embed Pods Frameworks */,
 				AC828CD492670DF6F91697A8 /* [CP] Copy Pods Resources */,
+				567CE45B20E412F100DADE45 /* Swift Lint */,
 			);
 			buildRules = (
 			);
@@ -679,6 +680,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [ -e \".env\" ]\nthen\nsource .env\n./Fabric.framework/run $TFLFABBRICSAPIKEY $TFLFABRICSBUILDSECRET\nfi";
+		};
+		567CE45B20E412F100DADE45 /* Swift Lint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Swift Lint";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
 		};
 		5CCA668F6EB7B436258B28AA /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;

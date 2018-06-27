@@ -133,9 +133,6 @@ opt_in_rules:
     - prohibited_super_call                    
     - unneeded_parentheses_in_closure_argument 
 
-             
-                      
-
 included: # paths to include during linting. `--path` is ignored if present.
     - tflapp
 excluded: # paths to ignore during linting. Takes precedence over `included`.

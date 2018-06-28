@@ -1,13 +1,29 @@
 import Foundation
+import MapKit
 
-public struct TFLBusStopArrivalsInfo : CustomDebugStringConvertible,Hashable {
-    public var debugDescription: String {
-        return busStop.debugDescription + "\(busStopDistance) arrivals:\(arrivals.count)"
+public struct TFLBusStopArrivalsInfo : Hashable {
+    public struct TFLContextFreeBusStopInfo {
+        let identifier: String
+        fileprivate(set) var stopLetter : String?
+        fileprivate(set) var towards : String?
+        let name : String
+        let coord : CLLocationCoordinate2D
+        
+        init (with busStop : TFLCDBusStop) {
+            coord = CLLocationCoordinate2DMake(busStop.lat, busStop.long)
+            stopLetter = busStop.stopLetter
+            towards = busStop.towards
+            name = busStop.name
+            identifier = busStop.identifier
+        }
     }
-    let busStop : TFLCDBusStop
+    
+    let busStop : TFLContextFreeBusStopInfo
+    
     let busStopDistance : Double
     let arrivals : [TFLBusPrediction]
-    var identifier : String {
+    var identifier : String
+    {
         return self.busStop.identifier
     }
     var debugInfo : String {
@@ -28,7 +44,7 @@ public struct TFLBusStopArrivalsInfo : CustomDebugStringConvertible,Hashable {
     }
 
     init(busStop: TFLCDBusStop, busStopDistance: Double, arrivals: [TFLBusPrediction]) {
-        self.busStop = busStop
+        self.busStop = TFLContextFreeBusStopInfo(with: busStop)
         self.busStopDistance = busStopDistance
         self.arrivals = arrivals.sorted { $0.timeToStation  < $1.timeToStation  }
     }

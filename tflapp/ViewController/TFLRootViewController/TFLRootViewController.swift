@@ -6,6 +6,7 @@ import Crashlytics
 
 class TFLRootViewController: UIViewController {
     fileprivate static let searchParameter  : (min:Double,initial:Double) = (100,350)
+    fileprivate let networkBackgroundQueue = OperationQueue()
     fileprivate enum State {
         case errorNoGPSAvailable
         case errorNoStationsNearby(coordinate : CLLocationCoordinate2D)
@@ -233,22 +234,32 @@ fileprivate extension TFLRootViewController {
         let currentLocation = CLLocation(latitude: coord.latitude, longitude: coord.longitude)
         let group = DispatchGroup()
         var newStopPoints : [TFLBusStopArrivalsInfo] = []
-        TFLBusStopStack.sharedDataStack.nearbyBusStops(with: coord,with: distance) { busStops in
-            busStops.forEach { [weak self] stopPoint in
-                group.enter()
-                self?.tflClient.arrivalsForStopPoint(with: stopPoint.identifier) { predictions,_ in
-                    let distance = currentLocation.distance(from: CLLocation(latitude: stopPoint.coord.latitude, longitude: stopPoint.coord.longitude))
-                    let tuple = TFLBusStopArrivalsInfo(busStop: stopPoint, busStopDistance: distance, arrivals: predictions ?? [])
-                    newStopPoints += [tuple]
-                    group.leave()
+        let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
+        let queue = self.networkBackgroundQueue
+        DispatchQueue.global().async {
+            
+            TFLBusStopStack.sharedDataStack.nearbyBusStops(with: coord,with: distance,and: context) { busStops in
+                busStops.forEach { [weak self] stopPoint in
+                    group.enter()
+                    context.perform {
+                        self?.tflClient.arrivalsForStopPoint(with: stopPoint.identifier,with: queue) { predictions,_ in
+                            context.perform {
+                                let distance = currentLocation.distance(from: CLLocation(latitude: stopPoint.coord.latitude, longitude: stopPoint.coord.longitude))
+                                let tuple = TFLBusStopArrivalsInfo(busStop: stopPoint, busStopDistance: distance, arrivals: predictions ?? [])
+                                newStopPoints += [tuple]
+                                group.leave()
+                            }
+                        }
+                    }
+                }
+                group.notify(queue: DispatchQueue.main) {
+                    let sortedStopPoints = newStopPoints.sorted { $0.busStopDistance < $1.busStopDistance }
+                    completionBlock(sortedStopPoints)
+                    Crashlytics.notify()
                 }
             }
-            group.notify(queue: DispatchQueue.main) {
-                let sortedStopPoints = newStopPoints.sorted { $0.busStopDistance < $1.busStopDistance }
-                completionBlock(sortedStopPoints)
-                Crashlytics.notify()
-            }
         }
+        
     }
 }
 

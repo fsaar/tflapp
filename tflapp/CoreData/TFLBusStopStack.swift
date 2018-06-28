@@ -93,8 +93,8 @@ private let groupID =  "group.tflwidgetSharingData"
 
     }
 
-    func nearbyBusStops(with coordinate: CLLocationCoordinate2D, with radiusInMeter: Double = 350,using completionBlock : @escaping ([TFLCDBusStop])->())  {
-        let context = TFLBusStopStack.sharedDataStack.mainQueueManagedObjectContext
+    func nearbyBusStops(with coordinate: CLLocationCoordinate2D, with radiusInMeter: Double = 350,and context: NSManagedObjectContext =  TFLBusStopStack.sharedDataStack.mainQueueManagedObjectContext,using completionBlock : @escaping ([TFLCDBusStop])->())  {
+        
 
         // London : long=-0.252395&lat=51.506788
         // Latitude 1 Degree : 111.111 KM = 1/100 Degree => 1.11111 KM => 1/200 Degree ≈ 550m

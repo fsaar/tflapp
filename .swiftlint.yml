@@ -140,8 +140,9 @@ excluded: # paths to ignore during linting. Takes precedence over `included`.
  
 # configurable rules can be customized from this configuration file
 # binary rules can set their severity level
-force_cast: error # implicitly
-force_try: error # explicitly
+weak_delegate: error
+force_cast: error 
+force_try: error 
 overridden_super_call: error
 cyclomatic_complexity: 
   - 15

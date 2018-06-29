@@ -179,10 +179,22 @@ class TFLRootViewController: UIViewController {
 // MARK: Private
 
 fileprivate extension TFLRootViewController {
+    func mergeInfo(_ newInfo : [TFLBusStopArrivalsInfo],with oldInfo:[TFLBusStopArrivalsInfo] ) ->  [TFLBusStopArrivalsInfo] {
+        let dict = Dictionary(uniqueKeysWithValues: oldInfo.map { ($0.identifier,$0)} )
+        let mergedInfo : [TFLBusStopArrivalsInfo] = newInfo.map {  info in
+            guard info.arrivals.isEmpty else {
+                return info
+            }
+            return dict[info.identifier] ?? info
+        }
+        return mergedInfo
+    }
+    
     func updateContentViewController(with arrivalsInfo: [TFLBusStopArrivalsInfo], and coordinate: CLLocationCoordinate2D) {
-        let filteredArrivalsInfo = arrivalsInfo.filter { !$0.arrivals.isEmpty }
+        let oldTuples = self.nearbyBusStationController?.busStopPredicationTuple ?? []
+        let mergedInfo = mergeInfo(arrivalsInfo, with: oldTuples)
+        let filteredArrivalsInfo = mergedInfo.filter { !$0.arrivals.isEmpty }
         self.state = filteredArrivalsInfo.isEmpty ? .errorNoStationsNearby(coordinate: coordinate) : .noError
-
         self.nearbyBusStationController?.busStopPredicationTuple = filteredArrivalsInfo
         self.mapViewController?.busStopPredicationCoordinateTuple = (filteredArrivalsInfo,coordinate)
     }

@@ -61,16 +61,14 @@ fileprivate extension Collection where Element : Hashable{
         guard unorderedList.count > 1 else {
             return movedTypes
         }
-        let tuples = zip(unorderedList,unorderedList.dropFirst())
-        for (el1,el2) in tuples {
-            if !compare(el1,el2) {
-                let lhsList = unorderedList.filter { $0 != el1 }
-                let rhsList = unorderedList.filter { $0 != el2 }
-                let lhsMovedTypes = identifyMovedElementsFrom(unorderedList: lhsList, movedTypes: movedTypes + [el1],sortedBy: compare)
-                let rhsMovedTypes = identifyMovedElementsFrom(unorderedList: rhsList, movedTypes: movedTypes + [el2],sortedBy: compare)
-                let newMovedTypes = lhsMovedTypes.count <= rhsMovedTypes.count ? lhsMovedTypes : rhsMovedTypes
-                return newMovedTypes
-            }
+        let tuples = zip(unorderedList,unorderedList.dropFirst()).filter { !compare($0.0,$0.1)  }
+        if let (el1,el2) = tuples.first {
+            let lhsList = unorderedList.filter { $0 != el1 }
+            let rhsList = unorderedList.filter { $0 != el2 }
+            let lhsMovedTypes = identifyMovedElementsFrom(unorderedList: lhsList, movedTypes: movedTypes + [el1],sortedBy: compare)
+            let rhsMovedTypes = identifyMovedElementsFrom(unorderedList: rhsList, movedTypes: movedTypes + [el2],sortedBy: compare)
+            let newMovedTypes = lhsMovedTypes.count <= rhsMovedTypes.count ? lhsMovedTypes : rhsMovedTypes
+            return newMovedTypes
         }
         return movedTypes
 

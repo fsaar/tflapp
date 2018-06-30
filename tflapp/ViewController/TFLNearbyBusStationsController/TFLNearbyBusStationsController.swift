@@ -47,7 +47,12 @@ class TFLNearbyBusStationsController : UITableViewController {
 
     var busStopPredicationTuple :  [TFLBusStopArrivalsInfo] = [] {
         didSet {
-            self.busStopArrivalViewModels = self.busStopPredicationTuple.sorted { $0.busStopDistance < $1 .busStopDistance }.map {  TFLBusStopArrivalsViewModel(with: $0) }
+            DispatchQueue.global().async {
+                let models = self.busStopPredicationTuple.sorted { $0.busStopDistance < $1 .busStopDistance }.map {  TFLBusStopArrivalsViewModel(with: $0) }
+                DispatchQueue.main.async {
+                    self.busStopArrivalViewModels = models
+                }
+            }
         }
     }
 

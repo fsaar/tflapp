@@ -61,17 +61,16 @@ fileprivate extension Collection where Element : Hashable{
         guard unorderedList.count > 1 else {
             return movedTypes
         }
-        let tuples = zip(unorderedList,unorderedList.dropFirst()).filter { !compare($0.0,$0.1)  }
-        if let (el1,el2) = tuples.first {
-            let lhsList = unorderedList.filter { $0 != el1 }
-            let rhsList = unorderedList.filter { $0 != el2 }
-            let lhsMovedTypes = identifyMovedElementsFrom(unorderedList: lhsList, movedTypes: movedTypes + [el1],sortedBy: compare)
-            let rhsMovedTypes = identifyMovedElementsFrom(unorderedList: rhsList, movedTypes: movedTypes + [el2],sortedBy: compare)
-            let newMovedTypes = lhsMovedTypes.count <= rhsMovedTypes.count ? lhsMovedTypes : rhsMovedTypes
-            return newMovedTypes
+        let unorderedTuple : (Element,Element)? = zip(unorderedList,unorderedList.dropFirst()).lazy.filter ({ !compare($0.0,$0.1)  }).first
+        guard let (el1,el2) = unorderedTuple else {
+            return movedTypes
         }
-        return movedTypes
-
+        let lhsList = unorderedList.filter { $0 != el1 }
+        let rhsList = unorderedList.filter { $0 != el2 }
+        let lhsMovedTypes = identifyMovedElementsFrom(unorderedList: lhsList, movedTypes: movedTypes + [el1],sortedBy: compare)
+        let rhsMovedTypes = identifyMovedElementsFrom(unorderedList: rhsList, movedTypes: movedTypes + [el2],sortedBy: compare)
+        let newMovedTypes = lhsMovedTypes.count <= rhsMovedTypes.count ? lhsMovedTypes : rhsMovedTypes
+        return newMovedTypes
     }
 
     func findMovedElements(in newList : [Element],

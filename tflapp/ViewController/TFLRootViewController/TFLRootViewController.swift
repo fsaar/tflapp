@@ -1,7 +1,7 @@
 import CoreLocation
 import UIKit
 import CoreData
-import Crashlytics
+
 
 
 class TFLRootViewController: UIViewController {
@@ -50,11 +50,9 @@ class TFLRootViewController: UIViewController {
 
             switch self.state {
             case State.errorNoGPSAvailable:
-                Crashlytics.notify()
                 self.contentView.isHidden = true
                 showNoGPSEnabledError()
-            case State.errorNoStationsNearby(let coord):
-                Crashlytics.log("no stations for coordinate (lat,long):(\(coord.latitude),\(coord.longitude))")
+            case State.errorNoStationsNearby:
                 self.contentView.isHidden = true
                 showNoStationsFoundError()
             case State.determineCurrentLocation:
@@ -118,7 +116,6 @@ class TFLRootViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        Crashlytics.notify()
         if let mapViewController = self.mapViewController, let nearbyBackgroundController = self.nearbyBackgroundController {
             self.slideContainerController?.setContentControllers(with: mapViewController,and: nearbyBackgroundController)
             self.slideContainerController?.sliderViewUpdateBlock =  { [weak self] slider, origin,final in
@@ -132,10 +129,6 @@ class TFLRootViewController: UIViewController {
                     return opacity
                 }
                 self?.mapViewController?.coverView.alpha = opacity(for: origin.y)
-                if (final)
-                {
-                    Answers.logCustomEvent(withName: Answers.TFLEventType.mapSlider.rawValue, customAttributes: nil)
-                }
             }
             self.nearbyBusStationController?.delegate = self
         }
@@ -201,7 +194,6 @@ fileprivate extension TFLRootViewController {
 
 
     func loadNearbyBusstops(using completionBlock:(()->())? = nil) {
-        Crashlytics.notify()
         self.state = .determineCurrentLocation
         TFLLocationManager.sharedManager.updateLocation { [weak self] coord in
             guard let state = self?.state,state.isComplete || state.isDeterminingCurrentLocation  else {
@@ -233,15 +225,13 @@ fileprivate extension TFLRootViewController {
     }
 
     func updateNearbyBusStops(for currentLocation:CLLocationCoordinate2D ) {
-        self.tflClient.nearbyBusStops(with: currentLocation) { _,_  in
-            Crashlytics.notify()
-        }
+       self.tflClient.nearbyBusStops(with: currentLocation)
+      
     }
 
     func loadArrivalTimesForStoreStopPoints(with coord: CLLocationCoordinate2D,
                                             with distance : Double = TFLRootViewController.searchParameter.initial,
                                             using completionBlock:@escaping ([TFLBusStopArrivalsInfo])->()) {
-        Crashlytics.notify()
         self.state = .loadingArrivals
         let currentLocation = CLLocation(latitude: coord.latitude, longitude: coord.longitude)
         let group = DispatchGroup()
@@ -267,7 +257,6 @@ fileprivate extension TFLRootViewController {
                 group.notify(queue: DispatchQueue.main) {
                     let sortedStopPoints = newStopPoints.sorted { $0.busStopDistance < $1.busStopDistance }
                     completionBlock(sortedStopPoints)
-                    Crashlytics.notify()
                 }
             }
         }
@@ -321,7 +310,6 @@ fileprivate extension TFLRootViewController {
 
 extension TFLRootViewController : TFLNoGPSEnabledViewDelegate {
     func didTap(noGPSEnabledButton: UIButton,in view : TFLNoGPSEnabledView) {
-        Crashlytics.notify()
         guard let url = URL(string: UIApplicationOpenSettingsURLString) else {
             return
         }
@@ -333,7 +321,6 @@ extension TFLRootViewController : TFLNoGPSEnabledViewDelegate {
 
 extension TFLRootViewController : TFLNoStationsViewDelegate {
     func didTap(noStationsButton: UIButton,in view : TFLNoStationsView) {
-        Crashlytics.notify()
         loadNearbyBusstops ()
     }
 }
@@ -422,9 +409,6 @@ fileprivate extension TFLRootViewController {
 
 extension TFLRootViewController : TFLNearbyBusStationsControllerDelegate  {
     func refresh(controller: TFLNearbyBusStationsController, using completionBlock:@escaping ()->()) {
-        Crashlytics.notify()
-
-        Answers.logCustomEvent(withName: Answers.TFLEventType.refresh.rawValue, customAttributes: nil)
         loadNearbyBusstops (using: completionBlock)
     }
 }

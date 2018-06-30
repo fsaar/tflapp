@@ -1,6 +1,5 @@
 import UIKit
 import CoreData
-import Crashlytics
 
 extension MutableCollection where Index == Int, Iterator.Element == TFLBusStopArrivalsViewModel.LinePredictionViewModel {
     subscript(indexPath : IndexPath) -> TFLBusStopArrivalsViewModel.LinePredictionViewModel {
@@ -42,7 +41,6 @@ class TFLBusPredictionView: UICollectionView {
             self.reloadData()
         }
         else {
-            Crashlytics.log("oldTuples:\(self.predictions.map { $0.identifier }.joined(separator: ","))\nnewTuples:\(visiblePredictions.map { $0.identifier }.joined(separator: ","))")
             var (inserted ,deleted ,updated, moved) : (inserted : [(element:TFLBusStopArrivalsViewModel.LinePredictionViewModel,index:Int)],deleted : [(element:TFLBusStopArrivalsViewModel.LinePredictionViewModel,index:Int)], updated : [(element:TFLBusStopArrivalsViewModel.LinePredictionViewModel,index:Int)],moved : [(element:TFLBusStopArrivalsViewModel.LinePredictionViewModel,oldIndex:Int,newIndex:Int)]) = ([],[],[],[])
 
             DispatchQueue.global().sync {
@@ -54,7 +52,6 @@ class TFLBusPredictionView: UICollectionView {
             }
             else {
                 self.performBatchUpdates({ [weak self] in
-                    Crashlytics.notify()
                     self?.predictions = visiblePredictions
                     let insertedIndexPaths = inserted.map { IndexPath(item: $0.index,section:0)}
                     self?.insertItems(at: insertedIndexPaths )
@@ -63,16 +60,14 @@ class TFLBusPredictionView: UICollectionView {
                     self?.deleteItems(at: deletedIndexPaths)
                     } ,completion: { [weak self]  _ in
                         self?.performBatchUpdates({ [weak self] in
-                            Crashlytics.notify()
+  
                             let updatedIndexPaths = updated.map { IndexPath(item: $0.index,section:0)}
                             let movedIndexPaths = moved.map { IndexPath(item: $0.newIndex,section:0)}
                             (updatedIndexPaths+movedIndexPaths).forEach { indexPath in
                                 let cell = self?.cellForItem(at: indexPath)
                                 self?.configure(cell, at: indexPath, as : true)
                             }
-                            },completion: { _ in
-                                Crashlytics.notify()
-                        })
+                            },completion: nil)
                 })
 
             }

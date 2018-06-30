@@ -1,6 +1,5 @@
 import Foundation
 import CoreData
-import Crashlytics
 import CoreLocation
 
 private let dbFileName  = URL(string:"TFLBusStops.sqlite")
@@ -75,16 +74,16 @@ private let groupID =  "group.tflwidgetSharingData"
         let models = NSManagedObjectModel.mergedModel(from: nil)!
         storeCoordinator = NSPersistentStoreCoordinator(managedObjectModel: models)
         if !initCoreData(storeCoordinator) {
-            Crashlytics.notify()
+   
             if cleanUpCoreData(storeCoordinator) {
-                Crashlytics.notify()
+            
                 if !initCoreData(storeCoordinator) {
-                    Crashlytics.log("Can't recover from Core Data initialisation")
+           
                     fatalError("Can't recover from Core Data initialisation")
                 }
             }
             else {
-                Crashlytics.log("Can't recover from Core Data initialisation")
+            
                 fatalError("Can't recover from Core Data initialisation")
             }
         }

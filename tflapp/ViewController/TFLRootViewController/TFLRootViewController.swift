@@ -194,11 +194,12 @@ fileprivate extension TFLRootViewController {
 
 
     func loadNearbyBusstops(using completionBlock:(()->())? = nil) {
+        guard state.isComplete else {
+            completionBlock?()
+            return
+        }
         self.state = .determineCurrentLocation
         TFLLocationManager.sharedManager.updateLocation { [weak self] coord in
-            guard let state = self?.state,state.isComplete || state.isDeterminingCurrentLocation  else {
-                return
-            }
             self?.retrieveBusstops(for: coord) { busStopPredictionTuples in
                 self?.updateContentViewController(with: busStopPredictionTuples, and: coord)
                 completionBlock?()

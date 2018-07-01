@@ -42,7 +42,7 @@ class TFLRootViewController: UIViewController {
             }
         }
     }
-    fileprivate(set) var DefaultRefreshInterval : TimeInterval = 15
+    fileprivate(set) var DefaultRefreshInterval : TimeInterval = 30
 
     fileprivate var state : State = .noError {
         didSet {

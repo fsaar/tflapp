@@ -1,6 +1,5 @@
 import UIKit
 import CoreData
-import Crashlytics
 
 extension MutableCollection where Index == Int, Iterator.Element == TFLBusStopArrivalsViewModel.LinePredictionViewModel {
     subscript(indexPath : IndexPath) -> TFLBusStopArrivalsViewModel.LinePredictionViewModel {
@@ -25,57 +24,44 @@ class TFLBusPredictionView: UICollectionView {
         self.delegate = self
     }
 
-    var maxVisibleCells : Int {
-        guard let flowLayout = self.collectionViewLayout as? UICollectionViewFlowLayout else {
-            return Int.max
-        }
-        let availableWith = self.frame.size.width
-        let distance = flowLayout.minimumLineSpacing
-        let maxVisisbleCells = Int((availableWith+distance) / (flowLayout.itemSize.width+distance))
-        return maxVisisbleCells
-    }
-
     func setPredictions( predictions : [TFLBusStopArrivalsViewModel.LinePredictionViewModel], animated: Bool = false) {
-        let visiblePredictions = Array(predictions[0..<min(predictions.count,self.maxVisibleCells)])
-        if  !animated || self.predictions.isEmpty || self.predictions ==  visiblePredictions {
-            self.predictions = visiblePredictions
+        if  !animated || self.predictions.isEmpty {
+            self.predictions = predictions
             self.reloadData()
         }
         else {
-            Crashlytics.log("oldTuples:\(self.predictions.map { $0.identifier }.joined(separator: ","))\nnewTuples:\(visiblePredictions.map { $0.identifier }.joined(separator: ","))")
             var (inserted ,deleted ,updated, moved) : (inserted : [(element:TFLBusStopArrivalsViewModel.LinePredictionViewModel,index:Int)],deleted : [(element:TFLBusStopArrivalsViewModel.LinePredictionViewModel,index:Int)], updated : [(element:TFLBusStopArrivalsViewModel.LinePredictionViewModel,index:Int)],moved : [(element:TFLBusStopArrivalsViewModel.LinePredictionViewModel,oldIndex:Int,newIndex:Int)]) = ([],[],[],[])
 
-            DispatchQueue.global().sync {
-                (inserted ,deleted ,updated, moved) = self.predictions.transformTo(newList:visiblePredictions, sortedBy:TFLBusStopArrivalsViewModel.LinePredictionViewModel.compare)
-            }
-
-            if inserted.isEmpty && moved.isEmpty && deleted.isEmpty {
-                self.reloadData()
-            }
-            else {
-                self.performBatchUpdates({ [weak self] in
-                    Crashlytics.notify()
-                    self?.predictions = visiblePredictions
-                    let insertedIndexPaths = inserted.map { IndexPath(item: $0.index,section:0)}
-                    self?.insertItems(at: insertedIndexPaths )
-                    moved.forEach { self?.moveItem(at: IndexPath(item: $0.oldIndex,section:0), to:  IndexPath(item: $0.newIndex,section:0)) }
-                    let deletedIndexPaths = deleted.map { IndexPath(item: $0.index,section:0)}
-                    self?.deleteItems(at: deletedIndexPaths)
-                    } ,completion: { [weak self]  _ in
-                        self?.performBatchUpdates({ [weak self] in
-                            Crashlytics.notify()
-                            let updatedIndexPaths = updated.map { IndexPath(item: $0.index,section:0)}
-                            let movedIndexPaths = moved.map { IndexPath(item: $0.newIndex,section:0)}
-                            (updatedIndexPaths+movedIndexPaths).forEach { indexPath in
-                                let cell = self?.cellForItem(at: indexPath)
-                                self?.configure(cell, at: indexPath, as : true)
-                            }
-                            },completion: { _ in
-                                Crashlytics.notify()
+            DispatchQueue.global().async {
+                (inserted ,deleted ,updated, moved) = self.predictions.transformTo(newList:predictions, sortedBy:TFLBusStopArrivalsViewModel.LinePredictionViewModel.compare)
+                self.predictions = predictions
+                DispatchQueue.main.async {
+                    if inserted.isEmpty && moved.isEmpty && deleted.isEmpty {
+                        self.reloadData()
+                    }
+                    else {
+                        self.performBatchUpdates({ [weak self] in
+                            let insertedIndexPaths = inserted.map { IndexPath(item: $0.index,section:0)}
+                            self?.insertItems(at: insertedIndexPaths )
+                            moved.forEach { self?.moveItem(at: IndexPath(item: $0.oldIndex,section:0), to:  IndexPath(item: $0.newIndex,section:0)) }
+                            let deletedIndexPaths = deleted.map { IndexPath(item: $0.index,section:0)}
+                            self?.deleteItems(at: deletedIndexPaths)
+                            } ,completion: { [weak self]  _ in
+                                self?.performBatchUpdates({ [weak self] in
+                                    
+                                    let updatedIndexPaths = updated.map { IndexPath(item: $0.index,section:0)}
+                                    let movedIndexPaths = moved.map { IndexPath(item: $0.newIndex,section:0)}
+                                    (updatedIndexPaths+movedIndexPaths).forEach { indexPath in
+                                        let cell = self?.cellForItem(at: indexPath)
+                                        self?.configure(cell, at: indexPath, as : true)
+                                    }
+                                    },completion: nil)
                         })
-                })
-
+                        
+                    }
+                }
             }
+
         }
     }
     public var predictions : [TFLBusStopArrivalsViewModel.LinePredictionViewModel] = []

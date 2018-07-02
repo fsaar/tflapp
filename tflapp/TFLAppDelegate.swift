@@ -1,7 +1,5 @@
 import UIKit
 import CoreData
-import Fabric
-import Crashlytics
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -10,7 +8,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         initCoreData()
-        initFabric()
         return true
     }
 }
@@ -19,8 +16,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 private extension AppDelegate {
     func initCoreData() {
         _ = TFLBusStopStack.sharedDataStack
-    }
-    func initFabric() {
-        Fabric.with([Crashlytics.self])
     }
 }

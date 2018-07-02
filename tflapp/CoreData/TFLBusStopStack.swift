@@ -1,6 +1,5 @@
 import Foundation
 import CoreData
-import Crashlytics
 import CoreLocation
 
 private let dbFileName  = URL(string:"TFLBusStops.sqlite")
@@ -75,16 +74,16 @@ private let groupID =  "group.tflwidgetSharingData"
         let models = NSManagedObjectModel.mergedModel(from: nil)!
         storeCoordinator = NSPersistentStoreCoordinator(managedObjectModel: models)
         if !initCoreData(storeCoordinator) {
-            Crashlytics.notify()
+   
             if cleanUpCoreData(storeCoordinator) {
-                Crashlytics.notify()
+            
                 if !initCoreData(storeCoordinator) {
-                    Crashlytics.log("Can't recover from Core Data initialisation")
+           
                     fatalError("Can't recover from Core Data initialisation")
                 }
             }
             else {
-                Crashlytics.log("Can't recover from Core Data initialisation")
+            
                 fatalError("Can't recover from Core Data initialisation")
             }
         }
@@ -93,8 +92,8 @@ private let groupID =  "group.tflwidgetSharingData"
 
     }
 
-    func nearbyBusStops(with coordinate: CLLocationCoordinate2D, with radiusInMeter: Double = 350,using completionBlock : @escaping ([TFLCDBusStop])->())  {
-        let context = TFLBusStopStack.sharedDataStack.mainQueueManagedObjectContext
+    func nearbyBusStops(with coordinate: CLLocationCoordinate2D, with radiusInMeter: Double = 350,and context: NSManagedObjectContext =  TFLBusStopStack.sharedDataStack.mainQueueManagedObjectContext,using completionBlock : @escaping ([TFLCDBusStop])->())  {
+        
 
         // London : long=-0.252395&lat=51.506788
         // Latitude 1 Degree : 111.111 KM = 1/100 Degree => 1.11111 KM => 1/200 Degree ≈ 550m

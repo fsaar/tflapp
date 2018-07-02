@@ -36,7 +36,7 @@ public final class TFLClient {
 
     public func nearbyBusStops(with coordinate: CLLocationCoordinate2D,
                                with operationQueue : OperationQueue = OperationQueue.main,
-                               using completionBlock: @escaping (([TFLCDBusStop]?,_ error:Error?) -> ()))  {
+                               using completionBlock: (([TFLCDBusStop]?,_ error:Error?) -> ())? = nil)  {
         let busStopPath = "/StopPoint"
         let query = "lat=\(coordinate.latitude)&lon=\(coordinate.longitude)&stopTypes=NaptanPublicBusCoachTram&categories=Geo"
         let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
@@ -48,7 +48,7 @@ public final class TFLClient {
                     _ = try? context.save()
                 }
                 operationQueue.addOperation({
-                    completionBlock(stops,error)
+                    completionBlock?(stops,error)
                 })
             }
         }

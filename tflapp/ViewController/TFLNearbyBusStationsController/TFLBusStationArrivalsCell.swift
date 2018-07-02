@@ -56,6 +56,7 @@ class TFLBusStationArrivalsCell: UITableViewCell {
         self.stationDetails.text = nil
         self.distanceLabel.text = nil
         self.noDataErrorLabel.isHidden = true
+        self.predictionView.contentOffset = .zero
         self.predictionView.setPredictions(predictions: [],animated: false)
     }
 

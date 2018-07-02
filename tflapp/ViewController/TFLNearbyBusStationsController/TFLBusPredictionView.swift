@@ -25,8 +25,8 @@ class TFLBusPredictionView: UICollectionView {
     }
 
     func setPredictions( predictions : [TFLBusStopArrivalsViewModel.LinePredictionViewModel], animated: Bool = false) {
-        self.predictions = predictions
         if  !animated || self.predictions.isEmpty {
+            self.predictions = predictions
             self.reloadData()
         }
         else {
@@ -34,6 +34,7 @@ class TFLBusPredictionView: UICollectionView {
 
             DispatchQueue.global().async {
                 (inserted ,deleted ,updated, moved) = self.predictions.transformTo(newList:predictions, sortedBy:TFLBusStopArrivalsViewModel.LinePredictionViewModel.compare)
+                self.predictions = predictions
                 DispatchQueue.main.async {
                     if inserted.isEmpty && moved.isEmpty && deleted.isEmpty {
                         self.reloadData()

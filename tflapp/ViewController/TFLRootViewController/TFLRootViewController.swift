@@ -42,7 +42,7 @@ class TFLRootViewController: UIViewController {
             }
         }
     }
-    fileprivate(set) var DefaultRefreshInterval : TimeInterval = 30
+    fileprivate(set) var DefaultRefreshInterval : TimeInterval = 5
 
     fileprivate var state : State = .noError {
         didSet {
@@ -183,6 +183,14 @@ fileprivate extension TFLRootViewController {
         return mergedInfo
     }
     
+    func updateContentViewController(with coordinate: CLLocationCoordinate2D) {
+        let oldTuples = self.nearbyBusStationController?.busStopPredicationTuple ?? []
+        let newTuples = oldTuples.map { $0.arrivalInfo(with:  CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)) }
+        self.nearbyBusStationController?.busStopPredicationTuple = newTuples
+        self.mapViewController?.busStopPredicationCoordinateTuple = (newTuples,coordinate)
+    }
+
+    
     func updateContentViewController(with arrivalsInfo: [TFLBusStopArrivalsInfo], and coordinate: CLLocationCoordinate2D) {
         let oldTuples = self.nearbyBusStationController?.busStopPredicationTuple ?? []
         let mergedInfo = mergeInfo(arrivalsInfo, with: oldTuples)
@@ -200,6 +208,7 @@ fileprivate extension TFLRootViewController {
         }
         self.state = .determineCurrentLocation
         TFLLocationManager.sharedManager.updateLocation { [weak self] coord in
+            self?.updateContentViewController(with: coord)
             self?.retrieveBusstops(for: coord) { busStopPredictionTuples in
                 self?.updateContentViewController(with: busStopPredictionTuples, and: coord)
                 completionBlock?()
@@ -247,8 +256,7 @@ fileprivate extension TFLRootViewController {
                     context.perform {
                         self?.tflClient.arrivalsForStopPoint(with: stopPoint.identifier,with: queue) { predictions,_ in
                             context.perform {
-                                let distance = currentLocation.distance(from: CLLocation(latitude: stopPoint.coord.latitude, longitude: stopPoint.coord.longitude))
-                                let tuple = TFLBusStopArrivalsInfo(busStop: stopPoint, busStopDistance: distance, arrivals: predictions ?? [])
+                                let tuple = TFLBusStopArrivalsInfo(busStop: stopPoint, location: currentLocation, arrivals: predictions ?? [])
                                 newStopPoints += [tuple]
                                 group.leave()
                             }

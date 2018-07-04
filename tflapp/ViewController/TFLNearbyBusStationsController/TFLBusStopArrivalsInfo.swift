@@ -42,10 +42,24 @@ public struct TFLBusStopArrivalsInfo : Hashable {
     public static func compare(lhs: TFLBusStopArrivalsInfo, rhs: TFLBusStopArrivalsInfo) -> Bool  {
         return lhs.busStopDistance <= rhs.busStopDistance
     }
-
-    init(busStop: TFLCDBusStop, busStopDistance: Double, arrivals: [TFLBusPrediction]) {
-        self.busStop = TFLContextFreeBusStopInfo(with: busStop)
-        self.busStopDistance = busStopDistance
+    
+    init(busStop: TFLContextFreeBusStopInfo, location: CLLocation, arrivals: [TFLBusPrediction]) {
+        let busStopLocation =  CLLocation(latitude: busStop.coord.latitude, longitude: busStop.coord.longitude)
+        let distance = location.distance(from: busStopLocation)
+        self.busStopDistance = distance
+        self.busStop = busStop
         self.arrivals = arrivals.sorted { $0.timeToStation  < $1.timeToStation  }
+    }
+
+     init(busStop: TFLCDBusStop, location: CLLocation, arrivals: [TFLBusPrediction]) {
+        let busStopLocation =  CLLocation(latitude: busStop.coord.latitude, longitude: busStop.coord.longitude)
+        let distance = location.distance(from: busStopLocation)
+        self.busStopDistance = distance
+        self.busStop = TFLContextFreeBusStopInfo(with: busStop)
+        self.arrivals = arrivals.sorted { $0.timeToStation  < $1.timeToStation  }
+    }
+    
+    func arrivalInfo(with location : CLLocation) -> TFLBusStopArrivalsInfo {
+        return TFLBusStopArrivalsInfo(busStop: self.busStop, location: location, arrivals: self.arrivals)
     }
 }

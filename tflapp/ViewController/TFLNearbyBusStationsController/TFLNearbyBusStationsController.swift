@@ -28,17 +28,10 @@ class TFLNearbyBusStationsController : UITableViewController {
     var busStopArrivalViewModels :  [TFLBusStopArrivalsViewModel] = [] {
 
         didSet (oldModel) {
-
-            if oldModel.isEmpty {
-                self.tableView.reloadData()
-            }
-            else
-            {
-                self.tableView.transition(from: oldModel, to: busStopArrivalViewModels, with: TFLBusStopArrivalsViewModel.compare) { updatedIndexPaths in
-                    updatedIndexPaths.forEach { [weak self] indexPath in
-                        if let cell = self?.tableView.cellForRow(at: indexPath) as? TFLBusStationArrivalsCell {
-                            self?.configure(cell, at: indexPath)
-                        }
+            self.tableView.transition(from: oldModel, to: busStopArrivalViewModels, with: TFLBusStopArrivalsViewModel.compare) { updatedIndexPaths in
+                updatedIndexPaths.forEach { [weak self] indexPath in
+                    if let cell = self?.tableView.cellForRow(at: indexPath) as? TFLBusStationArrivalsCell {
+                        self?.configure(cell, at: indexPath)
                     }
                 }
             }

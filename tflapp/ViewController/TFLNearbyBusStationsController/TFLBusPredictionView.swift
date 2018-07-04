@@ -36,29 +36,25 @@ class TFLBusPredictionView: UICollectionView {
                 (inserted ,deleted ,updated, moved) = self.predictions.transformTo(newList:predictions, sortedBy:TFLBusStopArrivalsViewModel.LinePredictionViewModel.compare)
                 self.predictions = predictions
                 DispatchQueue.main.async {
-                    if inserted.isEmpty && moved.isEmpty && deleted.isEmpty {
-                        self.reloadData()
-                    }
-                    else {
-                        self.performBatchUpdates({ [weak self] in
-                            let insertedIndexPaths = inserted.map { IndexPath(item: $0.index,section:0)}
-                            self?.insertItems(at: insertedIndexPaths )
-                            moved.forEach { self?.moveItem(at: IndexPath(item: $0.oldIndex,section:0), to:  IndexPath(item: $0.newIndex,section:0)) }
-                            let deletedIndexPaths = deleted.map { IndexPath(item: $0.index,section:0)}
-                            self?.deleteItems(at: deletedIndexPaths)
-                            } ,completion: { [weak self]  _ in
-                                self?.performBatchUpdates({ [weak self] in
-                                    
-                                    let updatedIndexPaths = updated.map { IndexPath(item: $0.index,section:0)}
-                                    let movedIndexPaths = moved.map { IndexPath(item: $0.newIndex,section:0)}
-                                    (updatedIndexPaths+movedIndexPaths).forEach { indexPath in
-                                        let cell = self?.cellForItem(at: indexPath)
-                                        self?.configure(cell, at: indexPath, as : true)
-                                    }
-                                    },completion: nil)
-                        })
-                        
-                    }
+                    self.performBatchUpdates({ [weak self] in
+                        let insertedIndexPaths = inserted.map { IndexPath(item: $0.index,section:0)}
+                        self?.insertItems(at: insertedIndexPaths )
+                        moved.forEach { self?.moveItem(at: IndexPath(item: $0.oldIndex,section:0), to:  IndexPath(item: $0.newIndex,section:0)) }
+                        let deletedIndexPaths = deleted.map { IndexPath(item: $0.index,section:0)}
+                        self?.deleteItems(at: deletedIndexPaths)
+                        } ,completion: { [weak self]  _ in
+                            self?.performBatchUpdates({ [weak self] in
+                                
+                                let updatedIndexPaths = updated.map { IndexPath(item: $0.index,section:0)}
+                                let movedIndexPaths = moved.map { IndexPath(item: $0.newIndex,section:0)}
+                                (updatedIndexPaths+movedIndexPaths).forEach { indexPath in
+                                    let cell = self?.cellForItem(at: indexPath)
+                                    self?.configure(cell, at: indexPath, as : true)
+                                }
+                                },completion: nil)
+                    })
+                    
+                    
                 }
             }
 

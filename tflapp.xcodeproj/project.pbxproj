@@ -99,6 +99,7 @@
 		561FD9011F1FADD30012466A /* TFLClientSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLClientSpecs.swift; sourceTree = "<group>"; };
 		562DBF591E05B6780028F3CD /* TFLSnapHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLSnapHandler.swift; sourceTree = "<group>"; };
 		5641F6ED1F19F68100A3A9D2 /* TFLRequestManagerSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLRequestManagerSpecs.swift; sourceTree = "<group>"; };
+		5642EF0720ED63AD00A7914F /* mapstogpx20180704_193755.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = mapstogpx20180704_193755.gpx; sourceTree = "<group>"; };
 		5646C4021DE62389006EA956 /* TFLBusStationArrivalsCellSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusStationArrivalsCellSpecs.swift; sourceTree = "<group>"; };
 		564EC6EF1DDFAA67008CFD11 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		564EC6F41DE0A2A0008CFD11 /* TFLButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLButton.swift; sourceTree = "<group>"; };
@@ -206,13 +207,6 @@
 				564EC6F41DE0A2A0008CFD11 /* TFLButton.swift */,
 			);
 			path = TFLButton;
-			sourceTree = "<group>";
-		};
-		564EC6F71DE0DC0E008CFD11 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Frameworks;
 			sourceTree = "<group>";
 		};
 		564EC6FE1DE1917D008CFD11 /* TFLNearbyBusStationsController */ = {
@@ -414,8 +408,8 @@
 				56D70D2F1DD9A7A6004CA293 /* Localization */,
 				566EF7D01DDB5679006162D7 /* TFLBusStops.sqlite */,
 				565A1FD01DD8FB2A003CE960 /* Model.xcdatamodeld */,
+				5642EF0720ED63AD00A7914F /* mapstogpx20180704_193755.gpx */,
 				564EC6EF1DDFAA67008CFD11 /* LICENSE */,
-				564EC6F71DE0DC0E008CFD11 /* Frameworks */,
 			);
 			path = tflapp;
 			sourceTree = "<group>";

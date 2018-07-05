@@ -48,7 +48,7 @@ public struct TFLBusStopArrivalsInfo : Hashable {
         let distance = location.distance(from: busStopLocation)
         self.busStopDistance = distance
         self.busStop = busStop
-        self.arrivals = arrivals.sorted { $0.timeToStation  < $1.timeToStation  }
+        self.arrivals = arrivals.sorted { $0.timeToStation  < $1.timeToStation }
     }
 
      init(busStop: TFLCDBusStop, location: CLLocation, arrivals: [TFLBusPrediction]) {
@@ -56,7 +56,7 @@ public struct TFLBusStopArrivalsInfo : Hashable {
         let distance = location.distance(from: busStopLocation)
         self.busStopDistance = distance
         self.busStop = TFLContextFreeBusStopInfo(with: busStop)
-        self.arrivals = arrivals.sorted { $0.timeToStation  < $1.timeToStation  }
+        self.arrivals = arrivals.sorted { $0.timeToStation  < $1.timeToStation }
     }
     
     func arrivalInfo(with location : CLLocation) -> TFLBusStopArrivalsInfo {

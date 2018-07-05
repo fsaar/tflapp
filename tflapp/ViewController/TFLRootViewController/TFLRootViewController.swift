@@ -109,7 +109,7 @@ class TFLRootViewController: UIViewController {
     @IBOutlet weak var contentView : UIView!
 
     fileprivate(set) lazy var refreshTimer : TFLTimer? = {
-        return TFLTimer(timerInterVal: DefaultRefreshInterval) { [weak self] _ in
+        TFLTimer(timerInterVal: DefaultRefreshInterval) { [weak self] _ in
             self?.loadNearbyBusstops()
         }
     }()
@@ -173,7 +173,7 @@ class TFLRootViewController: UIViewController {
 
 fileprivate extension TFLRootViewController {
     func mergeInfo(_ newInfo : [TFLBusStopArrivalsInfo],with oldInfo:[TFLBusStopArrivalsInfo] ) ->  [TFLBusStopArrivalsInfo] {
-        let dict = Dictionary(uniqueKeysWithValues: oldInfo.map { ($0.identifier,$0)} )
+        let dict = Dictionary(uniqueKeysWithValues: oldInfo.map { ($0.identifier,$0) } )
         let mergedInfo : [TFLBusStopArrivalsInfo] = newInfo.map {  info in
             guard info.arrivals.isEmpty else {
                 return info
@@ -358,7 +358,7 @@ fileprivate extension TFLRootViewController {
         context.perform {
             if let stops = try? context.fetch(fetchRequest) as [TFLCDBusStop] {
                 let lineList = stops.reduce([]) { sum,stop in
-                    return sum + (stop.lines ?? [])
+                    sum + (stop.lines ?? [])
                 }
                 lines = Set(lineList)
                 completionBlock?(lines)

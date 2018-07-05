@@ -43,8 +43,8 @@ public class TFLCDLineRoute: NSManagedObject {
                 if let route = route {
                     let serviceType = dictionary[Identifiers.serviceType.rawValue] as? String ?? ""
                     let stations = dictionary[Identifiers.stations.rawValue] as? [String] ?? []
-                    if route.stations != stations && (!stations.isEmpty || (route.stations == .none)) { route.stations = stations   }
-                    if route.serviceType != serviceType && (!serviceType.isEmpty || (route.serviceType == .none)) { route.serviceType = serviceType   }
+                    if route.stations != stations && (!stations.isEmpty || (route.stations == .none)) { route.stations = stations }
+                    if route.serviceType != serviceType && (!serviceType.isEmpty || (route.serviceType == .none)) { route.serviceType = serviceType }
                 }
                 completionBlock(route)
             }

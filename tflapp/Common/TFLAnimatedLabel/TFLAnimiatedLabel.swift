@@ -22,7 +22,7 @@ class TFLAnimiatedLabel: UIView {
     }
     var font : UIFont = .systemFont(ofSize: 10) {
         didSet {
-            self.labels.forEach { $0.font = self.font}
+            self.labels.forEach { $0.font = self.font }
         }
     }
 

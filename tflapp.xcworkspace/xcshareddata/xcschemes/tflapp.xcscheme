@@ -97,7 +97,7 @@
       <AdditionalOptions>
       </AdditionalOptions>
       <LocationScenarioReference
-         identifier = "../home.gpx"
+         identifier = "../tflapp/mapstogpx20180704_193755.gpx"
          referenceType = "0">
       </LocationScenarioReference>
    </LaunchAction>

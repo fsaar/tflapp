@@ -3,6 +3,7 @@ import Nimble
 import UIKit
 import Quick
 import CoreData
+import MapKit
 
 @testable import London_Bus
 
@@ -39,9 +40,9 @@ class TFLBusPredictionViewCellSpecs: QuickSpec {
         var timeFormatter :  DateFormatter!
         var referenceDate : Date!
         var decoder : JSONDecoder!
-
+        var location : CLLocation!
         beforeEach {
-
+            location = CLLocation(latitude: 51.514028153209, longitude: -0.15301535236356)
             timeStampFormatter = DateFormatter()
             timeStampFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
             timeStampFormatter.timeZone = TimeZone(secondsFromGMT: 0)
@@ -179,7 +180,8 @@ class TFLBusPredictionViewCellSpecs: QuickSpec {
         it("should configure cell correctly (test1)") {
             var completionBlockCalled = false
             TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext) { busStop in
-                let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: busPredicationModels)
+                let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, location: location, arrivals: busPredicationModels)
+                
                 
                 let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo,using: referenceDate.addingTimeInterval(10))
                 
@@ -194,7 +196,7 @@ class TFLBusPredictionViewCellSpecs: QuickSpec {
             var completionBlockCalled = false
             TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext) { busStop in
                 
-                let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: busPredicationModels)
+                let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, location: location, arrivals: busPredicationModels)
                 
                 let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo,using: referenceDate.addingTimeInterval(120))
                 
@@ -214,7 +216,7 @@ class TFLBusPredictionViewCellSpecs: QuickSpec {
             TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext) { busStop in
                 
                 
-                let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: busPredicationModels)
+                let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!,location: location, arrivals: busPredicationModels)
                 
                 let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo,using: referenceDate.addingTimeInterval(120))
                 
@@ -232,7 +234,7 @@ class TFLBusPredictionViewCellSpecs: QuickSpec {
             var completionBlockCalled = false
             TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext) { busStop in
                 
-                let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: busPredicationModels)
+                let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, location: location, arrivals: busPredicationModels)
                 
                 let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo,using: referenceDate.addingTimeInterval(120))
                 
@@ -251,7 +253,7 @@ class TFLBusPredictionViewCellSpecs: QuickSpec {
             
             var completionBlockCalled = false
             TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext) { busStop in
-                let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: busPredicationModels)
+                let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, location: location, arrivals: busPredicationModels)
                 
                 let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo,using: referenceDate.addingTimeInterval(120))
                 

@@ -30,7 +30,7 @@ class TFLMapViewController: UIViewController {
                     (inserted ,deleted ,_, _) = oldList.transformTo(newList: busStopPredictionTuples, sortedBy : TFLBusStopArrivalsInfo.compare)
                     DispatchQueue.main.async {
                         let toBeDeletedIdentifierSet = Set(deleted.map { $0.element.identifier } )
-                        let toBeDeletedAnnotations = self.mapView.annotations.compactMap { $0 as? TFLMapViewAnnotation}.filter { toBeDeletedIdentifierSet.contains ($0.identifier) }
+                        let toBeDeletedAnnotations = self.mapView.annotations.compactMap { $0 as? TFLMapViewAnnotation }.filter { toBeDeletedIdentifierSet.contains ($0.identifier) }
                         self.mapView.removeAnnotations(toBeDeletedAnnotations)
                         
                         let toBeInsertedAnnotations =  inserted.map { $0.0 }

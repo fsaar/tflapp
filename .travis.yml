@@ -11,5 +11,6 @@ script:
 - bash <(curl -s https://codecov.io/bash)
 
 notifications:
-  slack: 'samedialabs:$SLACK_SAMEDIALABS_TRAVIS_CI'
+    slack: samedialabs:4HGYk0UNrHO3pRwlyMjsFdkX
+
 

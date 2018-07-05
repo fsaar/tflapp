@@ -3,7 +3,7 @@ import Nimble
 import UIKit
 import Quick
 import CoreData
-
+import MapKit
 @testable import London_Bus
 
 class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
@@ -17,7 +17,9 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
         var referenceDate : Date!
         var decoder : JSONDecoder!
         var createBusStopArrivalInfo : ((_ block : ((_ info : TFLBusStopArrivalsInfo)->())?) -> ())!
+        var location : CLLocation!
         beforeEach {
+            location = CLLocation(latitude: 51.514028153209, longitude: -0.15301535236356)
             
             distanceFormatter = LengthFormatter()
             distanceFormatter.unitStyle = .short
@@ -128,7 +130,7 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
                     let model1 = try! decoder.decode(TFLBusPrediction.self,from: data1)
                     let model2 = try! decoder.decode(TFLBusPrediction.self,from: data2)
                     let model3 = try! decoder.decode(TFLBusPrediction.self,from: data3)
-                    let info = TFLBusStopArrivalsInfo(busStop: busStopModel!, busStopDistance: 300, arrivals: [model1,model2,model3])
+                    let info = TFLBusStopArrivalsInfo(busStop: busStopModel!, location: location, arrivals: [model1,model2,model3])
                     block!(info)
                 }
             }
@@ -152,7 +154,7 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
                     expect(model.identifier) == "490003029W"
                     expect(model.stationName) == "Abbey Road"
                     expect(model.stationDetails) == "towards Ealing Broadway"
-                    expect(model.distance) == "300m"
+                    expect(model.distance) == "9,174m"
                     completionBlockCalled = true
                 }
                 expect(completionBlockCalled).toEventually(beTrue(),timeout:20)
@@ -164,7 +166,7 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
                     let model = TFLBusStopArrivalsViewModel(with: busArrivalInfo)
                     let busStopDict =  ["naptanId": "490003029W","stopType": "NaptanPublicBusCoachTram"]
                     TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext) { busStopModel in
-                        let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStopModel!, busStopDistance: 0, arrivals: [])
+                        let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStopModel!, location: location, arrivals: [])
                         let model2 = TFLBusStopArrivalsViewModel(with: busArrivalInfo)
                         expect(model) == model2
                         completionBlockCalled = true

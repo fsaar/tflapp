@@ -18,18 +18,18 @@ class TFLLocationManager : NSObject {
             enabled = true
         }
         return enabled
-        
+
     }
     let locationManager =  CLLocationManager()
     override init() {
         super.init()
         self.locationManager.delegate = self
-        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
         if case .none = self.enabled {
             self.locationManager.requestWhenInUseAuthorization()
         }
     }
-    
+
     func updateLocation(completionBlock: @escaping  TFLLocationManagerCompletionBlock)  {
         requestLocation(using: completionBlock)
     }
@@ -71,6 +71,3 @@ extension TFLLocationManager : CLLocationManagerDelegate {
         requestLocation(using: self.completionBlock)
     }
 }
-
-
-

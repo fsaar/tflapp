@@ -46,8 +46,10 @@ class TFLAnimationLabelSpecs: QuickSpec {
             }
             
             it("should set first label's title to given text if not animated") {
-                label.setText("test", animated: false)
-                expect(label2.text) == "test"
+                UIView.performWithoutAnimation {
+                    label.setText("test", animated: false)
+                    expect(label2.text) == "test"
+                }
             }
         }
     }

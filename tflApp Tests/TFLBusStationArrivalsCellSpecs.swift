@@ -3,7 +3,7 @@ import Nimble
 import UIKit
 import Quick
 import CoreData
-
+import MapKit
 @testable import London_Bus
 
 class TFLBusStationArrivalsCellSpecs: QuickSpec {
@@ -17,8 +17,9 @@ class TFLBusStationArrivalsCellSpecs: QuickSpec {
         var managedObjectContext : NSManagedObjectContext!
         var referenceDate : Date!
         var decoder : JSONDecoder!
-
+        var location : CLLocation!
         beforeEach {
+            location = CLLocation(latitude: 51.514028153209, longitude: -0.15301535236356)
             
             timeStampFormatter = DateFormatter()
             timeStampFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
@@ -149,14 +150,14 @@ class TFLBusStationArrivalsCellSpecs: QuickSpec {
         it("should configure cell correctly") {
             var completionBlockCalled = false
             TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext) { busStop in
-                let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: busPredicationModels)
+                let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, location: location, arrivals: busPredicationModels)
                 let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo)
 
                 
                 cell.configure(with: model)
                 expect(cell.stationName.text) == "Abbey Road"
                 expect(cell.stationDetails.text) == "towards Ealing Broadway"
-                expect(cell.distanceLabel.text) == "300m"
+                expect(cell.distanceLabel.text) == "9,174m"
                 expect(cell.predictionView.predictions.count) == 3
                 expect(cell.noDataErrorLabel.text) == NSLocalizedString("TFLBusStationArrivalsCell.noDataError", comment: "")
                 completionBlockCalled = true
@@ -167,7 +168,7 @@ class TFLBusStationArrivalsCellSpecs: QuickSpec {
         it("should hide noDataErrorLabel if arrivalTimes is  empty") {
             var completionBlockCalled = false
             TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext) { busStop in
-                let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: [])
+                let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, location:location, arrivals: [])
                 
                 let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo)
                 
@@ -182,7 +183,7 @@ class TFLBusStationArrivalsCellSpecs: QuickSpec {
             var completionBlockCalled = false
             TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext) { busStop in
                 
-                let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, busStopDistance: 300, arrivals: busPredicationModels)
+                let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, location:location, arrivals: busPredicationModels)
                 
                 let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo)
                 

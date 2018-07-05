@@ -19,10 +19,10 @@ class TFLNearbyBackgroundController: UIViewController {
             self.nearbyBusStationController?.delegate = self.delegate
         }
     }
-    
+
     public private(set) var nearbyBusStationController : TFLNearbyBusStationsController?
 
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let identifier = segue.identifier , let segueIdentifier = SegueIdentifier(rawValue: identifier) else {
             return

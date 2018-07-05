@@ -9,7 +9,7 @@ class TFLAnimiatedLabel: UIView {
             self.labels.forEach { $0.backgroundColor = self.bgColor }
         }
     }
-    
+
     var textAlignment : NSTextAlignment = .left {
         didSet {
             self.labels.forEach { $0.textAlignment = self.textAlignment }
@@ -22,26 +22,26 @@ class TFLAnimiatedLabel: UIView {
     }
     var font : UIFont = .systemFont(ofSize: 10) {
         didSet {
-            self.labels.forEach { $0.font = self.font}
+            self.labels.forEach { $0.font = self.font }
         }
     }
-    
+
     fileprivate(set) var text : String?
-    
+
     fileprivate var labels : [UILabel] {
         return self.subviews.compactMap { $0 as? UILabel }
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
     }
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
     }
-    
+
     func setText(_ newText: String?, animated : Bool = false) {
         self.text = newText
         if (animated)
@@ -67,7 +67,7 @@ fileprivate extension TFLAnimiatedLabel {
     func animatedLabel() -> UILabel {
         let label = UILabel(frame: self.frame)
         label.translatesAutoresizingMaskIntoConstraints = false
-        
+
         label.textColor = self.textColor
         label.font = self.font
         label.textAlignment = self.textAlignment
@@ -75,14 +75,14 @@ fileprivate extension TFLAnimiatedLabel {
         label.isOpaque = true
         return label
     }
-    
+
     func setup() {
         self.clipsToBounds = true
         let label1 = animatedLabel()
         let label2 = animatedLabel()
         self.addSubview(label1)
         self.addSubview(label2)
-        
+
         let dict = ["label1" : label1,"label2" : label2]
         let hConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[label1]|", options: [], metrics: nil, views: dict)
         let hConstraints2 = NSLayoutConstraint.constraints(withVisualFormat: "H:|[label2]|", options: [], metrics: nil, views: dict)

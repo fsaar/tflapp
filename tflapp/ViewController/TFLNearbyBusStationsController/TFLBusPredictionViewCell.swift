@@ -21,8 +21,15 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
     }
     @IBOutlet weak var bgImage : UIImageView! = nil {
         didSet {
-            self.bgImage.layer.contents = TFLBusPredictionViewCell.busPredictionViewBackgroundImage.cgImage
+            self.bgImage.image = TFLBusPredictionViewCell.busPredictionViewBackgroundImage
         }
+    }
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        self.selectedBackgroundView = nil
+        prepareForReuse()
+
     }
     private let bgColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
     static var busPredictionViewBackgroundImage: UIImage = {
@@ -34,12 +41,12 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
         return renderer.image { context in
             UIColor.white.setFill()
             context.fill(bounds)
-            
+
             let path = UIBezierPath(roundedRect: bounds, cornerRadius: 5)
             let bgColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
             bgColor.setFill()
             path.fill()
-            
+
             let busNumberRectPath = UIBezierPath(roundedRect: busNumberRect , cornerRadius: busNumberRect.size.height/2)
             UIColor.red.setFill()
             UIColor.white.setStroke()
@@ -47,13 +54,13 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
             busNumberRectPath.stroke()
         }
     }()
-    
+
     override func prepareForReuse() {
         super.prepareForReuse()
         self.line.text = nil
         self.arrivalTime.setText("-")
     }
-    
+
     func configure(with predictionViewModel: TFLBusStopArrivalsViewModel.LinePredictionViewModel,as update : Bool = false) {
         self.line.text = predictionViewModel.line
         let arrivalTime = self.arrivalTime.text ?? ""
@@ -61,10 +68,9 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
             self.arrivalTime.setText(predictionViewModel.eta, animated: update)
         }
     }
-    
+
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
         return layoutAttributes
     }
-    
-}
 
+}

@@ -7,12 +7,13 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
         let eta : String
         let identifier : String
         let timeToStation : Int
+        static let minTitle = "1 \(NSLocalizedString("TFLBusStopArrivalsViewModel.min", comment: ""))"
+        static let minsTitle = NSLocalizedString("TFLBusStopArrivalsViewModel.mins", comment: "")
 
         init(with busPrediction: TFLBusPrediction,using referenceTime : TimeInterval) {
-            
             func arrivalTime(in secs : Int) -> String {
                 var timeString = ""
-                
+
                 switch secs {
                 case ..<30:
                     timeString = NSLocalizedString("TFLBusStopArrivalsViewModel.due", comment: "")
@@ -20,8 +21,10 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
                     timeString = "1 " + NSLocalizedString("TFLBusStopArrivalsViewModel.min", comment: "")
                 case 60..<(99*60):
                     let mins = secs/60
-                    let localizedString = mins == 1 ? "TFLBusStopArrivalsViewModel.min" : "TFLBusStopArrivalsViewModel.mins"
-                    timeString = "\(mins) " + NSLocalizedString(localizedString, comment: "")
+                    timeString = "\(mins) \(LinePredictionViewModel.minsTitle)"
+                    if mins == 1 {
+                        timeString = LinePredictionViewModel.minTitle
+                    }
                 default:
                     timeString = ""
                 }
@@ -38,7 +41,7 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
         public static func ==(lhs: LinePredictionViewModel,rhs :LinePredictionViewModel) -> (Bool) {
             return lhs.identifier == rhs.identifier
         }
-        
+
         public static func compare(lhs: LinePredictionViewModel, rhs: LinePredictionViewModel) -> Bool {
             return lhs.timeToStation <= rhs.timeToStation
         }
@@ -50,7 +53,7 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
         }
 
 
-        
+
     }
     public static func ==(lhs: TFLBusStopArrivalsViewModel,rhs :TFLBusStopArrivalsViewModel) -> (Bool) {
         return lhs.identifier == rhs.identifier
@@ -75,25 +78,25 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
         formatter.numberFormatter.maximumFractionDigits = 0
         return formatter
     }()
-    
+
     public static func compare(lhs: TFLBusStopArrivalsViewModel, rhs: TFLBusStopArrivalsViewModel) -> Bool  {
         return lhs.busStopDistance <= rhs.busStopDistance
     }
 
-    
+
     init(with arrivalInfo: TFLBusStopArrivalsInfo,using referenceDate : Date? = nil) {
-        let towards = arrivalInfo.busStop.towards
+        let towards = arrivalInfo.busStop.towards ?? ""
         self.stationDetails = towards.isEmpty ? "" : NSLocalizedString("TFLBusStopArrivalsViewModel.towards", comment: "") + towards
         self.busStopDistance = arrivalInfo.busStopDistance
-        self.stopLetter = arrivalInfo.busStop.stopLetter
+        self.stopLetter = arrivalInfo.busStop.stopLetter ?? ""
         self.stationName = arrivalInfo.busStop.name
         self.identifier = arrivalInfo.busStop.identifier
         self.distance = TFLBusStopArrivalsViewModel.distanceFormatter.string(fromValue: arrivalInfo.busStopDistance, unit: .meter)
-        let referenceTime = referenceDate?.timeIntervalSinceReferenceDate ?? Date.timeIntervalSinceReferenceDate        
-        let filteredPredictions = arrivalInfo.arrivals.filter { $0.timeToLive.timeIntervalSinceReferenceDate > referenceTime }
+        let referenceTime = referenceDate?.timeIntervalSinceReferenceDate ?? Date.timeIntervalSinceReferenceDate
+        let adjustedReferenceTime =  referenceTime - 30
+        let filteredPredictions = arrivalInfo.arrivals.filter { $0.timeToLive.timeIntervalSinceReferenceDate > adjustedReferenceTime }
         self.arrivalTimes = filteredPredictions.map { LinePredictionViewModel(with: $0,using: referenceTime) }
     }
 
-    
-}
 
+}

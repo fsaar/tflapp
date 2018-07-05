@@ -33,7 +33,7 @@ public class TFLRequestManager : NSObject {
         return URLSession(configuration: URLSessionConfiguration.default)
     }()
 
-    
+
     public func getDataWithRelativePath(relativePath: String ,and query: String? = nil, completionBlock:@escaping ((_ data : Data?,_ error:Error?) -> Void)) {
         guard let url =  self.baseURL(withPath: relativePath,and: query) else {
             completionBlock(nil,TFLRequestManagerErrorType.InvalidURL(urlString: relativePath))
@@ -41,34 +41,34 @@ public class TFLRequestManager : NSObject {
         }
         getDataWithURL(URL: url,completionBlock: completionBlock)
     }
-    
+
     func handleEventsForBackgroundURLSession(with identifier: String, completionHandler: @escaping () -> Void) {
         guard identifier == TFLRequestManager.sessionID,case .none = backgroundCompletionHandler else {
             return
         }
         self.backgroundCompletionHandler?.session = completionHandler
     }
-    
+
 
 
     fileprivate func getDataWithURL(URL: URL , completionBlock:@escaping ((_ data : Data?,_ error:Error?) -> Void)) {
-        let task = session.dataTask(with: URL, completionHandler: { [weak self] (data, _, error) -> (Void) in
-            
+        let task = session.dataTask(with: URL) { [weak self] data, _, error in
+
             if let strongSelf = self {
                 strongSelf.delegate?.didFinishURLTask(with: strongSelf, session: strongSelf.session)
-                
+
             }
             completionBlock(data,error)
-        })
+        }
         task.resume()
         self.delegate?.didStartURLTask(with: self, session: session)
     }
-    
-    
+
+
 }
 
 
-// MARK : Private
+// MARK: Private
 
 extension TFLRequestManager {
     fileprivate func baseURL(withPath path: String,and query: String? = nil) -> URL? {
@@ -87,5 +87,5 @@ extension TFLRequestManager {
         }
         return nil
     }
-    
+
 }

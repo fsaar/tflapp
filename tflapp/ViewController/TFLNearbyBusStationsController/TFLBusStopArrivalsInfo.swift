@@ -1,36 +1,65 @@
 import Foundation
+import MapKit
 
-public struct TFLBusStopArrivalsInfo : CustomDebugStringConvertible,Hashable {
-    public var debugDescription: String {
-        return busStop.debugDescription + "\(busStopDistance) arrivals:\(arrivals.count)"
+public struct TFLBusStopArrivalsInfo : Hashable {
+    public struct TFLContextFreeBusStopInfo {
+        let identifier: String
+        fileprivate(set) var stopLetter : String?
+        fileprivate(set) var towards : String?
+        let name : String
+        let coord : CLLocationCoordinate2D
+        
+        init (with busStop : TFLCDBusStop) {
+            coord = CLLocationCoordinate2DMake(busStop.lat, busStop.long)
+            stopLetter = busStop.stopLetter
+            towards = busStop.towards
+            name = busStop.name
+            identifier = busStop.identifier
+        }
     }
-    let busStop : TFLCDBusStop
+    
+    let busStop : TFLContextFreeBusStopInfo
+    
     let busStopDistance : Double
     let arrivals : [TFLBusPrediction]
-    var identifier : String {
+    var identifier : String
+    {
         return self.busStop.identifier
     }
     var debugInfo : String {
         return "\(identifier),\(busStopDistance)"
     }
-    
+
     public var hashValue: Int {
         return self.identifier.hashValue
     }
-    
+
     public static func ==(lhs: TFLBusStopArrivalsInfo, rhs: TFLBusStopArrivalsInfo) -> Bool {
         return lhs.identifier == rhs.identifier
-        
+
     }
-    
+
     public static func compare(lhs: TFLBusStopArrivalsInfo, rhs: TFLBusStopArrivalsInfo) -> Bool  {
         return lhs.busStopDistance <= rhs.busStopDistance
     }
     
-    init(busStop: TFLCDBusStop, busStopDistance: Double, arrivals: [TFLBusPrediction]) {
+    init(busStop: TFLContextFreeBusStopInfo, location: CLLocation, arrivals: [TFLBusPrediction]) {
+        let busStopLocation =  CLLocation(latitude: busStop.coord.latitude, longitude: busStop.coord.longitude)
+        let distance = location.distance(from: busStopLocation)
+        self.busStopDistance = distance
         self.busStop = busStop
-        self.busStopDistance = busStopDistance
-        self.arrivals = arrivals.sorted { $0.timeToStation  < $1.timeToStation  }
+        self.arrivals = arrivals.sorted { $0.timeToStation  < $1.timeToStation }
+    }
+
+     init(busStop: TFLCDBusStop, location: CLLocation, arrivals: [TFLBusPrediction]) {
+        let busStopLocation =  CLLocation(latitude: busStop.coord.latitude, longitude: busStop.coord.longitude)
+        let distance = location.distance(from: busStopLocation)
+        self.busStopDistance = distance
+        self.busStop = TFLContextFreeBusStopInfo(with: busStop)
+        self.arrivals = arrivals.sorted { $0.timeToStation  < $1.timeToStation }
+    }
+    
+    func arrivalInfo(with location : CLLocation) -> TFLBusStopArrivalsInfo {
+        return TFLBusStopArrivalsInfo(busStop: self.busStop, location: location, arrivals: self.arrivals)
     }
 }
-

@@ -2,52 +2,85 @@ import UIKit
 
 extension UIFont {
     class func tflBoldFont(size : CGFloat) -> UIFont {
-        let font = UIFont(name: "GillSans-Light", size: size)
-        return font!
+        let descriptor = UIFontDescriptor(name: "GillSans-Bold", size: size)
+        let font = UIFont(descriptor: descriptor, size: size)
+        return font
     }
-    
+
     class func tflFont(size : CGFloat) -> UIFont {
-        let font = UIFont(name: "GillSans", size: size)
-        return font!
+        let descriptor = UIFontDescriptor(name: "GillSans", size: size)
+        let font = UIFont(descriptor: descriptor, size: size)
+        return font
     }
-    
+
+    class func tflStationDetailHeader() -> UIFont {
+        let descriptor = UIFontDescriptor(name: "GillSans", size: 20)
+        let font = UIFont(descriptor: descriptor, size: 20)
+        return font
+    }
+
+    class func tflStationDetailTitle() -> UIFont {
+        let descriptor = UIFontDescriptor(name: "GillSans-Light", size: 17)
+        let font = UIFont(descriptor: descriptor, size: 17)
+        return font
+    }
+
+    class func tflStationDetailSectionHeaderTitle() -> UIFont {
+        let descriptor = UIFontDescriptor(name: "GillSans", size: 17)
+        let font = UIFont(descriptor: descriptor, size: 17)
+        return font
+    }
+    class func tflStationDetailStopCode() -> UIFont {
+        let descriptor = UIFontDescriptor(name: "GillSans", size: 14)
+        let font = UIFont(descriptor: descriptor, size: 14)
+        return font
+    }
+
     class func tflFontStationHeader() -> UIFont {
-        let font = UIFont(name: "GillSans-Light", size: 17)
-        return font!
+        let descriptor = UIFontDescriptor(name: "GillSans-Light", size: 17)
+        let font = UIFont(descriptor: descriptor, size: 17)
+        return font
     }
-    
+
     class func tflFontStationDetails() -> UIFont {
-        let font = UIFont(name: "GillSans-Light", size: 15)
-        return font!
+        let descriptor = UIFontDescriptor(name: "GillSans-Light", size: 15)
+        let font = UIFont(descriptor: descriptor, size: 15)
+        return font
     }
-    
+
     class func tflFontStationDistance() -> UIFont {
-        let font = UIFont(name: "GillSans-Light", size: 14)
-        return font!
+        let descriptor = UIFontDescriptor(name: "GillSans-Light", size: 14)
+        let font = UIFont(descriptor: descriptor, size: 14)
+        return font
     }
-    
+
     class func tflFontStationIdentifier() -> UIFont {
-        let font = UIFont(name: "GillSans", size: 14)
-        return font!
+        let descriptor = UIFontDescriptor(name: "GillSans", size: 14)
+        let font = UIFont(descriptor: descriptor, size: 14)
+        return font
     }
-    
+
     class func tflFontBusLineIdentifier() -> UIFont {
-        let font = UIFont(name: "GillSans", size: 14)
-        return font!
+        let descriptor = UIFontDescriptor(name: "GillSans", size: 14)
+        let font = UIFont(descriptor: descriptor, size: 14)
+        return font
     }
-    
+
     class func tflFontBusArrivalTime() -> UIFont {
-        let font = UIFont(name: "GillSans-Light", size: 15)
-        return font!
+        let descriptor = UIFontDescriptor(name: "GillSans-Light", size: 15)
+        let font = UIFont(descriptor: descriptor, size: 15)
+        return font
     }
-    
+
     class func tflFontMapBusStationIdentifier() -> UIFont {
-        let font = UIFont(name: "GillSans", size: 14)
-        return font!
+        let descriptor = UIFontDescriptor(name: "GillSans", size: 14)
+        let font = UIFont(descriptor: descriptor, size: 14)
+        return font
     }
-    
+
     class func tflFontPoweredBy() -> UIFont {
-        let font = UIFont(name: "GillSans-Light", size: 17)
-        return font!
+        let descriptor = UIFontDescriptor(name: "GillSans-Light", size: 17)
+        let font = UIFont(descriptor: descriptor, size: 17)
+        return font
     }
 }

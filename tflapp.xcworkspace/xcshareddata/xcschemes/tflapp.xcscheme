@@ -82,6 +82,10 @@
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
+            argument = "-com.apple.CoreData.ConcurrencyDebug 3"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
             argument = "-com.apple.CoreData.Logging.stderr 1"
             isEnabled = "YES">
          </CommandLineArgument>
@@ -93,8 +97,8 @@
       <AdditionalOptions>
       </AdditionalOptions>
       <LocationScenarioReference
-         identifier = "London, England"
-         referenceType = "1">
+         identifier = "../tflapp/mapstogpx20180704_193755.gpx"
+         referenceType = "0">
       </LocationScenarioReference>
    </LaunchAction>
    <ProfileAction

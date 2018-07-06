@@ -4,6 +4,7 @@ platform :ios, '10.0'
 inhibit_all_warnings!
 
 target 'tflapp' do
+ pod 'SwiftLint','0.26.0'
 end
 
 target 'tflApp Tests' do

@@ -133,11 +133,11 @@ class TFLRootViewController: UIViewController {
             self.nearbyBusStationController?.delegate = self
         }
 
-        self.foregroundNotificationHandler = TFLNotificationObserver(notification: NSNotification.Name.UIApplicationWillEnterForeground.rawValue) { [weak self]  _ in
+        self.foregroundNotificationHandler = TFLNotificationObserver(notification: UIApplication.willEnterForegroundNotification.rawValue) { [weak self]  _ in
             self?.loadNearbyBusstops()
             self?.refreshTimer?.start()
         }
-        self.backgroundNotificationHandler = TFLNotificationObserver(notification:NSNotification.Name.UIApplicationDidEnterBackground.rawValue) { [weak self]  _ in
+        self.backgroundNotificationHandler = TFLNotificationObserver(notification:UIApplication.didEnterBackgroundNotification.rawValue) { [weak self]  _ in
             self?.refreshTimer?.stop()
         }
         TFLRequestManager.shared.delegate = self
@@ -319,7 +319,7 @@ fileprivate extension TFLRootViewController {
 
 extension TFLRootViewController : TFLNoGPSEnabledViewDelegate {
     func didTap(noGPSEnabledButton: UIButton,in view : TFLNoGPSEnabledView) {
-        guard let url = URL(string: UIApplicationOpenSettingsURLString) else {
+        guard let url = URL(string: UIApplication.openSettingsURLString) else {
             return
         }
         UIApplication.shared.open(url)

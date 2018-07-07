@@ -66,9 +66,9 @@ fileprivate extension TFLSlideContainerController {
 
     func add(_ controller: UIViewController,to containerView: UIView) {
         controller.view.translatesAutoresizingMaskIntoConstraints = false
-        addChildViewController(controller)
+        addChild(controller)
         containerView.addSubview(controller.view)
-        controller.didMove(toParentViewController: self)
+        controller.didMove(toParent: self)
         let dict : [String : Any] = ["contentView" : controller.view]
         let hConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[contentView]|", options: [], metrics: nil, views: dict)
         let vConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|[contentView]|", options: [], metrics: nil, views: dict)

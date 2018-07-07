@@ -133,11 +133,11 @@ class TFLRootViewController: UIViewController {
             self.nearbyBusStationController?.delegate = self
         }
 
-        self.foregroundNotificationHandler = TFLNotificationObserver(notification: UIApplication.willEnterForegroundNotification.rawValue) { [weak self]  _ in
+        self.foregroundNotificationHandler = TFLNotificationObserver(notification: UIApplication.willEnterForegroundNotification) { [weak self]  _ in
             self?.loadNearbyBusstops()
             self?.refreshTimer?.start()
         }
-        self.backgroundNotificationHandler = TFLNotificationObserver(notification:UIApplication.didEnterBackgroundNotification.rawValue) { [weak self]  _ in
+        self.backgroundNotificationHandler = TFLNotificationObserver(notification:UIApplication.didEnterBackgroundNotification) { [weak self]  _ in
             self?.refreshTimer?.stop()
         }
         TFLRequestManager.shared.delegate = self

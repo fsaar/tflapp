@@ -29,11 +29,11 @@ fileprivate class TFLTransitionableTableView : UITableView,UITableViewDelegate {
     var deletedBlock : (([IndexPath]) -> ())?
     var movedBlock : ((IndexPath,IndexPath) -> ())?
     
-    override func insertRows(at indexPaths: [IndexPath], with animation: UITableViewRowAnimation) {
+    override func insertRows(at indexPaths: [IndexPath], with animation: UITableView.RowAnimation) {
         self.insertedBlock?(indexPaths)
     }
     
-    override func deleteRows(at indexPaths: [IndexPath], with animation: UITableViewRowAnimation) {
+    override func deleteRows(at indexPaths: [IndexPath], with animation: UITableView.RowAnimation) {
         self.deletedBlock?(indexPaths)
     }
     

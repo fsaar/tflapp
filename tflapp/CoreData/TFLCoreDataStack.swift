@@ -40,6 +40,6 @@ import UIKit
             self?.privateQueueManagedObjectContext.performAndWait {
                 _ = try? self?.privateQueueManagedObjectContext.save()
             }
-            }
+        }
     }
 }

@@ -170,7 +170,7 @@ class TFLBusPredictionViewCellSpecs: QuickSpec {
             let collectionView = busStationArrivalCell.predictionView
             let dataSource = CollectionViewDataSource()
             collectionView?.dataSource = dataSource
-            cell = collectionView!.dequeueReusableCell(withReuseIdentifier: String(describing: TFLBusPredictionViewCell.self), for: IndexPath(item:0, section:0)) as! TFLBusPredictionViewCell
+            cell = collectionView!.dequeueReusableCell(withReuseIdentifier: String(describing: TFLBusPredictionViewCell.self), for: IndexPath(item:0, section:0)) as? TFLBusPredictionViewCell
         }
         
         it ("should NOT be nil") {

@@ -1,5 +1,6 @@
 import UIKit
 import MapKit
+import os.signpost
 
 protocol TFLNearbyBusStationsControllerDelegate : class {
     func refresh(controller: TFLNearbyBusStationsController, using completionBlock:@escaping ()->())
@@ -23,6 +24,7 @@ class TFLNearbyBusStationsController : UITableViewController {
     static let defaultTableViewRowHeight = CGFloat (120)
 
     private var foregroundNotificationHandler  : TFLNotificationObserver?
+    fileprivate static let loggingHandle  = OSLog(subsystem: TFLLogger.subsystem, category: TFLLogger.category.refresh.rawValue)
 
     weak var delegate : TFLNearbyBusStationsControllerDelegate?
     var busStopArrivalViewModels :  [TFLBusStopArrivalsViewModel] = [] {
@@ -79,7 +81,9 @@ class TFLNearbyBusStationsController : UITableViewController {
 
     @objc func refreshHandler(control : UIRefreshControl) {
         control.beginRefreshing()
+        TFLLogger.shared.signPostStart(osLog: TFLNearbyBusStationsController.loggingHandle, name: "refreshHandler")
         self.delegate?.refresh(controller: self) {
+            TFLLogger.shared.signPostEnd(osLog: TFLNearbyBusStationsController.loggingHandle, name: "refreshHandler")
             control.endRefreshing()
         }
 

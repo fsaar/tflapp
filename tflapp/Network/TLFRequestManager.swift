@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import os.signpost
 
 enum TFLRequestManagerErrorType : Error {
     case InvalidURL(urlString : String)
@@ -20,6 +21,7 @@ public class TFLRequestManager : NSObject {
     weak var dataSource : TFLRequestManagerDataSource?
     fileprivate let TFLRequestManagerBaseURL = "https://api.tfl.gov.uk"
     static let sessionID =  "group.tflwidgetSharingData.sessionconfiguration"
+    fileprivate static let loggingHandle  = OSLog(subsystem: TFLLogger.subsystem, category: TFLLogger.category.network.rawValue)
 
     fileprivate var backgroundCompletionHandler : (session:(()->())?,caller:(()->())?)?
     fileprivate let TFLApplicationID = "PASTE_YOUR_APPLICATION_ID_HERE"
@@ -53,6 +55,7 @@ public class TFLRequestManager : NSObject {
 
     fileprivate func getDataWithURL(URL: URL , completionBlock:@escaping ((_ data : Data?,_ error:Error?) -> Void)) {
         let task = session.dataTask(with: URL) { [weak self] data, _, error in
+            TFLLogger.shared.signPostEnd(osLog: TFLRequestManager.loggingHandle, name: "getDataWithURL")
 
             if let strongSelf = self {
                 strongSelf.delegate?.didFinishURLTask(with: strongSelf, session: strongSelf.session)
@@ -61,6 +64,8 @@ public class TFLRequestManager : NSObject {
             completionBlock(data,error)
         }
         task.resume()
+        TFLLogger.shared.signPostStart(osLog: TFLRequestManager.loggingHandle, name: "getDataWithURL")
+
         self.delegate?.didStartURLTask(with: self, session: session)
     }
 

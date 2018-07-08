@@ -62,6 +62,7 @@
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
+      stopOnEveryThreadSanitizerIssue = "YES"
       stopOnEveryMainThreadCheckerIssue = "YES"
       debugServiceExtension = "internal"
       enableGPUFrameCaptureMode = "3"

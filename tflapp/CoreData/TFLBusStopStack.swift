@@ -1,11 +1,13 @@
 import Foundation
 import CoreData
 import CoreLocation
+import os.signpost
 
 private let dbFileName  = URL(string:"TFLBusStops.sqlite")
 private let groupID =  "group.tflwidgetSharingData"
 
 @objc public final class TFLBusStopStack : NSObject {
+    fileprivate static let loggingHandle  = OSLog(subsystem: TFLLogger.subsystem, category: TFLLogger.category.coredata.rawValue)
 
     static let sharedDataStack = TFLBusStopStack()
 
@@ -112,7 +114,10 @@ private let groupID =  "group.tflwidgetSharingData"
         self.busStopFetchRequest.predicate = predicate
         var busStops : [TFLCDBusStop] = []
         let currentLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+        TFLLogger.shared.signPostStart(osLog: TFLBusStopStack.loggingHandle, name: "nearbyBusStops")
+
         TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext.perform  {
+            TFLLogger.shared.signPostEnd(osLog: TFLBusStopStack.loggingHandle, name: "nearbyBusStops")
             if let stops =  try? context.fetch(self.busStopFetchRequest) {
                 busStops = stops.filter { currentLocation.distance(from: CLLocation(latitude: $0.lat, longitude: $0.long) ) < radiusInMeter }
             }

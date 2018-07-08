@@ -1,12 +1,14 @@
 import CoreLocation
 import UIKit
 import CoreData
-
+import os.signpost
 
 
 class TFLRootViewController: UIViewController {
     fileprivate static let searchParameter  : (min:Double,initial:Double) = (100,350)
     fileprivate let networkBackgroundQueue = OperationQueue()
+    fileprivate static let loggingHandle  = OSLog(subsystem: TFLLogger.subsystem, category: TFLLogger.category.api.rawValue)
+
     fileprivate enum State {
         case errorNoGPSAvailable
         case errorNoStationsNearby(coordinate : CLLocationCoordinate2D)
@@ -110,6 +112,8 @@ class TFLRootViewController: UIViewController {
 
     fileprivate(set) lazy var refreshTimer : TFLTimer? = {
         TFLTimer(timerInterVal: DefaultRefreshInterval) { [weak self] _ in
+            TFLLogger.shared.event(osLog: TFLRootViewController.loggingHandle, name: "refreshTimer")
+
             self?.loadNearbyBusstops()
         }
     }()

@@ -43,8 +43,8 @@ fileprivate extension TFLLocationManager {
             completionBlock?(kCLLocationCoordinate2DInvalid)
             return
         }
-        self.locationManager.startUpdatingLocation()
         self.completionBlock = completionBlock
+        self.locationManager.requestLocation()
     }
 }
 
@@ -56,18 +56,15 @@ extension TFLLocationManager : CLLocationManagerDelegate {
         DispatchQueue.main.async {
             self.completionBlock?(coordinate)
             self.completionBlock = nil
-            self.locationManager.stopUpdatingLocation()
         }
     }
     public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         DispatchQueue.main.async {
             self.completionBlock?(kCLLocationCoordinate2DInvalid)
             self.completionBlock = nil
-            self.locationManager.stopUpdatingLocation()
         }
     }
     public func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        self.locationManager.stopUpdatingLocation()
         requestLocation(using: self.completionBlock)
     }
 }

@@ -48,8 +48,9 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
         public var debugDescription: String {
             return "\n\(line) [\(identifier)]: \(eta)"
         }
-        public var hashValue: Int {
-            return self.identifier.hashValue
+        
+        public func hash(into hasher: inout Hasher) {
+            hasher.combine(self.identifier)
         }
 
 
@@ -61,8 +62,8 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
     public var debugDescription: String {
         return "\n\(stationName) [\(identifier)] towards \(stationDetails)"
     }
-    public var hashValue: Int {
-        return self.identifier.hashValue
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.identifier)
     }
     let identifier : String
     let stationName : String

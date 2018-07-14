@@ -21,7 +21,9 @@ fileprivate struct M : CustomDebugStringConvertible,Hashable {
     }
     
     var debugDescription: String { return "[\(id)]\(x)" } //tempList
-    var hashValue: Int  { return id.hashValue }
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.id)
+    }
 }
 
 fileprivate class TFLTransitionableTableView : UITableView,UITableViewDelegate {

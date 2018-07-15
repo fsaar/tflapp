@@ -8,11 +8,8 @@ disabled_rules: # rule identifiers to exclude from running
     - comma                                    
     - compiler_protocol_init                   
     - conditional_returns_on_newline           
-    - contains_over_first_not_nil              
-    - control_statement                        
     - convenience_type                         
     - custom_rules                             
-    - discarded_notification_center_observer   
     - discouraged_direct_init                  
     - discouraged_object_literal               
     - discouraged_optional_boolean             
@@ -35,7 +32,6 @@ disabled_rules: # rule identifiers to exclude from running
     - generic_type_name                        
     - identifier_name                          
     - joined_default_parameter                 
-    - large_tuple                              
     - leading_whitespace                       
     - let_var_whitespace                       
     - line_length                              
@@ -62,14 +58,12 @@ disabled_rules: # rule identifiers to exclude from running
     - redundant_optional_initialization        
     - redundant_set_access_control             
     - redundant_string_enum_value                                
-    - required_enum_case                       
     - return_arrow_whitespace                  
     - single_test_class                        
     - sorted_imports                           
     - statement_position                       
     - strict_fileprivate                       
     - switch_case_on_newline                   
-    - trailing_closure                         
     - trailing_comma                           
     - type_name                                
     - unavailable_function                     
@@ -87,6 +81,12 @@ disabled_rules: # rule identifiers to exclude from running
     - nesting                                  
     - closure_spacing                          
 opt_in_rules: 
+    - large_tuple                              
+    - contains_over_first_not_nil              
+    - control_statement                        
+    - required_enum_case                       
+    - trailing_closure                         
+    - discarded_notification_center_observer   
     - implicit_return                          
     - closure_end_indentation                  
     - implicitly_unwrapped_optional            

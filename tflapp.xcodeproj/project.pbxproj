@@ -68,6 +68,8 @@
 		56A81B3C1DD862DC001DF7F1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56A81B3A1DD862DC001DF7F1 /* LaunchScreen.storyboard */; };
 		56AB9FAC1DE8D95A00A9042A /* Collection+Transform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AB9FAB1DE8D95A00A9042A /* Collection+Transform.swift */; };
 		56B86EAD1DE4FED000A89D16 /* TFLBusStopArrivalsViewModelSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B86EAC1DE4FED000A89D16 /* TFLBusStopArrivalsViewModelSpecs.swift */; };
+		56BA8F8D20FBE22A0031A3E4 /* Arrivals.json in Resources */ = {isa = PBXBuildFile; fileRef = 56BA8F8C20FBE22A0031A3E4 /* Arrivals.json */; };
+		56BA8F8F20FBE4550031A3E4 /* Busstops.json in Resources */ = {isa = PBXBuildFile; fileRef = 56BA8F8E20FBE4550031A3E4 /* Busstops.json */; };
 		56C0944C20D9AE0C00581995 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 56C0944B20D9ADD800581995 /* Settings.bundle */; };
 		56C2D6DC1DE5D6B000F43628 /* TFLBusStopArrivalsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564EC7031DE1917D008CFD11 /* TFLBusStopArrivalsViewModel.swift */; };
 		56C6A3471DF44F6A00067D06 /* TFLStationDetailMapViewAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C6A3461DF44F6A00067D06 /* TFLStationDetailMapViewAnnotation.swift */; };
@@ -164,6 +166,8 @@
 		56A81B3D1DD862DC001DF7F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		56AB9FAB1DE8D95A00A9042A /* Collection+Transform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Collection+Transform.swift"; sourceTree = "<group>"; };
 		56B86EAC1DE4FED000A89D16 /* TFLBusStopArrivalsViewModelSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusStopArrivalsViewModelSpecs.swift; sourceTree = "<group>"; };
+		56BA8F8C20FBE22A0031A3E4 /* Arrivals.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Arrivals.json; sourceTree = "<group>"; };
+		56BA8F8E20FBE4550031A3E4 /* Busstops.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Busstops.json; sourceTree = "<group>"; };
 		56C0944B20D9ADD800581995 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		56C6A3461DF44F6A00067D06 /* TFLStationDetailMapViewAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLStationDetailMapViewAnnotation.swift; sourceTree = "<group>"; };
 		56C8288F1DE8E9FA00E52086 /* TFLChangeSetProtocolSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLChangeSetProtocolSpecs.swift; sourceTree = "<group>"; };
@@ -243,6 +247,8 @@
 				56C828931DE9CDB900E52086 /* TFLTransitionableSpecs.swift */,
 				56577D0020A0CF7700B40318 /* TFLRootViewControllerSpecs.swift */,
 				5657D36A1DE387E6004E4CD0 /* Info.plist */,
+				56BA8F8C20FBE22A0031A3E4 /* Arrivals.json */,
+				56BA8F8E20FBE4550031A3E4 /* Busstops.json */,
 			);
 			path = "tflApp Tests";
 			sourceTree = "<group>";
@@ -592,6 +598,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				56BA8F8F20FBE4550031A3E4 /* Busstops.json in Resources */,
+				56BA8F8D20FBE22A0031A3E4 /* Arrivals.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

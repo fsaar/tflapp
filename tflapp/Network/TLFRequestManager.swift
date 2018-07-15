@@ -28,11 +28,18 @@ public class TFLRequestManager : NSObject {
     fileprivate let TFLApplicationKey = "PASTE_YOUR_APPLICATION_KEY_HERE"
     public static let shared =  TFLRequestManager()
 
+    var protocolClasses : [AnyClass] = []
+    fileprivate lazy var sessionConfiguration : URLSessionConfiguration = {
+        var configuration = URLSessionConfiguration.default
+        configuration.protocolClasses = self.protocolClasses
+        return configuration
+    }()
+    
     fileprivate lazy var session = { () -> URLSession in
         if let session = self.dataSource?.urlSession(for: self)  {
             return session
         }
-        return URLSession(configuration: URLSessionConfiguration.default)
+        return URLSession(configuration: self.sessionConfiguration)
     }()
 
 

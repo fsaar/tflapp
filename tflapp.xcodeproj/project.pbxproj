@@ -70,6 +70,7 @@
 		56B86EAD1DE4FED000A89D16 /* TFLBusStopArrivalsViewModelSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B86EAC1DE4FED000A89D16 /* TFLBusStopArrivalsViewModelSpecs.swift */; };
 		56BA8F8D20FBE22A0031A3E4 /* Arrivals.json in Resources */ = {isa = PBXBuildFile; fileRef = 56BA8F8C20FBE22A0031A3E4 /* Arrivals.json */; };
 		56BA8F8F20FBE4550031A3E4 /* Busstops.json in Resources */ = {isa = PBXBuildFile; fileRef = 56BA8F8E20FBE4550031A3E4 /* Busstops.json */; };
+		56BA8F9120FBE7550031A3E4 /* TestUrlProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BA8F9020FBE7550031A3E4 /* TestUrlProtocol.swift */; };
 		56C0944C20D9AE0C00581995 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 56C0944B20D9ADD800581995 /* Settings.bundle */; };
 		56C2D6DC1DE5D6B000F43628 /* TFLBusStopArrivalsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564EC7031DE1917D008CFD11 /* TFLBusStopArrivalsViewModel.swift */; };
 		56C6A3471DF44F6A00067D06 /* TFLStationDetailMapViewAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C6A3461DF44F6A00067D06 /* TFLStationDetailMapViewAnnotation.swift */; };
@@ -168,6 +169,7 @@
 		56B86EAC1DE4FED000A89D16 /* TFLBusStopArrivalsViewModelSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusStopArrivalsViewModelSpecs.swift; sourceTree = "<group>"; };
 		56BA8F8C20FBE22A0031A3E4 /* Arrivals.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Arrivals.json; sourceTree = "<group>"; };
 		56BA8F8E20FBE4550031A3E4 /* Busstops.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Busstops.json; sourceTree = "<group>"; };
+		56BA8F9020FBE7550031A3E4 /* TestUrlProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUrlProtocol.swift; sourceTree = "<group>"; };
 		56C0944B20D9ADD800581995 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		56C6A3461DF44F6A00067D06 /* TFLStationDetailMapViewAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLStationDetailMapViewAnnotation.swift; sourceTree = "<group>"; };
 		56C8288F1DE8E9FA00E52086 /* TFLChangeSetProtocolSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLChangeSetProtocolSpecs.swift; sourceTree = "<group>"; };
@@ -249,6 +251,7 @@
 				5657D36A1DE387E6004E4CD0 /* Info.plist */,
 				56BA8F8C20FBE22A0031A3E4 /* Arrivals.json */,
 				56BA8F8E20FBE4550031A3E4 /* Busstops.json */,
+				56BA8F9020FBE7550031A3E4 /* TestUrlProtocol.swift */,
 			);
 			path = "tflApp Tests";
 			sourceTree = "<group>";
@@ -738,6 +741,7 @@
 				56C828941DE9CDB900E52086 /* TFLTransitionableSpecs.swift in Sources */,
 				56B86EAD1DE4FED000A89D16 /* TFLBusStopArrivalsViewModelSpecs.swift in Sources */,
 				5657D3731DE3A00A004E4CD0 /* TFLCDBusStopSpecs.swift in Sources */,
+				56BA8F9120FBE7550031A3E4 /* TestUrlProtocol.swift in Sources */,
 				5657D3751DE3B480004E4CD0 /* TFLNotificationObserverSpec.swift in Sources */,
 				5646C4031DE62389006EA956 /* TFLBusStationArrivalsCellSpecs.swift in Sources */,
 			);

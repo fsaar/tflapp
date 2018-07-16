@@ -28,35 +28,35 @@ private class TestRequestManager : TFLRequestManager {
 private class TestQueue : OperationQueue {
     var added = false
     override func addOperation(_ op: Operation) {
-        op.start()
         added = true
+        op.start()
     }
     
     override func addOperations(_ ops: [Operation], waitUntilFinished wait: Bool) {
-        ops.forEach { $0.start() }
         added = true
+        ops.forEach { $0.start() }
     }
 }
         
     
 class TFLClientSpecs: QuickSpec {
-    
+    func dataWithJSONFile(_ jsonFileName: String) -> Data  {
+        let url = Bundle(for: type(of:self)).url(forResource: jsonFileName, withExtension: "json")
+        return try! Data(contentsOf: url!)
+    }
+
     override func spec() {
         var client : TFLClient!
-        var testRequestManager : TestRequestManager!
-        var arrivalsTestData : Data!
-        var nearbyBusStopsData : Data!
+        var testRequestManager : TFLRequestManager!
         beforeEach() {
-            let dataWithJSONFile : (_ jsonFileName: String) -> Data = { jsonFileName in
-                let url = Bundle(for: type(of:self)).url(forResource: jsonFileName, withExtension: "json")
-                return try! Data(contentsOf: url!)
-            }
             client = TFLClient()
-            testRequestManager = TestRequestManager()
+            URLProtocol.registerClass(TestUrlProtocol.self)
+            testRequestManager = TFLRequestManager()
+            testRequestManager.protocolClasses = [TestUrlProtocol.self]
             client.tflManager = testRequestManager
-            
-            arrivalsTestData = dataWithJSONFile("Arrivals")
-            nearbyBusStopsData = dataWithJSONFile("Busstops")
+        }
+        afterEach {
+            TestUrlProtocol.dataProviders = []
         }
         
         context("when calling arrivalsForStopPoint") {
@@ -64,150 +64,147 @@ class TFLClientSpecs: QuickSpec {
             
             beforeEach() {
                 queue = TestQueue()
+                TestUrlProtocol.addDataProvider { request in
+                    guard request.url!.absoluteString.contains("/StopPoint/success/Arrivals") else {
+                        return nil
+                    }
+                    return self.dataWithJSONFile("Arrivals")
+                }
             }
 
             it("should issue request with the right URL") {
-                var getDataCompletionBlockCalled = false
-                testRequestManager.getDataCompletionBlock = { path in
-                    expect(path).to(beginWith("/StopPoint/String/Arrivals"))
-                    getDataCompletionBlockCalled = true
-                    return (nil,nil)
+                 var completionBlockCalled = false
+               
+                client.arrivalsForStopPoint(with : "fail") { _,error in
+                    expect(error).notTo(beNil())
+                    completionBlockCalled = true
                 }
-                client.arrivalsForStopPoint(with : "String") { _,_ in
-                    
-                }
-                expect(getDataCompletionBlockCalled) == true
-                                        
-                    
+                expect(completionBlockCalled).toEventually(beTrue(),timeout: 5)
+
             }
             
             it("should call back on given queue on success") {
                 var completionBlockCalled = false
-                testRequestManager.getDataCompletionBlock = { path in
-                    return (arrivalsTestData,nil)
-                }
-                client.arrivalsForStopPoint(with:"String",
+                
+                client.arrivalsForStopPoint(with:"success",
                                             with: queue) { _,error in
+                                                expect(queue.added) == true
                                                 completionBlockCalled = true
                                                 expect(error).to(beNil())
-                                                completionBlockCalled = true
                 }
-                expect(queue.added) == true
-                expect(completionBlockCalled) == true
+                expect(completionBlockCalled).toEventually(beTrue(),timeout: 5)
             }
 
             it("should call back on provided operation queue on failure") {
                 var completionBlockCalled = false
-                client.arrivalsForStopPoint(with:"String",
+                client.arrivalsForStopPoint(with:"failure",
                                             with: queue) { _,error in
+                                                expect(queue.added) == true
                                                 expect(error).notTo(beNil())
                     completionBlockCalled = true
                 }
-                expect(queue.added) == true
-                expect(completionBlockCalled) == true
-                
+                expect(completionBlockCalled).toEventually(beTrue(),timeout: 5)
+
             }
             it("should call back on mainqueue if no operation queue provided on failure") {
                 var completionBlockCalled = false
-                client.arrivalsForStopPoint(with:"String") { _,error in
+                client.arrivalsForStopPoint(with:"failed") { _,error in
                     expect(error).notTo(beNil())
                     expect(Thread.isMainThread) == true
                     completionBlockCalled = true
                 }
-                expect(completionBlockCalled).toEventually(beTrue(),timeout:99)
+                expect(completionBlockCalled).toEventually(beTrue(),timeout: 5)
             }
 
             it("should call back on mainqueue if no operation queue provided on success") {
                 var completionBlockCalled = false
-                testRequestManager.getDataCompletionBlock = { path in
-                    return (arrivalsTestData,nil)
-                }
-                client.arrivalsForStopPoint(with:"String") { _,error in
+                client.arrivalsForStopPoint(with:"success") { _,error in
                     expect(error).to(beNil())
                     expect(Thread.isMainThread) == true
                     completionBlockCalled = true
                 }
-                expect(completionBlockCalled).toEventually(beTrue(),timeout:99)
+                expect(completionBlockCalled).toEventually(beTrue(),timeout: 5)
             }
             it("should parse model successfully") {
                 var completionBlockCalled = false
-                testRequestManager.getDataCompletionBlock = { path in
-                    expect(path).to(beginWith("/StopPoint/String/Arrivals"))
-                    return (arrivalsTestData,nil)
-                }
-                client.arrivalsForStopPoint(with : "String") { models,_ in
+                client.arrivalsForStopPoint(with : "success") { models,_ in
                     completionBlockCalled = true
                     expect(models!.count) == 2
                 }
-                expect(completionBlockCalled).toEventually(beTrue(),timeout:99)
+                expect(completionBlockCalled).toEventually(beTrue(),timeout: 5)
             }
-            
+
             it("should handle invalid model gracefully") {
-                var completionBlockCalled = false
-                let invalidTestData = """
-                {"Hello" : "World"}
-                """.data(using: .utf8)
-                testRequestManager.getDataCompletionBlock = { path in
-                    expect(path).to(beginWith("/StopPoint/String/Arrivals"))
-                    return (invalidTestData,nil)
+                TestUrlProtocol.dataProviders = []
+                TestUrlProtocol.addDataProvider { request in
+                    guard request.url!.absoluteString.contains("/StopPoint/fail/Arrivals") else {
+                        return nil
+                    }
+                    let invalidTestData = "['Hello' : 'World']".data(using: .utf8)
+                    return invalidTestData
                 }
-                client.arrivalsForStopPoint(with : "String") { models,error in
+                
+                var completionBlockCalled = false
+                
+                client.arrivalsForStopPoint(with : "fail") { models,error in
                     completionBlockCalled = true
                     expect(models).to(beNil())
                 }
-                expect(completionBlockCalled).toEventually(beTrue(),timeout:99)
+                expect(completionBlockCalled).toEventually(beTrue(),timeout: 5)
             }
         }
         
         context("When calling nearbyBusStops") {
             var queue : TestQueue!
-            
+
             beforeEach() {
                 queue = TestQueue()
+                TestUrlProtocol.addDataProvider { request in
+                    guard request.url!.absoluteString.contains("/StopPoint") else {
+                        return nil
+                    }
+                    let data = self.dataWithJSONFile("Busstops")
+                    return data
+                }
+
             }
             it("should issue request with the right URL") {
                 var nearbyBusStopsBlockCalled = false
-                testRequestManager.getDataCompletionBlock = { path in
-                    expect(path).to(beginWith("/StopPoint"))
+                client.nearbyBusStops(with :kCLLocationCoordinate2DInvalid) { models,_ in
+                    expect(models).notTo(beNil())
                     nearbyBusStopsBlockCalled = true
-                    return (nil,nil)
                 }
-                client.nearbyBusStops(with :kCLLocationCoordinate2DInvalid) { _,_ in
-                }
-                expect(nearbyBusStopsBlockCalled) == true
+               expect(nearbyBusStopsBlockCalled).toEventually(beTrue(),timeout: 5)
             }
-            
+
             it("should call back on given queue on success") {
                 var completionBlockCalled = false
-                testRequestManager.getDataCompletionBlock = { path in
-                    return (nearbyBusStopsData,nil)
-                }
                 client.nearbyBusStops(with :kCLLocationCoordinate2DInvalid,
                                       with: queue) { _,error in
                                         expect(error).to(beNil())
+                                        expect(queue.added) == true
                                         completionBlockCalled = true
                 }
-                expect(queue.added).toEventually(beTrue(),timeout:99)
+                
                 expect(completionBlockCalled).toEventually(beTrue(),timeout:99)
             }
 
-            
+
             it("should call back on provided operation queue on failure") {
+                TestUrlProtocol.dataProviders = []
                 var completionBlockCalled = false
                 client.nearbyBusStops(with :kCLLocationCoordinate2DInvalid,
                                             with: queue) { _,error in
                                                 expect(error).notTo(beNil())
+                                                expect(queue.added) == true
                                                 completionBlockCalled = true
                 }
-                expect(queue.added).toEventually(beTrue(),timeout:99)
+              
                 expect(completionBlockCalled).toEventually(beTrue(),timeout:99)
             }
 
             it("should call back on mainqueue if no operation queue provided on success") {
                 var completionBlockCalled = false
-                testRequestManager.getDataCompletionBlock = { path in
-                    return (nearbyBusStopsData,nil)
-                }
                 client.nearbyBusStops(with :kCLLocationCoordinate2DInvalid) { _,error in
                     expect(error).to(beNil())
                     completionBlockCalled = true
@@ -218,9 +215,7 @@ class TFLClientSpecs: QuickSpec {
 
             it("should call back on mainqueue if no operation queue provided on failure") {
                 var completionBlockCalled = false
-                testRequestManager.getDataCompletionBlock = { path in
-                    return (nil,TestError.test)
-                }
+                TestUrlProtocol.dataProviders = []
                 client.nearbyBusStops(with :kCLLocationCoordinate2DInvalid) { _,error in
                     expect(error).notTo(beNil())
                     completionBlockCalled = true
@@ -231,24 +226,21 @@ class TFLClientSpecs: QuickSpec {
 
             it("should parse model successfully") {
                 var completionBlockCalled = false
-                testRequestManager.getDataCompletionBlock = { path in
-                    return (nearbyBusStopsData,nil)
-                }
                 client.nearbyBusStops(with :kCLLocationCoordinate2DInvalid) { models,_ in
                     completionBlockCalled = true
                     expect(models!.count) == 3
                 }
                 expect(completionBlockCalled).toEventually(beTrue(),timeout:99)
             }
-            
+
             it("should handle invalid model gracefully") {
-                var completionBlockCalled = false
-                testRequestManager.getDataCompletionBlock = { path in
-                    let invalidTestData =  """
-                        "{"Hello" : "World"}
-                        """.data(using: .utf8)
-                    return (invalidTestData,nil)
+                TestUrlProtocol.dataProviders = []
+                TestUrlProtocol.addDataProvider { request in
+                    let invalidTestData = "['Hello' : 'World']".data(using: .utf8)
+                    return invalidTestData
                 }
+                var completionBlockCalled = false
+                
                 client.nearbyBusStops(with :kCLLocationCoordinate2DInvalid) { models,_ in
                     completionBlockCalled = true
                     expect(models).to(beNil())
@@ -257,54 +249,57 @@ class TFLClientSpecs: QuickSpec {
             }
 
         }
-       
-        
+
+
         context("When calling busStops") {
             var queue : TestQueue!
-            
+
             beforeEach() {
                 queue = TestQueue()
+                TestUrlProtocol.addDataProvider { request in
+                    guard request.url!.absoluteString.contains("/StopPoint/Mode/bus") else {
+                        return nil
+                    }
+                    let data = self.dataWithJSONFile("Busstops")
+                    return data
+                }
             }
             it("should issue request with the right URL") {
                 var busStopsBlockCalled = false
-                testRequestManager.getDataCompletionBlock = { path in
-                    expect(path).to(beginWith("/StopPoint"))
+     
+                client.busStops(with: 1) { models,_ in
                     busStopsBlockCalled = true
-                    return (nil,nil)
+                    expect(models).notTo(beNil())
                 }
-                client.busStops(with: 1) { _,_ in
-                }
-                expect(busStopsBlockCalled) == true
+                expect(busStopsBlockCalled).toEventually(beTrue(),timeout:99)
             }
             it("should call back on given queue if operation queue provided on failure") {
+                TestUrlProtocol.dataProviders = []
+
                 var completionBlockCalled = false
-                testRequestManager.getDataCompletionBlock = { path in
-                    return (nil,TestError.test)
-                }
                 client.busStops(with :1,
                                 with: queue) { _,error in
                                     expect(error).notTo(beNil())
+                                    expect(queue.added) == true
                                     completionBlockCalled = true
                 }
-                expect(queue.added).toEventually(beTrue(),timeout:99)
+                
                 expect(completionBlockCalled).toEventually(beTrue(),timeout:99)
             }
-            
+
             it("should call back on given queue if operation queue provided on success") {
                 var completionBlockCalled = false
-                testRequestManager.getDataCompletionBlock = { path in
-                    return (nearbyBusStopsData,nil)
-                }
                 client.busStops(with :1,
                                 with: queue) { _,error in
                                     expect(error).to(beNil())
+                                    expect(queue.added) == true
                                     completionBlockCalled = true
                 }
-                expect(queue.added).toEventually(beTrue(),timeout:99)
                 expect(completionBlockCalled).toEventually(beTrue(),timeout:99)
             }
 
             it("should call back on mainQueue if no operation queue provided on failure") {
+                TestUrlProtocol.dataProviders = []
                 var completionBlockCalled = false
                 client.busStops(with :1) { _,error in
                     expect(error).notTo(beNil())
@@ -316,9 +311,6 @@ class TFLClientSpecs: QuickSpec {
 
             it("should call back on mainqueue if no operation queue provided on success") {
                 var completionBlockCalled = false
-                testRequestManager.getDataCompletionBlock = { path in
-                    return (nearbyBusStopsData,nil)
-                }
                 client.busStops(with :1) { _,error in
                     expect(error).to(beNil())
                     completionBlockCalled = true
@@ -326,27 +318,23 @@ class TFLClientSpecs: QuickSpec {
                 }
                 expect(completionBlockCalled).toEventually(beTrue(),timeout:99)
             }
-            
+
             it("should parse model successfully") {
                 var completionBlockCalled = false
-                testRequestManager.getDataCompletionBlock = { path in
-                    return (nearbyBusStopsData,nil)
-                }
                 client.busStops(with :1) { models,_ in
                     completionBlockCalled = true
                     expect(models!.count) == 3
                 }
                 expect(completionBlockCalled).toEventually(beTrue(),timeout:99)
             }
-            
+
             it("should handle invalid model gracefully") {
-                var completionBlockCalled = false
-                testRequestManager.getDataCompletionBlock = { path in
-                    let invalidTestData =  """
-                        "{"Hello" : "World"}
-                        """.data(using: .utf8)
-                    return (invalidTestData,nil)
+                TestUrlProtocol.dataProviders = []
+                TestUrlProtocol.addDataProvider { request in
+                    let invalidTestData = "['Hello' : 'World']".data(using: .utf8)
+                    return invalidTestData
                 }
+                var completionBlockCalled = false
                 client.busStops(with :1) { models,_ in
                     completionBlockCalled = true
                     expect(models).to(beNil())

@@ -86,7 +86,11 @@ public class TFLCDBusStop: NSManagedObject {
     }
 
     override public var debugDescription: String {
-        return "\n"+name + "[\(identifier)] towards " + (towards ?? "") + "status:\(status):\n"
+        var desc = ""
+        self.managedObjectContext?.performAndWait {
+            desc = "\n"+name + "[\(identifier)] towards " + (towards ?? "") + "status:\(status):\n"
+        }
+        return desc
     }
 
     var coord : CLLocationCoordinate2D {

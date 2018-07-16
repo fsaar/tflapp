@@ -9,7 +9,7 @@ end
 
 target 'tflApp Tests' do
     use_frameworks!
-    pod 'Quick', '1.3.0'
-    pod 'Nimble', '7.1.2'
+    pod 'Quick', '1.3.1'
+    pod 'Nimble', '7.1.3'
 end
 

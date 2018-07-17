@@ -6,19 +6,14 @@ enum TFLRequestManagerErrorType : Error {
     case InvalidURL(urlString : String)
 }
 
-
 protocol TFLRequestManagerDelegate : class {
     func didStartURLTask(with requestManager: TFLRequestManager,session : URLSession)
     func didFinishURLTask(with requestManager: TFLRequestManager,session : URLSession)
 }
 
-protocol TFLRequestManagerDataSource : class {
-    func urlSession(for requestManager : TFLRequestManager) -> URLSession
-}
 
 public class TFLRequestManager : NSObject {
     weak var delegate : TFLRequestManagerDelegate?
-    weak var dataSource : TFLRequestManagerDataSource?
     fileprivate let TFLRequestManagerBaseURL = "https://api.tfl.gov.uk"
     static let sessionID =  "group.tflwidgetSharingData.sessionconfiguration"
     fileprivate static let loggingHandle  = OSLog(subsystem: TFLLogger.subsystem, category: TFLLogger.category.network.rawValue)
@@ -35,12 +30,7 @@ public class TFLRequestManager : NSObject {
         return configuration
     }()
     
-    fileprivate lazy var session = { () -> URLSession in
-        if let session = self.dataSource?.urlSession(for: self)  {
-            return session
-        }
-        return URLSession(configuration: self.sessionConfiguration)
-    }()
+    fileprivate lazy var session = URLSession(configuration: self.sessionConfiguration)
 
 
     public func getDataWithRelativePath(relativePath: String ,and query: String? = nil, completionBlock:@escaping ((_ data : Data?,_ error:Error?) -> Void)) {

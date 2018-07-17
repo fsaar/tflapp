@@ -6,24 +6,6 @@ import UIKit
 
 @testable import London_Bus
 
-enum TestError : Error {
-    case test
-}
-    
-private class TestRequestManager : TFLRequestManager {
-    
-    var getDataCompletionBlock : ((_ relativePath: String)->(data : Data?,error:Error?))?
-    override public func getDataWithRelativePath(relativePath: String ,and query: String? = nil, completionBlock:@escaping ((_ data : Data?,_ error:Error?) -> Void)) {
-        if let (data,error) = getDataCompletionBlock?(relativePath) {
-            completionBlock(data,error)
-        }
-        else
-        {
-            completionBlock(nil,TFLRequestManagerErrorType.InvalidURL(urlString: ""))
-        }
-        
-    }
-}
     
 private class TestQueue : OperationQueue {
     var added = false
@@ -40,20 +22,14 @@ private class TestQueue : OperationQueue {
         
     
 class TFLClientSpecs: QuickSpec {
-    func dataWithJSONFile(_ jsonFileName: String) -> Data  {
-        let url = Bundle(for: type(of:self)).url(forResource: jsonFileName, withExtension: "json")
-        return try! Data(contentsOf: url!)
-    }
 
     override func spec() {
         var client : TFLClient!
-        var testRequestManager : TFLRequestManager!
+
         beforeEach() {
             client = TFLClient()
             URLProtocol.registerClass(TestUrlProtocol.self)
-            testRequestManager = TFLRequestManager()
-            testRequestManager.protocolClasses = [TestUrlProtocol.self]
-            client.tflManager = testRequestManager
+            TFLRequestManager.shared.protocolClasses = [TestUrlProtocol.self]
         }
         afterEach {
             TestUrlProtocol.dataProviders = []

@@ -47,7 +47,7 @@ class TFLSlideContainerController: UIViewController {
             let currentY = strongSelf.view.convert(strongSelf.sliderHandleContainerView.frame.origin, from : strongSelf.sliderHandleContainerView.superview).y
 
             let nonzeroVelocity = velocity != 0 ? velocity : newOrigin.y < currentY ? -strongSelf.defaultVelocity : strongSelf.defaultVelocity
-            let normalizedVelocity = final ? fabs(newOrigin.y - currentY) / nonzeroVelocity : nonzeroVelocity
+            let normalizedVelocity = final ? abs(newOrigin.y - currentY) / nonzeroVelocity : nonzeroVelocity
             let animationTime = final ? 0.5 : 0
             self?.updateSliderContainerView(with: newOrigin, animationTime: animationTime, velocity: normalizedVelocity,final: final)
         })

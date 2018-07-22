@@ -84,6 +84,7 @@
 		56D70D141DD9A25F004CA293 /* TFLLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D70D131DD9A25F004CA293 /* TFLLocationManager.swift */; };
 		56D70D341DD9A7A6004CA293 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 56D70D301DD9A7A6004CA293 /* InfoPlist.strings */; };
 		56D70D351DD9A7A6004CA293 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 56D70D321DD9A7A6004CA293 /* Localizable.strings */; };
+		56DA42EC21051E8A00ED9C54 /* TFLBusStopArrivalsInfoSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DA42EB21051E8A00ED9C54 /* TFLBusStopArrivalsInfoSpecs.swift */; };
 		56DD18FD20A0B078003335D1 /* TFLTimerSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DD18FC20A0B078003335D1 /* TFLTimerSpecs.swift */; };
 		56DD190020A0B0C1003335D1 /* TFLTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DD18FF20A0B0C1003335D1 /* TFLTimer.swift */; };
 /* End PBXBuildFile section */
@@ -183,6 +184,7 @@
 		56D70D131DD9A25F004CA293 /* TFLLocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLLocationManager.swift; sourceTree = "<group>"; };
 		56D70D311DD9A7A6004CA293 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		56D70D331DD9A7A6004CA293 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		56DA42EB21051E8A00ED9C54 /* TFLBusStopArrivalsInfoSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusStopArrivalsInfoSpecs.swift; sourceTree = "<group>"; };
 		56DD18FC20A0B078003335D1 /* TFLTimerSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLTimerSpecs.swift; sourceTree = "<group>"; };
 		56DD18FF20A0B0C1003335D1 /* TFLTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLTimer.swift; sourceTree = "<group>"; };
 		7A89F45A39DFA1D633B11475 /* Pods-tflApp Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tflApp Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-tflApp Tests/Pods-tflApp Tests.release.xcconfig"; sourceTree = "<group>"; };
@@ -237,6 +239,7 @@
 		5657D3671DE387E6004E4CD0 /* tflApp Tests */ = {
 			isa = PBXGroup;
 			children = (
+				56DA42EB21051E8A00ED9C54 /* TFLBusStopArrivalsInfoSpecs.swift */,
 				56DD18FC20A0B078003335D1 /* TFLTimerSpecs.swift */,
 				561FD9011F1FADD30012466A /* TFLClientSpecs.swift */,
 				5641F6ED1F19F68100A3A9D2 /* TFLRequestManagerSpecs.swift */,
@@ -733,6 +736,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				56DA42EC21051E8A00ED9C54 /* TFLBusStopArrivalsInfoSpecs.swift in Sources */,
 				5685ADC41DEF8DDC009FD6A5 /* TFLBusPredictionViewCellSpecs.swift in Sources */,
 				5641F6EE1F19F68B00A3A9D2 /* TFLRequestManagerSpecs.swift in Sources */,
 				56DD18FD20A0B078003335D1 /* TFLTimerSpecs.swift in Sources */,

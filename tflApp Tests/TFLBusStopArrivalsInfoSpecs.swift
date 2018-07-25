@@ -76,13 +76,13 @@ class TFLBusStopArrivalsInfoSpecs: QuickSpec {
                     info = TFLBusStopArrivalsInfo(busStop:busStationInfo , location: location, arrivals: [busPrediction1,busPrediction2])
                 }
                 
-                fit ("should encode TFLBusStopArrivalsInfo correctly") {
+                it ("should encode TFLBusStopArrivalsInfo correctly") {
                    
                     let data = try! JSONEncoder().encode(info)
                     expect(data).notTo(beNil())
                 }
                 
-                fit ("should decode TFLBusStopArrivalsInfo correctly") {
+                it ("should decode TFLBusStopArrivalsInfo correctly") {
                     
                     let data = try! JSONEncoder().encode(info)
                     let info2 = try! JSONDecoder().decode(TFLBusStopArrivalsInfo.self, from: data)

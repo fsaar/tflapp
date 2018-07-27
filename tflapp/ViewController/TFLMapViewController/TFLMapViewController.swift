@@ -20,13 +20,24 @@ class TFLMapViewController: UIViewController {
 
     let defaultCoordinateOffset = CLLocationCoordinate2D(latitude: -1/300, longitude: 0)
     let defaultCoordinateSpan = MKCoordinateSpan(latitudeDelta: 1/300, longitudeDelta: 1/90)
+    let mapViewUpdateQueue : OperationQueue = {
+        let q = OperationQueue()
+        q.maxConcurrentOperationCount = 1
+        q.underlyingQueue = DispatchQueue.global()
+        return q
+    }()
+    fileprivate let synchroniser = TFLSynchroniser()
+
     var busStopPredicationCoordinateTuple :  ([TFLBusStopArrivalsInfo], CLLocationCoordinate2D)? = nil {
         didSet (oldTuple) {
-            if let busStopPredicationCoordinateTuple = self.busStopPredicationCoordinateTuple  {
-                let (busStopPredictionTuples,coords) = busStopPredicationCoordinateTuple
-                let oldList = oldTuple?.0 ?? []
-                var (inserted ,deleted ,_, _) : (inserted : [(element:TFLBusStopArrivalsInfo,index:Int)],deleted : [(element:TFLBusStopArrivalsInfo,index:Int)], updated : [(element:TFLBusStopArrivalsInfo,index:Int)],moved : [(element:TFLBusStopArrivalsInfo,oldIndex:Int,newIndex:Int)]) = ([],[],[],[])
-                DispatchQueue.global().async {
+            synchroniser.synchronise { synchroniseEnd in
+                if let busStopPredicationCoordinateTuple = self.busStopPredicationCoordinateTuple  {
+                    let (busStopPredictionTuples,coords) = busStopPredicationCoordinateTuple
+                    let oldList = oldTuple?.0 ?? []
+                    var (inserted ,deleted ,_, _) : (inserted : [(element:TFLBusStopArrivalsInfo,index:Int)],
+                        deleted : [(element:TFLBusStopArrivalsInfo,index:Int)],
+                        updated : [(element:TFLBusStopArrivalsInfo,index:Int)],
+                        moved : [(element:TFLBusStopArrivalsInfo,oldIndex:Int,newIndex:Int)]) = ([],[],[],[])
                     (inserted ,deleted ,_, _) = oldList.transformTo(newList: busStopPredictionTuples, sortedBy : TFLBusStopArrivalsInfo.compare)
                     DispatchQueue.main.async {
                         let toBeDeletedIdentifierSet = Set(deleted.map { $0.element.identifier } )
@@ -45,9 +56,8 @@ class TFLMapViewController: UIViewController {
                         }
                     }
                 }
-
-               
             }
+            
         }
     }
 }

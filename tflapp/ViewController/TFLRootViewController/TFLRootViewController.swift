@@ -169,7 +169,20 @@ class TFLRootViewController: UIViewController {
             }
         }
     }
-
+    private static var counter : Int = 0
+    func writeArrivalInfos(_ arrivalInfos : [TFLBusStopArrivalsInfo]) {
+        let data = try! JSONEncoder().encode(arrivalInfos.self)
+        let date = Date()
+        let dateFormatter = ISO8601DateFormatter()
+        let dateString = dateFormatter.string(from: date)
+        let fileName = "\(dateString)_\(type(of: self).counter).dat"
+        type(of:self).counter += 1
+        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+        let path = "\(documentsPath)/\(fileName)"
+        let url = URL(fileURLWithPath: path)
+        try! data.write(to: url, options: Data.WritingOptions.atomicWrite)
+        print (path)
+    }
 }
 
 
@@ -269,6 +282,7 @@ fileprivate extension TFLRootViewController {
                 }
                 group.notify(queue: DispatchQueue.main) {
                     let sortedStopPoints = newStopPoints.sorted { $0.busStopDistance < $1.busStopDistance }
+                    self.writeArrivalInfos(sortedStopPoints)
                     completionBlock(sortedStopPoints)
                 }
             }

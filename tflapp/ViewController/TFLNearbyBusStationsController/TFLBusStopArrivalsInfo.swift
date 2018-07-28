@@ -1,6 +1,12 @@
 import Foundation
 import MapKit
 
+extension Collection where Element == TFLBusStopArrivalsInfo {
+    func sortedByBusStopDistance() -> [Element] {
+        return self.sorted { $0.busStopDistance < $1.busStopDistance }
+    }
+}
+
 public struct TFLBusStopArrivalsInfo : Hashable {
     public struct TFLContextFreeBusStopInfo  {
         let identifier: String

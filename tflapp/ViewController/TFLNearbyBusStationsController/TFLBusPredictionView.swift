@@ -24,10 +24,10 @@ class TFLBusPredictionView: UICollectionView {
         self.delegate = self
     }
 
-    fileprivate let synchroniser = TFLSynchroniser()
+    fileprivate let synchroniser = TFLSynchroniser(tag: "com.samedialabs.queue.collectionView")
 
     func setPredictions( predictions : [TFLBusStopArrivalsViewModel.LinePredictionViewModel], animated: Bool = false) {
-        if  !animated {
+        if  !animated || self.predictions.isEmpty {
             self.predictions = predictions
             self.reloadData()
         }

@@ -1,9 +1,17 @@
 import CoreLocation
 import Foundation
+import UIKit
 
 typealias TFLLocationManagerCompletionBlock  = (CLLocationCoordinate2D)->(Void)
 
+extension CLLocationCoordinate2D {
+    public static func ==(lhs : CLLocationCoordinate2D,rhs : CLLocationCoordinate2D) -> Bool {
+        return (lhs.latitude == rhs.latitude) && (lhs.longitude == rhs.longitude)
+    }
+}
+
 class TFLLocationManager : NSObject {
+    var lastKnownCoordinate = kCLLocationCoordinate2DInvalid
     static let sharedManager = TFLLocationManager()
     var completionBlock : TFLLocationManagerCompletionBlock?
     var enabled : Bool? {
@@ -21,12 +29,16 @@ class TFLLocationManager : NSObject {
 
     }
     let locationManager =  CLLocationManager()
+    var foregroundNotificationHandler : TFLNotificationObserver?
     override init() {
         super.init()
         self.locationManager.delegate = self
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
         if case .none = self.enabled {
             self.locationManager.requestWhenInUseAuthorization()
+        }
+        self.foregroundNotificationHandler = TFLNotificationObserver(notification: UIApplication.willEnterForegroundNotification) { [weak self]  _ in
+            self?.locationManager.requestLocation()
         }
     }
 
@@ -43,6 +55,11 @@ fileprivate extension TFLLocationManager {
             completionBlock?(kCLLocationCoordinate2DInvalid)
             return
         }
+        guard lastKnownCoordinate == kCLLocationCoordinate2DInvalid else {
+            completionBlock?(lastKnownCoordinate)
+            return
+        }
+
         self.completionBlock = completionBlock
         self.locationManager.requestLocation()
     }
@@ -65,6 +82,8 @@ extension TFLLocationManager : CLLocationManagerDelegate {
         }
     }
     public func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        requestLocation(using: self.completionBlock)
+        if case CLAuthorizationStatus.authorizedWhenInUse = status {
+            self.locationManager.startUpdatingLocation()
+        }
     }
 }

@@ -10,12 +10,16 @@ import Foundation
 
 
 class TFLSynchroniser {
-    let queue : OperationQueue = {
+    lazy var queue : OperationQueue = {
         let q = OperationQueue()
         q.maxConcurrentOperationCount = 1
         q.underlyingQueue = DispatchQueue.global()
         return q
     }()
+    
+    init(tag : String) {
+        queue.name = tag
+    }
     
     func synchronise(_ block : @escaping (_ synchroniseEnd : @escaping () -> ()) -> ()) {
         let group = DispatchGroup()

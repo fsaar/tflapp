@@ -11,7 +11,7 @@ private let groupID =  "group.tflwidgetSharingData"
 
     static let sharedDataStack = TFLBusStopStack()
 
-    lazy var busStopFetchRequest : NSFetchRequest<TFLCDBusStop> = {
+    let busStopFetchRequest : NSFetchRequest<TFLCDBusStop> = {
         let fetchRequest = NSFetchRequest<TFLCDBusStop>(entityName: "TFLCDBusStop")
         fetchRequest.returnsObjectsAsFaults = true
         fetchRequest.shouldRefreshRefetchedObjects = true
@@ -115,10 +115,10 @@ private let groupID =  "group.tflwidgetSharingData"
         var busStops : [TFLCDBusStop] = []
         let currentLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
         TFLLogger.shared.signPostStart(osLog: TFLBusStopStack.loggingHandle, name: "nearbyBusStops")
-
-        TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext.perform  {
+        let privateContext = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
+        privateContext.perform  {
             TFLLogger.shared.signPostEnd(osLog: TFLBusStopStack.loggingHandle, name: "nearbyBusStops")
-            if let stops =  try? context.fetch(self.busStopFetchRequest) {
+            if let stops =  try? privateContext.fetch(self.busStopFetchRequest) {
                 busStops = stops.map { ($0.distance(to:currentLocation),$0) }
                                 .filter { $0.0 < radiusInMeter }
                                 .sorted { $0.0 < $1.0 }

@@ -23,14 +23,13 @@ class TFLNearbyBusStationsController : UITableViewController {
     }
     static let defaultTableViewRowHeight = CGFloat (120)
 
-    private var foregroundNotificationHandler  : TFLNotificationObserver?
     fileprivate static let loggingHandle  = OSLog(subsystem: TFLLogger.subsystem, category: TFLLogger.category.refresh.rawValue)
 
     weak var delegate : TFLNearbyBusStationsControllerDelegate?
     var busStopArrivalViewModels :  [TFLBusStopArrivalsViewModel] = []
   
    
-    fileprivate let synchroniser = TFLSynchroniser()
+    fileprivate let synchroniser = TFLSynchroniser(tag:"com.samedialabs.queue.tableview")
     
     var busStopPredicationTuple :  [TFLBusStopArrivalsInfo] = [] {
         didSet {
@@ -69,9 +68,7 @@ class TFLNearbyBusStationsController : UITableViewController {
         self.refreshControl = refreshControl
         self.refreshControl?.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
 
-        self.foregroundNotificationHandler = TFLNotificationObserver(notification: UIApplication.willEnterForegroundNotification) { [weak self]  _ in
-            self?.busStopPredicationTuple = self?.busStopPredicationTuple ?? []
-        }
+        
 
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = TFLNearbyBusStationsController.defaultTableViewRowHeight

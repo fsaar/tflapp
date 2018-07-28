@@ -37,6 +37,9 @@ class TFLLocationManager : NSObject {
         if case .none = self.enabled {
             self.locationManager.requestWhenInUseAuthorization()
         }
+        else if enabled == true {
+            self.locationManager.startUpdatingLocation()
+        }
         self.foregroundNotificationHandler = TFLNotificationObserver(notification: UIApplication.willEnterForegroundNotification) { [weak self]  _ in
             self?.locationManager.requestLocation()
         }
@@ -59,9 +62,7 @@ fileprivate extension TFLLocationManager {
             completionBlock?(lastKnownCoordinate)
             return
         }
-
         self.completionBlock = completionBlock
-        self.locationManager.requestLocation()
     }
 }
 
@@ -70,6 +71,7 @@ fileprivate extension TFLLocationManager {
 extension TFLLocationManager : CLLocationManagerDelegate {
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let coordinate = locations.first?.coordinate ?? kCLLocationCoordinate2DInvalid
+        lastKnownCoordinate = coordinate
         DispatchQueue.main.async {
             self.completionBlock?(coordinate)
             self.completionBlock = nil
@@ -84,6 +86,10 @@ extension TFLLocationManager : CLLocationManagerDelegate {
     public func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if case CLAuthorizationStatus.authorizedWhenInUse = status {
             self.locationManager.startUpdatingLocation()
+        }
+        else  {
+            self.completionBlock?(kCLLocationCoordinate2DInvalid)
+            self.completionBlock = nil
         }
     }
 }

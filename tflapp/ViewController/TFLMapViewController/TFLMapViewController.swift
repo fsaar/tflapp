@@ -26,12 +26,12 @@ class TFLMapViewController: UIViewController {
         q.underlyingQueue = DispatchQueue.global()
         return q
     }()
-    fileprivate let synchroniser = TFLSynchroniser()
+    fileprivate let synchroniser =  TFLSynchroniser(tag: "com.samedialabs.queue.mapView")
 
     var busStopPredicationCoordinateTuple :  ([TFLBusStopArrivalsInfo], CLLocationCoordinate2D)? = nil {
         didSet (oldTuple) {
-            synchroniser.synchronise { synchroniseEnd in
-                if let busStopPredicationCoordinateTuple = self.busStopPredicationCoordinateTuple  {
+            if let busStopPredicationCoordinateTuple = self.busStopPredicationCoordinateTuple  {
+                synchroniser.synchronise { synchroniseEnd in
                     let (busStopPredictionTuples,coords) = busStopPredicationCoordinateTuple
                     let oldList = oldTuple?.0 ?? []
                     var (inserted ,deleted ,_, _) : (inserted : [(element:TFLBusStopArrivalsInfo,index:Int)],

@@ -51,19 +51,19 @@ class TFLRootViewController: UIViewController {
             let shouldHide = self.nearbyBusStationController?.busStopPredicationTuple.isEmpty ?? true
 
             switch self.state {
-            case State.errorNoGPSAvailable:
+            case .errorNoGPSAvailable:
                 self.contentView.isHidden = true
                 showNoGPSEnabledError()
-            case State.errorNoStationsNearby:
+            case .errorNoStationsNearby:
                 self.contentView.isHidden = true
                 showNoStationsFoundError()
-            case State.determineCurrentLocation:
+            case .determineCurrentLocation:
                 self.contentView.isHidden = shouldHide
                 showLoadingCurrentLocationIfNeedBe()
-            case State.retrievingNearbyStations:
+            case .retrievingNearbyStations:
                 self.contentView.isHidden = shouldHide
                 showLoadingNearbyStationsIfNeedBe()
-            case State.loadingArrivals:
+            case .loadingArrivals:
                 self.contentView.isHidden = shouldHide
                 showLoadingArrivalTimesIfNeedBe()
             case State.noError:
@@ -189,7 +189,16 @@ class TFLRootViewController: UIViewController {
 // MARK: Private
 
 fileprivate extension TFLRootViewController {
-    func mergeInfo(_ newInfo : [TFLBusStopArrivalsInfo],with oldInfo:[TFLBusStopArrivalsInfo] ) ->  [TFLBusStopArrivalsInfo] {
+    
+    // merges new arrival infos with old infos
+    // old infos will only be used if arrivals in new list is empty
+    // Data in newInfo determines what will be returned. Oldinfo only used to fill blank data
+    // - Parameters:
+    //      - newInfo: new arrivalInfos
+    //      - oldInfo: old arrivalInfos
+    // - Returns:
+    //      - merged arrivalinfos
+    func mergeCompleteInfo(_ newInfo : [TFLBusStopArrivalsInfo],with oldInfo:[TFLBusStopArrivalsInfo] ) ->  [TFLBusStopArrivalsInfo] {
         let dict = Dictionary(uniqueKeysWithValues: oldInfo.map { ($0.identifier,$0) } )
         let mergedInfo : [TFLBusStopArrivalsInfo] = newInfo.map {  info in
             guard info.arrivals.isEmpty else {
@@ -200,21 +209,58 @@ fileprivate extension TFLRootViewController {
         return mergedInfo
     }
     
-    func updateContentViewController(with coordinate: CLLocationCoordinate2D) {
-        let oldTuples = self.nearbyBusStationController?.busStopPredicationTuple ?? []
-        let newTuples = oldTuples.map { $0.arrivalInfo(with:  CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)) }
-        self.nearbyBusStationController?.busStopPredicationTuple = newTuples
-        self.mapViewController?.busStopPredicationCoordinateTuple = (newTuples,coordinate)
+    // merges new arrival infos with old infos
+    // updated infos will be used if available. New infos that are not in old info will be disregarded
+    // Returns info list where outdata data is updated by new data in newInfo
+    // - Parameters:
+    //      - newInfo: new arrivalInfos
+    //      - oldInfo: old arrivalInfos
+    // - Returns:
+    //      - updated arrivalinfos
+    func mergeUpdatedInfo(_ newInfo : [TFLBusStopArrivalsInfo],with oldInfo:[TFLBusStopArrivalsInfo] ) ->  [TFLBusStopArrivalsInfo] {
+        let oldIdentifiers = oldInfo.map { $0.identifier }
+        let newIdentifiers = newInfo.compactMap { !$0.arrivals.isEmpty ? $0.identifier : nil  }
+        let updatedIdentifiers = Set(oldIdentifiers).intersection(newIdentifiers)
+        let newDict = Dictionary(uniqueKeysWithValues: newInfo.map { ($0.identifier,$0) } )
+        var oldDict = Dictionary(uniqueKeysWithValues: oldInfo.map { ($0.identifier,$0) } )
+        updatedIdentifiers.forEach { identifier in
+            oldDict[identifier] = newDict[identifier]
+        }
+        
+        let updatedInfo = oldDict.map { $0.value }
+        return updatedInfo.sortedByBusStopDistance()
     }
-
     
-    func updateContentViewController(with arrivalsInfo: [TFLBusStopArrivalsInfo], and coordinate: CLLocationCoordinate2D) {
+    func updateContentViewController(with arrivalsInfo: [TFLBusStopArrivalsInfo],isUpdatePending updatePending : Bool, and  coordinate: CLLocationCoordinate2D) {
         let oldTuples = self.nearbyBusStationController?.busStopPredicationTuple ?? []
-        let mergedInfo = mergeInfo(arrivalsInfo, with: oldTuples)
+        var mergedInfo : [TFLBusStopArrivalsInfo] = []
+    
+        switch (oldTuples.isEmpty,arrivalsInfo.isEmpty) {
+        case (false,false):
+            let merger = updatePending ? mergeUpdatedInfo : mergeCompleteInfo
+            mergedInfo =  merger(arrivalsInfo, oldTuples)
+        case (true,false):
+            mergedInfo = arrivalsInfo
+        case (_,true):
+            let newTuples = oldTuples.map { $0.arrivalInfo(with:  CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)) }
+            mergedInfo = newTuples
+        }
+        
         let filteredArrivalsInfo = mergedInfo.filter { !$0.arrivals.isEmpty }
-        self.state = filteredArrivalsInfo.isEmpty ? .errorNoStationsNearby(coordinate: coordinate) : .noError
         self.nearbyBusStationController?.busStopPredicationTuple = filteredArrivalsInfo
-        self.mapViewController?.busStopPredicationCoordinateTuple = (filteredArrivalsInfo,coordinate)
+
+        switch (updatePending,filteredArrivalsInfo.isEmpty) {
+        case (true,false):
+            self.state = .loadingArrivals
+        case (false,false):
+            self.mapViewController?.busStopPredicationCoordinateTuple = (filteredArrivalsInfo,coordinate)
+            self.state = .noError
+        case (true,true): // Wait til complete
+            break
+        case (false,true):
+            self.mapViewController?.busStopPredicationCoordinateTuple = (filteredArrivalsInfo,coordinate)
+            self.state = .errorNoStationsNearby(coordinate: coordinate)
+        }
     }
 
 
@@ -223,19 +269,28 @@ fileprivate extension TFLRootViewController {
             completionBlock?()
             return
         }
+        guard TFLLocationManager.sharedManager.enabled != false else {
+            self.state = .errorNoGPSAvailable
+            completionBlock?()
+            return
+        }
         self.state = .determineCurrentLocation
         TFLLocationManager.sharedManager.updateLocation { [weak self] coord in
-            self?.updateContentViewController(with: coord)
-            self?.retrieveBusstops(for: coord) { busStopPredictionTuples in
-                self?.updateContentViewController(with: busStopPredictionTuples, and: coord)
+            self?.updateContentViewController(with: [],isUpdatePending: false, and: coord)
+            self?.retrieveBusstops(for: coord) { busStopPredictionTuples,isComplete  in
+                
+                self?.updateContentViewController(with: busStopPredictionTuples, isUpdatePending: !isComplete, and: coord)
+                guard isComplete else {
+                    return
+                }
                 completionBlock?()
             }
-
+            
         }
     }
 
 
-    func retrieveBusstops(for location:CLLocationCoordinate2D, using completionBlock:@escaping ([TFLBusStopArrivalsInfo])->()) {
+    func retrieveBusstops(for location:CLLocationCoordinate2D, using completionBlock:@escaping ([TFLBusStopArrivalsInfo],_ completed: Bool)->()) {
         self.state = .retrievingNearbyStations
         if CLLocationCoordinate2DIsValid(location) {
             let userDefaultRadius = UserDefaults.standard.double(forKey: "Distance")
@@ -247,7 +302,7 @@ fileprivate extension TFLRootViewController {
         else
         {
             self.state = .errorNoGPSAvailable
-            completionBlock([])
+            completionBlock([],true)
         }
     }
 
@@ -258,36 +313,61 @@ fileprivate extension TFLRootViewController {
 
     func loadArrivalTimesForStoreStopPoints(with coord: CLLocationCoordinate2D,
                                             with distance : Double = TFLRootViewController.searchParameter.initial,
-                                            using completionBlock:@escaping ([TFLBusStopArrivalsInfo])->()) {
+                                            using completionBlock:@escaping (_ arrivalInfos:[TFLBusStopArrivalsInfo],_ completed: Bool)->()) {
+        let mainQueueBlock : ([TFLBusStopArrivalsInfo],Bool) -> Void = { [weak self] infos, completed in
+            DispatchQueue.main.async {
+                completionBlock(infos,completed)
+                guard completed else {
+                    return
+                }
+                self?.writeArrivalInfos(infos)
+            }
+        }
         self.state = .loadingArrivals
         let currentLocation = CLLocation(latitude: coord.latitude, longitude: coord.longitude)
+        DispatchQueue.global().async {
+            let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
+            TFLBusStopStack.sharedDataStack.nearbyBusStops(with: coord,with: distance,and: context) { [weak self] busStops in
+                let threshold = 20
+                if busStops.count >= threshold {
+                    let initialLoad = Array(busStops[0..<threshold])
+                    let remainder = Array(busStops[threshold..<busStops.count])
+                    self?.arrivalsForBusStops(initialLoad, and: currentLocation) { initialInfos in
+                        mainQueueBlock(initialInfos,false)
+                        self?.arrivalsForBusStops(remainder, and: currentLocation) { remainderInfos in
+                            mainQueueBlock(initialInfos + remainderInfos,true)
+                        }
+                    }
+                }
+                else {
+                    self?.arrivalsForBusStops(busStops, and: currentLocation) { arrivalInfos in
+                        mainQueueBlock(arrivalInfos,true)
+                    }
+                }
+            }
+        }
+    }
+    
+    func arrivalsForBusStops(_ busStops : [TFLCDBusStop],and location : CLLocation, using completionBlock:@escaping ([TFLBusStopArrivalsInfo])->()) {
         let group = DispatchGroup()
         var newStopPoints : [TFLBusStopArrivalsInfo] = []
         let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
         let queue = self.networkBackgroundQueue
-        DispatchQueue.global().async {
-            
-            TFLBusStopStack.sharedDataStack.nearbyBusStops(with: coord,with: distance,and: context) { busStops in
-                busStops.forEach { [weak self] stopPoint in
-                    group.enter()
+        busStops.forEach { [weak self] stopPoint in
+            group.enter()
+            context.perform {
+                self?.tflClient.arrivalsForStopPoint(with: stopPoint.identifier,with: queue) { predictions,_ in
                     context.perform {
-                        self?.tflClient.arrivalsForStopPoint(with: stopPoint.identifier,with: queue) { predictions,_ in
-                            context.perform {
-                                let tuple = TFLBusStopArrivalsInfo(busStop: stopPoint, location: currentLocation, arrivals: predictions ?? [])
-                                newStopPoints += [tuple]
-                                group.leave()
-                            }
-                        }
+                        let tuple = TFLBusStopArrivalsInfo(busStop: stopPoint, location: location, arrivals: predictions ?? [])
+                        newStopPoints += [tuple]
+                        group.leave()
                     }
-                }
-                group.notify(queue: DispatchQueue.main) {
-                    let sortedStopPoints = newStopPoints.sorted { $0.busStopDistance < $1.busStopDistance }
-                    self.writeArrivalInfos(sortedStopPoints)
-                    completionBlock(sortedStopPoints)
                 }
             }
         }
-        
+        group.notify(queue: DispatchQueue.global()) {
+            completionBlock(newStopPoints)
+        }
     }
 }
 
@@ -417,8 +497,8 @@ fileprivate extension TFLRootViewController {
         _ = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { [weak self] _ in
             self?.state = .determineCurrentLocation
             let coords = CLLocationCoordinate2D(latitude: coords.latitude, longitude: coords.longitude + tuple.counter * 0.001)
-            self?.retrieveBusstops(for: coords) { busStopPredictionTuples in
-                self?.updateContentViewController(with: busStopPredictionTuples, and: coords)
+            self?.retrieveBusstops(for: coords) { busStopPredictionTuples,isComplete in
+                self?.updateContentViewController(with: busStopPredictionTuples,isUpdatePending:!isComplete, and: coords)
                 switch tuple {
                 case (30,_):
                     self?.startSim(tuple: (tuple.counter-1,false))

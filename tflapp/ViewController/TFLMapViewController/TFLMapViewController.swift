@@ -30,8 +30,8 @@ class TFLMapViewController: UIViewController {
 
     var busStopPredicationCoordinateTuple :  ([TFLBusStopArrivalsInfo], CLLocationCoordinate2D)? = nil {
         didSet (oldTuple) {
+            synchroniser.synchronise { synchroniseEnd in
             if let busStopPredicationCoordinateTuple = self.busStopPredicationCoordinateTuple  {
-                synchroniser.synchronise { synchroniseEnd in
                     let (busStopPredictionTuples,coords) = busStopPredicationCoordinateTuple
                     let oldList = oldTuple?.0 ?? []
                     var (inserted ,deleted ,_, _) : (inserted : [(element:TFLBusStopArrivalsInfo,index:Int)],
@@ -54,6 +54,7 @@ class TFLMapViewController: UIViewController {
                             let animated = (oldTuple?.0 ?? []).isEmpty   ? false : true
                             self.mapView.setRegion(region, animated: animated)
                         }
+                        synchroniseEnd()
                     }
                 }
             }

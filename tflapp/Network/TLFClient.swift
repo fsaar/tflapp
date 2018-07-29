@@ -33,8 +33,8 @@ public final class TFLClient {
                 }
                 return
             }
-            let predictions = try? TFLClient.jsonDecoder.decode([TFLBusPrediction].self,from: data)
             operationQueue.addOperation {
+                let predictions = try? TFLClient.jsonDecoder.decode([TFLBusPrediction].self,from: data)
                 completionBlock(predictions,nil)
             }
         }

@@ -55,7 +55,7 @@ class TFLClientSpecs: QuickSpec {
                     expect(error).notTo(beNil())
                     completionBlockCalled = true
                 }
-                expect(completionBlockCalled).toEventually(beTrue(),timeout: 5)
+                expect(completionBlockCalled).toEventually(beTrue(),timeout: 10)
 
             }
             
@@ -68,7 +68,7 @@ class TFLClientSpecs: QuickSpec {
                                                 completionBlockCalled = true
                                                 expect(error).to(beNil())
                 }
-                expect(completionBlockCalled).toEventually(beTrue(),timeout: 5)
+                expect(completionBlockCalled).toEventually(beTrue(),timeout: 10)
             }
 
             it("should call back on provided operation queue on failure") {
@@ -79,7 +79,7 @@ class TFLClientSpecs: QuickSpec {
                                                 expect(error).notTo(beNil())
                     completionBlockCalled = true
                 }
-                expect(completionBlockCalled).toEventually(beTrue(),timeout: 5)
+                expect(completionBlockCalled).toEventually(beTrue(),timeout: 99)
 
             }
             it("should call back on mainqueue if no operation queue provided on failure") {
@@ -89,7 +89,7 @@ class TFLClientSpecs: QuickSpec {
                     expect(Thread.isMainThread) == true
                     completionBlockCalled = true
                 }
-                expect(completionBlockCalled).toEventually(beTrue(),timeout: 5)
+                expect(completionBlockCalled).toEventually(beTrue(),timeout: 99)
             }
 
             it("should call back on mainqueue if no operation queue provided on success") {
@@ -99,7 +99,7 @@ class TFLClientSpecs: QuickSpec {
                     expect(Thread.isMainThread) == true
                     completionBlockCalled = true
                 }
-                expect(completionBlockCalled).toEventually(beTrue(),timeout: 5)
+                expect(completionBlockCalled).toEventually(beTrue(),timeout: 99)
             }
             it("should parse model successfully") {
                 var completionBlockCalled = false
@@ -107,7 +107,7 @@ class TFLClientSpecs: QuickSpec {
                     completionBlockCalled = true
                     expect(models!.count) == 2
                 }
-                expect(completionBlockCalled).toEventually(beTrue(),timeout: 5)
+                expect(completionBlockCalled).toEventually(beTrue(),timeout: 99)
             }
 
             it("should handle invalid model gracefully") {
@@ -126,7 +126,7 @@ class TFLClientSpecs: QuickSpec {
                     completionBlockCalled = true
                     expect(models).to(beNil())
                 }
-                expect(completionBlockCalled).toEventually(beTrue(),timeout: 5)
+                expect(completionBlockCalled).toEventually(beTrue(),timeout: 99)
             }
         }
         
@@ -150,7 +150,7 @@ class TFLClientSpecs: QuickSpec {
                     expect(models).notTo(beNil())
                     nearbyBusStopsBlockCalled = true
                 }
-               expect(nearbyBusStopsBlockCalled).toEventually(beTrue(),timeout: 5)
+               expect(nearbyBusStopsBlockCalled).toEventually(beTrue(),timeout: 99)
             }
 
             it("should call back on given queue on success") {

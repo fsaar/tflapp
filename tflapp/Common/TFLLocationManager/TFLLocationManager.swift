@@ -30,6 +30,7 @@ class TFLLocationManager : NSObject {
     }
     let locationManager =  CLLocationManager()
     var foregroundNotificationHandler : TFLNotificationObserver?
+    var backgroundNotificationHandler : TFLNotificationObserver?
     override init() {
         super.init()
         self.locationManager.delegate = self
@@ -41,7 +42,11 @@ class TFLLocationManager : NSObject {
             self.locationManager.startUpdatingLocation()
         }
         self.foregroundNotificationHandler = TFLNotificationObserver(notification: UIApplication.willEnterForegroundNotification) { [weak self]  _ in
-            self?.locationManager.requestLocation()
+            self?.locationManager.startUpdatingLocation()
+        }
+        self.backgroundNotificationHandler = TFLNotificationObserver(notification: UIApplication.didEnterBackgroundNotification) { [weak self]  _ in
+            self?.lastKnownCoordinate = kCLLocationCoordinate2DInvalid
+            self?.locationManager.stopUpdatingLocation()
         }
     }
 

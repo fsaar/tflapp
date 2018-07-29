@@ -38,11 +38,11 @@ class TFLBusPredictionView: UICollectionView {
                 DispatchQueue.main.async {
                     self.performBatchUpdates({ [weak self] in
                         self?.predictions = predictions
+                        let deletedIndexPaths = deleted.map { IndexPath(item: $0.index,section:0) }.sorted(by:>)
+                        self?.deleteItems(at: deletedIndexPaths)
                         let insertedIndexPaths = inserted.map { IndexPath(item: $0.index,section:0) }.sorted(by:<)
                         self?.insertItems(at: insertedIndexPaths )
                         moved.forEach { self?.moveItem(at: IndexPath(item: $0.oldIndex,section:0), to:  IndexPath(item: $0.newIndex,section:0)) }
-                        let deletedIndexPaths = deleted.map { IndexPath(item: $0.index,section:0) }.sorted(by:>)
-                        self?.deleteItems(at: deletedIndexPaths)
                         } ,completion: { [weak self]  _ in
                             
                             let updatedIndexPaths = updated.map { IndexPath(item: $0.index,section:0) }

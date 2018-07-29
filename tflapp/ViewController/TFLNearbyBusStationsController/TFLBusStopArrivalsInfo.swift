@@ -7,7 +7,7 @@ extension Collection where Element == TFLBusStopArrivalsInfo {
     }
 }
 
-public struct TFLBusStopArrivalsInfo : Hashable {
+public struct TFLBusStopArrivalsInfo : Hashable,CustomStringConvertible {
     public struct TFLContextFreeBusStopInfo  {
         let identifier: String
         fileprivate(set) var stopLetter : String?
@@ -36,7 +36,14 @@ public struct TFLBusStopArrivalsInfo : Hashable {
     let busStopDistance : Double
     let arrivals : [TFLBusPrediction]
     
-   
+    public var description : String {
+        let lines = arrivals.sorted { $0.timeStamp < $1.timeStamp }.map { $0.lineName }.joined(separator: " < ")
+        let desc =  """
+                        [\(busStop.stopLetter ?? "")] \(busStop.name ) [\(identifier)]\n
+                        \(lines)
+                    """
+        return desc
+    }
     
     var identifier : String
     {

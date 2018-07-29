@@ -85,6 +85,12 @@ public struct TFLBusStopArrivalsInfo : Hashable,CustomStringConvertible {
     func arrivalInfo(with location : CLLocation) -> TFLBusStopArrivalsInfo {
         return TFLBusStopArrivalsInfo(busStop: self.busStop, location: location, arrivals: self.arrivals)
     }
+    
+    func liveArrivals(with referenceDate: Date = Date()) -> [TFLBusPrediction]  {
+        let referenceTime = referenceDate.timeIntervalSinceReferenceDate
+        let filteredArrivals = arrivals.filter { $0.timeToLive.timeIntervalSinceReferenceDate >= referenceTime }
+        return filteredArrivals
+    }
 }
 
 extension TFLBusStopArrivalsInfo : Codable {

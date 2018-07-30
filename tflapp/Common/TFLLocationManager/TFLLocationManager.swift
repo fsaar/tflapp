@@ -89,10 +89,12 @@ extension TFLLocationManager : CLLocationManagerDelegate {
         }
     }
     public func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        if case CLAuthorizationStatus.authorizedWhenInUse = status {
+        switch status {
+        case .authorizedWhenInUse:
             self.locationManager.startUpdatingLocation()
-        }
-        else  {
+        case .notDetermined:
+            break
+        default:
             self.completionBlock?(kCLLocationCoordinate2DInvalid)
             self.completionBlock = nil
         }

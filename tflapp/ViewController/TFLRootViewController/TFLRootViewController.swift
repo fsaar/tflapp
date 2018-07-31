@@ -190,46 +190,6 @@ class TFLRootViewController: UIViewController {
 
 fileprivate extension TFLRootViewController {
     
-    // merges new arrival infos with old infos
-    // old infos will only be used if arrivals in new list is empty
-    // Data in newInfo determines what will be returned. Oldinfo only used to fill blank data
-    // - Parameters:
-    //      - newInfo: new arrivalInfos
-    //      - oldInfo: old arrivalInfos
-    // - Returns:
-    //      - merged arrivalinfos
-    func mergeCompleteInfo(_ newInfo : [TFLBusStopArrivalsInfo],with oldInfo:[TFLBusStopArrivalsInfo] ) ->  [TFLBusStopArrivalsInfo] {
-        let dict = Dictionary(uniqueKeysWithValues: oldInfo.map { ($0.identifier,$0) } )
-        let mergedInfo : [TFLBusStopArrivalsInfo] = newInfo.map {  info in
-            guard info.arrivals.isEmpty else {
-                return info
-            }
-            return dict[info.identifier] ?? info
-        }
-        return mergedInfo
-    }
-    
-    // merges new arrival infos with old infos
-    // updated infos will be used if available. New infos that are not in old info will be disregarded
-    // Returns info list where outdata data is updated by new data in newInfo
-    // - Parameters:
-    //      - newInfo: new arrivalInfos
-    //      - oldInfo: old arrivalInfos
-    // - Returns:
-    //      - updated arrivalinfos
-    func mergeUpdatedInfo(_ newInfo : [TFLBusStopArrivalsInfo],with oldInfo:[TFLBusStopArrivalsInfo] ) ->  [TFLBusStopArrivalsInfo] {
-        let oldIdentifiers = oldInfo.map { $0.identifier }
-        let newIdentifiers = newInfo.compactMap { !$0.arrivals.isEmpty ? $0.identifier : nil  }
-        let updatedIdentifiers = Set(oldIdentifiers).intersection(newIdentifiers)
-        let newDict = Dictionary(uniqueKeysWithValues: newInfo.map { ($0.identifier,$0) } )
-        var oldDict = Dictionary(uniqueKeysWithValues: oldInfo.map { ($0.identifier,$0) } )
-        updatedIdentifiers.forEach { identifier in
-            oldDict[identifier] = newDict[identifier]
-        }
-        
-        let updatedInfo = oldDict.map { $0.value }
-        return updatedInfo.sortedByBusStopDistance()
-    }
     
     func updateContentViewController(with arrivalsInfo: [TFLBusStopArrivalsInfo],isUpdatePending updatePending : Bool, and  coordinate: CLLocationCoordinate2D) {
         let oldTuples = self.nearbyBusStationController?.busStopPredicationTuple ?? []
@@ -237,8 +197,7 @@ fileprivate extension TFLRootViewController {
     
         switch (oldTuples.isEmpty,arrivalsInfo.isEmpty) {
         case (false,false):
-            let merger = updatePending ? mergeUpdatedInfo : mergeCompleteInfo
-            mergedInfo =  merger(arrivalsInfo, oldTuples)
+            mergedInfo = updatePending ? oldTuples.mergedUpdatedArrivalsInfo(arrivalsInfo) : oldTuples.mergedArrivalsInfo(arrivalsInfo)
         case (true,false):
             mergedInfo = arrivalsInfo
         case (_,true):
@@ -246,7 +205,7 @@ fileprivate extension TFLRootViewController {
             mergedInfo = newTuples
         }
         
-        let filteredArrivalsInfo = mergedInfo.filter { !$0.arrivals.isEmpty }
+        let filteredArrivalsInfo = mergedInfo.filter { !$0.liveArrivals().isEmpty }
         self.nearbyBusStationController?.busStopPredicationTuple = filteredArrivalsInfo
 
         switch (updatePending,filteredArrivalsInfo.isEmpty) {

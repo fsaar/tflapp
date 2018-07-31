@@ -5,6 +5,46 @@ extension Collection where Element == TFLBusStopArrivalsInfo {
     func sortedByBusStopDistance() -> [Element] {
         return self.sorted { $0.busStopDistance < $1.busStopDistance }
     }
+    // merges new arrival infos with old infos
+    // old infos will only be used if arrivals in new list is empty
+    // Data in newInfo determines what will be returned. Oldinfo only used to fill blank data
+    // - Parameters:
+    //      - newInfo: new arrivalInfos
+    // - Returns:
+    //      - merged arrivalinfos
+    func mergedArrivalsInfo(_ newInfo : [TFLBusStopArrivalsInfo]) ->  [TFLBusStopArrivalsInfo] {
+        let dict = Dictionary(uniqueKeysWithValues: self.map { ($0.identifier,$0) } )
+        let mergedInfo : [TFLBusStopArrivalsInfo] = newInfo.map {  info in
+            guard info.arrivals.isEmpty else {
+                return info
+            }
+            return dict[info.identifier] ?? info
+        }
+        return mergedInfo
+    }
+    
+    // merges new arrival infos with current arrival infos
+    // updated infos will only be used if available. New infos that are not in old info will be disregarded
+    // Returns info list where outdata data is updated by new data in newInfo
+    //
+    // - Parameters:
+    //      - newInfo: new arrivalInfos
+    // - Returns:
+    //      - updated arrivalinfos
+    func mergedUpdatedArrivalsInfo(_ newInfo : [TFLBusStopArrivalsInfo]) ->  [TFLBusStopArrivalsInfo] {
+        let oldIdentifiers = self.map { $0.identifier }
+        let newIdentifiers = newInfo.compactMap { !$0.arrivals.isEmpty ? $0.identifier : nil  }
+        let updatedIdentifiers = Set(oldIdentifiers).intersection(newIdentifiers)
+        let newDict = Dictionary(uniqueKeysWithValues: newInfo.map { ($0.identifier,$0) } )
+        var oldDict = Dictionary(uniqueKeysWithValues: self.map { ($0.identifier,$0) } )
+        updatedIdentifiers.forEach { identifier in
+            oldDict[identifier] = newDict[identifier]
+        }
+        
+        let updatedInfo = oldDict.map { $0.value }
+        return updatedInfo.sortedByBusStopDistance()
+    }
+    
 }
 
 public struct TFLBusStopArrivalsInfo : Hashable,CustomStringConvertible {

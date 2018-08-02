@@ -47,7 +47,7 @@ extension TFLSnapHandler {
         let translatedSnapPositions = self.snapPositions.map { view.frame.size.height * $0 }
 
         let distances = translatedSnapPositions.map { ($0,abs($0 - positionY)) }
-        let sortedDistance = distances.sorted (by: { $0.1 < $1.1 })
+        let sortedDistance = distances.sorted { $0.1 < $1.1 }
         let positionY = sortedDistance.first?.0
         return positionY
     }

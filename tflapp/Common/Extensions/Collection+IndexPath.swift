@@ -6,4 +6,3 @@ extension Collection where Element == Int  {
         return self.map { IndexPath(item: $0, section: section) }
     }
 }
-

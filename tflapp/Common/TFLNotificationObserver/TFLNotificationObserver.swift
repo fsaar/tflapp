@@ -47,7 +47,7 @@ extension TFLNotificationObserver {
 
     @objc func notificationHandler(_ notification : Notification)
     {
-        if (enabled)
+        if enabled
         {
             handlerBlock(notification)
         }

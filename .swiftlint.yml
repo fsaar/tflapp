@@ -80,8 +80,8 @@ disabled_rules: # rule identifiers to exclude from running
     - unused_optional_binding  
     - nesting                                  
     - closure_spacing                          
-opt_in_rules: 
     - large_tuple                              
+opt_in_rules: 
     - contains_over_first_not_nil              
     - control_statement                        
     - required_enum_case                       

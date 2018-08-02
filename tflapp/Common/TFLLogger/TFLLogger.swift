@@ -58,4 +58,3 @@ fileprivate extension TFLLogger {
         }
     }
 }
-

@@ -44,7 +44,7 @@ class TFLAnimiatedLabel: UIView {
 
     func setText(_ newText: String?, animated : Bool = false) {
         self.text = newText
-        if (animated)
+        if animated
         {
             self.label2TopConstraint?.constant = self.frame.size.height
             self.labels.first?.text = newText

@@ -40,7 +40,7 @@ class TFLSlideContainerController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.snapHandler = TFLSnapHandler(with: self.sliderHandleContainerView,in: self.view, and: self.snapPositions, using: { [weak self] _,velocity,newOrigin,final in
+        self.snapHandler = TFLSnapHandler(with: self.sliderHandleContainerView,in: self.view, and: self.snapPositions) { [weak self] _,velocity,newOrigin,final in
             guard let strongSelf = self else {
                 return
             }
@@ -50,7 +50,7 @@ class TFLSlideContainerController: UIViewController {
             let normalizedVelocity = final ? abs(newOrigin.y - currentY) / nonzeroVelocity : nonzeroVelocity
             let animationTime = final ? 0.5 : 0
             self?.updateSliderContainerView(with: newOrigin, animationTime: animationTime, velocity: normalizedVelocity,final: final)
-        })
+        }
         let initPositionY = (self.snapPositions.first ?? 0) * self.view.frame.size.height
         self.updateSliderContainerView(with: CGPoint(x:self.sliderContainerView.frame.origin.x,y:initPositionY), animationTime: 0, velocity:0,final : true)
     }

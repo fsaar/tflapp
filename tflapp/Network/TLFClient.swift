@@ -55,9 +55,9 @@ public final class TFLClient {
                 if context.hasChanges {
                     _ = try? context.save()
                 }
-                operationQueue.addOperation({
+                operationQueue.addOperation {
                     completionBlock?(stops,error)
-                })
+                }
             }
         }
 
@@ -71,9 +71,9 @@ public final class TFLClient {
         TFLLogger.shared.signPostStart(osLog: TFLClient.loggingHandle, name: "busStops")
         requestBusStops(with: busStopPath, query: query,context:TFLCoreDataStack.sharedDataStack.privateQueueManagedObjectContext) { busstops, error in
             TFLLogger.shared.signPostEnd(osLog: TFLClient.loggingHandle, name: "busStops")
-            operationQueue.addOperation({
+            operationQueue.addOperation {
                 completionBlock(busstops,error)
-            })
+            }
         }
     }
 
@@ -90,9 +90,9 @@ public final class TFLClient {
         TFLLogger.shared.signPostStart(osLog: TFLClient.loggingHandle, name: "lineStationInfo",identifier: line)
         lineStationInfo(with: lineStationPath, query: "serviceTypes=Regular&excludeCrowding=true", context: TFLCoreDataStack.sharedDataStack.privateQueueManagedObjectContext) { lineInfo , error in
             TFLLogger.shared.signPostEnd(osLog: TFLClient.loggingHandle, name: "lineStationInfo",identifier: line)
-            operationQueue.addOperation({
+            operationQueue.addOperation {
                 completionBlock(lineInfo,error)
-            })
+            }
         }
     }
 
@@ -114,14 +114,14 @@ fileprivate extension TFLClient {
 
                     }
                 } else {
-                    operationQueue.addOperation({
+                    operationQueue.addOperation {
                         completionBlock(nil,TFLClientError.InvalidFormat(data: data))
-                    })
+                    }
                 }
             } else {
-                operationQueue.addOperation({
+                operationQueue.addOperation {
                     completionBlock(nil,TFLClientError.InvalidFormat(data: data))
-                })
+                }
             }
         }
     }
@@ -137,15 +137,15 @@ fileprivate extension TFLClient {
                     , options: JSONSerialization.ReadingOptions(rawValue:0)) as? [String : Any] {
                 if let jsonList = jsonDict?["stopPoints"] as? [[String: Any]] {
                     self?.stopPoints(from: jsonList, context: context) { stops in
-                        operationQueue.addOperation({
+                        operationQueue.addOperation {
                             completionBlock(stops,nil)
-                        })
+                        }
                     }
                 }
                 else {
-                    operationQueue.addOperation({
+                    operationQueue.addOperation {
                          completionBlock(nil,TFLClientError.InvalidFormat(data: data))
-                    })
+                    }
                 }
             }
             else {

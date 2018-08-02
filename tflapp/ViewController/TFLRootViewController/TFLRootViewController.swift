@@ -171,7 +171,9 @@ class TFLRootViewController: UIViewController {
     }
     private static var counter : Int = 0
     func writeArrivalInfos(_ arrivalInfos : [TFLBusStopArrivalsInfo]) {
-        let data = try! JSONEncoder().encode(arrivalInfos.self)
+        guard let data = try? JSONEncoder().encode(arrivalInfos.self) else {
+            return
+        }
         let date = Date()
         let dateFormatter = ISO8601DateFormatter()
         let dateString = dateFormatter.string(from: date)
@@ -180,7 +182,7 @@ class TFLRootViewController: UIViewController {
         let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
         let path = "\(documentsPath)/\(fileName)"
         let url = URL(fileURLWithPath: path)
-        try! data.write(to: url, options: Data.WritingOptions.atomicWrite)
+        try? data.write(to: url, options: Data.WritingOptions.atomicWrite)
         print (path)
     }
 }

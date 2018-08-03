@@ -157,13 +157,14 @@ class TFLBusStationArrivalsCellSpecs: QuickSpec {
                 cell.configure(with: model)
                 expect(cell.stationName.text) == "Abbey Road"
                 expect(cell.stationDetails.text) == "towards Ealing Broadway"
-                expect(cell.distanceLabel.text) == "9,174m"
+                expect(cell.distanceLabel.text) == "9,176m"
                 expect(cell.noDataErrorLabel.text) == NSLocalizedString("TFLBusStationArrivalsCell.noDataError", comment: "")
                 completionBlockCalled = true
             }
             expect(completionBlockCalled).toEventually(beTrue(),timeout:20)
             expect(cell.predictionView.predictions.count).toEventually(equal(3),timeout: 5)
         }
+        
         
         it("should hide noDataErrorLabel if arrivalTimes is  empty") {
             var completionBlockCalled = false

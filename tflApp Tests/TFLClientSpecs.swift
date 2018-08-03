@@ -29,7 +29,9 @@ class TFLClientSpecs: QuickSpec {
         beforeEach() {
             client = TFLClient()
             URLProtocol.registerClass(TestUrlProtocol.self)
-            TFLRequestManager.shared.protocolClasses = [TestUrlProtocol.self]
+            let configuration = URLSessionConfiguration.default
+            configuration.protocolClasses = [TestUrlProtocol.self]
+            TFLRequestManager.shared.session = URLSession(configuration:configuration)
         }
         afterEach {
             TestUrlProtocol.dataProviders = []

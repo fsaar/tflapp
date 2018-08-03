@@ -19,7 +19,7 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
         var createBusStopArrivalInfo : ((_ block : ((_ info : TFLBusStopArrivalsInfo)->())?) -> ())!
         var location : CLLocation!
         beforeEach {
-            location = CLLocation(latitude: 51.514028153209, longitude: -0.15301535236356)
+            location = CLLocation(latitude: 51.5140, longitude: -0.1530)
             
             distanceFormatter = LengthFormatter()
             distanceFormatter.unitStyle = .short
@@ -58,8 +58,8 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
                         "value": "Ealing Broadway"
                     ]],
                 "children": [],
-                "lat": 51.538675,
-                "lon": -0.279163
+                "lat": 51.538,
+                "lon": -0.27
             ]
             
             let models = NSManagedObjectModel.mergedModel(from: nil)!
@@ -123,23 +123,27 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
             decoder = JSONDecoder()
             decoder.dateDecodingStrategy = .iso8601
 
-            createBusStopArrivalInfo = { block in
-                TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext) { busStopModel in
-                    
-                    let data1 = try! JSONSerialization.data(withJSONObject: busPredictions[0], options: [])
-                    let data2 = try! JSONSerialization.data(withJSONObject: busPredictions[1], options: [])
-                    let data3 = try! JSONSerialization.data(withJSONObject: busPredictions[2], options: [])
-                    
-                    let model1 = try! decoder.decode(TFLBusPrediction.self,from: data1)
-                    let model2 = try! decoder.decode(TFLBusPrediction.self,from: data2)
-                    let model3 = try! decoder.decode(TFLBusPrediction.self,from: data3)
-                    let info = TFLBusStopArrivalsInfo(busStop: busStopModel!, location: location, arrivals: [model1,model2,model3])
-                    block!(info)
-                }
-            }
+           
         }
         
         context("when testing TFLBusStopArrivalsViewModel") {
+            beforeEach {
+                createBusStopArrivalInfo = { block in
+                    TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext) { busStopModel in
+                        
+                        let data1 = try! JSONSerialization.data(withJSONObject: busPredictions[0], options: [])
+                        let data2 = try! JSONSerialization.data(withJSONObject: busPredictions[1], options: [])
+                        let data3 = try! JSONSerialization.data(withJSONObject: busPredictions[2], options: [])
+                        
+                        let model1 = try! decoder.decode(TFLBusPrediction.self,from: data1)
+                        let model2 = try! decoder.decode(TFLBusPrediction.self,from: data2)
+                        let model3 = try! decoder.decode(TFLBusPrediction.self,from: data3)
+    
+                        let info = TFLBusStopArrivalsInfo(busStop: busStopModel!, location: location, arrivals: [model1,model2,model3])
+                        block!(info)
+                    }
+                }
+            }
             it ("should not be nil") {
                 var completionBlockCalled = false
                 createBusStopArrivalInfo { busArrivalInfo in
@@ -157,7 +161,7 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
                     expect(model.identifier) == "490003029W"
                     expect(model.stationName) == "Abbey Road"
                     expect(model.stationDetails) == "towards Ealing Broadway"
-                    expect(model.distance) == "9,174m"
+                    expect(model.distance) == "8,550m"
                     completionBlockCalled = true
                 }
                 expect(completionBlockCalled).toEventually(beTrue(),timeout:20)

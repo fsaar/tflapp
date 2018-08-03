@@ -34,7 +34,11 @@ class TFLRequestManagerSpecs: QuickSpec {
         var manager : TFLRequestManager!
         beforeEach() {
             manager = TFLRequestManager.shared
-            TFLRequestManager.shared.protocolClasses = [TestUrlProtocol.self]
+            URLProtocol.registerClass(TestUrlProtocol.self)
+            let configuration = URLSessionConfiguration.default
+            configuration.protocolClasses = [TestUrlProtocol.self]
+            TFLRequestManager.shared.session = URLSession(configuration:configuration)
+
         }
         afterEach {
             TestUrlProtocol.dataProviders = []

@@ -161,7 +161,6 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
                     expect(model.identifier) == "490003029W"
                     expect(model.stationName) == "Abbey Road"
                     expect(model.stationDetails) == "towards Ealing Broadway"
-                    expect(model.distance) == "8,550m"
                     completionBlockCalled = true
                 }
                 expect(completionBlockCalled).toEventually(beTrue(),timeout:20)

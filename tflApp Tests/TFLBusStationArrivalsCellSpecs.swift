@@ -19,7 +19,7 @@ class TFLBusStationArrivalsCellSpecs: QuickSpec {
         var decoder : JSONDecoder!
         var location : CLLocation!
         beforeEach {
-            location = CLLocation(latitude: 51.514028153209, longitude: -0.15301535236356)
+            location = CLLocation(latitude: 51.514028, longitude: -0.1530)
             
             timeStampFormatter = DateFormatter()
             timeStampFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
@@ -64,8 +64,8 @@ class TFLBusStationArrivalsCellSpecs: QuickSpec {
                         "value": "Ealing Broadway"
                     ]],
                 "children": [],
-                "lat": 51.538675,
-                "lon": -0.279163
+                "lat": 51.5386,
+                "lon": -0.2791
             ]
             
             let models = NSManagedObjectModel.mergedModel(from: nil)!
@@ -152,12 +152,10 @@ class TFLBusStationArrivalsCellSpecs: QuickSpec {
             TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext) { busStop in
                 let busArrivalInfo = TFLBusStopArrivalsInfo(busStop: busStop!, location: location, arrivals: busPredicationModels)
                 let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo)
-
                 
                 cell.configure(with: model)
                 expect(cell.stationName.text) == "Abbey Road"
                 expect(cell.stationDetails.text) == "towards Ealing Broadway"
-                expect(cell.distanceLabel.text) == "9,176m"
                 expect(cell.noDataErrorLabel.text) == NSLocalizedString("TFLBusStationArrivalsCell.noDataError", comment: "")
                 completionBlockCalled = true
             }

@@ -257,6 +257,7 @@ fileprivate extension TFLRootViewController {
             let userDefaultRadius = UserDefaults.standard.double(forKey: "Distance")
             let searchParam = TFLRootViewController.searchParameter
             let radius = userDefaultRadius < searchParam.min ? searchParam.initial : userDefaultRadius
+            self.state = .loadingArrivals
             self.loadArrivalTimesForStoreStopPoints(with: location,with: radius, using: completionBlock)
             self.updateNearbyBusStops(for: location)
         }
@@ -284,7 +285,6 @@ fileprivate extension TFLRootViewController {
                 self?.writeArrivalInfos(infos)
             }
         }
-        self.state = .loadingArrivals
         let currentLocation = CLLocation(latitude: coord.latitude, longitude: coord.longitude)
         DispatchQueue.global().async {
             let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext

@@ -22,14 +22,15 @@ public class TFLRequestManager : NSObject {
     fileprivate let TFLApplicationKey = "PASTE_YOUR_APPLICATION_KEY_HERE"
     public static let shared =  TFLRequestManager()
 
-    var protocolClasses : [AnyClass] = []
-    fileprivate lazy var sessionConfiguration : URLSessionConfiguration = {
-        var configuration = URLSessionConfiguration.default
-        configuration.protocolClasses = self.protocolClasses
-        return configuration
-    }()
+    var protocolClasses : [AnyClass] = [] {
+        didSet {
+            let configuration = URLSessionConfiguration.default
+            configuration.protocolClasses = self.protocolClasses
+            self.session = URLSession(configuration:configuration)
+        }
+    }
     
-    fileprivate lazy var session = URLSession(configuration: self.sessionConfiguration)
+    var session = URLSession(configuration:  URLSessionConfiguration.default)
 
 
     public func getDataWithRelativePath(relativePath: String ,and query: String? = nil, completionBlock:@escaping ((_ data : Data?,_ error:Error?) -> Void)) {

@@ -7,8 +7,9 @@ import os.signpost
 class TFLRootViewController: UIViewController {
     fileprivate static let searchParameter  : (min:Double,initial:Double) = (100,350)
     fileprivate let networkBackgroundQueue = OperationQueue()
+    fileprivate let tflClient = TFLClient()
     fileprivate static let loggingHandle  = OSLog(subsystem: TFLLogger.subsystem, category: TFLLogger.category.api.rawValue)
-
+    lazy var busInfoAggregator = TFLBusArrivalInfoAggregator()
     fileprivate enum State {
         case errorNoGPSAvailable
         case errorNoStationsNearby(coordinate : CLLocationCoordinate2D)
@@ -92,7 +93,6 @@ class TFLRootViewController: UIViewController {
     }()
 
     fileprivate var slideContainerController : TFLSlideContainerController?
-    fileprivate let tflClient = TFLClient()
     private var foregroundNotificationHandler  : TFLNotificationObserver?
     private var backgroundNotificationHandler  : TFLNotificationObserver?
     @IBOutlet weak var noGPSEnabledView : TFLNoGPSEnabledView! = nil {
@@ -169,22 +169,7 @@ class TFLRootViewController: UIViewController {
             }
         }
     }
-    private static var counter : Int = 0
-    func writeArrivalInfos(_ arrivalInfos : [TFLBusStopArrivalsInfo]) {
-        guard let data = try? JSONEncoder().encode(arrivalInfos.self) else {
-            return
-        }
-        let date = Date()
-        let dateFormatter = ISO8601DateFormatter()
-        let dateString = dateFormatter.string(from: date)
-        let fileName = "\(dateString)_\(type(of: self).counter).dat"
-        type(of:self).counter += 1
-        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-        let path = "\(documentsPath)/\(fileName)"
-        let url = URL(fileURLWithPath: path)
-        try? data.write(to: url, options: Data.WritingOptions.atomicWrite)
-        print (path)
-    }
+    
 }
 
 
@@ -258,7 +243,7 @@ fileprivate extension TFLRootViewController {
             let searchParam = TFLRootViewController.searchParameter
             let radius = userDefaultRadius < searchParam.min ? searchParam.initial : userDefaultRadius
             self.state = .loadingArrivals
-            self.loadArrivalTimesForStoreStopPoints(with: location,with: radius, using: completionBlock)
+            self.busInfoAggregator.loadArrivalTimesForStoreStopPoints(with: location,with: radius, using: completionBlock)
             self.updateNearbyBusStops(for: location)
         }
         else
@@ -273,63 +258,7 @@ fileprivate extension TFLRootViewController {
       
     }
 
-    func loadArrivalTimesForStoreStopPoints(with coord: CLLocationCoordinate2D,
-                                            with distance : Double = TFLRootViewController.searchParameter.initial,
-                                            using completionBlock:@escaping (_ arrivalInfos:[TFLBusStopArrivalsInfo],_ completed: Bool)->()) {
-        let mainQueueBlock : ([TFLBusStopArrivalsInfo],Bool) -> Void = { [weak self] infos, completed in
-            DispatchQueue.main.async {
-                completionBlock(infos,completed)
-                guard completed else {
-                    return
-                }
-                self?.writeArrivalInfos(infos)
-            }
-        }
-        let currentLocation = CLLocation(latitude: coord.latitude, longitude: coord.longitude)
-        DispatchQueue.global().async {
-            let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
-            TFLBusStopStack.sharedDataStack.nearbyBusStops(with: coord,with: distance,and: context) { [weak self] busStops in
-                let threshold = 20
-                if busStops.count >= threshold {
-                    let initialLoad = Array(busStops[0..<threshold])
-                    let remainder = Array(busStops[threshold..<busStops.count])
-                    self?.arrivalsForBusStops(initialLoad, and: currentLocation) { initialInfos in
-                        mainQueueBlock(initialInfos,false)
-                        self?.arrivalsForBusStops(remainder, and: currentLocation) { remainderInfos in
-                            mainQueueBlock(initialInfos + remainderInfos,true)
-                        }
-                    }
-                }
-                else {
-                    self?.arrivalsForBusStops(busStops, and: currentLocation) { arrivalInfos in
-                        mainQueueBlock(arrivalInfos,true)
-                    }
-                }
-            }
-        }
-    }
-    
-    func arrivalsForBusStops(_ busStops : [TFLCDBusStop],and location : CLLocation, using completionBlock:@escaping ([TFLBusStopArrivalsInfo])->()) {
-        let group = DispatchGroup()
-        var newStopPoints : [TFLBusStopArrivalsInfo] = []
-        let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
-        let queue = self.networkBackgroundQueue
-        busStops.forEach { [weak self] stopPoint in
-            group.enter()
-            context.perform {
-                self?.tflClient.arrivalsForStopPoint(with: stopPoint.identifier,with: queue) { predictions,_ in
-                    context.perform {
-                        let tuple = TFLBusStopArrivalsInfo(busStop: stopPoint, location: location, arrivals: predictions ?? [])
-                        newStopPoints += [tuple]
-                        group.leave()
-                    }
-                }
-            }
-        }
-        group.notify(queue: DispatchQueue.global()) {
-            completionBlock(newStopPoints)
-        }
-    }
+   
 }
 
 // MARK: Info View Handling

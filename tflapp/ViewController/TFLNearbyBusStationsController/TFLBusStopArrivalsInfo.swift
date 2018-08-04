@@ -2,9 +2,32 @@ import Foundation
 import MapKit
 
 extension Collection where Element == TFLBusStopArrivalsInfo {
+    
+    // Debug method to write down current list of TFLBusStopArrivalsInfo down to disk
+    // - Parameters:
+    //      - tag: string to further uniqify filename
+    func log(with tag: String = "") {
+       
+        guard  let infos = self as? [TFLBusStopArrivalsInfo],let data = try? JSONEncoder().encode(infos) else {
+            return
+        }
+        let date = Date()
+        let dateFormatter = ISO8601DateFormatter()
+        let dateString = dateFormatter.string(from: date)
+        let fileName = tag.isEmpty ? "\(dateString).dat" : "\(dateString)_\(tag).dat"
+        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+        let path = "\(documentsPath)/\(fileName)"
+        let url = URL(fileURLWithPath: path)
+        try? data.write(to: url, options: Data.WritingOptions.atomicWrite)
+    }
+    
+    // Method to sort by property busStopDistance to make code more readable
+    // - Returns:
+    //      - arrivalinfos sorted by busStopDistance
     func sortedByBusStopDistance() -> [Element] {
         return self.sorted { $0.busStopDistance < $1.busStopDistance }
     }
+    
     // merges new arrival infos with old infos
     // old infos will only be used if arrivals in new list is empty
     // Data in newInfo determines what will be returned. Oldinfo only used to fill blank data

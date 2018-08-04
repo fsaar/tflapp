@@ -8,6 +8,7 @@ class TFLRootViewController: UIViewController {
     fileprivate static let searchParameter  : (min:Double,initial:Double) = (100,350)
     fileprivate let networkBackgroundQueue = OperationQueue()
     fileprivate let tflClient = TFLClient()
+    fileprivate let busStopDBGenerator = TFLBusStopDBGenerator()
     fileprivate static let loggingHandle  = OSLog(subsystem: TFLLogger.subsystem, category: TFLLogger.category.api.rawValue)
     lazy var busInfoAggregator = TFLBusArrivalInfoAggregator()
     fileprivate enum State {
@@ -147,10 +148,10 @@ class TFLRootViewController: UIViewController {
         TFLRequestManager.shared.delegate = self
         self.loadNearbyBusstops()
         self.refreshTimer?.start()
-//        loadBusStops { [weak self] in
-//            self?.loadLineStations()
+        
+//        self.busStopDBGenerator.loadBusStops { [weak self] in
+//            self?.busStopDBGenerator.loadLineStations()
 //        }
-
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -176,7 +177,6 @@ class TFLRootViewController: UIViewController {
 // MARK: Private
 
 fileprivate extension TFLRootViewController {
-    
     
     func updateContentViewController(with arrivalsInfo: [TFLBusStopArrivalsInfo],isUpdatePending updatePending : Bool, and  coordinate: CLLocationCoordinate2D) {
         let oldTuples = self.nearbyBusStationController?.busStopPredicationTuple ?? []
@@ -322,85 +322,6 @@ extension TFLRootViewController : TFLNoStationsViewDelegate {
     }
 }
 
-// MARK: DataBase Generation
-
-fileprivate extension TFLRootViewController {
-    func loadLineStations() {
-        self.linesFromBusStops { [weak self] lines in
-            self?.load(lines: Array(lines), index: 0) {
-                let context = TFLCoreDataStack.sharedDataStack.privateQueueManagedObjectContext
-                context.performAndWait {
-                    try? context.save()
-                }
-            }
-        }
-    }
-
-    func linesFromBusStops(using completionBlock : ((_ lines : Set<String>) -> Void )?)  {
-        var lines : Set<String> = []
-        let context = TFLCoreDataStack.sharedDataStack.privateQueueManagedObjectContext
-        let fetchRequest = NSFetchRequest<TFLCDBusStop>(entityName:String(describing: TFLCDBusStop.self))
-        fetchRequest.includesSubentities = false
-        fetchRequest.includesPropertyValues = false
-        fetchRequest.propertiesToFetch = ["lines"]
-        context.perform {
-            if let stops = try? context.fetch(fetchRequest) as [TFLCDBusStop] {
-                let lineList = stops.reduce([]) { sum,stop in
-                    sum + (stop.lines ?? [])
-                }
-                lines = Set(lineList)
-                completionBlock?(lines)
-            }
-        }
-    }
-    func load(lines : [String],index : Int = 0,using completionBlock: (()->())? = nil) {
-        guard index < lines.count else {
-            completionBlock?()
-            return
-        }
-        let line = lines[index]
-        print("\(index). \(line)")
-        self.tflClient.lineStationInfo(for: line) { [weak self] _,_ in
-            self?.load(lines: lines, index: index+1,using:completionBlock)
-        }
-    }
-
-// MARK: DataBase Generation (BusStops)
-
-    func loadBusStops(of page: UInt = 0,using completionBlock: (()->())?) {
-        self.tflClient.busStops(with: page) { [weak self] busStops,_ in
-            guard let busStops = busStops, !busStops.isEmpty else {
-                completionBlock?()
-                return
-            }
-            print (page)
-            self?.loadBusStops(of: page+1,using:completionBlock)
-            let context = TFLCoreDataStack.sharedDataStack.privateQueueManagedObjectContext
-            context.perform {
-                try? context.save()
-            }
-        }
-    }
-
-    func startSim(tuple : (counter:Double,up:Bool) = (0,true) ) {
-        let coords = CLLocationCoordinate2D(latitude: 51.556700, longitude: -0.102136)
-        _ = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { [weak self] _ in
-            self?.state = .determineCurrentLocation
-            let coords = CLLocationCoordinate2D(latitude: coords.latitude, longitude: coords.longitude + tuple.counter * 0.001)
-            self?.retrieveBusstops(for: coords) { busStopPredictionTuples,isComplete in
-                self?.updateContentViewController(with: busStopPredictionTuples,isUpdatePending:!isComplete, and: coords)
-                switch tuple {
-                case (30,_):
-                    self?.startSim(tuple: (tuple.counter-1,false))
-                case (0,_):
-                    self?.startSim(tuple: (tuple.counter+1,true))
-                default:
-                    self?.startSim(tuple: (tuple.up ? tuple.counter+1 : tuple.counter-1,tuple.up))
-                }
-            }
-        }
-    }
-}
 
 // MARK: TFLContentControllerDelegate
 

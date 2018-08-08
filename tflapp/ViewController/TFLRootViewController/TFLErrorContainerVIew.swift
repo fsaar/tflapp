@@ -15,7 +15,7 @@ protocol TFLErrorContainerViewDelegate : TFLNoStationsViewDelegate,TFLNoGPSEnabl
 
 class TFLErrorContainerView : UIView {
     weak var delegate : TFLErrorContainerViewDelegate?
-    
+    var errorViews : [UIView] = []
     @IBOutlet weak var noGPSEnabledView : TFLNoGPSEnabledView! = nil {
         didSet {
             self.noGPSEnabledView.delegate = self
@@ -32,44 +32,44 @@ class TFLErrorContainerView : UIView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        errorViews = [noGPSEnabledView,loadArrivalTimesView,noStationsView,loadLocationsView,loadNearbyStationsView]
         hideErrorViews()
     }
     
     func hideErrorViews() {
-        self.noGPSEnabledView.isHidden = true
-        self.loadArrivalTimesView.isHidden = true
-        self.noStationsView.isHidden = true
-        self.loadLocationsView.isHidden = true
-        self.loadNearbyStationsView.isHidden = true
+        self.isHidden = true
+        self.errorViews.forEach { $0.isHidden = true }
     }
     
     func showNoGPSEnabledError() {
         hideErrorViews()
         noGPSEnabledView.isHidden = false
+        self.isHidden = false
     }
     
     func showNoStationsFoundError() {
         hideErrorViews()
         noStationsView.isHidden = false
+        self.isHidden = false
     }
     
     func showLoadingArrivalTimesIfNeedBe(isContentAvailable : Bool) {
         hideErrorViews()
         loadArrivalTimesView.isHidden = isContentAvailable
+        self.isHidden = isContentAvailable
     }
     
     func showLoadingCurrentLocationIfNeedBe(isContentAvailable : Bool) {
         hideErrorViews()
         loadLocationsView.isHidden = isContentAvailable
+        self.isHidden = isContentAvailable
     }
     
     func showLoadingNearbyStationsIfNeedBe(isContentAvailable : Bool) {
         hideErrorViews()
         loadNearbyStationsView.isHidden = isContentAvailable
+        self.isHidden = isContentAvailable
     }
-
-    
-    
 }
 
 extension TFLErrorContainerView : TFLNoStationsViewDelegate {

@@ -9,6 +9,11 @@ extension CLLocationCoordinate2D {
 }
 
 class TFLMapViewController: UIViewController {
+    enum MapState {
+        case inited
+        case userInteracted
+    }
+    fileprivate var state : MapState = .inited
     @IBOutlet weak var coverView : UIView!
     @IBOutlet weak var mapView : MKMapView! = nil {
         didSet {
@@ -49,7 +54,7 @@ class TFLMapViewController: UIViewController {
                         self.mapView.addAnnotations(toBeInsertedAnnotations)
                         
                         let offsetCoordinate = coords + self.defaultCoordinateOffset
-                        if CLLocationCoordinate2DIsValid(offsetCoordinate) {
+                        if case .inited = self.state, CLLocationCoordinate2DIsValid(offsetCoordinate) {
                             let region = MKCoordinateRegion(center: offsetCoordinate, span: self.defaultCoordinateSpan)
                             let animated = (oldTuple?.0 ?? []).isEmpty   ? false : true
                             self.mapView.setRegion(region, animated: animated)
@@ -61,6 +66,23 @@ class TFLMapViewController: UIViewController {
             
         }
     }
+
+    var observer : NSKeyValueObservation?
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        self.state = .userInteracted
+    }
+    
+   
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        observer = self.mapView.observe(\.isHidden,options: [.new]) { [weak self]  _,change in
+            self?.resetStateIfMapViewHidden(change.newValue ?? false)
+        }
+        
+    }
 }
 
 extension TFLMapViewController : MKMapViewDelegate {
@@ -71,4 +93,12 @@ extension TFLMapViewController : MKMapViewDelegate {
         return TFLBusStopAnnotationView(annotation: mapViewAnnotation, reuseIdentifier: String(describing: TFLBusStopAnnotationView.self))
     }
 
+}
+
+// MARK: Private
+
+fileprivate extension TFLMapViewController {
+    func resetStateIfMapViewHidden(_ hidden : Bool) {
+        state = hidden ? .inited : self.state
+    }
 }

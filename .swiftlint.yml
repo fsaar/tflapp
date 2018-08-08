@@ -1,7 +1,6 @@
 disabled_rules: # rule identifiers to exclude from running
     - identifier                               
     - attributes                               
-    - block_based_kvo                          
     - closing_brace                            
     - closure_parameter_position               
     - colon                                    
@@ -77,11 +76,12 @@ disabled_rules: # rule identifiers to exclude from running
     - force_unwrapping                         
     - trailing_whitespace                      
     - multiple_closures_with_trailing_closure  
-    - unused_optional_binding  
     - nesting                                  
-    - closure_spacing                          
     - large_tuple                              
+    - closure_spacing                          
+    - unused_optional_binding  
 opt_in_rules: 
+    - block_based_kvo                          
     - contains_over_first_not_nil              
     - control_statement                        
     - required_enum_case                       

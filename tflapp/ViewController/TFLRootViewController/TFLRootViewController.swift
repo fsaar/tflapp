@@ -47,7 +47,11 @@ class TFLRootViewController: UIViewController {
         }
     }
     fileprivate(set) var DefaultRefreshInterval : TimeInterval = 30
-
+    
+    fileprivate var isContentAvailable : Bool {
+        return !(self.nearbyBusStationController?.busStopPredicationTuple.isEmpty ?? true)
+    }
+    
     fileprivate var state : State = .noError {
         didSet {
             let shouldHide = self.nearbyBusStationController?.busStopPredicationTuple.isEmpty ?? true
@@ -55,21 +59,21 @@ class TFLRootViewController: UIViewController {
             switch self.state {
             case .errorNoGPSAvailable:
                 self.contentView.isHidden = true
-                showNoGPSEnabledError()
+                self.errorContainerView.showNoGPSEnabledError()
             case .errorNoStationsNearby:
                 self.contentView.isHidden = true
-                showNoStationsFoundError()
+                self.errorContainerView.showNoStationsFoundError()
             case .determineCurrentLocation:
                 self.contentView.isHidden = shouldHide
-                showLoadingCurrentLocationIfNeedBe()
+                self.errorContainerView.showLoadingCurrentLocationIfNeedBe(isContentAvailable: isContentAvailable)
             case .retrievingNearbyStations:
                 self.contentView.isHidden = shouldHide
-                showLoadingNearbyStationsIfNeedBe()
+                self.errorContainerView.showLoadingNearbyStationsIfNeedBe(isContentAvailable: isContentAvailable)
             case .loadingArrivals:
                 self.contentView.isHidden = shouldHide
-                showLoadingArrivalTimesIfNeedBe()
+                self.errorContainerView.showLoadingArrivalTimesIfNeedBe(isContentAvailable: isContentAvailable)
             case State.noError:
-                hideInfoViews()
+                self.errorContainerView.hideErrorViews()
                 self.contentView.isHidden = false
             }
         }
@@ -96,19 +100,12 @@ class TFLRootViewController: UIViewController {
     fileprivate var slideContainerController : TFLSlideContainerController?
     private var foregroundNotificationHandler  : TFLNotificationObserver?
     private var backgroundNotificationHandler  : TFLNotificationObserver?
-    @IBOutlet weak var noGPSEnabledView : TFLNoGPSEnabledView! = nil {
+    @IBOutlet weak var errorContainerView : TFLErrorContainerView! = nil {
         didSet {
-            self.noGPSEnabledView.delegate = self
+            self.errorContainerView.delegate = self
         }
     }
-    @IBOutlet weak var loadArrivalTimesView : TFLLoadArrivalTimesView!
-    @IBOutlet weak var noStationsView : TFLNoStationsView! = nil {
-        didSet {
-            self.noStationsView.delegate = self
-        }
-    }
-    @IBOutlet weak var loadLocationsView : TFLLoadLocationView!
-    @IBOutlet weak var loadNearbyStationsView : TFLLoadNearbyStationsView!
+
     @IBOutlet weak var contentView : UIView!
 
     fileprivate(set) lazy var refreshTimer : TFLTimer? = {
@@ -170,9 +167,7 @@ class TFLRootViewController: UIViewController {
             }
         }
     }
-    
 }
-
 
 // MARK: Private
 
@@ -209,7 +204,6 @@ fileprivate extension TFLRootViewController {
         }
     }
 
-
     func loadNearbyBusstops(using completionBlock:(()->())? = nil) {
         guard state.isComplete else {
             completionBlock?()
@@ -235,7 +229,6 @@ fileprivate extension TFLRootViewController {
         }
     }
 
-
     func retrieveBusstops(for location:CLLocationCoordinate2D, using completionBlock:@escaping ([TFLBusStopArrivalsInfo],_ completed: Bool)->()) {
         self.state = .retrievingNearbyStations
         if CLLocationCoordinate2DIsValid(location) {
@@ -257,68 +250,20 @@ fileprivate extension TFLRootViewController {
        self.tflClient.nearbyBusStops(with: currentLocation,with: self.networkBackgroundQueue)
       
     }
-
-   
 }
 
-// MARK: Info View Handling
+// MARK: TFLErrorContainerViewDelegate
 
-fileprivate extension TFLRootViewController {
-
-    func hideInfoViews() {
-        self.noGPSEnabledView.isHidden = true
-        self.loadArrivalTimesView.isHidden = true
-        self.noStationsView.isHidden = true
-        self.loadLocationsView.isHidden = true
-        self.loadNearbyStationsView.isHidden = true
+extension TFLRootViewController : TFLErrorContainerViewDelegate {
+    func didTap(noStationsButton: UIButton,in view : TFLNoStationsView) {
+        loadNearbyBusstops ()
     }
-
-    func showNoGPSEnabledError() {
-        hideInfoViews()
-        noGPSEnabledView.isHidden = false
-    }
-
-    func showNoStationsFoundError() {
-        hideInfoViews()
-        noStationsView.isHidden = false
-    }
-
-    func showLoadingArrivalTimesIfNeedBe() {
-        hideInfoViews()
-        loadArrivalTimesView.isHidden = isContentAvailable()
-    }
-
-    func showLoadingCurrentLocationIfNeedBe() {
-        hideInfoViews()
-        loadLocationsView.isHidden = isContentAvailable()
-    }
-
-    func showLoadingNearbyStationsIfNeedBe() {
-        hideInfoViews()
-        loadNearbyStationsView.isHidden = isContentAvailable()
-    }
-
-    func isContentAvailable() -> Bool {
-        return !(self.nearbyBusStationController?.busStopPredicationTuple.isEmpty ?? true)
-    }
-}
-
-// MARK: TFLNoGPSEnabledViewDelegate
-
-extension TFLRootViewController : TFLNoGPSEnabledViewDelegate {
+    
     func didTap(noGPSEnabledButton: UIButton,in view : TFLNoGPSEnabledView) {
         guard let url = URL(string: UIApplication.openSettingsURLString) else {
             return
         }
         UIApplication.shared.open(url)
-    }
-}
-
-// MARK: TFLNoStationsViewDelegate
-
-extension TFLRootViewController : TFLNoStationsViewDelegate {
-    func didTap(noStationsButton: UIButton,in view : TFLNoStationsView) {
-        loadNearbyBusstops ()
     }
 }
 
@@ -334,6 +279,7 @@ extension TFLRootViewController : TFLNearbyBusStationsControllerDelegate  {
 // MARK: TFLRequestManagerDelegate
 
 extension TFLRootViewController : TFLRequestManagerDelegate {
+    
     func didStartURLTask(with requestManager: TFLRequestManager,session : URLSession)
     {
         OperationQueue.main.addOperation {
@@ -341,6 +287,7 @@ extension TFLRootViewController : TFLRequestManagerDelegate {
         }
 
     }
+    
     func didFinishURLTask(with requestManager: TFLRequestManager,session : URLSession)
     {
         session.getAllTasks { tasks in
@@ -349,5 +296,4 @@ extension TFLRootViewController : TFLRequestManagerDelegate {
             }
         }
     }
-
 }

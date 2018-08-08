@@ -5,6 +5,7 @@ import os.signpost
 
 
 class TFLRootViewController: UIViewController {
+    typealias CompletionBlock = ()->()
     fileprivate static let searchParameter  : (min:Double,initial:Double) = (100,350)
     fileprivate let networkBackgroundQueue = OperationQueue()
     fileprivate let tflClient = TFLClient()
@@ -167,6 +168,7 @@ class TFLRootViewController: UIViewController {
             }
         }
     }
+    var loadNearbyBusStopsCompletionBlocks : [CompletionBlock?] = []
 }
 
 // MARK: Private
@@ -204,14 +206,15 @@ fileprivate extension TFLRootViewController {
         }
     }
 
-    func loadNearbyBusstops(using completionBlock:(()->())? = nil) {
+    func loadNearbyBusstops(using completionBlock:CompletionBlock? = nil) {
+        loadNearbyBusStopsCompletionBlocks += [completionBlock]
         guard state.isComplete else {
-            completionBlock?()
             return
         }
         guard TFLLocationManager.sharedManager.enabled != false else {
             self.state = .errorNoGPSAvailable
-            completionBlock?()
+            loadNearbyBusStopsCompletionBlocks.forEach { $0?() }
+            loadNearbyBusStopsCompletionBlocks = []
             return
         }
         self.state = .determineCurrentLocation
@@ -223,7 +226,8 @@ fileprivate extension TFLRootViewController {
                 guard isComplete else {
                     return
                 }
-                completionBlock?()
+                self?.loadNearbyBusStopsCompletionBlocks.forEach { $0?() }
+                self?.loadNearbyBusStopsCompletionBlocks = []
             }
             
         }

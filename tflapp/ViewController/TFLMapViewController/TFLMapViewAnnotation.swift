@@ -21,14 +21,3 @@ class TFLMapViewAnnotation: NSObject, MKAnnotation {
         super.init()
     }
 }
-
-extension TFLMapViewAnnotation {
-
-    public static func ==(lhs: TFLMapViewAnnotation,rhs :TFLMapViewAnnotation) -> Bool {
-        return lhs.identifier == rhs.identifier
-    }
-    override public var hashValue: Int {
-        return self.identifier.hashValue
-    }
-
-}

@@ -23,10 +23,10 @@ class TFLStationDetailMapBusRouteOverLay : NSObject, MKOverlay {
                 return nil
         }
         self.model = model
-        let p1 = MKMapPointForCoordinate(CLLocationCoordinate2D(latitude: minLat, longitude: minLong))
-        let p2 = MKMapPointForCoordinate(CLLocationCoordinate2D(latitude: maxLat, longitude: maxLong))
+        let p1 = MKMapPoint(CLLocationCoordinate2D(latitude: minLat, longitude: minLong))
+        let p2 = MKMapPoint(CLLocationCoordinate2D(latitude: maxLat, longitude: maxLong))
 
-        boundingMapRect = MKMapRectMake(fmin(p1.x,p2.x), fmin(p1.y,p2.y), fabs(p1.x-p2.x), fabs(p1.y-p2.y))
+        boundingMapRect = MKMapRect(x: fmin(p1.x,p2.x), y: fmin(p1.y,p2.y), width: fabs(p1.x-p2.x), height: fabs(p1.y-p2.y))
 
     }
 }

@@ -14,7 +14,7 @@ class TFLRootViewControllerSpecs: QuickSpec {
         var controller : TFLRootViewController!
         beforeEach() {
            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            controller = storyboard.instantiateViewController(withIdentifier: String(describing:TFLRootViewController.self)) as! TFLRootViewController
+            controller = storyboard.instantiateViewController(withIdentifier: String(describing:TFLRootViewController.self)) as? TFLRootViewController
         }
 
         it("should NOT be nil") {
@@ -29,14 +29,14 @@ class TFLRootViewControllerSpecs: QuickSpec {
             
             it("should stop timer when going into background") {
                 _ = controller.view
-                NotificationCenter.default.post(name: .UIApplicationDidEnterBackground, object: nil)
+                NotificationCenter.default.post(name: UIApplication.didEnterBackgroundNotification, object: nil)
                 expect(controller.refreshTimer!.hasStarted) == false
             }
             
             it("should start timer when coming to foreground") {
                 _ = controller.view
-                NotificationCenter.default.post(name: .UIApplicationDidEnterBackground, object: nil)
-                NotificationCenter.default.post(name: .UIApplicationWillEnterForeground, object: nil)
+                NotificationCenter.default.post(name: UIApplication.didEnterBackgroundNotification, object: nil)
+                NotificationCenter.default.post(name: UIApplication.willEnterForegroundNotification, object: nil)
                 expect(controller.refreshTimer!.hasStarted) == true
             }
             

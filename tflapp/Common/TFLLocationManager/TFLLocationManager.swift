@@ -1,9 +1,17 @@
 import CoreLocation
 import Foundation
+import UIKit
 
 typealias TFLLocationManagerCompletionBlock  = (CLLocationCoordinate2D)->(Void)
 
+extension CLLocationCoordinate2D {
+    public static func ==(lhs : CLLocationCoordinate2D,rhs : CLLocationCoordinate2D) -> Bool {
+        return (lhs.latitude == rhs.latitude) && (lhs.longitude == rhs.longitude)
+    }
+}
+
 class TFLLocationManager : NSObject {
+    var lastKnownCoordinate = kCLLocationCoordinate2DInvalid
     static let sharedManager = TFLLocationManager()
     var completionBlock : TFLLocationManagerCompletionBlock?
     var enabled : Bool? {
@@ -21,12 +29,24 @@ class TFLLocationManager : NSObject {
 
     }
     let locationManager =  CLLocationManager()
+    var foregroundNotificationHandler : TFLNotificationObserver?
+    var backgroundNotificationHandler : TFLNotificationObserver?
     override init() {
         super.init()
         self.locationManager.delegate = self
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
         if case .none = self.enabled {
             self.locationManager.requestWhenInUseAuthorization()
+        }
+        else if enabled == true {
+            self.locationManager.startUpdatingLocation()
+        }
+        self.foregroundNotificationHandler = TFLNotificationObserver(notification: UIApplication.willEnterForegroundNotification) { [weak self]  _ in
+            self?.locationManager.startUpdatingLocation()
+        }
+        self.backgroundNotificationHandler = TFLNotificationObserver(notification: UIApplication.didEnterBackgroundNotification) { [weak self]  _ in
+            self?.lastKnownCoordinate = kCLLocationCoordinate2DInvalid
+            self?.locationManager.stopUpdatingLocation()
         }
     }
 
@@ -43,7 +63,10 @@ fileprivate extension TFLLocationManager {
             completionBlock?(kCLLocationCoordinate2DInvalid)
             return
         }
-        self.locationManager.startUpdatingLocation()
+        guard lastKnownCoordinate == kCLLocationCoordinate2DInvalid else {
+            completionBlock?(lastKnownCoordinate)
+            return
+        }
         self.completionBlock = completionBlock
     }
 }
@@ -53,21 +76,27 @@ fileprivate extension TFLLocationManager {
 extension TFLLocationManager : CLLocationManagerDelegate {
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let coordinate = locations.first?.coordinate ?? kCLLocationCoordinate2DInvalid
+        lastKnownCoordinate = coordinate
         DispatchQueue.main.async {
             self.completionBlock?(coordinate)
             self.completionBlock = nil
-            self.locationManager.stopUpdatingLocation()
         }
     }
     public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         DispatchQueue.main.async {
             self.completionBlock?(kCLLocationCoordinate2DInvalid)
             self.completionBlock = nil
-            self.locationManager.stopUpdatingLocation()
         }
     }
     public func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        self.locationManager.stopUpdatingLocation()
-        requestLocation(using: self.completionBlock)
+        switch status {
+        case .authorizedWhenInUse:
+            self.locationManager.startUpdatingLocation()
+        case .notDetermined:
+            break
+        default:
+            self.completionBlock?(kCLLocationCoordinate2DInvalid)
+            self.completionBlock = nil
+        }
     }
 }

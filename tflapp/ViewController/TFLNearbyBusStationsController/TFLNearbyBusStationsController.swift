@@ -1,5 +1,6 @@
 import UIKit
 import MapKit
+import os.signpost
 
 protocol TFLNearbyBusStationsControllerDelegate : class {
     func refresh(controller: TFLNearbyBusStationsController, using completionBlock:@escaping ()->())
@@ -22,28 +23,38 @@ class TFLNearbyBusStationsController : UITableViewController {
     }
     static let defaultTableViewRowHeight = CGFloat (120)
 
-    private var foregroundNotificationHandler  : TFLNotificationObserver?
+    fileprivate static let loggingHandle  = OSLog(subsystem: TFLLogger.subsystem, category: TFLLogger.category.refresh.rawValue)
 
     weak var delegate : TFLNearbyBusStationsControllerDelegate?
-    var busStopArrivalViewModels :  [TFLBusStopArrivalsViewModel] = [] {
-
-        didSet (oldModel) {
-            self.tableView.transition(from: oldModel, to: busStopArrivalViewModels, with: TFLBusStopArrivalsViewModel.compare) { updatedIndexPaths in
-                updatedIndexPaths.forEach { [weak self] indexPath in
-                    if let cell = self?.tableView.cellForRow(at: indexPath) as? TFLBusStationArrivalsCell {
-                        self?.configure(cell, at: indexPath)
-                    }
-                }
-            }
-        }
-    }
-
+    var busStopArrivalViewModels :  [TFLBusStopArrivalsViewModel] = []
+  
+   
+    fileprivate let synchroniser = TFLSynchroniser(tag:"com.samedialabs.queue.tableview")
+    
     var busStopPredicationTuple :  [TFLBusStopArrivalsInfo] = [] {
         didSet {
-            DispatchQueue.global().async {
-                let models = self.busStopPredicationTuple.sorted { $0.busStopDistance < $1 .busStopDistance }.map { TFLBusStopArrivalsViewModel(with: $0) }
+            synchroniser.synchronise { synchroniseEnd in
+                let models = self.busStopPredicationTuple.sortedByBusStopDistance().map { TFLBusStopArrivalsViewModel(with: $0) }
+                
+                let (inserted ,deleted ,updated, moved) = self.busStopArrivalViewModels.transformTo(newList: models, sortedBy : TFLBusStopArrivalsViewModel.compare)
                 DispatchQueue.main.async {
-                    self.busStopArrivalViewModels = models
+                    self.tableView.performBatchUpdates({
+                        self.busStopArrivalViewModels = models
+                        let deletedIndexPaths = deleted.map { $0.index }.indexPaths().sorted(by:>)
+                        self.tableView.deleteRows(at: deletedIndexPaths , with: .automatic)
+                        let insertedIndexPaths = inserted.map { $0.index }.indexPaths().sorted(by:<)
+                        self.tableView.insertRows(at: insertedIndexPaths , with: .automatic)
+                        moved.forEach { self.tableView.moveRow(at: IndexPath(row: $0.oldIndex,section:0), to:  IndexPath(row: $0.newIndex,section:0)) }
+                    }, completion: {  _ in
+                        let updatedIndexPaths = updated.map { $0.index}.indexPaths()
+                        let movedIndexPaths = moved.map { $0.newIndex }.indexPaths()
+                        (updatedIndexPaths+movedIndexPaths).forEach { [weak self] indexPath in
+                            if let cell = self?.tableView.cellForRow(at: indexPath) as? TFLBusStationArrivalsCell {
+                                self?.configure(cell, at: indexPath)
+                            }
+                        }
+                        synchroniseEnd()
+                    })
                 }
             }
         }
@@ -57,11 +68,9 @@ class TFLNearbyBusStationsController : UITableViewController {
         self.refreshControl = refreshControl
         self.refreshControl?.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
 
-        self.foregroundNotificationHandler = TFLNotificationObserver(notification: NSNotification.Name.UIApplicationWillEnterForeground.rawValue) { [weak self]  _ in
-            self?.busStopPredicationTuple = self?.busStopPredicationTuple ?? []
-        }
+        
 
-        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = TFLNearbyBusStationsController.defaultTableViewRowHeight
     }
 
@@ -79,7 +88,9 @@ class TFLNearbyBusStationsController : UITableViewController {
 
     @objc func refreshHandler(control : UIRefreshControl) {
         control.beginRefreshing()
+        TFLLogger.shared.signPostStart(osLog: TFLNearbyBusStationsController.loggingHandle, name: "refreshHandler")
         self.delegate?.refresh(controller: self) {
+            TFLLogger.shared.signPostEnd(osLog: TFLNearbyBusStationsController.loggingHandle, name: "refreshHandler")
             control.endRefreshing()
         }
 

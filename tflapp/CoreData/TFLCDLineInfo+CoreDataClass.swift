@@ -52,7 +52,6 @@ public class TFLCDLineInfo: NSManagedObject {
                             }
                         }
                         group.notify(queue: .global()) {
-                            print("notiffy")
                             completionBlock(lineInfo)
                         }
                     }

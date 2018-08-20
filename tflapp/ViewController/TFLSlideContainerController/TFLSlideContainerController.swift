@@ -40,17 +40,17 @@ class TFLSlideContainerController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.snapHandler = TFLSnapHandler(with: self.sliderHandleContainerView,in: self.view, and: self.snapPositions, using: { [weak self] _,velocity,newOrigin,final in
+        self.snapHandler = TFLSnapHandler(with: self.sliderHandleContainerView,in: self.view, and: self.snapPositions) { [weak self] _,velocity,newOrigin,final in
             guard let strongSelf = self else {
                 return
             }
             let currentY = strongSelf.view.convert(strongSelf.sliderHandleContainerView.frame.origin, from : strongSelf.sliderHandleContainerView.superview).y
 
             let nonzeroVelocity = velocity != 0 ? velocity : newOrigin.y < currentY ? -strongSelf.defaultVelocity : strongSelf.defaultVelocity
-            let normalizedVelocity = final ? fabs(newOrigin.y - currentY) / nonzeroVelocity : nonzeroVelocity
+            let normalizedVelocity = final ? abs(newOrigin.y - currentY) / nonzeroVelocity : nonzeroVelocity
             let animationTime = final ? 0.5 : 0
             self?.updateSliderContainerView(with: newOrigin, animationTime: animationTime, velocity: normalizedVelocity,final: final)
-        })
+        }
         let initPositionY = (self.snapPositions.first ?? 0) * self.view.frame.size.height
         self.updateSliderContainerView(with: CGPoint(x:self.sliderContainerView.frame.origin.x,y:initPositionY), animationTime: 0, velocity:0,final : true)
     }
@@ -66,9 +66,9 @@ fileprivate extension TFLSlideContainerController {
 
     func add(_ controller: UIViewController,to containerView: UIView) {
         controller.view.translatesAutoresizingMaskIntoConstraints = false
-        addChildViewController(controller)
+        addChild(controller)
         containerView.addSubview(controller.view)
-        controller.didMove(toParentViewController: self)
+        controller.didMove(toParent: self)
         let dict : [String : Any] = ["contentView" : controller.view]
         let hConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[contentView]|", options: [], metrics: nil, views: dict)
         let vConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|[contentView]|", options: [], metrics: nil, views: dict)

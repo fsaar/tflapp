@@ -1,0 +1,63 @@
+ [
+    {
+          "$type": "Tfl.Api.Presentation.Entities.Prediction, Tfl.Api.Presentation.Entities",
+          "id": "27797305",
+          "operationType": 1,
+          "vehicleId": "LTZ1418",
+          "naptanId": "490007960P",
+          "stationName": "Haymarket / Charles II Street",
+          "lineId": "12",
+          "lineName": "12",
+          "platformName": "P",
+          "direction": "outbound",
+          "bearing": "148",
+          "destinationNaptanId": "",
+          "destinationName": "Dulwich Library",
+          "timestamp": "2017-07-19T16:19:23Z",
+          "timeToStation": 1595,
+          "currentLocation": "",
+          "towards": "Parliament Square",
+          "expectedArrival": "2017-07-19T16:45:58Z",
+          "timeToLive": "2017-07-19T16:46:28Z",
+          "modeName": "bus",
+          "timing": {
+              "$type": "Tfl.Api.Presentation.Entities.PredictionTiming, Tfl.Api.Presentation.Entities",
+              "countdownServerAdjustment": "00:00:01.6749719",
+              "source": "2017-07-17T12:57:07.619Z",
+              "insert": "2017-07-19T16:18:43.812Z",
+              "read": "2017-07-19T16:18:43.812Z",
+              "sent": "2017-07-19T16:19:23Z",
+              "received": "0001-01-01T00:00:00Z"
+           }
+    }, {
+          "$type": "Tfl.Api.Presentation.Entities.Prediction, Tfl.Api.Presentation.Entities",
+          "id": "-482299310",
+          "operationType": 1,
+          "vehicleId": "LTZ1419",
+          "naptanId": "490007960P",
+          "stationName": "Haymarket / Charles II Street",
+          "lineId": "12",
+          "lineName": "12",
+          "platformName": "P",
+          "direction": "outbound",
+          "bearing": "148",
+          "destinationNaptanId": "",
+          "destinationName": "Dulwich Library",
+          "timestamp": "2017-07-19T16:19:23Z",
+          "timeToStation": 1256,
+          "currentLocation": "",
+          "towards": "Parliament Square",
+          "expectedArrival": "2017-07-19T16:40:19Z",
+          "timeToLive": "2017-07-19T16:40:49Z",
+          "modeName": "bus",
+          "timing": {
+              "$type": "Tfl.Api.Presentation.Entities.PredictionTiming, Tfl.Api.Presentation.Entities",
+              "countdownServerAdjustment": "00:00:01.3886011",
+              "source": "2017-07-17T12:57:07.619Z",
+              "insert": "2017-07-19T16:19:04.749Z",
+              "read": "2017-07-19T16:19:04.749Z",
+              "sent": "2017-07-19T16:19:23Z",
+              "received": "0001-01-01T00:00:00Z"
+          }
+    }
+]

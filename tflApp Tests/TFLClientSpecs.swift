@@ -6,228 +6,35 @@ import UIKit
 
 @testable import London_Bus
 
-enum TestError : Error {
-    case test
-}
-    
-private class TestRequestManager : TFLRequestManager {
-    
-    var getDataCompletionBlock : ((_ relativePath: String)->(data : Data?,error:Error?))?
-    override public func getDataWithRelativePath(relativePath: String ,and query: String? = nil, completionBlock:@escaping ((_ data : Data?,_ error:Error?) -> Void)) {
-        if let (data,error) = getDataCompletionBlock?(relativePath) {
-            completionBlock(data,error)
-        }
-        else
-        {
-            completionBlock(nil,TFLRequestManagerErrorType.InvalidURL(urlString: ""))
-        }
-        
-    }
-}
     
 private class TestQueue : OperationQueue {
     var added = false
     override func addOperation(_ op: Operation) {
-        op.start()
         added = true
+        op.start()
     }
     
     override func addOperations(_ ops: [Operation], waitUntilFinished wait: Bool) {
-        ops.forEach { $0.start() }
         added = true
+        ops.forEach { $0.start() }
     }
 }
         
     
 class TFLClientSpecs: QuickSpec {
-    
+
     override func spec() {
         var client : TFLClient!
-        var testRequestManager : TestRequestManager!
-        var arrivalsTestData : Data!
-        var nearbyBusStopsData : Data!
+
         beforeEach() {
             client = TFLClient()
-            testRequestManager = TestRequestManager()
-            client.tflManager = testRequestManager
-            arrivalsTestData = """
-                [{
-                 "$type": "Tfl.Api.Presentation.Entities.Prediction, Tfl.Api.Presentation.Entities",
-                 "id": "27797305",
-                 "operationType": 1,
-                 "vehicleId": "LTZ1418",
-                 "naptanId": "490007960P",
-                 "stationName": "Haymarket / Charles II Street",
-                 "lineId": "12",
-                 "lineName": "12",
-                 "platformName": "P",
-                 "direction": "outbound",
-                 "bearing": "148",
-                 "destinationNaptanId": "",
-                 "destinationName": "Dulwich Library",
-                 "timestamp": "2017-07-19T16:19:23Z",
-                 "timeToStation": 1595,
-                 "currentLocation": "",
-                 "towards": "Parliament Square",
-                 "expectedArrival": "2017-07-19T16:45:58Z",
-                 "timeToLive": "2017-07-19T16:46:28Z",
-                 "modeName": "bus",
-                 "timing": {
-                     "$type": "Tfl.Api.Presentation.Entities.PredictionTiming, Tfl.Api.Presentation.Entities",
-                     "countdownServerAdjustment": "00:00:01.6749719",
-                     "source": "2017-07-17T12:57:07.619Z",
-                     "insert": "2017-07-19T16:18:43.812Z",
-                     "read": "2017-07-19T16:18:43.812Z",
-                     "sent": "2017-07-19T16:19:23Z",
-                     "received": "0001-01-01T00:00:00Z"
-                 }
-             }, {
-                 "$type": "Tfl.Api.Presentation.Entities.Prediction, Tfl.Api.Presentation.Entities",
-                 "id": "-482299310",
-                 "operationType": 1,
-                 "vehicleId": "LTZ1419",
-                 "naptanId": "490007960P",
-                 "stationName": "Haymarket / Charles II Street",
-                 "lineId": "12",
-                 "lineName": "12",
-                 "platformName": "P",
-                 "direction": "outbound",
-                 "bearing": "148",
-                 "destinationNaptanId": "",
-                 "destinationName": "Dulwich Library",
-                 "timestamp": "2017-07-19T16:19:23Z",
-                 "timeToStation": 1256,
-                 "currentLocation": "",
-                 "towards": "Parliament Square",
-                 "expectedArrival": "2017-07-19T16:40:19Z",
-                 "timeToLive": "2017-07-19T16:40:49Z",
-                 "modeName": "bus",
-                 "timing": {
-                     "$type": "Tfl.Api.Presentation.Entities.PredictionTiming, Tfl.Api.Presentation.Entities",
-                     "countdownServerAdjustment": "00:00:01.3886011",
-                     "source": "2017-07-17T12:57:07.619Z",
-                     "insert": "2017-07-19T16:19:04.749Z",
-                     "read": "2017-07-19T16:19:04.749Z",
-                     "sent": "2017-07-19T16:19:23Z",
-                     "received": "0001-01-01T00:00:00Z"
-                 }
-             }]
-             """.data(using: .utf8)
-            nearbyBusStopsData = """
-                {
-                    "$type": "Tfl.Api.Presentation.Entities.StopPointsResponse, Tfl.Api.Presentation.Entities",
-                    "centrePoint": [51.509, -0.133],
-                    "stopPoints": [{
-                        "$type": "Tfl.Api.Presentation.Entities.StopPoint, Tfl.Api.Presentation.Entities",
-                        "naptanId": "490007960P",
-                        "indicator": "Stop P",
-                        "stopLetter": "P",
-                        "modes": ["bus"],
-                        "icsCode": "1007960",
-                        "stopType": "NaptanPublicBusCoachTram",
-                        "stationNaptan": "490G00007960",
-                        "lines": [{
-                            "$type": "Tfl.Api.Presentation.Entities.Identifier, Tfl.Api.Presentation.Entities",
-                            "id": "12",
-                            "name": "12",
-                            "uri": "/Line/12",
-                            "type": "Line",
-                            "crowding": {
-                                "$type": "Tfl.Api.Presentation.Entities.Crowding, Tfl.Api.Presentation.Entities"
-                            }
-                        }, {
-                            "$type": "Tfl.Api.Presentation.Entities.Identifier, Tfl.Api.Presentation.Entities",
-                            "id": "159",
-                            "name": "159",
-                            "uri": "/Line/159",
-                            "type": "Line",
-                            "crowding": {
-                                "$type": "Tfl.Api.Presentation.Entities.Crowding, Tfl.Api.Presentation.Entities"
-                            }
-                        }],
-                        "lineGroup": [{
-                            "$type": "Tfl.Api.Presentation.Entities.LineGroup, Tfl.Api.Presentation.Entities",
-                            "naptanIdReference": "490007960P",
-                            "stationAtcoCode": "490G00007960",
-                            "lineIdentifier": ["12", "159", "453", "88", "n109", "n136", "n18", "n3", "n97"]
-                        }],
-                        "lineModeGroups": [{
-                            "$type": "Tfl.Api.Presentation.Entities.LineModeGroup, Tfl.Api.Presentation.Entities",
-                            "modeName": "bus",
-                            "lineIdentifier": ["12", "159", "453", "88", "n109", "n136", "n18", "n3", "n97"]
-                        }],
-                        "status": true,
-                        "id": "490007960P",
-                        "commonName": "Haymarket / Charles II Street",
-                        "distance": 62.518072030038645,
-                        "placeType": "StopPoint",
-                        "additionalProperties": [],
-                        "children": [],
-                        "lat": 51.50898,
-                        "lon": -0.132098
-                    }, {
-                        "$type": "Tfl.Api.Presentation.Entities.StopPoint, Tfl.Api.Presentation.Entities",
-                        "naptanId": "490007960L",
-                        "indicator": "Stop L",
-                        "stopLetter": "L",
-                        "modes": ["bus"],
-                        "stopType": "NaptanPublicBusCoachTram",
-                        "lines": [],
-                        "lineGroup": [],
-                        "lineModeGroups": [],
-                        "id": "490007960L",
-                        "commonName": "Piccadilly Circus  Haymarket",
-                        "distance": 73.497394236195831,
-                        "placeType": "StopPoint",
-                        "additionalProperties": [],
-                        "children": [],
-                        "lat": 51.509637,
-                        "lon": -0.13272
-                    }, {
-                        "$type": "Tfl.Api.Presentation.Entities.StopPoint, Tfl.Api.Presentation.Entities",
-                        "naptanId": "490007960R",
-                        "indicator": "Stop R",
-                        "stopLetter": "R",
-                        "modes": ["bus"],
-                        "icsCode": "1020307",
-                        "stopType": "NaptanPublicBusCoachTram",
-                        "stationNaptan": "490G00020307",
-                        "lines": [{
-                            "$type": "Tfl.Api.Presentation.Entities.Identifier, Tfl.Api.Presentation.Entities",
-                            "id": "139",
-                            "name": "139",
-                            "uri": "/Line/139",
-                            "type": "Line",
-                            "crowding": {
-                                "$type": "Tfl.Api.Presentation.Entities.Crowding, Tfl.Api.Presentation.Entities"
-                            }
-                        }],
-                        "lineGroup": [{
-                            "$type": "Tfl.Api.Presentation.Entities.LineGroup, Tfl.Api.Presentation.Entities",
-                            "naptanIdReference": "490007960R",
-                            "stationAtcoCode": "490G00020307",
-                            "lineIdentifier": ["139", "23", "6", "n113"]
-                        }],
-                        "lineModeGroups": [{
-                            "$type": "Tfl.Api.Presentation.Entities.LineModeGroup, Tfl.Api.Presentation.Entities",
-                            "modeName": "bus",
-                            "lineIdentifier": ["139", "23", "6", "n113"]
-                        }],
-                        "status": true,
-                        "id": "490007960R",
-                        "commonName": "Haymarket / Jermyn Street",
-                        "distance": 78.24560162994193,
-                        "placeType": "StopPoint",
-                        "additionalProperties": [],
-                        "children": [],
-                        "lat": 51.509683,
-                        "lon": -0.132732
-                    }],
-                    "pageSize": 0,
-                    "total": 0,
-                    "page": 0
-                }
-                """.data(using: .utf8)
+            URLProtocol.registerClass(TestUrlProtocol.self)
+            let configuration = URLSessionConfiguration.default
+            configuration.protocolClasses = [TestUrlProtocol.self]
+            TFLRequestManager.shared.session = URLSession(configuration:configuration)
+        }
+        afterEach {
+            TestUrlProtocol.dataProviders = []
         }
         
         context("when calling arrivalsForStopPoint") {
@@ -235,150 +42,147 @@ class TFLClientSpecs: QuickSpec {
             
             beforeEach() {
                 queue = TestQueue()
+                TestUrlProtocol.addDataProvider { request in
+                    guard request.url!.absoluteString.contains("/StopPoint/success/Arrivals") else {
+                        return nil
+                    }
+                    return self.dataWithJSONFile("Arrivals")
+                }
             }
 
             it("should issue request with the right URL") {
-                var getDataCompletionBlockCalled = false
-                testRequestManager.getDataCompletionBlock = { path in
-                    expect(path).to(beginWith("/StopPoint/String/Arrivals"))
-                    getDataCompletionBlockCalled = true
-                    return (nil,nil)
+                 var completionBlockCalled = false
+               
+                client.arrivalsForStopPoint(with : "fail") { _,error in
+                    expect(error).notTo(beNil())
+                    completionBlockCalled = true
                 }
-                client.arrivalsForStopPoint(with : "String") { _,_ in
-                    
-                }
-                expect(getDataCompletionBlockCalled) == true
-                                        
-                    
+                expect(completionBlockCalled).toEventually(beTrue(),timeout: 10)
+
             }
             
             it("should call back on given queue on success") {
                 var completionBlockCalled = false
-                testRequestManager.getDataCompletionBlock = { path in
-                    return (arrivalsTestData,nil)
-                }
-                client.arrivalsForStopPoint(with:"String",
+                
+                client.arrivalsForStopPoint(with:"success",
                                             with: queue) { _,error in
+                                                expect(queue.added) == true
                                                 completionBlockCalled = true
                                                 expect(error).to(beNil())
-                                                completionBlockCalled = true
                 }
-                expect(queue.added) == true
-                expect(completionBlockCalled) == true
+                expect(completionBlockCalled).toEventually(beTrue(),timeout: 10)
             }
 
             it("should call back on provided operation queue on failure") {
                 var completionBlockCalled = false
-                client.arrivalsForStopPoint(with:"String",
+                client.arrivalsForStopPoint(with:"failure",
                                             with: queue) { _,error in
+                                                expect(queue.added) == true
                                                 expect(error).notTo(beNil())
                     completionBlockCalled = true
                 }
-                expect(queue.added) == true
-                expect(completionBlockCalled) == true
-                
+                expect(completionBlockCalled).toEventually(beTrue(),timeout: 99)
+
             }
             it("should call back on mainqueue if no operation queue provided on failure") {
                 var completionBlockCalled = false
-                client.arrivalsForStopPoint(with:"String") { _,error in
+                client.arrivalsForStopPoint(with:"failed") { _,error in
                     expect(error).notTo(beNil())
                     expect(Thread.isMainThread) == true
                     completionBlockCalled = true
                 }
-                expect(completionBlockCalled).toEventually(beTrue(),timeout:99)
+                expect(completionBlockCalled).toEventually(beTrue(),timeout: 99)
             }
 
             it("should call back on mainqueue if no operation queue provided on success") {
                 var completionBlockCalled = false
-                testRequestManager.getDataCompletionBlock = { path in
-                    return (arrivalsTestData,nil)
-                }
-                client.arrivalsForStopPoint(with:"String") { _,error in
+                client.arrivalsForStopPoint(with:"success") { _,error in
                     expect(error).to(beNil())
                     expect(Thread.isMainThread) == true
                     completionBlockCalled = true
                 }
-                expect(completionBlockCalled).toEventually(beTrue(),timeout:99)
+                expect(completionBlockCalled).toEventually(beTrue(),timeout: 99)
             }
             it("should parse model successfully") {
                 var completionBlockCalled = false
-                testRequestManager.getDataCompletionBlock = { path in
-                    expect(path).to(beginWith("/StopPoint/String/Arrivals"))
-                    return (arrivalsTestData,nil)
-                }
-                client.arrivalsForStopPoint(with : "String") { models,_ in
+                client.arrivalsForStopPoint(with : "success") { models,_ in
                     completionBlockCalled = true
                     expect(models!.count) == 2
                 }
-                expect(completionBlockCalled).toEventually(beTrue(),timeout:99)
+                expect(completionBlockCalled).toEventually(beTrue(),timeout: 99)
             }
-            
+
             it("should handle invalid model gracefully") {
-                var completionBlockCalled = false
-                let invalidTestData = """
-                {"Hello" : "World"}
-                """.data(using: .utf8)
-                testRequestManager.getDataCompletionBlock = { path in
-                    expect(path).to(beginWith("/StopPoint/String/Arrivals"))
-                    return (invalidTestData,nil)
+                TestUrlProtocol.dataProviders = []
+                TestUrlProtocol.addDataProvider { request in
+                    guard request.url!.absoluteString.contains("/StopPoint/fail/Arrivals") else {
+                        return nil
+                    }
+                    let invalidTestData = "['Hello' : 'World']".data(using: .utf8)
+                    return invalidTestData
                 }
-                client.arrivalsForStopPoint(with : "String") { models,error in
+                
+                var completionBlockCalled = false
+                
+                client.arrivalsForStopPoint(with : "fail") { models,error in
                     completionBlockCalled = true
                     expect(models).to(beNil())
                 }
-                expect(completionBlockCalled).toEventually(beTrue(),timeout:99)
+                expect(completionBlockCalled).toEventually(beTrue(),timeout: 99)
             }
         }
         
         context("When calling nearbyBusStops") {
             var queue : TestQueue!
-            
+
             beforeEach() {
                 queue = TestQueue()
+                TestUrlProtocol.addDataProvider { request in
+                    guard request.url!.absoluteString.contains("/StopPoint") else {
+                        return nil
+                    }
+                    let data = self.dataWithJSONFile("Busstops")
+                    return data
+                }
+
             }
             it("should issue request with the right URL") {
                 var nearbyBusStopsBlockCalled = false
-                testRequestManager.getDataCompletionBlock = { path in
-                    expect(path).to(beginWith("/StopPoint"))
+                client.nearbyBusStops(with :kCLLocationCoordinate2DInvalid) { models,_ in
+                    expect(models).notTo(beNil())
                     nearbyBusStopsBlockCalled = true
-                    return (nil,nil)
                 }
-                client.nearbyBusStops(with :kCLLocationCoordinate2DInvalid) { _,_ in
-                }
-                expect(nearbyBusStopsBlockCalled) == true
+               expect(nearbyBusStopsBlockCalled).toEventually(beTrue(),timeout: 99)
             }
-            
+
             it("should call back on given queue on success") {
                 var completionBlockCalled = false
-                testRequestManager.getDataCompletionBlock = { path in
-                    return (nearbyBusStopsData,nil)
-                }
                 client.nearbyBusStops(with :kCLLocationCoordinate2DInvalid,
                                       with: queue) { _,error in
                                         expect(error).to(beNil())
+                                        expect(queue.added) == true
                                         completionBlockCalled = true
                 }
-                expect(queue.added).toEventually(beTrue(),timeout:99)
+                
                 expect(completionBlockCalled).toEventually(beTrue(),timeout:99)
             }
 
-            
+
             it("should call back on provided operation queue on failure") {
+                TestUrlProtocol.dataProviders = []
                 var completionBlockCalled = false
                 client.nearbyBusStops(with :kCLLocationCoordinate2DInvalid,
                                             with: queue) { _,error in
                                                 expect(error).notTo(beNil())
+                                                expect(queue.added) == true
                                                 completionBlockCalled = true
                 }
-                expect(queue.added).toEventually(beTrue(),timeout:99)
+              
                 expect(completionBlockCalled).toEventually(beTrue(),timeout:99)
             }
 
             it("should call back on mainqueue if no operation queue provided on success") {
                 var completionBlockCalled = false
-                testRequestManager.getDataCompletionBlock = { path in
-                    return (nearbyBusStopsData,nil)
-                }
                 client.nearbyBusStops(with :kCLLocationCoordinate2DInvalid) { _,error in
                     expect(error).to(beNil())
                     completionBlockCalled = true
@@ -389,9 +193,7 @@ class TFLClientSpecs: QuickSpec {
 
             it("should call back on mainqueue if no operation queue provided on failure") {
                 var completionBlockCalled = false
-                testRequestManager.getDataCompletionBlock = { path in
-                    return (nil,TestError.test)
-                }
+                TestUrlProtocol.dataProviders = []
                 client.nearbyBusStops(with :kCLLocationCoordinate2DInvalid) { _,error in
                     expect(error).notTo(beNil())
                     completionBlockCalled = true
@@ -402,24 +204,21 @@ class TFLClientSpecs: QuickSpec {
 
             it("should parse model successfully") {
                 var completionBlockCalled = false
-                testRequestManager.getDataCompletionBlock = { path in
-                    return (nearbyBusStopsData,nil)
-                }
                 client.nearbyBusStops(with :kCLLocationCoordinate2DInvalid) { models,_ in
                     completionBlockCalled = true
                     expect(models!.count) == 3
                 }
                 expect(completionBlockCalled).toEventually(beTrue(),timeout:99)
             }
-            
+
             it("should handle invalid model gracefully") {
-                var completionBlockCalled = false
-                testRequestManager.getDataCompletionBlock = { path in
-                    let invalidTestData =  """
-                        "{"Hello" : "World"}
-                        """.data(using: .utf8)
-                    return (invalidTestData,nil)
+                TestUrlProtocol.dataProviders = []
+                TestUrlProtocol.addDataProvider { request in
+                    let invalidTestData = "['Hello' : 'World']".data(using: .utf8)
+                    return invalidTestData
                 }
+                var completionBlockCalled = false
+                
                 client.nearbyBusStops(with :kCLLocationCoordinate2DInvalid) { models,_ in
                     completionBlockCalled = true
                     expect(models).to(beNil())
@@ -428,54 +227,57 @@ class TFLClientSpecs: QuickSpec {
             }
 
         }
-       
-        
+
+
         context("When calling busStops") {
             var queue : TestQueue!
-            
+
             beforeEach() {
                 queue = TestQueue()
+                TestUrlProtocol.addDataProvider { request in
+                    guard request.url!.absoluteString.contains("/StopPoint/Mode/bus") else {
+                        return nil
+                    }
+                    let data = self.dataWithJSONFile("Busstops")
+                    return data
+                }
             }
             it("should issue request with the right URL") {
                 var busStopsBlockCalled = false
-                testRequestManager.getDataCompletionBlock = { path in
-                    expect(path).to(beginWith("/StopPoint"))
+     
+                client.busStops(with: 1) { models,_ in
                     busStopsBlockCalled = true
-                    return (nil,nil)
+                    expect(models).notTo(beNil())
                 }
-                client.busStops(with: 1) { _,_ in
-                }
-                expect(busStopsBlockCalled) == true
+                expect(busStopsBlockCalled).toEventually(beTrue(),timeout:99)
             }
             it("should call back on given queue if operation queue provided on failure") {
+                TestUrlProtocol.dataProviders = []
+
                 var completionBlockCalled = false
-                testRequestManager.getDataCompletionBlock = { path in
-                    return (nil,TestError.test)
-                }
                 client.busStops(with :1,
                                 with: queue) { _,error in
                                     expect(error).notTo(beNil())
+                                    expect(queue.added) == true
                                     completionBlockCalled = true
                 }
-                expect(queue.added).toEventually(beTrue(),timeout:99)
+                
                 expect(completionBlockCalled).toEventually(beTrue(),timeout:99)
             }
-            
+
             it("should call back on given queue if operation queue provided on success") {
                 var completionBlockCalled = false
-                testRequestManager.getDataCompletionBlock = { path in
-                    return (nearbyBusStopsData,nil)
-                }
                 client.busStops(with :1,
                                 with: queue) { _,error in
                                     expect(error).to(beNil())
+                                    expect(queue.added) == true
                                     completionBlockCalled = true
                 }
-                expect(queue.added).toEventually(beTrue(),timeout:99)
                 expect(completionBlockCalled).toEventually(beTrue(),timeout:99)
             }
 
             it("should call back on mainQueue if no operation queue provided on failure") {
+                TestUrlProtocol.dataProviders = []
                 var completionBlockCalled = false
                 client.busStops(with :1) { _,error in
                     expect(error).notTo(beNil())
@@ -487,9 +289,6 @@ class TFLClientSpecs: QuickSpec {
 
             it("should call back on mainqueue if no operation queue provided on success") {
                 var completionBlockCalled = false
-                testRequestManager.getDataCompletionBlock = { path in
-                    return (nearbyBusStopsData,nil)
-                }
                 client.busStops(with :1) { _,error in
                     expect(error).to(beNil())
                     completionBlockCalled = true
@@ -497,27 +296,23 @@ class TFLClientSpecs: QuickSpec {
                 }
                 expect(completionBlockCalled).toEventually(beTrue(),timeout:99)
             }
-            
+
             it("should parse model successfully") {
                 var completionBlockCalled = false
-                testRequestManager.getDataCompletionBlock = { path in
-                    return (nearbyBusStopsData,nil)
-                }
                 client.busStops(with :1) { models,_ in
                     completionBlockCalled = true
                     expect(models!.count) == 3
                 }
                 expect(completionBlockCalled).toEventually(beTrue(),timeout:99)
             }
-            
+
             it("should handle invalid model gracefully") {
-                var completionBlockCalled = false
-                testRequestManager.getDataCompletionBlock = { path in
-                    let invalidTestData =  """
-                        "{"Hello" : "World"}
-                        """.data(using: .utf8)
-                    return (invalidTestData,nil)
+                TestUrlProtocol.dataProviders = []
+                TestUrlProtocol.addDataProvider { request in
+                    let invalidTestData = "['Hello' : 'World']".data(using: .utf8)
+                    return invalidTestData
                 }
+                var completionBlockCalled = false
                 client.busStops(with :1) { models,_ in
                     completionBlockCalled = true
                     expect(models).to(beNil())

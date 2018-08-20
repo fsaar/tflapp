@@ -22,13 +22,3 @@ class TFLStationDetailMapViewAnnotation: NSObject, MKAnnotation {
         super.init()
     }
 }
-
-extension TFLStationDetailMapViewAnnotation {
-    public static func ==(lhs: TFLStationDetailMapViewAnnotation,rhs :TFLStationDetailMapViewAnnotation) -> Bool {
-        return lhs.identifier == rhs.identifier
-    }
-    override public var hashValue: Int {
-        return self.identifier.hashValue
-    }
-
-}

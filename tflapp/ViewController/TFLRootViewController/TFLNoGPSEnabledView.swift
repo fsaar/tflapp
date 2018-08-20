@@ -21,7 +21,7 @@ class TFLNoGPSEnabledView : UIView {
     }
     @IBOutlet weak  var settingsButton : TFLButton! = nil {
         didSet {
-            self.settingsButton.setTitle(NSLocalizedString("TFLNoGPSEnabledView.settingsButtonTitle", comment: ""), for: UIControlState.normal)
+            self.settingsButton.setTitle(NSLocalizedString("TFLNoGPSEnabledView.settingsButtonTitle", comment: ""), for: UIControl.State.normal)
             self.settingsButton.titleLabel?.font = UIFont.tflFont(size: 17)
         }
     }

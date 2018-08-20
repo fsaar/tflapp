@@ -48,8 +48,9 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
         public var debugDescription: String {
             return "\n\(line) [\(identifier)]: \(eta)"
         }
-        public var hashValue: Int {
-            return self.identifier.hashValue
+        
+        public func hash(into hasher: inout Hasher) {
+            hasher.combine(self.identifier)
         }
 
 
@@ -61,8 +62,8 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
     public var debugDescription: String {
         return "\n\(stationName) [\(identifier)] towards \(stationDetails)"
     }
-    public var hashValue: Int {
-        return self.identifier.hashValue
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.identifier)
     }
     let identifier : String
     let stationName : String
@@ -92,10 +93,9 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
         self.stationName = arrivalInfo.busStop.name
         self.identifier = arrivalInfo.busStop.identifier
         self.distance = TFLBusStopArrivalsViewModel.distanceFormatter.string(fromValue: arrivalInfo.busStopDistance, unit: .meter)
-        let referenceTime = referenceDate?.timeIntervalSinceReferenceDate ?? Date.timeIntervalSinceReferenceDate
-        let adjustedReferenceTime =  referenceTime - 30
-        let filteredPredictions = arrivalInfo.arrivals.filter { $0.timeToLive.timeIntervalSinceReferenceDate > adjustedReferenceTime }
-        self.arrivalTimes = filteredPredictions.map { LinePredictionViewModel(with: $0,using: referenceTime) }
+        let referenceTime = referenceDate ?? Date()
+        let filteredPredictions = arrivalInfo.liveArrivals(with: referenceTime)
+        self.arrivalTimes = filteredPredictions.map { LinePredictionViewModel(with: $0,using: referenceTime.timeIntervalSinceReferenceDate) }
     }
 
 

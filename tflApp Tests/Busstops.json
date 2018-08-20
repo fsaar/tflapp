@@ -1,0 +1,113 @@
+{
+    "$type": "Tfl.Api.Presentation.Entities.StopPointsResponse, Tfl.Api.Presentation.Entities",
+    "centrePoint": [51.509, -0.133],
+    "stopPoints": [{
+                   "$type": "Tfl.Api.Presentation.Entities.StopPoint, Tfl.Api.Presentation.Entities",
+                   "naptanId": "490007960P",
+                   "indicator": "Stop P",
+                   "stopLetter": "P",
+                   "modes": ["bus"],
+                   "icsCode": "1007960",
+                   "stopType": "NaptanPublicBusCoachTram",
+                   "stationNaptan": "490G00007960",
+                   "lines": [{
+                             "$type": "Tfl.Api.Presentation.Entities.Identifier, Tfl.Api.Presentation.Entities",
+                             "id": "12",
+                             "name": "12",
+                             "uri": "/Line/12",
+                             "type": "Line",
+                             "crowding": {
+                             "$type": "Tfl.Api.Presentation.Entities.Crowding, Tfl.Api.Presentation.Entities"
+                             }
+                             }, {
+                             "$type": "Tfl.Api.Presentation.Entities.Identifier, Tfl.Api.Presentation.Entities",
+                             "id": "159",
+                             "name": "159",
+                             "uri": "/Line/159",
+                             "type": "Line",
+                             "crowding": {
+                             "$type": "Tfl.Api.Presentation.Entities.Crowding, Tfl.Api.Presentation.Entities"
+                             }
+                             }],
+                   "lineGroup": [{
+                                 "$type": "Tfl.Api.Presentation.Entities.LineGroup, Tfl.Api.Presentation.Entities",
+                                 "naptanIdReference": "490007960P",
+                                 "stationAtcoCode": "490G00007960",
+                                 "lineIdentifier": ["12", "159", "453", "88", "n109", "n136", "n18", "n3", "n97"]
+                                 }],
+                   "lineModeGroups": [{
+                                      "$type": "Tfl.Api.Presentation.Entities.LineModeGroup, Tfl.Api.Presentation.Entities",
+                                      "modeName": "bus",
+                                      "lineIdentifier": ["12", "159", "453", "88", "n109", "n136", "n18", "n3", "n97"]
+                                      }],
+                   "status": true,
+                   "id": "490007960P",
+                   "commonName": "Haymarket / Charles II Street",
+                   "distance": 62.518072030038645,
+                   "placeType": "StopPoint",
+                   "additionalProperties": [],
+                   "children": [],
+                   "lat": 51.50898,
+                   "lon": -0.132098
+                   }, {
+                   "$type": "Tfl.Api.Presentation.Entities.StopPoint, Tfl.Api.Presentation.Entities",
+                   "naptanId": "490007960L",
+                   "indicator": "Stop L",
+                   "stopLetter": "L",
+                   "modes": ["bus"],
+                   "stopType": "NaptanPublicBusCoachTram",
+                   "lines": [],
+                   "lineGroup": [],
+                   "lineModeGroups": [],
+                   "id": "490007960L",
+                   "commonName": "Piccadilly Circus  Haymarket",
+                   "distance": 73.497394236195831,
+                   "placeType": "StopPoint",
+                   "additionalProperties": [],
+                   "children": [],
+                   "lat": 51.509637,
+                   "lon": -0.13272
+                   }, {
+                   "$type": "Tfl.Api.Presentation.Entities.StopPoint, Tfl.Api.Presentation.Entities",
+                   "naptanId": "490007960R",
+                   "indicator": "Stop R",
+                   "stopLetter": "R",
+                   "modes": ["bus"],
+                   "icsCode": "1020307",
+                   "stopType": "NaptanPublicBusCoachTram",
+                   "stationNaptan": "490G00020307",
+                   "lines": [{
+                             "$type": "Tfl.Api.Presentation.Entities.Identifier, Tfl.Api.Presentation.Entities",
+                             "id": "139",
+                             "name": "139",
+                             "uri": "/Line/139",
+                             "type": "Line",
+                             "crowding": {
+                             "$type": "Tfl.Api.Presentation.Entities.Crowding, Tfl.Api.Presentation.Entities"
+                             }
+                             }],
+                   "lineGroup": [{
+                                 "$type": "Tfl.Api.Presentation.Entities.LineGroup, Tfl.Api.Presentation.Entities",
+                                 "naptanIdReference": "490007960R",
+                                 "stationAtcoCode": "490G00020307",
+                                 "lineIdentifier": ["139", "23", "6", "n113"]
+                                 }],
+                   "lineModeGroups": [{
+                                      "$type": "Tfl.Api.Presentation.Entities.LineModeGroup, Tfl.Api.Presentation.Entities",
+                                      "modeName": "bus",
+                                      "lineIdentifier": ["139", "23", "6", "n113"]
+                                      }],
+                   "status": true,
+                   "id": "490007960R",
+                   "commonName": "Haymarket / Jermyn Street",
+                   "distance": 78.24560162994193,
+                   "placeType": "StopPoint",
+                   "additionalProperties": [],
+                   "children": [],
+                   "lat": 51.509683,
+                   "lon": -0.132732
+                   }],
+    "pageSize": 0,
+    "total": 0,
+    "page": 0
+}

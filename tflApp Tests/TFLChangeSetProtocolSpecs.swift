@@ -18,8 +18,10 @@ fileprivate struct Pos : Hashable {
         self.a = a
         self.b = b
     }
-    var hashValue: Int {
-        return "\(a),\(b)".hashValue
+   
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.a)
+        hasher.combine(self.b)
     }
     
     static public func ==(lhs : Pos, rhs : Pos) -> Bool {
@@ -41,8 +43,10 @@ fileprivate struct MovedPos : Hashable {
         self.b = b
         self.c = c
     }
-    var hashValue: Int {
-        return "\(a),\(b),\(c)".hashValue
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.a)
+        hasher.combine(self.b)
+        hasher.combine(self.c)
     }
 
     static public func ==(lhs : MovedPos, rhs : MovedPos) -> Bool {
@@ -66,7 +70,9 @@ fileprivate struct M : Hashable {
     }
     
    // var debugDescription: String { return "[\(id)]\(x)" } //tempList
-    var hashValue: Int  { return id.hashValue }
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.id)
+    }
 }
 
 class TFLChangeSetProtocolSpecs : QuickSpec {

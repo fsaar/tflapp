@@ -51,11 +51,11 @@ class TFLCollectionFlowLayout : UICollectionViewFlowLayout {
 // MARK: Private
 
 private extension TFLCollectionFlowLayout {
+    
     func appearingAnimationType(forItemAppearingAt indexPath: IndexPath) -> (TFLCollectionFlowLayoutAppearingItemAnimationType) {
-        guard let startIndex = self.insertIndexPaths.index(of: indexPath),let itemCount = self.collectionView?.numberOfItems(inSection: 0) else {
+        guard let startIndex = self.insertIndexPaths.index(of: indexPath),let itemCount = self.collectionView?.numberOfItems(inSection: 0),self.insertIndexPaths.count != itemCount else {
             return .scale
         }
-
         let indices = Array(indexPath.item..<itemCount)
         let insertedIndices = self.insertIndexPaths[startIndex..<self.insertIndexPaths.count].map { $0.item }
         let subtractedSet = Set(indices).subtracting(insertedIndices)

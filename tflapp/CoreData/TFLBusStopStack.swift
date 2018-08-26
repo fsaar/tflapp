@@ -1,15 +1,17 @@
 import Foundation
 import CoreData
 import CoreLocation
+import os.signpost
 
 private let dbFileName  = URL(string:"TFLBusStops.sqlite")
 private let groupID =  "group.tflwidgetSharingData"
 
 @objc public final class TFLBusStopStack : NSObject {
+    fileprivate static let loggingHandle  = OSLog(subsystem: TFLLogger.subsystem, category: TFLLogger.category.coredata.rawValue)
 
     static let sharedDataStack = TFLBusStopStack()
 
-    lazy var busStopFetchRequest : NSFetchRequest<TFLCDBusStop> = {
+    let busStopFetchRequest : NSFetchRequest<TFLCDBusStop> = {
         let fetchRequest = NSFetchRequest<TFLCDBusStop>(entityName: "TFLCDBusStop")
         fetchRequest.returnsObjectsAsFaults = true
         fetchRequest.shouldRefreshRefetchedObjects = true
@@ -112,9 +114,19 @@ private let groupID =  "group.tflwidgetSharingData"
         self.busStopFetchRequest.predicate = predicate
         var busStops : [TFLCDBusStop] = []
         let currentLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-        TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext.perform  {
-            if let stops =  try? context.fetch(self.busStopFetchRequest) {
-                busStops = stops.filter { currentLocation.distance(from: CLLocation(latitude: $0.lat, longitude: $0.long) ) < radiusInMeter }
+        TFLLogger.shared.signPostStart(osLog: TFLBusStopStack.loggingHandle, name: "nearbyBusStops")
+        let privateContext = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
+        privateContext.perform  {
+            TFLLogger.shared.signPostEnd(osLog: TFLBusStopStack.loggingHandle, name: "nearbyBusStops")
+            if let stops =  try? privateContext.fetch(self.busStopFetchRequest) {
+                busStops = stops.map { ($0.distance(to:currentLocation),$0) }
+                                .filter { $0.0 < radiusInMeter }
+                                .sorted { $0.0 < $1.0 }
+                                .map { $0.1 }
+            }
+            context.perform  {
+                let importedStops = busStops.map { context.object(with:$0.objectID) } as? [TFLCDBusStop] ?? []
+                completionBlock(importedStops)
             }
             context.perform  {
                 let importedStops = busStops.map { context.object(with:$0.objectID) } as? [TFLCDBusStop] ?? []

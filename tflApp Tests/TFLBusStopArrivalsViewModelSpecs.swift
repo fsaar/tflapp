@@ -19,7 +19,7 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
         var createBusStopArrivalInfo : ((_ block : ((_ info : TFLBusStopArrivalsInfo)->())?) -> ())!
         var location : CLLocation!
         beforeEach {
-            location = CLLocation(latitude: 51.514028153209, longitude: -0.15301535236356)
+            location = CLLocation(latitude: 51.5140, longitude: -0.1530)
             
             distanceFormatter = LengthFormatter()
             distanceFormatter.unitStyle = .short
@@ -58,8 +58,8 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
                         "value": "Ealing Broadway"
                     ]],
                 "children": [],
-                "lat": 51.538675,
-                "lon": -0.279163
+                "lat": 51.538,
+                "lon": -0.27
             ]
             
             let models = NSManagedObjectModel.mergedModel(from: nil)!
@@ -67,76 +67,83 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
             let _ = try! coordinator.addPersistentStore(ofType: NSInMemoryStoreType, configurationName: nil, at: nil, options: nil)
             managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
             managedObjectContext.persistentStoreCoordinator = coordinator
-            createBusStopArrivalInfo = { block in
-                TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext) { busStopModel in
-                    let dict1 : [String : Any] = ["id": "1836802865",
-                                                  "vehicleId": "LTZ1218",
-                                                  "naptanId": "490011791K",
-                                                  "lineId": "38",
-                                                  "lineName": "38",
-                                                  "destinationName": "Victoria",
-                                                  "timestamp": "2016-11-16T15:59:35Z",
-                                                  "timeToStation": UInt(902),
-                                                  "timeToLive": "2016-11-16T16:15:07Z"]
-                    let dict2 : [String : Any] = ["id": "1836802866",
-                                                  "vehicleId": "LTZ1218",
-                                                  "naptanId": "490011791K",
-                                                  "lineId": "39",
-                                                  "lineName": "39",
-                                                  "destinationName": "Victoria",
-                                                  "timestamp": "2016-11-16T15:59:35Z",
-                                                  "timeToStation": UInt(60),
-                                                  "timeToLive": "2016-11-16T16:15:07Z"]
-                    let dict3 : [String : Any] = ["id": "1836802867",
-                                                  "vehicleId": "LTZ1218",
-                                                  "naptanId": "490011791K",
-                                                  "lineId": "40",
-                                                  "lineName": "40",
-                                                  "destinationName": "Victoria",
-                                                  "timestamp": "2016-11-16T15:59:35Z",
-                                                  "timeToStation": UInt(1902),
-                                                  "timeToLive": "2016-11-16T16:15:07Z"]
-                    let dict4 : [String : Any] = ["id": "1836802868",
-                                                  "vehicleId": "LTZ1218",
-                                                  "naptanId": "490011791K",
-                                                  "lineId": "40",
-                                                  "lineName": "40",
-                                                  "destinationName": "Victoria",
-                                                  "timestamp": "2016-11-16T15:59:35Z",
-                                                  "timeToStation": UInt(902)]
-                    let tempPredictions = [dict1,dict2,dict3,dict4]
-                    let timeStampFormatter = DateFormatter()
-                    timeStampFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-                    timeStampFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-                    timeStampFormatter.calendar = Calendar(identifier: .iso8601)
-                    var predictions : [[String:Any]] = []
-                    referenceDate  = timeFormatter.date(from: "2016-11-16T16:15:01Z")
-                    for dict in tempPredictions  {
-                        var newDict = dict
-                        newDict["timestamp"] = ISO8601DateFormatter().string(from: referenceDate)
-                        timeFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-                        newDict["timeToLive"] = timeStampFormatter.string(from: Date().addingTimeInterval(TimeInterval(60)))
-                        
-                        predictions +=  [newDict]
-                    }
-                    busPredictions =  predictions
-                    let data1 = try! JSONSerialization.data(withJSONObject: busPredictions[0], options: [])
-                    let data2 = try! JSONSerialization.data(withJSONObject: busPredictions[1], options: [])
-                    let data3 = try! JSONSerialization.data(withJSONObject: busPredictions[2], options: [])
+            busPredictions = {
+                let dict1 : [String : Any] = ["id": "1836802865",
+                                              "vehicleId": "LTZ1218",
+                                              "naptanId": "490011791K",
+                                              "lineId": "38",
+                                              "lineName": "38",
+                                              "destinationName": "Victoria",
+                                              "timestamp": "2016-11-16T15:59:35Z",
+                                              "timeToStation": UInt(902),
+                                              "timeToLive": "2016-11-16T16:15:07Z"]
+                let dict2 : [String : Any] = ["id": "1836802866",
+                                              "vehicleId": "LTZ1218",
+                                              "naptanId": "490011791K",
+                                              "lineId": "39",
+                                              "lineName": "39",
+                                              "destinationName": "Victoria",
+                                              "timestamp": "2016-11-16T15:59:35Z",
+                                              "timeToStation": UInt(60),
+                                              "timeToLive": "2016-11-16T16:15:07Z"]
+                let dict3 : [String : Any] = ["id": "1836802867",
+                                              "vehicleId": "LTZ1218",
+                                              "naptanId": "490011791K",
+                                              "lineId": "40",
+                                              "lineName": "40",
+                                              "destinationName": "Victoria",
+                                              "timestamp": "2016-11-16T15:59:35Z",
+                                              "timeToStation": UInt(1902),
+                                              "timeToLive": "2016-11-16T16:15:07Z"]
+                let dict4 : [String : Any] = ["id": "1836802868",
+                                              "vehicleId": "LTZ1218",
+                                              "naptanId": "490011791K",
+                                              "lineId": "40",
+                                              "lineName": "40",
+                                              "destinationName": "Victoria",
+                                              "timestamp": "2016-11-16T15:59:35Z",
+                                              "timeToStation": UInt(902)]
+                let tempPredictions = [dict1,dict2,dict3,dict4]
+                let timeStampFormatter = DateFormatter()
+                timeStampFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+                timeStampFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+                timeStampFormatter.calendar = Calendar(identifier: .iso8601)
+                var predictions : [[String:Any]] = []
+                referenceDate  = timeFormatter.date(from: "2016-11-16T16:15:01Z")
+                for dict in tempPredictions  {
+                    var newDict = dict
+                    newDict["timestamp"] = ISO8601DateFormatter().string(from: referenceDate)
+                    timeFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+                    newDict["timeToLive"] = timeStampFormatter.string(from: Date().addingTimeInterval(TimeInterval(60)))
                     
-                    decoder = JSONDecoder()
-                    decoder.dateDecodingStrategy = .iso8601
-                    
-                    let model1 = try! decoder.decode(TFLBusPrediction.self,from: data1)
-                    let model2 = try! decoder.decode(TFLBusPrediction.self,from: data2)
-                    let model3 = try! decoder.decode(TFLBusPrediction.self,from: data3)
-                    let info = TFLBusStopArrivalsInfo(busStop: busStopModel!, location: location, arrivals: [model1,model2,model3])
-                    block!(info)
+                    predictions +=  [newDict]
                 }
-            }
+                return predictions
+            }()
+            decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .iso8601
+
+           
         }
         
         context("when testing TFLBusStopArrivalsViewModel") {
+            beforeEach {
+                createBusStopArrivalInfo = { block in
+                    TFLCDBusStop.busStop(with: busStopDict, and: managedObjectContext) { busStopModel in
+                        
+                        let data1 = try! JSONSerialization.data(withJSONObject: busPredictions[0], options: [])
+                        let data2 = try! JSONSerialization.data(withJSONObject: busPredictions[1], options: [])
+                        let data3 = try! JSONSerialization.data(withJSONObject: busPredictions[2], options: [])
+                        
+                        let model1 = try! decoder.decode(TFLBusPrediction.self,from: data1)
+                        let model2 = try! decoder.decode(TFLBusPrediction.self,from: data2)
+                        let model3 = try! decoder.decode(TFLBusPrediction.self,from: data3)
+    
+                        let info = TFLBusStopArrivalsInfo(busStop: busStopModel!, location: location, arrivals: [model1,model2,model3])
+                        block!(info)
+                    }
+                }
+            }
             it ("should not be nil") {
                 var completionBlockCalled = false
                 createBusStopArrivalInfo { busArrivalInfo in
@@ -154,7 +161,6 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
                     expect(model.identifier) == "490003029W"
                     expect(model.stationName) == "Abbey Road"
                     expect(model.stationDetails) == "towards Ealing Broadway"
-                    expect(model.distance) == "9,174m"
                     completionBlockCalled = true
                 }
                 expect(completionBlockCalled).toEventually(beTrue(),timeout:20)

@@ -37,10 +37,10 @@ class TFLStationDetailController: UIViewController {
                 let routes = lineInfo?.routes?.array as? [TFLCDLineRoute] ?? []
                 let models : [TFLStationDetailTableViewModel] =  routes.compactMap { TFLStationDetailTableViewModel(with: $0) }
                 let mapModels : [TFLStationDetailMapViewModel] = routes.compactMap { TFLStationDetailMapViewModel(with: $0) }
-                OperationQueue.main.addOperation({
+                OperationQueue.main.addOperation {
                     self.tableViewController?.viewModels = models
                     self.mapViewController?.viewModels = mapModels
-                })
+                }
             }
         }
     }

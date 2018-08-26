@@ -8,9 +8,9 @@ import Quick
 class TFLNotificationObserverSpec: QuickSpec {
     
     override func spec() {
-        var notificationName : String!
+        var notificationName : Notification.Name!
         beforeEach {
-            notificationName = "TestNotification"
+            notificationName =  Notification.Name("TestNotification")
         }
         
         describe("When instantiating notification handler") {
@@ -26,7 +26,7 @@ class TFLNotificationObserverSpec: QuickSpec {
                     called = true
                 }
                 handler.enabled = true
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: notificationName) , object: nil)
+                NotificationCenter.default.post(name: notificationName , object: nil)
                 expect(called) == true
             }
             
@@ -38,7 +38,7 @@ class TFLNotificationObserverSpec: QuickSpec {
                 }
                 
                 handler.enabled = false
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: notificationName), object: nil)
+                NotificationCenter.default.post(name: notificationName, object: nil)
                 expect(called) == false
             }
         }

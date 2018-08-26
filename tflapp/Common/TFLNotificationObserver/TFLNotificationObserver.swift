@@ -21,9 +21,9 @@ public typealias TFLNotificationObserverBlock = (_ notification : Notification)-
         __addObserver()
     }
 
-    public convenience init(notification: String,handlerBlock: @escaping TFLNotificationObserverBlock)
+    public convenience init(notification: Notification.Name,handlerBlock: @escaping TFLNotificationObserverBlock)
     {
-        self.init(notification: notification,object: nil,handlerBlock: handlerBlock)
+        self.init(notification: notification.rawValue,object: nil,handlerBlock: handlerBlock)
     }
 
     deinit
@@ -47,7 +47,7 @@ extension TFLNotificationObserver {
 
     @objc func notificationHandler(_ notification : Notification)
     {
-        if (enabled)
+        if enabled
         {
             handlerBlock(notification)
         }

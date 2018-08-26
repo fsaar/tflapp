@@ -24,37 +24,35 @@ class TFLBusPredictionView: UICollectionView {
         self.delegate = self
     }
 
+    fileprivate let synchroniser = TFLSynchroniser(tag: "com.samedialabs.queue.collectionView")
+
     func setPredictions( predictions : [TFLBusStopArrivalsViewModel.LinePredictionViewModel], animated: Bool = false) {
         if  !animated || self.predictions.isEmpty {
             self.predictions = predictions
             self.reloadData()
         }
         else {
-            var (inserted ,deleted ,updated, moved) : (inserted : [(element:TFLBusStopArrivalsViewModel.LinePredictionViewModel,index:Int)],deleted : [(element:TFLBusStopArrivalsViewModel.LinePredictionViewModel,index:Int)], updated : [(element:TFLBusStopArrivalsViewModel.LinePredictionViewModel,index:Int)],moved : [(element:TFLBusStopArrivalsViewModel.LinePredictionViewModel,oldIndex:Int,newIndex:Int)]) = ([],[],[],[])
-
-            DispatchQueue.global().async {
-                (inserted ,deleted ,updated, moved) = self.predictions.transformTo(newList:predictions, sortedBy:TFLBusStopArrivalsViewModel.LinePredictionViewModel.compare)
-                self.predictions = predictions
+            synchroniser.synchronise { synchroniseEnd in
+                let (inserted ,deleted ,updated, moved) = self.predictions.transformTo(newList:predictions, sortedBy:TFLBusStopArrivalsViewModel.LinePredictionViewModel.compare)
+                
                 DispatchQueue.main.async {
                     self.performBatchUpdates({ [weak self] in
-                        let insertedIndexPaths = inserted.map { IndexPath(item: $0.index,section:0) }
+                        self?.predictions = predictions
+                        let deletedIndexPaths = deleted.map { IndexPath(item: $0.index,section:0) }.sorted(by:>)
+                        self?.deleteItems(at: deletedIndexPaths)
+                        let insertedIndexPaths = inserted.map { IndexPath(item: $0.index,section:0) }.sorted(by:<)
                         self?.insertItems(at: insertedIndexPaths )
                         moved.forEach { self?.moveItem(at: IndexPath(item: $0.oldIndex,section:0), to:  IndexPath(item: $0.newIndex,section:0)) }
-                        let deletedIndexPaths = deleted.map { IndexPath(item: $0.index,section:0) }
-                        self?.deleteItems(at: deletedIndexPaths)
                         } ,completion: { [weak self]  _ in
-                            self?.performBatchUpdates({ [weak self] in
-                                
-                                let updatedIndexPaths = updated.map { IndexPath(item: $0.index,section:0) }
-                                let movedIndexPaths = moved.map { IndexPath(item: $0.newIndex,section:0) }
-                                (updatedIndexPaths+movedIndexPaths).forEach { indexPath in
-                                    let cell = self?.cellForItem(at: indexPath)
-                                    self?.configure(cell, at: indexPath, as : true)
-                                }
-                                },completion: nil)
+                            
+                            let updatedIndexPaths = updated.map { IndexPath(item: $0.index,section:0) }
+                            let movedIndexPaths = moved.map { IndexPath(item: $0.newIndex,section:0) }
+                            (updatedIndexPaths+movedIndexPaths).forEach { indexPath in
+                                let cell = self?.cellForItem(at: indexPath)
+                                self?.configure(cell, at: indexPath, as : true)
+                            }
+                            synchroniseEnd()
                     })
-                    
-                    
                 }
             }
 

@@ -1,5 +1,6 @@
 import Foundation
 import CoreData
+import UIKit
 
 @objc public final class TFLCoreDataStack : NSObject {
 
@@ -35,10 +36,10 @@ import CoreData
         _ = initCoreData(storeCoordinator)
 
         super.init()
-        self.backgroundNotificationObserver = TFLNotificationObserver(notification: NSNotification.Name.UIApplicationDidEnterBackground.rawValue, handlerBlock: { [weak self] _ in
+        self.backgroundNotificationObserver = TFLNotificationObserver(notification: UIApplication.didEnterBackgroundNotification) { [weak self] _ in
             self?.privateQueueManagedObjectContext.performAndWait {
                 _ = try? self?.privateQueueManagedObjectContext.save()
             }
-            })
+        }
     }
 }

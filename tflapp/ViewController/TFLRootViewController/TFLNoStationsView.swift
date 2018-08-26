@@ -15,7 +15,7 @@ class TFLNoStationsView : UIView {
     }
     @IBOutlet weak var retryButton : TFLButton! = nil {
         didSet {
-            self.retryButton.setTitle(NSLocalizedString("TFLNoStationsView.retryButtonTitle", comment: ""), for: UIControlState.normal)
+            self.retryButton.setTitle(NSLocalizedString("TFLNoStationsView.retryButtonTitle", comment: ""), for: UIControl.State.normal)
             self.retryButton.titleLabel?.font = UIFont.tflFont(size: 17)
         }
     }

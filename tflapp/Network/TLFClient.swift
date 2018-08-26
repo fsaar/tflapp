@@ -2,6 +2,7 @@
 import Foundation
 import CoreLocation
 import CoreData
+import os.signpost
 
 enum TFLClientError : Error {
     case InvalidFormat(data : Data?)
@@ -15,20 +16,25 @@ public final class TFLClient {
         return decoder
     }()
     lazy var tflManager  = TFLRequestManager.shared
-
+    fileprivate static let loggingHandle : OSLog =  {
+        let handle = OSLog(subsystem: TFLLogger.subsystem, category: TFLLogger.category.api.rawValue)
+        return handle
+    }()
     public func arrivalsForStopPoint(with identifier: String,
                                      with operationQueue : OperationQueue = OperationQueue.main,
                                      using completionBlock:@escaping (([TFLBusPrediction]?,_ error:Error?) -> ()))  {
         let arivalsPath = "/StopPoint/\(identifier)/Arrivals"
+        TFLLogger.shared.signPostStart(osLog: TFLClient.loggingHandle, name: "arrivalsForStopPoint",identifier: identifier)
         tflManager.getDataWithRelativePath(relativePath: arivalsPath) { data, error in
+            TFLLogger.shared.signPostEnd(osLog: TFLClient.loggingHandle, name: "arrivalsForStopPoint",identifier: identifier)
             guard let data = data else {
                 operationQueue.addOperation {
                     completionBlock(nil,error)
                 }
                 return
             }
-            let predictions = try? TFLClient.jsonDecoder.decode([TFLBusPrediction].self,from: data)
             operationQueue.addOperation {
+                let predictions = try? TFLClient.jsonDecoder.decode([TFLBusPrediction].self,from: data)
                 completionBlock(predictions,nil)
             }
         }
@@ -42,14 +48,16 @@ public final class TFLClient {
         let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
         let queue = OperationQueue()
         queue.qualityOfService = QualityOfService.userInitiated
+        TFLLogger.shared.signPostStart(osLog: TFLClient.loggingHandle, name: "nearbyBusStops")
         requestBusStops(with: busStopPath, query: query,context:context, with: queue) {stops,error in
+            TFLLogger.shared.signPostEnd(osLog: TFLClient.loggingHandle, name: "nearbyBusStops")
             context.perform {
                 if context.hasChanges {
                     _ = try? context.save()
                 }
-                operationQueue.addOperation({
+                operationQueue.addOperation {
                     completionBlock?(stops,error)
-                })
+                }
             }
         }
 
@@ -60,10 +68,12 @@ public final class TFLClient {
                          using completionBlock: @escaping (([TFLCDBusStop]?,_ error:Error?) -> ()))  {
         let busStopPath = "/StopPoint/Mode/bus"
         let query = "page=\(page+1)"
+        TFLLogger.shared.signPostStart(osLog: TFLClient.loggingHandle, name: "busStops")
         requestBusStops(with: busStopPath, query: query,context:TFLCoreDataStack.sharedDataStack.privateQueueManagedObjectContext) { busstops, error in
-            operationQueue.addOperation({
+            TFLLogger.shared.signPostEnd(osLog: TFLClient.loggingHandle, name: "busStops")
+            operationQueue.addOperation {
                 completionBlock(busstops,error)
-            })
+            }
         }
     }
 
@@ -77,10 +87,12 @@ public final class TFLClient {
             return
         }
         let lineStationPath = "/Line/\(line)/Route/Sequence/all"
+        TFLLogger.shared.signPostStart(osLog: TFLClient.loggingHandle, name: "lineStationInfo",identifier: line)
         lineStationInfo(with: lineStationPath, query: "serviceTypes=Regular&excludeCrowding=true", context: TFLCoreDataStack.sharedDataStack.privateQueueManagedObjectContext) { lineInfo , error in
-            operationQueue.addOperation({
+            TFLLogger.shared.signPostEnd(osLog: TFLClient.loggingHandle, name: "lineStationInfo",identifier: line)
+            operationQueue.addOperation {
                 completionBlock(lineInfo,error)
-            })
+            }
         }
     }
 
@@ -102,14 +114,14 @@ fileprivate extension TFLClient {
 
                     }
                 } else {
-                    operationQueue.addOperation({
+                    operationQueue.addOperation {
                         completionBlock(nil,TFLClientError.InvalidFormat(data: data))
-                    })
+                    }
                 }
             } else {
-                operationQueue.addOperation({
+                operationQueue.addOperation {
                     completionBlock(nil,TFLClientError.InvalidFormat(data: data))
-                })
+                }
             }
         }
     }
@@ -125,15 +137,15 @@ fileprivate extension TFLClient {
                     , options: JSONSerialization.ReadingOptions(rawValue:0)) as? [String : Any] {
                 if let jsonList = jsonDict?["stopPoints"] as? [[String: Any]] {
                     self?.stopPoints(from: jsonList, context: context) { stops in
-                        operationQueue.addOperation({
+                        operationQueue.addOperation {
                             completionBlock(stops,nil)
-                        })
+                        }
                     }
                 }
                 else {
-                    operationQueue.addOperation({
+                    operationQueue.addOperation {
                          completionBlock(nil,TFLClientError.InvalidFormat(data: data))
-                    })
+                    }
                 }
             }
             else {

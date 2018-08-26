@@ -25,7 +25,7 @@ class TFLStationDetailMapViewController: UIViewController {
             if let index = self.selectedOverlayIndex,index < overlays.count {
                 let overlay = overlays[index]
                 let stations = overlay.model.stations
-                mapView.add(overlay)
+                mapView.addOverlay(overlay)
                 var annotations : [TFLStationDetailMapViewAnnotation] = []
                 for tuple in stations.enumerated() {
                     annotations += [TFLStationDetailMapViewAnnotation(with: tuple.1.stopCode, coordinate: tuple.1.coords, and: tuple.0)]
@@ -45,9 +45,9 @@ class TFLStationDetailMapViewController: UIViewController {
                 return
             }
             overlays = self.viewModels.compactMap { TFLStationDetailMapBusRouteOverLay($0) }
-            let mapRect = overlays.reduce(MKMapRectNull) { MKMapRectUnion($0, $1.boundingMapRect) }
-            let insetRect = MKMapRectInset(mapRect, -10000, -10000)
-            self.mapView.region = MKCoordinateRegionForMapRect(insetRect)
+            let mapRect = overlays.reduce(MKMapRect.null) { $0.union($1.boundingMapRect) }
+            let insetRect = mapRect.insetBy(dx: -10000, dy: -10000)
+            self.mapView.region = MKCoordinateRegion(insetRect)
         }
     }
 

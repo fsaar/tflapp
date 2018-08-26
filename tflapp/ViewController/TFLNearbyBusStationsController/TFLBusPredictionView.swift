@@ -55,7 +55,6 @@ class TFLBusPredictionView: UICollectionView {
                     })
                 }
             }
-
         }
     }
     public var predictions : [TFLBusStopArrivalsViewModel.LinePredictionViewModel] = []

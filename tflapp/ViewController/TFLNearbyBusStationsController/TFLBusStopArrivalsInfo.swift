@@ -174,6 +174,7 @@ extension TFLBusStopArrivalsInfo : Codable {
     }
 }
 
+
 extension TFLBusStopArrivalsInfo.TFLContextFreeBusStopInfo : Codable {
     enum CodingKeys: String, CodingKey {
         case identifier = "identifier"

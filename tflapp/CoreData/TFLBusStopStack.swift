@@ -128,10 +128,6 @@ private let groupID =  "group.tflwidgetSharingData"
                 let importedStops = busStops.map { context.object(with:$0.objectID) } as? [TFLCDBusStop] ?? []
                 completionBlock(importedStops)
             }
-            context.perform  {
-                let importedStops = busStops.map { context.object(with:$0.objectID) } as? [TFLCDBusStop] ?? []
-                completionBlock(importedStops)
-            }
         }
     }
 }

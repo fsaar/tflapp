@@ -22,7 +22,7 @@ class TFLBusPredictionSpecs: QuickSpec {
                 "lineId": "38",
                 "lineName": "38",
                 "destinationName": "Victoria",
-                "timestamp": "2016-11-16T15:59:35Z",
+                "timestamp": "2016-11-16T15:59:35.1741351Z",
                 "timeToStation": 902,
                 "timeToLive": "2016-11-16T16:15:07Z"
             }
@@ -44,7 +44,7 @@ class TFLBusPredictionSpecs: QuickSpec {
                 "lineId": "38",
                 "lineName": "38",
                 "destinationName": "Victoria",
-                "timestamp": "2016-11-16T15:59:35Z",
+                "timestamp": "2016-11-16T15:59:35.1741351Z",
                 "timeToStation": 902,
                 "timeToLive": "2016-11-16T16:15:07Z"
             }

@@ -9,8 +9,17 @@ import MapKit
 
 
 class TFLBusStopArrivalsInfoSpecs: QuickSpec {
-    
+    static let iso8601Full: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
+        formatter.calendar = Calendar(identifier: .iso8601)
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        return formatter
+    }()
     override func spec() {
+       
+        
         
         beforeEach {
             
@@ -89,14 +98,15 @@ class TFLBusStopArrivalsInfoSpecs: QuickSpec {
                     expect(info2).notTo(beNil())
                     let pred1 = info2.arrivals[0]
                     let pred2 = info2.arrivals[1]
+                    let iso8601Formatter = ISO8601DateFormatter()
                     expect(pred1.identifier) == busPrediction1.identifier
                     expect(pred2.identifier) == busPrediction2.identifier
                     
-                    expect(pred1.timeToLive) == busPrediction1.timeToLive
-                    expect(pred2.timeToLive) == busPrediction2.timeToLive
+                    expect(iso8601Formatter.string(from:pred1.timeToLive)) == iso8601Formatter.string(from:busPrediction1.timeToLive)
+                    expect(iso8601Formatter.string(from:pred2.timeToLive)) == iso8601Formatter.string(from:busPrediction2.timeToLive)
                     
-                    expect(pred1.timeStamp) == busPrediction1.timeStamp
-                    expect(pred2.timeStamp) == busPrediction2.timeStamp
+                    expect(TFLBusStopArrivalsInfoSpecs.iso8601Full.string(from:pred1.timeStamp)) == TFLBusStopArrivalsInfoSpecs.iso8601Full.string(from:busPrediction1.timeStamp)
+                    expect(TFLBusStopArrivalsInfoSpecs.iso8601Full.string(from:pred2.timeStamp)) == TFLBusStopArrivalsInfoSpecs.iso8601Full.string(from:busPrediction2.timeStamp)
                     
                     expect(pred1.busStopIdentifier) == busPrediction1.busStopIdentifier
                     expect(pred2.busStopIdentifier) == busPrediction2.busStopIdentifier

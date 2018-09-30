@@ -12,7 +12,6 @@ enum TFLClientError : Error {
 public final class TFLClient {
     static let jsonDecoder = { ()-> JSONDecoder in
         let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
         return decoder
     }()
     lazy var tflManager  = TFLRequestManager.shared
@@ -33,8 +32,8 @@ public final class TFLClient {
                 }
                 return
             }
+            let predictions = try? TFLClient.jsonDecoder.decode([TFLBusPrediction].self,from: data)
             operationQueue.addOperation {
-                let predictions = try? TFLClient.jsonDecoder.decode([TFLBusPrediction].self,from: data)
                 completionBlock(predictions,nil)
             }
         }

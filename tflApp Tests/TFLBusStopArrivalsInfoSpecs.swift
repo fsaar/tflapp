@@ -9,17 +9,9 @@ import MapKit
 
 
 class TFLBusStopArrivalsInfoSpecs: QuickSpec {
-    static let iso8601Full: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
-        formatter.calendar = Calendar(identifier: .iso8601)
-        formatter.timeZone = TimeZone(secondsFromGMT: 0)
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        return formatter
-    }()
+    
     override func spec() {
        
-        
         
         beforeEach {
             
@@ -105,8 +97,9 @@ class TFLBusStopArrivalsInfoSpecs: QuickSpec {
                     expect(iso8601Formatter.string(from:pred1.timeToLive)) == iso8601Formatter.string(from:busPrediction1.timeToLive)
                     expect(iso8601Formatter.string(from:pred2.timeToLive)) == iso8601Formatter.string(from:busPrediction2.timeToLive)
                     
-                    expect(TFLBusStopArrivalsInfoSpecs.iso8601Full.string(from:pred1.timeStamp)) == TFLBusStopArrivalsInfoSpecs.iso8601Full.string(from:busPrediction1.timeStamp)
-                    expect(TFLBusStopArrivalsInfoSpecs.iso8601Full.string(from:pred2.timeStamp)) == TFLBusStopArrivalsInfoSpecs.iso8601Full.string(from:busPrediction2.timeStamp)
+                    let isoFormatter = DateFormatter.iso8601Full
+                    expect(isoFormatter.string(from:pred1.timeStamp)) == isoFormatter.string(from:busPrediction1.timeStamp)
+                    expect(isoFormatter.string(from:pred2.timeStamp)) == isoFormatter.string(from:busPrediction2.timeStamp)
                     
                     expect(pred1.busStopIdentifier) == busPrediction1.busStopIdentifier
                     expect(pred2.busStopIdentifier) == busPrediction2.busStopIdentifier

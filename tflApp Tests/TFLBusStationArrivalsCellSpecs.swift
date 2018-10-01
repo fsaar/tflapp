@@ -6,7 +6,8 @@ import CoreData
 import MapKit
 @testable import London_Bus
 
-class TFLBusStationArrivalsCellSpecs: QuickSpec {
+
+extension DateFormatter {
     static let iso8601Full: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
@@ -15,6 +16,10 @@ class TFLBusStationArrivalsCellSpecs: QuickSpec {
         formatter.locale = Locale(identifier: "en_US_POSIX")
         return formatter
     }()
+}
+
+class TFLBusStationArrivalsCellSpecs: QuickSpec {
+   
     
     override func spec() {
         var cell : TFLBusStationArrivalsCell!
@@ -128,7 +133,7 @@ class TFLBusStationArrivalsCellSpecs: QuickSpec {
             var predictions : [[String:Any]] = []
             for dict in tempPredictions  {
                 var newDict = dict
-                newDict["timestamp"] = TFLBusStationArrivalsCellSpecs.iso8601Full.string(from: referenceDate)
+                newDict["timestamp"] = DateFormatter.iso8601Full.string(from: referenceDate)
                 timeFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
                 newDict["timeToLive"] = timeStampFormatter.string(from: Date().addingTimeInterval(TimeInterval(60)))
                 

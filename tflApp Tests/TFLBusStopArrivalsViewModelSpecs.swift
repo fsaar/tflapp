@@ -8,15 +8,6 @@ import MapKit
 
 class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
     
-    static let iso8601Full: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
-        formatter.calendar = Calendar(identifier: .iso8601)
-        formatter.timeZone = TimeZone(secondsFromGMT: 0)
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        return formatter
-    }()
-    
     override func spec() {
         var distanceFormatter : LengthFormatter!
         var timeFormatter : DateFormatter!
@@ -121,7 +112,7 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
                 referenceDate  = timeFormatter.date(from: "2016-11-16T16:15:01Z")
                 for dict in tempPredictions  {
                     var newDict = dict
-                    newDict["timestamp"] = TFLBusStopArrivalsViewModelSpecs.iso8601Full.string(from: referenceDate)
+                    newDict["timestamp"] = DateFormatter.iso8601Full.string(from: referenceDate)
                     newDict["timeToLive"] = timeStampFormatter.string(from: Date().addingTimeInterval(TimeInterval(60)))
                     
                     predictions +=  [newDict]

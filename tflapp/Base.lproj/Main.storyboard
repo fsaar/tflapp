@@ -463,7 +463,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WtR-K6-0YT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4404" y="341.37931034482762"/>
+            <point key="canvasLocation" x="3434" y="498"/>
         </scene>
         <!--Map View Controller-->
         <scene sceneID="wcZ-Uc-Vhc">
@@ -506,44 +506,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="28b-Gl-A0H" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1487" y="-308"/>
-        </scene>
-        <!--Nearby Background Controller-->
-        <scene sceneID="mJ8-Ek-jgE">
-            <objects>
-                <viewController storyboardIdentifier="TFLNearbyBackgroundController" id="TWS-7f-rIW" customClass="TFLNearbyBackgroundController" customModule="London_Bus" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="SFO-74-0ka"/>
-                        <viewControllerLayoutGuide type="bottom" id="YpS-B3-21q"/>
-                    </layoutGuides>
-                    <view key="view" opaque="NO" contentMode="scaleToFill" id="W1z-ry-bax">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yLe-b0-N1Q">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <segue destination="dt0-NZ-OrX" kind="embed" identifier="TFLNearbyBusStationsControllerSegue" id="MGl-LX-ddp"/>
-                                </connections>
-                            </containerView>
-                        </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="yLe-b0-N1Q" firstAttribute="leading" secondItem="W1z-ry-bax" secondAttribute="leading" id="Jhw-oF-uqt"/>
-                            <constraint firstAttribute="bottom" secondItem="yLe-b0-N1Q" secondAttribute="bottom" id="W4U-zP-Gg7"/>
-                            <constraint firstAttribute="trailing" secondItem="yLe-b0-N1Q" secondAttribute="trailing" id="kJI-G6-gBZ"/>
-                            <constraint firstItem="yLe-b0-N1Q" firstAttribute="top" secondItem="W1z-ry-bax" secondAttribute="top" id="yQl-eD-Dw1"/>
-                        </constraints>
-                    </view>
-                    <extendedEdge key="edgesForExtendedLayout"/>
-                    <nil key="simulatedStatusBarMetrics"/>
-                    <connections>
-                        <outlet property="ackLabel" destination="9fW-nN-Lr5" id="sGL-1H-YMn"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="rC1-6g-WTm" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1508" y="343"/>
         </scene>
         <!--Nearby Bus Stations Controller-->
         <scene sceneID="cxn-Pe-6wD">
@@ -759,7 +721,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mkr-z0-Go8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2358" y="342"/>
+            <point key="canvasLocation" x="1486" y="363"/>
         </scene>
         <!--Nearby Bus Stations Controller-->
         <scene sceneID="ffn-81-5f0">
@@ -857,7 +819,7 @@
                     </connections>
                 </view>
             </objects>
-            <point key="canvasLocation" x="3453.5999999999999" y="341.37931034482762"/>
+            <point key="canvasLocation" x="2358" y="363"/>
         </scene>
         <!--Station Detail Map View Controller-->
         <scene sceneID="LrV-LR-q1s">
@@ -889,7 +851,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YFq-HO-VWx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4404" y="-13.493253373313344"/>
+            <point key="canvasLocation" x="3434" y="143"/>
         </scene>
     </scenes>
 </document>

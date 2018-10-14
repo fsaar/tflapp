@@ -89,12 +89,8 @@ class TFLRootViewController: UIViewController {
         return controller
     }()
 
-    fileprivate var nearbyBusStationController : TFLNearbyBusStationsController? {
-        return self.nearbyBackgroundController?.nearbyBusStationController
-    }
-
-    fileprivate lazy var nearbyBackgroundController : TFLNearbyBackgroundController? = {
-        let controller = self.storyboard?.instantiateViewController(withIdentifier: "TFLNearbyBackgroundController") as? TFLNearbyBackgroundController
+     fileprivate lazy var nearbyBusStationController : TFLNearbyBusStationsController? =  {
+        let controller = self.storyboard?.instantiateViewController(withIdentifier: "TFLNearbyBusStationsController") as? TFLNearbyBusStationsController
         return controller
     }()
 
@@ -119,8 +115,8 @@ class TFLRootViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let mapViewController = self.mapViewController, let nearbyBackgroundController = self.nearbyBackgroundController {
-            self.slideContainerController?.setContentControllers(with: mapViewController,and: nearbyBackgroundController)
+        if let mapViewController = self.mapViewController, let nearbyBusStationController = self.nearbyBusStationController {
+            self.slideContainerController?.setContentControllers(with: mapViewController,and: nearbyBusStationController)
             self.slideContainerController?.sliderViewUpdateBlock =  { [weak self] slider, origin,final in
                 func opacity(for y: CGFloat) -> CGFloat {
                     let y0 : CGFloat = 0.3 * (self?.view.frame.size.height ?? 0)

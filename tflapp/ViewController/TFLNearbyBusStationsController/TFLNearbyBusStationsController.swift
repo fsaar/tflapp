@@ -166,13 +166,14 @@ fileprivate extension TFLNearbyBusStationsController {
     }
     
     func hideBackgroundLabels(_ hide : Bool = true)  {
-        self.updateTimeStamp = hide
         self.ackLabel.isHidden = hide
+        self.lastUpdatedLabel.isHidden = hide
     }
     
     func addContentOffsetObserver() {
         contentOffsetObserver = self.tableView.observe(\UITableView.contentOffset) { [weak self] _,_  in
             guard let offset = self?.tableView.contentOffset.y, (offset < 0) else {
+                self?.updateTimeStamp = true
                 self?.lastUpdatedLabel.isHidden = true
                 self?.hideBackgroundLabels()
                 return

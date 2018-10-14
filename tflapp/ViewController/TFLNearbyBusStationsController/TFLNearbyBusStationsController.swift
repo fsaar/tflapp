@@ -80,40 +80,18 @@ class TFLNearbyBusStationsController : UIViewController {
 
     var contentOffsetObserver : NSKeyValueObservation?
     var updateTimeStamp = true
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
        
         addRefreshControl()
         updateLastUpdateTimeStamp()
-        contentOffsetObserver = self.tableView.observe(\UITableView.contentOffset) { [weak self] _,_  in
-            guard let offset = self?.tableView.contentOffset.y, (offset < 0) else {
-                self?.updateTimeStamp = true
-                return
-            }
-            if self?.updateTimeStamp == true {
-                self?.updateTimeStamp = false
-                self?.updateLastUpdateTimeStamp()
-            }
-        }
+        addContentOffsetObserver()
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = TFLNearbyBusStationsController.defaultTableViewRowHeight
     }
     
-    func addRefreshControl() {
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(self.refreshHandler(control:)), for: .valueChanged)
-        self.tableView.refreshControl = refreshControl
-        self.tableView.refreshControl?.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
-    }
-    
-    
-    func updateLastUpdateTimeStamp() {
-        let date = self.delegate?.lastRefresh(of: self)
-        self.lastUpdatedLabel.text = nil
-        if  let dateString = date?.relativePastDateStringFromNow() {
-            self.lastUpdatedLabel.text = NSLocalizedString("TFLNearbyBusStationsController.last_updated", comment: "") + dateString
-        }
-    }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let identifier = segue.identifier, let segueIdentifier = TFLNearbyBusStationsController.SegueIdentifier(rawValue:identifier) else {
@@ -167,5 +145,34 @@ fileprivate extension TFLNearbyBusStationsController {
 
     func configure(_ cell : TFLBusStationArrivalsCell,at indexPath : IndexPath) {
         cell.configure(with: busStopArrivalViewModels[indexPath])
+    }
+    
+    func addRefreshControl() {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(self.refreshHandler(control:)), for: .valueChanged)
+        self.tableView.refreshControl = refreshControl
+        self.tableView.refreshControl?.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
+    }
+    
+    
+    func updateLastUpdateTimeStamp() {
+        let date = self.delegate?.lastRefresh(of: self)
+        self.lastUpdatedLabel.text = nil
+        if  let dateString = date?.relativePastDateStringFromNow() {
+            self.lastUpdatedLabel.text = NSLocalizedString("TFLNearbyBusStationsController.last_updated", comment: "") + dateString
+        }
+    }
+    
+    func addContentOffsetObserver() {
+        contentOffsetObserver = self.tableView.observe(\UITableView.contentOffset) { [weak self] _,_  in
+            guard let offset = self?.tableView.contentOffset.y, (offset < 0) else {
+                self?.updateTimeStamp = true
+                return
+            }
+            if self?.updateTimeStamp == true {
+                self?.updateTimeStamp = false
+                self?.updateLastUpdateTimeStamp()
+            }
+        }
     }
 }

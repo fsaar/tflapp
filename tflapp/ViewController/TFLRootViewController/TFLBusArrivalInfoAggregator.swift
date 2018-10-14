@@ -64,11 +64,13 @@ class TFLBusArrivalInfoAggregator {
         busStops.forEach { [weak self] stopPoint in
             group.enter()
             context.perform {
-                self?.tflClient.arrivalsForStopPoint(with: stopPoint.identifier,with: queue) { predictions,_ in
-                    context.perform {
-                        let tuple = TFLBusStopArrivalsInfo(busStop: stopPoint, location: location, arrivals: predictions ?? [])
-                        newStopPoints += [tuple]
-                        group.leave()
+                if let bustStop = context.object(with: stopPoint.objectID) as? TFLCDBusStop {
+                    self?.tflClient.arrivalsForStopPoint(with: bustStop.identifier,with: queue) { predictions,_ in
+                        context.perform {
+                            let tuple = TFLBusStopArrivalsInfo(busStop: bustStop, location: location, arrivals: predictions ?? [])
+                            newStopPoints += [tuple]
+                            group.leave()
+                        }
                     }
                 }
             }

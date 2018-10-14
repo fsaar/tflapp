@@ -691,7 +691,6 @@
                                             <outlet property="predictionView" destination="JkC-Y4-Fea" id="kMx-an-5XM"/>
                                             <outlet property="stationDetails" destination="Njp-UU-MPM" id="zSS-2T-jkR"/>
                                             <outlet property="stationName" destination="Kkg-jU-POR" id="G43-PD-H4Q"/>
-                                            <segue destination="Oga-ig-WMN" kind="show" id="dYq-qo-ZbR"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -717,6 +716,7 @@
                         <outlet property="ackLabel" destination="9fW-nN-Lr5" id="e5V-NY-lae"/>
                         <outlet property="lastUpdatedLabel" destination="HDB-tf-sWO" id="eli-b0-iD7"/>
                         <outlet property="tableView" destination="70N-s4-1TX" id="yje-DL-4cM"/>
+                        <segue destination="Oga-ig-WMN" kind="show" identifier="TFLStationDetailSegue" id="TwU-Ay-g9J"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mkr-z0-Go8" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -12,6 +12,12 @@ extension UIFont {
         let font = UIFont(descriptor: descriptor, size: size)
         return font
     }
+    
+    class func tflRefreshTitle() -> UIFont {
+        let descriptor = UIFontDescriptor(name: "GillSans-Light", size: 12)
+        let font = UIFont(descriptor: descriptor, size: 12)
+        return font
+    }
 
     class func tflStationDetailHeader() -> UIFont {
         let descriptor = UIFontDescriptor(name: "GillSans", size: 20)

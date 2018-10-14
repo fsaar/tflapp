@@ -275,6 +275,10 @@ extension TFLRootViewController : TFLErrorContainerViewDelegate {
 // MARK: TFLContentControllerDelegate
 
 extension TFLRootViewController : TFLNearbyBusStationsControllerDelegate  {
+    func lastRefresh(of controller: TFLNearbyBusStationsController) -> Date? {
+        return busInfoAggregator.lastUpdate
+    }
+    
     func refresh(controller: TFLNearbyBusStationsController, using completionBlock:@escaping ()->()) {
         loadNearbyBusstops (using: completionBlock)
     }

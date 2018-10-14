@@ -16,7 +16,7 @@ class TFLBusArrivalInfoAggregator {
 
     fileprivate let networkBackgroundQueue = OperationQueue()
     private var counter : Int = 0
-
+    var lastUpdate : Date?
     func loadArrivalTimesForStoreStopPoints(with coord: CLLocationCoordinate2D,
                                             with distance : Double,
                                             using completionBlock:@escaping (_ arrivalInfos:[TFLBusStopArrivalsInfo],_ completed: Bool)->()) {
@@ -41,12 +41,14 @@ class TFLBusArrivalInfoAggregator {
                     self?.arrivalsForBusStops(initialLoad, and: currentLocation) { initialInfos in
                         mainQueueBlock(initialInfos,false)
                         self?.arrivalsForBusStops(remainder, and: currentLocation) { remainderInfos in
+                            self?.lastUpdate = Date()
                             mainQueueBlock(initialInfos + remainderInfos,true)
                         }
                     }
                 }
                 else {
                     self?.arrivalsForBusStops(busStops, and: currentLocation) { arrivalInfos in
+                        self?.lastUpdate = Date()
                         mainQueueBlock(arrivalInfos,true)
                     }
                 }

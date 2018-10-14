@@ -4,6 +4,7 @@ import os.signpost
 
 protocol TFLNearbyBusStationsControllerDelegate : class {
     func refresh(controller: TFLNearbyBusStationsController, using completionBlock:@escaping ()->())
+    func lastRefresh(of controller : TFLNearbyBusStationsController) -> Date?
 }
 
 extension MutableCollection where Index == Int, Iterator.Element == TFLBusStopArrivalsViewModel {
@@ -17,18 +18,35 @@ extension MutableCollection where Index == Int, Iterator.Element == TFLBusStopAr
     }
 }
 
-class TFLNearbyBusStationsController : UITableViewController {
+class TFLNearbyBusStationsController : UIViewController {
     enum SegueIdentifier : String {
         case stationDetailSegue =  "TFLStationDetailSegue"
     }
     static let defaultTableViewRowHeight = CGFloat (120)
-
+    
     fileprivate static let loggingHandle  = OSLog(subsystem: TFLLogger.subsystem, category: TFLLogger.category.refresh.rawValue)
 
     weak var delegate : TFLNearbyBusStationsControllerDelegate?
+    
+    @IBOutlet weak var ackLabel : UILabel! = nil {
+        didSet {
+            self.ackLabel.font = UIFont.tflFontPoweredBy()
+            self.ackLabel.text = NSLocalizedString("TFLRootViewController.ackTitle", comment: "")
+            self.ackLabel.textColor = .black
+        }
+    }
+    
+    @IBOutlet weak var lastUpdatedLabel : UILabel! = nil {
+        didSet {
+            self.lastUpdatedLabel.font = UIFont.tflRefreshTitle()
+            self.lastUpdatedLabel.textColor = .black
+        }
+    }
+    
     var busStopArrivalViewModels :  [TFLBusStopArrivalsViewModel] = []
-  
-   
+    
+    @IBOutlet weak var tableView : UITableView!
+    
     fileprivate let synchroniser = TFLSynchroniser(tag:"com.samedialabs.queue.tableview")
     
     var busStopPredicationTuple :  [TFLBusStopArrivalsInfo] = [] {
@@ -63,15 +81,28 @@ class TFLNearbyBusStationsController : UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(self.refreshHandler(control:)), for: .valueChanged)
-        self.refreshControl = refreshControl
-        self.refreshControl?.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
-
-        
+       
+        addRefreshControl()
+        updateLastUpdateTimeStamp()
 
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = TFLNearbyBusStationsController.defaultTableViewRowHeight
+    }
+    
+    func addRefreshControl() {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(self.refreshHandler(control:)), for: .valueChanged)
+        self.tableView.refreshControl = refreshControl
+        self.tableView.refreshControl?.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
+    }
+    
+    
+    func updateLastUpdateTimeStamp() {
+        let date = self.delegate?.lastRefresh(of: self)
+        self.lastUpdatedLabel.text = nil
+        if  let dateString = date?.relativePastDateStringFromNow() {
+            self.lastUpdatedLabel.text = NSLocalizedString("TFLNearbyBusStationsController.last_updated", comment: "") + dateString
+        }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -89,27 +120,29 @@ class TFLNearbyBusStationsController : UITableViewController {
     @objc func refreshHandler(control : UIRefreshControl) {
         control.beginRefreshing()
         TFLLogger.shared.signPostStart(osLog: TFLNearbyBusStationsController.loggingHandle, name: "refreshHandler")
-        self.delegate?.refresh(controller: self) {
+        self.delegate?.refresh(controller: self) { [weak self] in
             TFLLogger.shared.signPostEnd(osLog: TFLNearbyBusStationsController.loggingHandle, name: "refreshHandler")
             control.endRefreshing()
+            self?.updateLastUpdateTimeStamp()
         }
-
     }
+}
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+extension TFLNearbyBusStationsController : UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.busStopArrivalViewModels.count
     }
-
-
-     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing:TFLBusStationArrivalsCell.self), for: indexPath)
-
+        
         if let arrivalsCell = cell as? TFLBusStationArrivalsCell {
             configure(arrivalsCell, at: indexPath)
             arrivalsCell.delegate = self
         }
         return cell
-     }
+    }
 }
 
 extension TFLNearbyBusStationsController : TFLBusStationArrivalCellDelegate {

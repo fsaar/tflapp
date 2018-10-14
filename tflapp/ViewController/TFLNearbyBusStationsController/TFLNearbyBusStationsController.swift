@@ -33,6 +33,7 @@ class TFLNearbyBusStationsController : UIViewController {
             self.ackLabel.font = UIFont.tflFontPoweredBy()
             self.ackLabel.text = NSLocalizedString("TFLRootViewController.ackTitle", comment: "")
             self.ackLabel.textColor = .black
+            self.ackLabel.isHidden = true
         }
     }
     
@@ -40,6 +41,7 @@ class TFLNearbyBusStationsController : UIViewController {
         didSet {
             self.lastUpdatedLabel.font = UIFont.tflRefreshTitle()
             self.lastUpdatedLabel.textColor = .black
+            self.lastUpdatedLabel.isHidden = true
         }
     }
     
@@ -163,12 +165,19 @@ fileprivate extension TFLNearbyBusStationsController {
         }
     }
     
+    func hideBackgroundLabels(_ hide : Bool = true)  {
+        self.updateTimeStamp = hide
+        self.ackLabel.isHidden = hide
+    }
+    
     func addContentOffsetObserver() {
         contentOffsetObserver = self.tableView.observe(\UITableView.contentOffset) { [weak self] _,_  in
             guard let offset = self?.tableView.contentOffset.y, (offset < 0) else {
-                self?.updateTimeStamp = true
+                self?.lastUpdatedLabel.isHidden = true
+                self?.hideBackgroundLabels()
                 return
             }
+            self?.hideBackgroundLabels(false)
             if self?.updateTimeStamp == true {
                 self?.updateTimeStamp = false
                 self?.updateLastUpdateTimeStamp()

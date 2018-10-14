@@ -23,4 +23,4 @@
 "DateStringConversion.days_ago" = "a few days ago";
 "DateStringConversion.last_week" = "last week";
 "DateStringConversion.weeks_ago" = "weeks ago";
-"TFLNearbyBusStationsController.last_updated" = "last updated on ";
+"TFLNearbyBusStationsController.last_updated" = "last updated: ";

@@ -78,13 +78,23 @@ class TFLNearbyBusStationsController : UIViewController {
         }
     }
 
-
+    var contentOffsetObserver : NSKeyValueObservation?
+    var updateTimeStamp = true
     override func viewDidLoad() {
         super.viewDidLoad()
        
         addRefreshControl()
         updateLastUpdateTimeStamp()
-
+        contentOffsetObserver = self.tableView.observe(\UITableView.contentOffset) { [weak self] _,_  in
+            guard let offset = self?.tableView.contentOffset.y, (offset < 0) else {
+                self?.updateTimeStamp = true
+                return
+            }
+            if self?.updateTimeStamp == true {
+                self?.updateTimeStamp = false
+                self?.updateLastUpdateTimeStamp()
+            }
+        }
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = TFLNearbyBusStationsController.defaultTableViewRowHeight
     }

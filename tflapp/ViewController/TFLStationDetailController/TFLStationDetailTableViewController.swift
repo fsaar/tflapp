@@ -33,13 +33,17 @@ class TFLStationDetailTableViewController: UITableViewController {
         let headerView = self.tableView.headerView(forSection: section) as? TFLStationDetailSectionHeaderView
         headerView?.showBarView(show, animated: true)
     }
-
+    let lightImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
     fileprivate var visibleSections : Set<Int> = [] {
         didSet {
             let newSection = visibleSections.min()
             let oldSection = oldValue.min()
             if  newSection != oldSection, let currentSection = newSection {
                 self.currentSection = currentSection
+                if !oldValue.isEmpty {
+                    self.lightImpactFeedbackGenerator.prepare()
+                    self.lightImpactFeedbackGenerator.impactOccurred()
+                }
             }
         }
     }

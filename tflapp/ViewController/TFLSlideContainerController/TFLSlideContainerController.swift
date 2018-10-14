@@ -11,7 +11,7 @@ class TFLSlideContainerController: UIViewController {
     }
     let maxVelocity : CGFloat = 100
     let defaultVelocity : CGFloat = 10
-
+    let lightImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
     @IBOutlet fileprivate weak var sliderHandleContainerView : UIView!
     @IBOutlet fileprivate weak var sliderHandleBackgroundView : UIView! = nil {
         didSet {
@@ -49,6 +49,10 @@ class TFLSlideContainerController: UIViewController {
             let nonzeroVelocity = velocity != 0 ? velocity : newOrigin.y < currentY ? -strongSelf.defaultVelocity : strongSelf.defaultVelocity
             let normalizedVelocity = final ? abs(newOrigin.y - currentY) / nonzeroVelocity : nonzeroVelocity
             let animationTime = final ? 0.5 : 0
+            if final {
+                self?.lightImpactFeedbackGenerator.prepare()
+                self?.lightImpactFeedbackGenerator.impactOccurred()
+            }
             self?.updateSliderContainerView(with: newOrigin, animationTime: animationTime, velocity: normalizedVelocity,final: final)
         }
         let initPositionY = (self.snapPositions.first ?? 0) * self.view.frame.size.height

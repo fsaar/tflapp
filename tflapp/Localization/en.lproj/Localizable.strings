@@ -12,4 +12,15 @@
 "TFLNoGPSEnabledView.title" = "For this app to function properly location services need to be enabled in settings.";
 "TFLNoGPSEnabledView.settingsButtonTitle" = "Go to Settings";
 "TFLNoGPSEnabledView.headerTitle" = "No Location Services";
-"TFLRootViewController.ackTitle" = "Powered by TfL Open Data";"
+"TFLRootViewController.ackTitle" = "Powered by TfL Open Data";
+"DateStringConversion.just_now" = "just now";
+"DateStringConversion.about_30_secs_ago" = "about 30 seconds ago";
+"DateStringConversion.about_1_minute_ago" = "1 minute ago";
+"DateStringConversion.about_minutes_ago" = "minutes ago";
+"DateStringConversion.about_1_hour_ago" = "1 hour ago";
+"DateStringConversion.about_hours_ago" = "hours ago";
+"DateStringConversion.yesterday" = "yesterday";
+"DateStringConversion.days_ago" = "a few days ago";
+"DateStringConversion.last_week" = "last week";
+"DateStringConversion.weeks_ago" = "weeks ago";
+"TFLNearbyBusStationsController.last_updated" = "last updated: ";

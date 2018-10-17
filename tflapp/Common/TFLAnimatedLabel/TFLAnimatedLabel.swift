@@ -1,7 +1,7 @@
 
 import UIKit
 
-class TFLAnimiatedLabel: UIView {
+class TFLAnimatedLabel: UIView {
 
     fileprivate var label2TopConstraint : NSLayoutConstraint?
     var bgColor: UIColor? =  nil {
@@ -63,7 +63,7 @@ class TFLAnimiatedLabel: UIView {
     }
 }
 
-fileprivate extension TFLAnimiatedLabel {
+fileprivate extension TFLAnimatedLabel {
     func animatedLabel() -> UILabel {
         let label = UILabel(frame: self.frame)
         label.translatesAutoresizingMaskIntoConstraints = false

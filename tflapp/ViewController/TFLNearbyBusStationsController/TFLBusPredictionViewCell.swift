@@ -10,7 +10,7 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
             self.line.backgroundColor = UIColor.red
         }
     }
-    @IBOutlet weak var arrivalTime : TFLAnimiatedLabel! = nil {
+    @IBOutlet weak var arrivalTime : TFLAnimatedLabel! = nil {
         didSet {
             self.arrivalTime.font = UIFont.tflFontBusArrivalTime()
             self.arrivalTime.textColor = .black

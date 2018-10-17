@@ -8,9 +8,9 @@ import UIKit
 class TFLAnimationLabelSpecs: QuickSpec {
     
     override func spec() {
-        var label : TFLAnimiatedLabel!
+        var label : TFLAnimatedLabel!
         beforeEach() {
-            label = TFLAnimiatedLabel(frame:CGRect(origin:.zero, size: CGSize(width: 100, height: 20)))
+            label = TFLAnimatedLabel(frame:CGRect(origin:.zero, size: CGSize(width: 100, height: 20)))
         }
         it("should not be nil") {
             expect(label).notTo(beNil())

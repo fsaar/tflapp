@@ -18,7 +18,7 @@ fileprivate class CollectionViewDataSource : NSObject,UICollectionViewDataSource
 
 }
 
-fileprivate class TestAnimatedLabel : TFLAnimiatedLabel {
+fileprivate class TestAnimatedLabel : TFLAnimatedLabel {
     var textSet = false
     
     override func setText(_ newText: String?, animated: Bool) {

@@ -23,11 +23,13 @@ class TFLBusArrivalInfoAggregator {
         let mainQueueBlock : ([TFLBusStopArrivalsInfo],Bool) -> Void = { [weak self] infos, completed in
             DispatchQueue.main.async {
                 completionBlock(infos,completed)
+                #if DEBUG_SCHEDULES
                 guard completed else {
                     return
                 }
                 infos.log(with: "\(self?.counter ?? 0)")
                 self?.counter += 1
+                #endif
             }
         }
         let currentLocation = CLLocation(latitude: coord.latitude, longitude: coord.longitude)

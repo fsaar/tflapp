@@ -19,7 +19,7 @@ class TFLLogger {
     }
     
     static let subsystem : String = {
-        let identifier = Bundle.main.infoDictionary?["CFBundleIdentifier"] as? String ?? ""
+        let identifier = Bundle.main.infoDictionary?[kCFBundleIdentifierKey as String] as? String ?? ""
         return identifier
     }()
     static let shared = TFLLogger()

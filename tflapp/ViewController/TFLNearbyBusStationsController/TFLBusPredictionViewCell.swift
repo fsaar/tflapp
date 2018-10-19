@@ -15,18 +15,16 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
             self.arrivalTime.font = UIFont.tflFontBusArrivalTime()
             self.arrivalTime.textColor = .black
             self.arrivalTime.isOpaque = true
-            self.arrivalTime.bgColor = bgColor
+            self.arrivalTime.backgroundColor = bgColor
             self.arrivalTime.textAlignment = .center
-        }
-    }
-    @IBOutlet weak var bgImage : UIImageView! = nil {
-        didSet {
-            self.bgImage.image = TFLBusPredictionViewCell.busPredictionViewBackgroundImage
         }
     }
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.contentView.layer.contents = TFLBusPredictionViewCell.busPredictionViewBackgroundImage.cgImage
+        self.contentView.layer.contentsGravity = .resizeAspectFill
+        self.contentView.isOpaque = true
         self.selectedBackgroundView = nil
         prepareForReuse()
 

@@ -26,35 +26,27 @@ class TFLLogger {
     
     
     func signPostStart(osLog: OSLog, name: StaticString,identifier : String? = nil) {
-        if #available(iOS 12,*) {
-            log(.begin,osLog: osLog,name: name,identifier: identifier)
-        }
+        log(.begin,osLog: osLog,name: name,identifier: identifier)
     }
 
     func signPostEnd(osLog: OSLog, name: StaticString, identifier : String? = nil) {
-        if #available(iOS 12,*) {
-            log(.end,osLog: osLog,name: name,identifier: identifier)
-        }
+        log(.end,osLog: osLog,name: name,identifier: identifier)
     }
     
     func event(osLog: OSLog, name: StaticString,identifier : String? = nil) {
-        if #available(iOS 12,*) {
-            log(.event,osLog: osLog,name: name,identifier: identifier)
-        }
+        log(.event,osLog: osLog,name: name,identifier: identifier)
     }
 }
 
 fileprivate extension TFLLogger {
     
     func log(_ type: OSSignpostType,osLog: OSLog, name: StaticString, identifier : String? = nil) {
-        if #available(iOS 12,*) {
-            if let _ = identifier {
-                let spid = OSSignpostID(log:osLog, object: identifier as AnyObject)
-                os_signpost(type, log: osLog, name: name,signpostID: spid)
-            }
-            else {
-                os_signpost(type, log: osLog, name: name)
-            }
+        if let _ = identifier {
+            let spid = OSSignpostID(log:osLog, object: identifier as AnyObject)
+            os_signpost(type, log: osLog, name: name,signpostID: spid)
+        }
+        else {
+            os_signpost(type, log: osLog, name: name)
         }
     }
 }

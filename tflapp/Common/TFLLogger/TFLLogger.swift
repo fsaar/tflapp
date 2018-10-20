@@ -47,8 +47,7 @@ fileprivate extension TFLLogger {
             os_signpost(type, log: osLog, name: name,signpostID: spid)
         }
         else {
-            let spid = OSSignpostID(log:osLog)
-            os_signpost(type, log: osLog, name: name, signpostID: spid)
+            os_signpost(type, log: osLog, name: name)
         }
     }
 }

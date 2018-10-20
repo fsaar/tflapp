@@ -17,6 +17,7 @@ extension TFLCDLineInfo {
         return NSFetchRequest<TFLCDLineInfo>(entityName: "TFLCDLineInfo")
     }
 
+    @NSManaged public var lastUpdated: Date?
     @NSManaged public var identifier: String?
     @NSManaged public var routes: NSOrderedSet?
 

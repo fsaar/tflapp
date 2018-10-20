@@ -82,10 +82,10 @@ public final class TFLClient {
     public func lineStationInfo(for line: String,
                         context: NSManagedObjectContext,
                          with operationQueue : OperationQueue = OperationQueue.main,
-                         using completionBlock: @escaping ((TFLCDLineInfo?,_ error:Error?) -> ()))  {
+                         using completionBlock: ((TFLCDLineInfo?,_ error:Error?) -> ())? = nil)  {
         guard !line.isEmpty else {
             operationQueue.addOperation {
-                completionBlock(nil,TFLClientError.InvalidLine)
+                completionBlock?(nil,TFLClientError.InvalidLine)
             }
             return
         }
@@ -94,7 +94,7 @@ public final class TFLClient {
         lineStationInfo(with: lineStationPath, query: "serviceTypes=Regular&excludeCrowding=true", context: context) { lineInfo , error in
             TFLLogger.shared.signPostEnd(osLog: TFLClient.loggingHandle, name: "lineStationInfo",identifier: line)
             operationQueue.addOperation {
-                completionBlock(lineInfo,error)
+                completionBlock?(lineInfo,error)
             }
         }
     }
@@ -111,6 +111,9 @@ fileprivate extension TFLClient {
                 , options: JSONSerialization.ReadingOptions(rawValue:0)) as? [String : Any] {
                 if let jsonDict = jsonDict {
                     TFLCDLineInfo.lineInfo(with: jsonDict, and: context) { lineInfo in
+                        context.perform {
+                            try? context.save()
+                        }
                         operationQueue.addOperation {
                             completionBlock(lineInfo,nil)
                         }

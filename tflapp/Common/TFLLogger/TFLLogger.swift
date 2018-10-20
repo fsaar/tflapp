@@ -16,6 +16,7 @@ class TFLLogger {
         case refresh = "refresh"
         case coredata = "coredata"
         case timer = "timer"
+        case location = "location"
     }
     
     static let subsystem : String = {

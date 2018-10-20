@@ -1,6 +1,7 @@
 import CoreLocation
 import Foundation
 import UIKit
+import os.signpost
 
 typealias TFLLocationManagerCompletionBlock  = (CLLocationCoordinate2D)->(Void)
 
@@ -11,6 +12,10 @@ extension CLLocationCoordinate2D {
 }
 
 class TFLLocationManager : NSObject {
+    fileprivate static let locationLoggingHandle : OSLog =  {
+        let handle = OSLog(subsystem: TFLLogger.subsystem, category: TFLLogger.category.location.rawValue)
+        return handle
+    }()
     var lastKnownCoordinate = kCLLocationCoordinate2DInvalid
     static let sharedManager = TFLLocationManager()
     var completionBlock : TFLLocationManagerCompletionBlock?
@@ -67,7 +72,11 @@ fileprivate extension TFLLocationManager {
             completionBlock?(lastKnownCoordinate)
             return
         }
-        self.completionBlock = completionBlock
+        TFLLogger.shared.signPostStart(osLog: TFLLocationManager.locationLoggingHandle, name: "updateLocation")
+        self.completionBlock = { coord in
+            TFLLogger.shared.signPostEnd(osLog: TFLLocationManager.locationLoggingHandle, name: "updateLocation")
+            completionBlock?(coord)
+        }
     }
 }
 

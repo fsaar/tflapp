@@ -19,6 +19,11 @@ public final class TFLClient {
         let handle = OSLog(subsystem: TFLLogger.subsystem, category: TFLLogger.category.api.rawValue)
         return handle
     }()
+    let backgroundQueue : OperationQueue = {
+        let queue = OperationQueue()
+        queue.qualityOfService = .userInitiated
+        return queue
+    }()
     public func arrivalsForStopPoint(with identifier: String,
                                      with operationQueue : OperationQueue = OperationQueue.main,
                                      using completionBlock:@escaping (([TFLBusPrediction]?,_ error:Error?) -> ()))  {
@@ -45,10 +50,8 @@ public final class TFLClient {
         let busStopPath = "/StopPoint"
         let query = "lat=\(coordinate.latitude)&lon=\(coordinate.longitude)&stopTypes=NaptanPublicBusCoachTram&categories=Geo"
         let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
-        let queue = OperationQueue()
-        queue.qualityOfService = QualityOfService.userInitiated
         TFLLogger.shared.signPostStart(osLog: TFLClient.loggingHandle, name: "nearbyBusStops")
-        requestBusStops(with: busStopPath, query: query,context:context, with: queue) {stops,error in
+        requestBusStops(with: busStopPath, query: query,context:context, with: backgroundQueue) {stops,error in
             TFLLogger.shared.signPostEnd(osLog: TFLClient.loggingHandle, name: "nearbyBusStops")
             context.perform {
                 if context.hasChanges {
@@ -77,6 +80,7 @@ public final class TFLClient {
     }
 
     public func lineStationInfo(for line: String,
+                        context: NSManagedObjectContext,
                          with operationQueue : OperationQueue = OperationQueue.main,
                          using completionBlock: @escaping ((TFLCDLineInfo?,_ error:Error?) -> ()))  {
         guard !line.isEmpty else {
@@ -87,7 +91,7 @@ public final class TFLClient {
         }
         let lineStationPath = "/Line/\(line)/Route/Sequence/all"
         TFLLogger.shared.signPostStart(osLog: TFLClient.loggingHandle, name: "lineStationInfo",identifier: line)
-        lineStationInfo(with: lineStationPath, query: "serviceTypes=Regular&excludeCrowding=true", context: TFLCoreDataStack.sharedDataStack.privateQueueManagedObjectContext) { lineInfo , error in
+        lineStationInfo(with: lineStationPath, query: "serviceTypes=Regular&excludeCrowding=true", context: context) { lineInfo , error in
             TFLLogger.shared.signPostEnd(osLog: TFLClient.loggingHandle, name: "lineStationInfo",identifier: line)
             operationQueue.addOperation {
                 completionBlock(lineInfo,error)

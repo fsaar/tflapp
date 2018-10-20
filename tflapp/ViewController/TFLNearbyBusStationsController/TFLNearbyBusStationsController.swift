@@ -22,6 +22,7 @@ class TFLNearbyBusStationsController : UIViewController {
     enum SegueIdentifier : String {
         case stationDetailSegue =  "TFLStationDetailSegue"
     }
+    let client = TFLClient()
     static let defaultTableViewRowHeight = CGFloat (120)
     
     fileprivate static let loggingHandle  = OSLog(subsystem: TFLLogger.subsystem, category: TFLLogger.category.refresh.rawValue)
@@ -136,8 +137,23 @@ extension TFLNearbyBusStationsController : UITableViewDataSource {
 }
 
 extension TFLNearbyBusStationsController : TFLBusStationArrivalCellDelegate {
+    
     func busStationArrivalCell(_ busStationArrivalCell: TFLBusStationArrivalsCell,didSelectLine line: String) {
-        self.performSegue(withIdentifier: SegueIdentifier.stationDetailSegue.rawValue, sender: line)
+        let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
+        if let lineInfo = TFLCDLineInfo.lineInfo(with: line, and: context) {
+            self.performSegue(withIdentifier: SegueIdentifier.stationDetailSegue.rawValue, sender: line)
+            lineInfo.managedObjectContext?.perform { [weak self] in
+                if lineInfo.needsUpdate {
+                    self?.client.lineStationInfo(for: line,context:context,with:.main)
+                }
+            }
+
+        }
+        else {
+            client.lineStationInfo(for: line,context:context,with:.main) { _,_ in
+                self.performSegue(withIdentifier: SegueIdentifier.stationDetailSegue.rawValue, sender: line)
+            }
+        }
     }
 }
 

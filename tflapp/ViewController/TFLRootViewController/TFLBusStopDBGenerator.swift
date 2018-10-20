@@ -48,7 +48,7 @@ class TFLBusStopDBGenerator {
         }
         let line = lines[index]
         print("\(index). \(line)")
-        self.tflClient.lineStationInfo(for: line) { [weak self] _,_ in
+        self.tflClient.lineStationInfo(for: line,context: TFLCoreDataStack.sharedDataStack.privateQueueManagedObjectContext) { [weak self] _,_ in
             self?.load(lines: lines, index: index+1,using:completionBlock)
         }
     }

@@ -139,7 +139,7 @@ extension TFLNearbyBusStationsController : UITableViewDataSource {
 extension TFLNearbyBusStationsController : TFLBusStationArrivalCellDelegate {
     
     func busStationArrivalCell(_ busStationArrivalCell: TFLBusStationArrivalsCell,didSelectLine line: String) {
-        updateStationInfoIfNeedbe(line: line) { [weak self] in
+        updateLineInfoIfNeedbe(line) { [weak self] in
             self?.performSegue(withIdentifier: SegueIdentifier.stationDetailSegue.rawValue, sender: line)
         }
     }
@@ -190,7 +190,7 @@ fileprivate extension TFLNearbyBusStationsController {
         }
     }
     
-    func updateStationInfoIfNeedbe(line : String,using completionblock: (() -> Void)? = nil) {
+    func updateLineInfoIfNeedbe(_ line : String,using completionblock: (() -> Void)? = nil) {
         let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
         if let lineInfo = TFLCDLineInfo.lineInfo(with: line, and: context) {
             completionblock?()

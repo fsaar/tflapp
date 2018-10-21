@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		412222F26B670B4DE4DA2909 /* libPods-tflapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A103EB36E89F05E8B43D63BE /* libPods-tflapp.a */; };
+		5600FC8E217C8E4400B7EC7E /* TFLHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5600FC8D217C8E4400B7EC7E /* TFLHUD.swift */; };
 		560CF3052173569600ED0BA5 /* Date+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560CF3042173569600ED0BA5 /* Date+String.swift */; };
 		560CF30721735C4900ED0BA5 /* TFLDateSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560CF30621735C4900ED0BA5 /* TFLDateSpecs.swift */; };
 		561CA509210A607F0008B656 /* Collection+IndexPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561CA507210A607E0008B656 /* Collection+IndexPath.swift */; };
@@ -106,6 +107,7 @@
 /* Begin PBXFileReference section */
 		09B8C602EFB434FF269AB5A9 /* Pods-tflapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tflapp.release.xcconfig"; path = "Pods/Target Support Files/Pods-tflapp/Pods-tflapp.release.xcconfig"; sourceTree = "<group>"; };
 		29D20D8BDB3378F1D7CC9DAE /* Pods-tflapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tflapp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-tflapp/Pods-tflapp.debug.xcconfig"; sourceTree = "<group>"; };
+		5600FC8D217C8E4400B7EC7E /* TFLHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLHUD.swift; sourceTree = "<group>"; };
 		560CF3042173569600ED0BA5 /* Date+String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+String.swift"; sourceTree = "<group>"; };
 		560CF30621735C4900ED0BA5 /* TFLDateSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLDateSpecs.swift; sourceTree = "<group>"; };
 		561CA507210A607E0008B656 /* Collection+IndexPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Collection+IndexPath.swift"; sourceTree = "<group>"; };
@@ -221,6 +223,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5600FC8C217C8E2600B7EC7E /* TFLHUD */ = {
+			isa = PBXGroup;
+			children = (
+				5600FC8D217C8E4400B7EC7E /* TFLHUD.swift */,
+			);
+			path = TFLHUD;
+			sourceTree = "<group>";
+		};
 		561CA50B210A655C0008B656 /* TFLSynchroniser */ = {
 			isa = PBXGroup;
 			children = (
@@ -304,6 +314,7 @@
 		565A1FC91DD8F8D1003CE960 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				5600FC8C217C8E2600B7EC7E /* TFLHUD */,
 				561CA50B210A655C0008B656 /* TFLSynchroniser */,
 				5666A75620F11BE6003A38D4 /* TFLLogger */,
 				56DD18FE20A0B0C1003335D1 /* TFLTimer */,
@@ -759,6 +770,7 @@
 				565A1FC51DD8F331003CE960 /* TLFClient.swift in Sources */,
 				564EC7061DE1917D008CFD11 /* TFLBusPredictionViewCell.swift in Sources */,
 				56823EAA1DDDA4CC00E79B1A /* TFLNoStationsView.swift in Sources */,
+				5600FC8E217C8E4400B7EC7E /* TFLHUD.swift in Sources */,
 				565A1FC31DD8F317003CE960 /* TLFRequestManager.swift in Sources */,
 				56A81B2F1DD862DC001DF7F1 /* TFLAppDelegate.swift in Sources */,
 				561CA50D210A656B0008B656 /* TFLSynchroniser.swift in Sources */,

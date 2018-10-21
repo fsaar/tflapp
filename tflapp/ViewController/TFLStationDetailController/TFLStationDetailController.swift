@@ -26,6 +26,18 @@ class TFLStationDetailController: UIViewController {
         button.setImage(image, for: .normal)
         return UIBarButtonItem(customView: button)
     }()
+    
+    private var mapViewModels : [TFLStationDetailMapViewModel] = [] {
+        didSet {
+             self.mapViewController?.viewModels = mapViewModels
+        }
+    }
+    private var tableViewviewModels : [TFLStationDetailTableViewModel] = [] {
+        didSet {
+            self.tableViewController?.viewModels = tableViewviewModels
+        }
+    }
+
     var line : String? = nil {
         didSet {
             guard let line = line else {
@@ -38,8 +50,8 @@ class TFLStationDetailController: UIViewController {
                 let models : [TFLStationDetailTableViewModel] =  routes.compactMap { TFLStationDetailTableViewModel(with: $0) }
                 let mapModels : [TFLStationDetailMapViewModel] = routes.compactMap { TFLStationDetailMapViewModel(with: $0) }
                 OperationQueue.main.addOperation {
-                    self.tableViewController?.viewModels = models
-                    self.mapViewController?.viewModels = mapModels
+                    self.tableViewviewModels = models
+                    self.mapViewModels = mapModels
                 }
             }
         }
@@ -62,8 +74,12 @@ class TFLStationDetailController: UIViewController {
         case .tableViewControllerSegue:
             tableViewController = segue.destination as? TFLStationDetailTableViewController
             tableViewController?.delegate = self
+            _ = tableViewController?.view
+            tableViewController?.viewModels = tableViewviewModels
         case .mapViewControllerSegue:
             mapViewController = segue.destination as? TFLStationDetailMapViewController
+            _ = mapViewController?.view
+            mapViewController?.viewModels = mapViewModels
         }
     }
 

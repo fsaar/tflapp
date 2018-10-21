@@ -191,17 +191,20 @@ fileprivate extension TFLNearbyBusStationsController {
     }
     
     func updateLineInfoIfNeedbe(_ line : String,using completionblock: (() -> Void)? = nil) {
-        let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
-        if let lineInfo = TFLCDLineInfo.lineInfo(with: line, and: context) {
+        if let lineInfo = TFLCDLineInfo.lineInfo(with: line, and: TFLBusStopStack.sharedDataStack.mainQueueManagedObjectContext) {
             completionblock?()
-            lineInfo.managedObjectContext?.perform { [weak self] in
-                if lineInfo.needsUpdate {
-                    self?.client.lineStationInfo(for: line,context:context,with:.main)
-                }
+            if lineInfo.needsUpdate {
+                self.client.lineStationInfo(for: line,
+                                            context:TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext,
+                                            with:.main)
             }
         }
         else {
-            client.lineStationInfo(for: line,context:context,with:.main) { _,_ in
+            TFLHUD.show()
+            client.lineStationInfo(for: line,
+                                   context:TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext,
+                                   with:.main) { _,_ in
+                TFLHUD.hide()
                 completionblock?()
             }
         }

@@ -139,20 +139,8 @@ extension TFLNearbyBusStationsController : UITableViewDataSource {
 extension TFLNearbyBusStationsController : TFLBusStationArrivalCellDelegate {
     
     func busStationArrivalCell(_ busStationArrivalCell: TFLBusStationArrivalsCell,didSelectLine line: String) {
-        let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
-        if let lineInfo = TFLCDLineInfo.lineInfo(with: line, and: context) {
-            self.performSegue(withIdentifier: SegueIdentifier.stationDetailSegue.rawValue, sender: line)
-            lineInfo.managedObjectContext?.perform { [weak self] in
-                if lineInfo.needsUpdate {
-                    self?.client.lineStationInfo(for: line,context:context,with:.main)
-                }
-            }
-
-        }
-        else {
-            client.lineStationInfo(for: line,context:context,with:.main) { _,_ in
-                self.performSegue(withIdentifier: SegueIdentifier.stationDetailSegue.rawValue, sender: line)
-            }
+        updateStationInfoIfNeedbe(line: line) { [weak self] in
+            self?.performSegue(withIdentifier: SegueIdentifier.stationDetailSegue.rawValue, sender: line)
         }
     }
 }
@@ -201,4 +189,22 @@ fileprivate extension TFLNearbyBusStationsController {
             }
         }
     }
+    
+    func updateStationInfoIfNeedbe(line : String,using completionblock: (() -> Void)? = nil) {
+        let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
+        if let lineInfo = TFLCDLineInfo.lineInfo(with: line, and: context) {
+            completionblock?()
+            lineInfo.managedObjectContext?.perform { [weak self] in
+                if lineInfo.needsUpdate {
+                    self?.client.lineStationInfo(for: line,context:context,with:.main)
+                }
+            }
+        }
+        else {
+            client.lineStationInfo(for: line,context:context,with:.main) { _,_ in
+                completionblock?()
+            }
+        }
+    }
+    
 }

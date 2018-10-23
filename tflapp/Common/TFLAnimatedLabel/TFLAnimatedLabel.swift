@@ -35,10 +35,7 @@ class TFLAnimatedLabel: UIView {
     private lazy var animator : UIViewPropertyAnimator = {
         let springParameters = UISpringTimingParameters(dampingRatio: 0.3)
         let animator = UIViewPropertyAnimator(duration: 1, timingParameters: springParameters)
-        animator.pausesOnCompletion = true
-        animator.addAnimations {
-            self.layoutIfNeeded()
-        }
+        
         return animator
     }()
     
@@ -59,11 +56,21 @@ class TFLAnimatedLabel: UIView {
         {
             self.label2TopConstraint?.constant = self.frame.size.height
             self.labels.first?.text = newText
-            
+            animator.stopAnimation(true)
+            animator.addAnimations {
+                self.layoutIfNeeded()
+            }
+            animator.addCompletion { [weak self] position in
+                self?.labels.last?.text = self?.text
+                self?.label2TopConstraint?.constant = 0
+                self?.layoutIfNeeded()
+            }
             animator.startAnimation()
         }
         else
         {
+            self.label2TopConstraint?.constant = 0
+            self.layoutIfNeeded()
             self.labels.last?.text = newText
         }
     }
@@ -82,17 +89,6 @@ fileprivate extension TFLAnimatedLabel {
         return label
     }
     
-    func addObserver() {
-        observer = animator.observe(\UIViewPropertyAnimator.isRunning) { [weak self] anim,_ in
-            guard !anim.isRunning else {
-                return
-            }
-            self?.labels.last?.text = self?.labels.first?.text
-            self?.label2TopConstraint?.constant = 0
-            self?.layoutIfNeeded()
-            anim.fractionComplete = 0
-        }
-    }
     
     func addLabels() {
         self.clipsToBounds = true
@@ -114,7 +110,6 @@ fileprivate extension TFLAnimatedLabel {
     }
     
     func setup() {
-        addObserver()
         addLabels()
     }
 }

@@ -60,7 +60,7 @@ class TFLAnimatedLabel: UIView {
             animator.addAnimations {
                 self.layoutIfNeeded()
             }
-            animator.addCompletion { [weak self] position in
+            animator.addCompletion { [weak self] _ in
                 self?.labels.last?.text = self?.text
                 self?.label2TopConstraint?.constant = 0
                 self?.layoutIfNeeded()

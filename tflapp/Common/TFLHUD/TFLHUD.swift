@@ -43,6 +43,7 @@ class TFLHUD {
     private let visualEffectsView : UIVisualEffectView =  {
         let view = UIVisualEffectView(effect: nil)
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.isUserInteractionEnabled = false
         return view
     }()
     
@@ -89,13 +90,11 @@ fileprivate extension TFLHUD {
             visualEffectsView.bottomAnchor.constraint(equalTo: window.bottomAnchor),
             visualEffectsView.topAnchor.constraint(equalTo: window.topAnchor),
             ])
-        window.isUserInteractionEnabled = false
         blurAnimator.fractionComplete = 0.2
     }
     
     func hide() {
         blurAnimator.fractionComplete = 0
-        containerView.window?.isUserInteractionEnabled = true
         visualEffectsView.removeFromSuperview()
     }
     

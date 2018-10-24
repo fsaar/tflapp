@@ -191,6 +191,7 @@ fileprivate extension TFLNearbyBusStationsController {
     }
     
     func updateLineInfoIfNeedbe(_ line : String,using completionblock: (() -> Void)? = nil) {
+       
         if let lineInfo = TFLCDLineInfo.lineInfo(with: line, and: TFLBusStopStack.sharedDataStack.mainQueueManagedObjectContext) {
             completionblock?()
             if lineInfo.needsUpdate {
@@ -198,14 +199,13 @@ fileprivate extension TFLNearbyBusStationsController {
                                             context:TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext,
                                             with:.main)
             }
-        }
-        else {
+        } else {
             TFLHUD.show()
             client.lineStationInfo(for: line,
                                    context:TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext,
                                    with:.main) { _,_ in
-                TFLHUD.hide()
-                completionblock?()
+                                    TFLHUD.hide()
+                                    completionblock?()
             }
         }
     }

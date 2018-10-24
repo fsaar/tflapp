@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TFLHUD: UIView {
+class TFLHUD {
     private static var tflhud : TFLHUD? = nil
     private let label : UILabel = {
         let label =  UILabel(frame: .zero)
@@ -20,102 +20,99 @@ class TFLHUD: UIView {
         return label
     }()
     
-    private lazy var hideAnimator : UIViewPropertyAnimator = {
+    private lazy var containerView : UIView = {
+        let view = UIView(frame:.zero)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .white
+        view.clipsToBounds = true
+        view.layer.cornerRadius = 20
+        view.layer.borderColor = UIColor.red.cgColor
+        view.layer.borderWidth = 2
+        view.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        return view
+    }()
+    
+    private lazy var blurAnimator : UIViewPropertyAnimator = {
         let animator = UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
-            self.alpha =  0
+            self.visualEffectsView.effect = UIBlurEffect(style: UIBlurEffect.Style.dark)
         }
-        animator.addCompletion { [weak self] _ in
-            self?.window?.isUserInteractionEnabled = true
-            self?.indicator.stopAnimating()
-            self?.removeFromSuperview()
-        }
+        animator.pauseAnimation()
         return animator
     }()
     
-    private lazy var showAnimator : UIViewPropertyAnimator = {
-        let springParameters = UISpringTimingParameters(dampingRatio: 0.5)
-        let animator = UIViewPropertyAnimator(duration: 0.5, timingParameters: springParameters)
-        animator.addAnimations {
-            self.transform = CGAffineTransform.identity
-        }
-        return animator
+    private let visualEffectsView : UIVisualEffectView =  {
+        let view = UIVisualEffectView(effect: nil)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
+    
+    init() {
+        setup()
+    }
+    deinit {
+        visualEffectsView.removeFromSuperview()
+        blurAnimator.stopAnimation(true)
+    }
     
     private let indicator : UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView(frame: .zero)
         indicator.style = UIActivityIndicatorView.Style.gray
         indicator.translatesAutoresizingMaskIntoConstraints = false
-        indicator.hidesWhenStopped = true
+        indicator.startAnimating()
         return indicator
     }()
     
-    static func show(_ animated : Bool = true)  {
-        guard case .none = tflhud else {
-            return
+    static func show()  {
+        if case .none = tflhud {
+            tflhud = TFLHUD()
         }
-        tflhud = TFLHUD()
-        tflhud?.show(animated)
+        tflhud?.show()
     }
     
-    static func hide(_ animated : Bool = true)  {
+    static func hide()  {
         tflhud?.hide()
         tflhud = nil
     }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setup()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setup()
-    }
-
 }
 
 fileprivate extension TFLHUD {
     
-    func show(_ animated : Bool = true)  {
+    func show()  {
         guard let delegate  = UIApplication.shared.delegate as? AppDelegate,let window  = delegate.window else {
             return
         }
-        window.addSubview(self)
+        window.addSubview(self.visualEffectsView)
+
         NSLayoutConstraint.activate([
-            self.centerYAnchor.constraint(equalTo: window.centerYAnchor),
-            self.centerXAnchor.constraint(equalTo: window.centerXAnchor)
+            visualEffectsView.leadingAnchor.constraint(equalTo: window.leadingAnchor),
+            visualEffectsView.trailingAnchor.constraint(equalTo: window.trailingAnchor),
+            visualEffectsView.bottomAnchor.constraint(equalTo: window.bottomAnchor),
+            visualEffectsView.topAnchor.constraint(equalTo: window.topAnchor),
             ])
-        
         window.isUserInteractionEnabled = false
-        indicator.startAnimating()
-        self.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
-        showAnimator.fractionComplete = animated ? 0.0 : 1.0
-        showAnimator.startAnimation()
+        blurAnimator.fractionComplete = 0.2
     }
     
-    func hide(_ animated : Bool = true) {
-        hideAnimator.fractionComplete = animated ? 0.0 : 1.0
-        hideAnimator.startAnimation()
+    func hide() {
+        blurAnimator.fractionComplete = 0
+        containerView.window?.isUserInteractionEnabled = true
+        visualEffectsView.removeFromSuperview()
     }
     
     func setup() {
-        self.translatesAutoresizingMaskIntoConstraints = false
-        self.backgroundColor = .white
-        self.clipsToBounds = true
-        self.layer.cornerRadius = 20
-        self.layer.borderColor = UIColor.red.cgColor
-        self.layer.borderWidth = 2
-        
-        self.addSubview(label)
-        self.addSubview(indicator)
-        
+        containerView.addSubview(label)
+        containerView.addSubview(indicator)
+        visualEffectsView.contentView.addSubview(containerView)
+
         NSLayoutConstraint.activate([
-            self.heightAnchor.constraint(equalToConstant: 40),
-            label.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
+            containerView.centerYAnchor.constraint(equalTo: visualEffectsView.centerYAnchor),
+            containerView.centerXAnchor.constraint(equalTo: visualEffectsView.centerXAnchor),
+
+            label.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
             indicator.leadingAnchor.constraint(equalTo: label.trailingAnchor, constant: 20),
-            indicator.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
-            label.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0),
-            indicator.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0)
+            indicator.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
+            label.centerYAnchor.constraint(equalTo: containerView.centerYAnchor, constant: 0),
+            indicator.centerYAnchor.constraint(equalTo: containerView.centerYAnchor, constant: 0)
         ])
     }
 }

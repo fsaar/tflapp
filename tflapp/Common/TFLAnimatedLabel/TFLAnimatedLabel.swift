@@ -51,6 +51,9 @@ class TFLAnimatedLabel: UIView {
     }
     
     func setText(_ newText: String?, animated : Bool = false) {
+        guard  newText != text else {
+            return
+        }
         self.text = newText
         if animated
         {

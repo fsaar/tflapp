@@ -55,31 +55,35 @@ class TFLAnimatedLabel: UIView {
             return
         }
         self.text = newText
-        if animated
-        {
-            self.label2TopConstraint?.constant = self.frame.size.height
-            self.labels.first?.text = newText
-            animator.stopAnimation(true)
-            animator.addAnimations {
-                self.layoutIfNeeded()
-            }
-            animator.addCompletion { [weak self] _ in
-                self?.labels.last?.text = self?.text
-                self?.label2TopConstraint?.constant = 0
-                self?.layoutIfNeeded()
-            }
-            animator.startAnimation()
-        }
-        else
-        {
+        guard animated else {
             self.label2TopConstraint?.constant = 0
             self.layoutIfNeeded()
             self.labels.last?.text = newText
+            return
+        }
+        self.label2TopConstraint?.constant = self.frame.size.height
+        self.labels.first?.text = newText
+        startAnimation({ self.layoutIfNeeded() }) { [weak self] in
+            self?.labels.last?.text = self?.text
+            self?.label2TopConstraint?.constant = 0
+            self?.layoutIfNeeded()
         }
     }
 }
 
 fileprivate extension TFLAnimatedLabel {
+    func startAnimation(_ animation:@escaping () -> Void,using completionBlock: @escaping () -> Void) {
+        animator.stopAnimation(true)
+        animator.addAnimations {
+            animation()
+        }
+        animator.addCompletion { _ in
+            completionBlock()
+        }
+        animator.startAnimation()
+    }
+    
+    
     func animatedLabel() -> UILabel {
         let label = UILabel(frame: self.frame)
         label.translatesAutoresizingMaskIntoConstraints = false

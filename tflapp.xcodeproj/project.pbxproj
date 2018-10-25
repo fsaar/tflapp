@@ -59,6 +59,7 @@
 		56823EAE1DDDA5B300E79B1A /* TFLNoGPSEnabledView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56823EAD1DDDA5B300E79B1A /* TFLNoGPSEnabledView.swift */; };
 		5683021D20C476A30035CCA1 /* TFLStationDetailMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5683021C20C476A30035CCA1 /* TFLStationDetailMapViewController.swift */; };
 		5683021F20C49D230035CCA1 /* TFLStationDetailMapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5683021E20C49D230035CCA1 /* TFLStationDetailMapViewModel.swift */; };
+		56835920218243BE0096615D /* TFLStationDetailErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5683591F218243BE0096615D /* TFLStationDetailErrorView.swift */; };
 		5685ADC41DEF8DDC009FD6A5 /* TFLBusPredictionViewCellSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5685ADC31DEF8DDC009FD6A5 /* TFLBusPredictionViewCellSpecs.swift */; };
 		5689612220C074AE00335DEB /* TFLCDLineRoute+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5689612020C074AE00335DEB /* TFLCDLineRoute+CoreDataClass.swift */; };
 		5689612320C074AE00335DEB /* TFLCDLineRoute+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5689612120C074AE00335DEB /* TFLCDLineRoute+CoreDataProperties.swift */; };
@@ -164,6 +165,7 @@
 		56823EAD1DDDA5B300E79B1A /* TFLNoGPSEnabledView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLNoGPSEnabledView.swift; sourceTree = "<group>"; };
 		5683021C20C476A30035CCA1 /* TFLStationDetailMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLStationDetailMapViewController.swift; sourceTree = "<group>"; };
 		5683021E20C49D230035CCA1 /* TFLStationDetailMapViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLStationDetailMapViewModel.swift; sourceTree = "<group>"; };
+		5683591F218243BE0096615D /* TFLStationDetailErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLStationDetailErrorView.swift; sourceTree = "<group>"; };
 		5685ADC31DEF8DDC009FD6A5 /* TFLBusPredictionViewCellSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusPredictionViewCellSpecs.swift; sourceTree = "<group>"; };
 		5689612020C074AE00335DEB /* TFLCDLineRoute+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TFLCDLineRoute+CoreDataClass.swift"; sourceTree = "<group>"; };
 		5689612120C074AE00335DEB /* TFLCDLineRoute+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TFLCDLineRoute+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -405,6 +407,7 @@
 				567F534620BECA1B0022FEFF /* TFLStationDetailTableViewCell.swift */,
 				567F534A20BF19350022FEFF /* TFLStationDetailTableViewModel.swift */,
 				5683021E20C49D230035CCA1 /* TFLStationDetailMapViewModel.swift */,
+				5683591F218243BE0096615D /* TFLStationDetailErrorView.swift */,
 			);
 			path = TFLStationDetailController;
 			sourceTree = "<group>";
@@ -811,6 +814,7 @@
 				56823EA81DDDA45600E79B1A /* TFLLoadNearbyStationsView.swift in Sources */,
 				561CA50A210A607F0008B656 /* Collection+Transform.swift in Sources */,
 				567F533A20BC20610022FEFF /* TFLCDLineInfo+CoreDataProperties.swift in Sources */,
+				56835920218243BE0096615D /* TFLStationDetailErrorView.swift in Sources */,
 				5692B5031DF2E4EB00C56A3C /* TFLMapViewController.swift in Sources */,
 				564EC70A1DE1917D008CFD11 /* TFLNearbyBusStationsController.swift in Sources */,
 				5692B5001DF2E26300C56A3C /* TFLSlideContainerController.swift in Sources */,

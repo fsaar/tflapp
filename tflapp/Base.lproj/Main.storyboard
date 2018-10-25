@@ -758,21 +758,47 @@
                                     <segue destination="LvP-II-7wb" kind="embed" identifier="TFLStationDetailTableViewControllerSegue" id="tvn-7A-mGa"/>
                                 </connections>
                             </containerView>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pIb-dt-aAa" customClass="TFLStationDetailErrorView" customModule="London_Bus" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Oops, something went wrong, no route information available" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FOW-Wl-CmM">
+                                        <rect key="frame" x="20" y="281" width="335" height="41"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="FOW-Wl-CmM" firstAttribute="centerY" secondItem="pIb-dt-aAa" secondAttribute="centerY" id="9GR-61-OBF"/>
+                                    <constraint firstAttribute="trailing" secondItem="FOW-Wl-CmM" secondAttribute="trailing" constant="20" id="TrJ-uo-Fw4"/>
+                                    <constraint firstItem="FOW-Wl-CmM" firstAttribute="leading" secondItem="pIb-dt-aAa" secondAttribute="leading" constant="20" id="iyT-SH-hA6"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="title" destination="FOW-Wl-CmM" id="4Ch-bX-7lo"/>
+                                </connections>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="J9I-GQ-b8b" firstAttribute="leading" secondItem="6WQ-Ji-O8d" secondAttribute="leading" id="2fA-UL-VYF"/>
                             <constraint firstAttribute="trailing" secondItem="J9I-GQ-b8b" secondAttribute="trailing" id="60z-Pe-edN"/>
+                            <constraint firstAttribute="trailing" secondItem="pIb-dt-aAa" secondAttribute="trailing" id="Dc8-k0-K55"/>
                             <constraint firstItem="J9I-GQ-b8b" firstAttribute="top" secondItem="6WQ-Ji-O8d" secondAttribute="top" id="ORg-ki-JXl"/>
                             <constraint firstAttribute="trailing" secondItem="IX6-SD-LEi" secondAttribute="trailing" id="Tf6-dC-RSI"/>
                             <constraint firstAttribute="bottom" secondItem="IX6-SD-LEi" secondAttribute="bottom" id="Trt-1S-a2F"/>
                             <constraint firstItem="IX6-SD-LEi" firstAttribute="leading" secondItem="6WQ-Ji-O8d" secondAttribute="leading" id="Wvz-s2-H5T"/>
+                            <constraint firstItem="SUs-gL-kmw" firstAttribute="top" secondItem="pIb-dt-aAa" secondAttribute="bottom" id="YDv-vz-vJB"/>
+                            <constraint firstItem="pIb-dt-aAa" firstAttribute="leading" secondItem="6WQ-Ji-O8d" secondAttribute="leading" id="bbF-Rj-ryk"/>
                             <constraint firstItem="IX6-SD-LEi" firstAttribute="top" secondItem="J9I-GQ-b8b" secondAttribute="bottom" id="mJ5-Sk-se9"/>
+                            <constraint firstItem="pIb-dt-aAa" firstAttribute="top" secondItem="L8v-WY-C56" secondAttribute="bottom" id="rk7-Un-qll"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="pHv-Ns-9sf"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="heightConstraint" destination="3uR-td-tmi" id="EDI-Qd-p0b"/>
+                        <outlet property="stationDetailErrorView" destination="pIb-dt-aAa" id="ZMv-h6-7GN"/>
                         <outlet property="titleHeaderView" destination="H3D-7y-WZd" id="cap-5E-p3H"/>
                     </connections>
                 </viewController>
@@ -807,7 +833,7 @@
                     </connections>
                 </view>
             </objects>
-            <point key="canvasLocation" x="2358" y="363"/>
+            <point key="canvasLocation" x="2357.5999999999999" y="362.96851574212894"/>
         </scene>
         <!--Station Detail Map View Controller-->
         <scene sceneID="LrV-LR-q1s">

@@ -15,6 +15,11 @@ class TFLStationDetailController: UIViewController {
         case tableViewControllerSegue =  "TFLStationDetailTableViewControllerSegue"
         case mapViewControllerSegue = "TFLStationDetailMapViewControllerSegue"
     }
+    @IBOutlet weak var stationDetailErrorView : TFLStationDetailErrorView! {
+        didSet {
+            stationDetailErrorView.isHidden = true
+        }
+    }
     @IBOutlet weak var heightConstraint : NSLayoutConstraint!
     @IBOutlet weak var titleHeaderView : TFLStationDetailHeaderView!
     var mapViewController : TFLStationDetailMapViewController?
@@ -50,6 +55,7 @@ class TFLStationDetailController: UIViewController {
                 let models : [TFLStationDetailTableViewModel] =  routes.compactMap { TFLStationDetailTableViewModel(with: $0) }
                 let mapModels : [TFLStationDetailMapViewModel] = routes.compactMap { TFLStationDetailMapViewModel(with: $0) }
                 OperationQueue.main.addOperation {
+                    self.stationDetailErrorView.isHidden = !models.isEmpty 
                     self.tableViewviewModels = models
                     self.mapViewModels = mapModels
                 }

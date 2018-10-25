@@ -56,7 +56,7 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         self.line.text = nil
-        self.arrivalTime.setText("-")
+        self.arrivalTime.setText("-",animated: false)
     }
 
     func configure(with predictionViewModel: TFLBusStopArrivalsViewModel.LinePredictionViewModel,as update : Bool = false) {

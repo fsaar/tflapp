@@ -24,3 +24,5 @@
 "DateStringConversion.last_week" = "last week";
 "DateStringConversion.weeks_ago" = "weeks ago";
 "TFLNearbyBusStationsController.last_updated" = "last updated: ";
+"TFLHUD.title" = "Loading ...";
+"TFLStationDetailErrorView.title" = "Oops, something went wrong. No route information available.";

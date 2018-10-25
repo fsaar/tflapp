@@ -114,11 +114,11 @@ private let groupID =  "group.tflwidgetSharingData"
         self.busStopFetchRequest.predicate = predicate
         var busStops : [TFLCDBusStop] = []
         let currentLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-        TFLLogger.shared.signPostStart(osLog: TFLBusStopStack.loggingHandle, name: "nearbyBusStops")
         let privateContext = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
         privateContext.perform  {
-            TFLLogger.shared.signPostEnd(osLog: TFLBusStopStack.loggingHandle, name: "nearbyBusStops")
+            TFLLogger.shared.signPostStart(osLog: TFLBusStopStack.loggingHandle , name: "nearbyBusStops")
             if let stops =  try? privateContext.fetch(self.busStopFetchRequest) {
+                TFLLogger.shared.signPostEnd(osLog: TFLBusStopStack.loggingHandle, name: "nearbyBusStops")
                 busStops = stops.map { ($0.distance(to:currentLocation),$0) }
                                 .filter { $0.0 < radiusInMeter }
                                 .sorted { $0.0 < $1.0 }

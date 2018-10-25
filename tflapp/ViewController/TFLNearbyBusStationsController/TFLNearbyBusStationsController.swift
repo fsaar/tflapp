@@ -22,6 +22,7 @@ class TFLNearbyBusStationsController : UIViewController {
     enum SegueIdentifier : String {
         case stationDetailSegue =  "TFLStationDetailSegue"
     }
+    let client = TFLClient()
     static let defaultTableViewRowHeight = CGFloat (120)
     
     fileprivate static let loggingHandle  = OSLog(subsystem: TFLLogger.subsystem, category: TFLLogger.category.refresh.rawValue)
@@ -136,8 +137,11 @@ extension TFLNearbyBusStationsController : UITableViewDataSource {
 }
 
 extension TFLNearbyBusStationsController : TFLBusStationArrivalCellDelegate {
+    
     func busStationArrivalCell(_ busStationArrivalCell: TFLBusStationArrivalsCell,didSelectLine line: String) {
-        self.performSegue(withIdentifier: SegueIdentifier.stationDetailSegue.rawValue, sender: line)
+        updateLineInfoIfNeedbe(line) { [weak self] in
+            self?.performSegue(withIdentifier: SegueIdentifier.stationDetailSegue.rawValue, sender: line)
+        }
     }
 }
 
@@ -185,4 +189,25 @@ fileprivate extension TFLNearbyBusStationsController {
             }
         }
     }
+    
+    func updateLineInfoIfNeedbe(_ line : String,using completionblock: (() -> Void)? = nil) {
+       
+        if let lineInfo = TFLCDLineInfo.lineInfo(with: line, and: TFLBusStopStack.sharedDataStack.mainQueueManagedObjectContext) {
+            completionblock?()
+            if lineInfo.needsUpdate {
+                self.client.lineStationInfo(for: line,
+                                            context:TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext,
+                                            with:.main)
+            }
+        } else {
+            TFLHUD.show()
+            client.lineStationInfo(for: line,
+                                   context:TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext,
+                                   with:.main) { _,_ in
+                                    TFLHUD.hide()
+                                    completionblock?()
+            }
+        }
+    }
+    
 }

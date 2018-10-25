@@ -12,6 +12,8 @@ import CoreData
 
 @objc(TFLCDLineInfo)
 public class TFLCDLineInfo: NSManagedObject {
+    static let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
+    
     private enum Identifiers : String {
         case lineId = "lineId"
         case routes = "orderedLineRoutes"
@@ -40,6 +42,7 @@ public class TFLCDLineInfo: NSManagedObject {
         self.lineInfoEntity(with: identifier, and: managedObjectContext) { lineInfo in
             managedObjectContext.perform {
                 if let lineInfo = lineInfo {
+                    lineInfo.lastUpdated = Date()
                     if let routeDictList = dictionary[Identifiers.routes.rawValue] as? [[String:Any]] {
                         let group = DispatchGroup()
                         for routeDict in  routeDictList {
@@ -65,6 +68,15 @@ public class TFLCDLineInfo: NSManagedObject {
             }
         }
     }
+    
+    var needsUpdate : Bool {
+        guard let lastUpdated = self.lastUpdated else {
+            return true
+        }
+        let isSameDay = TFLCDLineInfo.calendar.isDate(Date(), inSameDayAs: lastUpdated)
+        let needsUpdate = isSameDay ? false : true
+        return needsUpdate
+    }
 
     class func lineInfo(with identifier: String,and managedObjectContext: NSManagedObjectContext) -> TFLCDLineInfo? {
         var lineInfo : TFLCDLineInfo?
@@ -75,5 +87,13 @@ public class TFLCDLineInfo: NSManagedObject {
             lineInfo =  (try? managedObjectContext.fetch(fetchRequest))?.first
         }
         return lineInfo
+    }
+    
+    class func deleteLineInfo(with identifier: String,and managedObjectContext: NSManagedObjectContext)  {
+        if let info = lineInfo(with: identifier, and: managedObjectContext) {
+            info.managedObjectContext?.perform {
+                info.managedObjectContext?.delete(info)
+            }
+        }
     }
 }

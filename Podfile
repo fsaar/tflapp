@@ -8,7 +8,7 @@ target 'tflapp' do
 end
 
 target 'tflApp Tests' do
-    pod 'Quick', '1.3.1'
-    pod 'Nimble', '7.1.3'
+    pod 'Quick', '1.3.2'
+    pod 'Nimble', '7.3.1'
 end
 

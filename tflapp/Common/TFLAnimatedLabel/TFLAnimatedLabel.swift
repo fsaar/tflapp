@@ -43,7 +43,6 @@ class TFLAnimatedLabel: UIView {
         super.init(coder: aDecoder)
         setup()
     }
-    var observer : NSKeyValueObservation?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -55,14 +54,15 @@ class TFLAnimatedLabel: UIView {
             return
         }
         self.text = newText
+        self.labels.first?.text = newText
         guard animated else {
             self.label2TopConstraint?.constant = 0
             self.layoutIfNeeded()
             self.labels.last?.text = newText
             return
         }
+
         self.label2TopConstraint?.constant = self.frame.size.height
-        self.labels.first?.text = newText
         startAnimation({ self.layoutIfNeeded() }) { [weak self] in
             self?.labels.last?.text = self?.text
             self?.label2TopConstraint?.constant = 0

@@ -60,6 +60,7 @@
 		5683021D20C476A30035CCA1 /* TFLStationDetailMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5683021C20C476A30035CCA1 /* TFLStationDetailMapViewController.swift */; };
 		5683021F20C49D230035CCA1 /* TFLStationDetailMapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5683021E20C49D230035CCA1 /* TFLStationDetailMapViewModel.swift */; };
 		56835920218243BE0096615D /* TFLStationDetailErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5683591F218243BE0096615D /* TFLStationDetailErrorView.swift */; };
+		56835922218392070096615D /* TFLAnimatedLabelSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56835921218392070096615D /* TFLAnimatedLabelSpecs.swift */; };
 		5685ADC41DEF8DDC009FD6A5 /* TFLBusPredictionViewCellSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5685ADC31DEF8DDC009FD6A5 /* TFLBusPredictionViewCellSpecs.swift */; };
 		5689612220C074AE00335DEB /* TFLCDLineRoute+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5689612020C074AE00335DEB /* TFLCDLineRoute+CoreDataClass.swift */; };
 		5689612320C074AE00335DEB /* TFLCDLineRoute+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5689612120C074AE00335DEB /* TFLCDLineRoute+CoreDataProperties.swift */; };
@@ -166,6 +167,7 @@
 		5683021C20C476A30035CCA1 /* TFLStationDetailMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLStationDetailMapViewController.swift; sourceTree = "<group>"; };
 		5683021E20C49D230035CCA1 /* TFLStationDetailMapViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLStationDetailMapViewModel.swift; sourceTree = "<group>"; };
 		5683591F218243BE0096615D /* TFLStationDetailErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLStationDetailErrorView.swift; sourceTree = "<group>"; };
+		56835921218392070096615D /* TFLAnimatedLabelSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLAnimatedLabelSpecs.swift; sourceTree = "<group>"; };
 		5685ADC31DEF8DDC009FD6A5 /* TFLBusPredictionViewCellSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusPredictionViewCellSpecs.swift; sourceTree = "<group>"; };
 		5689612020C074AE00335DEB /* TFLCDLineRoute+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TFLCDLineRoute+CoreDataClass.swift"; sourceTree = "<group>"; };
 		5689612120C074AE00335DEB /* TFLCDLineRoute+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TFLCDLineRoute+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -266,6 +268,7 @@
 		5657D3671DE387E6004E4CD0 /* tflApp Tests */ = {
 			isa = PBXGroup;
 			children = (
+				56835921218392070096615D /* TFLAnimatedLabelSpecs.swift */,
 				56DA42EB21051E8A00ED9C54 /* TFLBusStopArrivalsInfoSpecs.swift */,
 				560CF30621735C4900ED0BA5 /* TFLDateSpecs.swift */,
 				56DD18FC20A0B078003335D1 /* TFLTimerSpecs.swift */,
@@ -749,6 +752,7 @@
 				5657D3711DE38ADF004E4CD0 /* TFLBusPredictionSpecs.swift in Sources */,
 				56C828901DE8E9FA00E52086 /* TFLChangeSetProtocolSpecs.swift in Sources */,
 				56BA8F9320FE9BB60031A3E4 /* QuickSpec+Helper.swift in Sources */,
+				56835922218392070096615D /* TFLAnimatedLabelSpecs.swift in Sources */,
 				56D0AF351E147C6F00F466C4 /* TFLAnimationLabelSpecs.swift in Sources */,
 				561FD9021F1FB1F50012466A /* TFLClientSpecs.swift in Sources */,
 				56B86EAD1DE4FED000A89D16 /* TFLBusStopArrivalsViewModelSpecs.swift in Sources */,

@@ -47,7 +47,9 @@ class TFLLocationManager : NSObject {
             self.locationManager.startUpdatingLocation()
         }
         self.foregroundNotificationHandler = TFLNotificationObserver(notification: UIApplication.willEnterForegroundNotification) { [weak self]  _ in
+            self?.locationManager.requestLocation()
             self?.locationManager.startUpdatingLocation()
+        
         }
         self.backgroundNotificationHandler = TFLNotificationObserver(notification: UIApplication.didEnterBackgroundNotification) { [weak self]  _ in
             self?.lastKnownCoordinate = kCLLocationCoordinate2DInvalid

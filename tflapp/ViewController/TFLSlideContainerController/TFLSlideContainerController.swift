@@ -41,19 +41,19 @@ class TFLSlideContainerController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.snapHandler = TFLSnapHandler(with: self.sliderHandleContainerView,in: self.view, and: self.snapPositions) { [weak self] _,velocity,newOrigin,final in
-            guard let strongSelf = self else {
+            guard let self = self else {
                 return
             }
-            let currentY = strongSelf.view.convert(strongSelf.sliderHandleContainerView.frame.origin, from : strongSelf.sliderHandleContainerView.superview).y
+            let currentY = self.view.convert(self.sliderHandleContainerView.frame.origin, from : self.sliderHandleContainerView.superview).y
 
-            let nonzeroVelocity = velocity != 0 ? velocity : newOrigin.y < currentY ? -strongSelf.defaultVelocity : strongSelf.defaultVelocity
+            let nonzeroVelocity = velocity != 0 ? velocity : newOrigin.y < currentY ? -self.defaultVelocity : self.defaultVelocity
             let normalizedVelocity = final ? abs(newOrigin.y - currentY) / nonzeroVelocity : nonzeroVelocity
             let animationTime = final ? 0.5 : 0
             if final {
-                self?.lightImpactFeedbackGenerator.prepare()
-                self?.lightImpactFeedbackGenerator.impactOccurred()
+                self.lightImpactFeedbackGenerator.prepare()
+                self.lightImpactFeedbackGenerator.impactOccurred()
             }
-            self?.updateSliderContainerView(with: newOrigin, animationTime: animationTime, velocity: normalizedVelocity,final: final)
+            self.updateSliderContainerView(with: newOrigin, animationTime: animationTime, velocity: normalizedVelocity,final: final)
         }
         let initPositionY = (self.snapPositions.first ?? 0) * self.view.frame.size.height
         self.updateSliderContainerView(with: CGPoint(x:self.sliderContainerView.frame.origin.x,y:initPositionY), animationTime: 0, velocity:0,final : true)

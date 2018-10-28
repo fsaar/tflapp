@@ -32,8 +32,8 @@ typealias TFLTimerHandler = (_ timer : TFLTimer)->()
         stop()
         self.timer = Timer.scheduledTimer(withTimeInterval: timerInterval, repeats: true) { [weak self] _ in
             self?.queue.async {
-                if let strongSelf = self {
-                    strongSelf.timerHandler?(strongSelf)
+                if let self = self {
+                    self.timerHandler?(self)
                 }
             }
         }

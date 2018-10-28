@@ -13,11 +13,35 @@ class TFLMapViewController: UIViewController {
         case inited
         case userInteracted
     }
+    @IBOutlet var userTrackingContainerView : UIView! {
+        didSet {
+            self.userTrackingContainerView.addSubview(self.userTrackingButton)
+            
+            NSLayoutConstraint.activate([
+                self.userTrackingButton.centerXAnchor.constraint(equalTo: self.userTrackingContainerView.centerXAnchor),
+                self.userTrackingButton.centerYAnchor.constraint(equalTo: self.userTrackingContainerView.centerYAnchor),
+                ])
+
+        }
+    }
+    
+  
+    @IBOutlet var visualEffectsViews : UIVisualEffectView! {
+        didSet {
+            self.visualEffectsViews.clipsToBounds = true
+            self.visualEffectsViews.layer.borderColor = UIColor.lightGray.withAlphaComponent(0.2).cgColor
+            self.visualEffectsViews.layer.borderWidth = 1
+            self.visualEffectsViews.layer.cornerRadius = 5
+        }
+    }
+    
     fileprivate var state : MapState = .inited
     @IBOutlet weak var coverView : UIView!
     @IBOutlet weak var mapView : MKMapView! = nil {
         didSet {
+            mapView.layoutMargins = UIEdgeInsets(top:0, left:0,bottom:300,right:0)
             mapView.delegate = self
+            mapView.showsCompass = false
             mapView.register(TFLBusStopAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
             mapView.showsUserLocation = true
         }
@@ -74,7 +98,12 @@ class TFLMapViewController: UIViewController {
         self.state = .userInteracted
     }
     
-   
+    fileprivate lazy var userTrackingButton : MKUserTrackingButton = {
+        let button = MKUserTrackingButton(mapView: self.mapView)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.tintColor = UIColor.red
+        return button
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()

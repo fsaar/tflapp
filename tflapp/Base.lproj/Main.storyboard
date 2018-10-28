@@ -480,6 +480,30 @@
                             <mapView multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="GU0-0J-ufB">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </mapView>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Ip-bC-e82">
+                                <rect key="frame" x="330" y="50" width="40" height="40"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="apc-i1-zeq">
+                                    <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TLU-g7-oFi" userLabel="userTrackingContainerVIew">
+                                            <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </view>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="TLU-g7-oFi" firstAttribute="top" secondItem="apc-i1-zeq" secondAttribute="top" id="HaK-yW-U85"/>
+                                        <constraint firstAttribute="trailing" secondItem="TLU-g7-oFi" secondAttribute="trailing" id="Lgk-VX-fvn"/>
+                                        <constraint firstAttribute="bottom" secondItem="TLU-g7-oFi" secondAttribute="bottom" id="gUg-D4-Jav"/>
+                                        <constraint firstItem="TLU-g7-oFi" firstAttribute="leading" secondItem="apc-i1-zeq" secondAttribute="leading" id="kvh-VT-nLJ"/>
+                                    </constraints>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="40" id="Yyh-5f-ktb"/>
+                                    <constraint firstAttribute="height" constant="40" id="dse-Qh-M5A"/>
+                                </constraints>
+                                <blurEffect style="light"/>
+                            </visualEffectView>
                             <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H3r-9O-Zpl">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -488,6 +512,8 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="GU0-0J-ufB" secondAttribute="trailing" id="3Iz-H2-Frq"/>
+                            <constraint firstAttribute="trailing" secondItem="9Ip-bC-e82" secondAttribute="trailing" constant="5" id="9vW-cc-BVf"/>
+                            <constraint firstItem="9Ip-bC-e82" firstAttribute="top" secondItem="Pg3-04-28K" secondAttribute="bottom" constant="30" id="BMc-Ap-2Fi"/>
                             <constraint firstAttribute="bottom" secondItem="GU0-0J-ufB" secondAttribute="bottom" id="Fpn-Qk-aAV"/>
                             <constraint firstItem="GU0-0J-ufB" firstAttribute="top" secondItem="49x-MB-PET" secondAttribute="top" id="GPL-3l-Iwk"/>
                             <constraint firstItem="H3r-9O-Zpl" firstAttribute="top" secondItem="49x-MB-PET" secondAttribute="topMargin" id="Geu-1m-GJi"/>
@@ -501,6 +527,8 @@
                     <connections>
                         <outlet property="coverView" destination="H3r-9O-Zpl" id="Uo2-xe-OHH"/>
                         <outlet property="mapView" destination="GU0-0J-ufB" id="4ji-aP-QAr"/>
+                        <outlet property="userTrackingContainerView" destination="TLU-g7-oFi" id="kKw-vb-cSy"/>
+                        <outlet property="visualEffectsViews" destination="9Ip-bC-e82" id="ChD-z1-ABV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="28b-Gl-A0H" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -548,10 +576,10 @@
                                                     <rect key="frame" x="9" y="30" width="25" height="34"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="25" id="fJb-0K-a08"/>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="25" id="fJb-0K-a08"/>
                                                     </constraints>
                                                 </view>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ST" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="WRh-Nr-hrx" userLabel="stopCodeLabel">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="251" text="ST" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="WRh-Nr-hrx" userLabel="stopCodeLabel">
                                                     <rect key="frame" x="9" y="38.5" width="25" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <nil key="textColor"/>
@@ -657,8 +685,10 @@
                                                 <constraint firstItem="Njp-UU-MPM" firstAttribute="leading" secondItem="uRM-tA-waM" secondAttribute="trailing" constant="5" id="XYi-hv-rFG"/>
                                                 <constraint firstItem="Kkg-jU-POR" firstAttribute="leading" secondItem="rhp-0I-pzd" secondAttribute="leading" constant="4" id="Yuv-VW-u8a"/>
                                                 <constraint firstItem="2QB-MN-k33" firstAttribute="leading" secondItem="rhp-0I-pzd" secondAttribute="leading" constant="8" id="YxT-AH-6ZX"/>
+                                                <constraint firstItem="JkC-Y4-Fea" firstAttribute="top" relation="greaterThanOrEqual" secondItem="WRh-Nr-hrx" secondAttribute="bottom" constant="5" id="bTs-CN-A1e"/>
                                                 <constraint firstAttribute="trailing" secondItem="JkC-Y4-Fea" secondAttribute="trailing" constant="8" id="cCh-Ga-EPM"/>
                                                 <constraint firstAttribute="trailing" secondItem="nIB-Kw-g2i" secondAttribute="trailing" constant="5" id="dJZ-W8-UzG"/>
+                                                <constraint firstItem="WRh-Nr-hrx" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Kkg-jU-POR" secondAttribute="bottom" constant="5" id="dz4-0o-HvU"/>
                                                 <constraint firstItem="e6p-57-1uC" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Kkg-jU-POR" secondAttribute="trailing" constant="5" id="fQt-Tj-Yrw"/>
                                                 <constraint firstItem="Kkg-jU-POR" firstAttribute="top" secondItem="rhp-0I-pzd" secondAttribute="top" constant="5" id="gQQ-h5-jdb"/>
                                                 <constraint firstItem="2QB-MN-k33" firstAttribute="centerY" secondItem="JkC-Y4-Fea" secondAttribute="centerY" id="hqi-oU-FeO"/>

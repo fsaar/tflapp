@@ -78,7 +78,7 @@ class TFLMapViewController: UIViewController {
                             .map { TFLMapViewAnnotation(with: $0) }
                         self.mapView.addAnnotations(toBeInsertedAnnotations)
                         
-                        if case .inited = self.state, CLLocationCoordinate2DIsValid(coords) {
+                        if case .inited = self.state, coords.isValid {
                             let region = MKCoordinateRegion(center: coords, span: self.defaultCoordinateSpan)
                             let animated = (oldTuple?.0 ?? []).isEmpty   ? false : true
                             self.mapView.setRegion(region, animated: animated)

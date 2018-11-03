@@ -13,7 +13,7 @@ struct TFLStationDetailMapViewModel {
         }
         let routeStations = route.stations ?? []
         let busStops = TFLCDBusStop.busStops(with: routeStations, and: managedObjectContext)
-        let tuples = busStops.map { ($0.stopLetter ?? "",CLLocationCoordinate2DMake($0.lat, $0.long)) }.filter { CLLocationCoordinate2DIsValid($0.1) }
+        let tuples = busStops.map { ($0.stopLetter ?? "",CLLocationCoordinate2DMake($0.lat, $0.long)) }.filter { $0.1.isValid }
         stations = tuples
     }
 }

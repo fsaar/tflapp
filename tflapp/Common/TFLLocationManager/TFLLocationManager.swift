@@ -68,7 +68,7 @@ class TFLLocationManager : NSObject {
     override init() {
         super.init()
         self.locationManager.delegate = self
-        self.locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
         
         let authorisationStatus = CLLocationManager.authorizationStatus()
         switch authorisationStatus {

@@ -22,29 +22,58 @@ extension CLLocationCoordinate2D {
 class TFLLocationManager : NSObject {
     enum State {
         case not_authorised
-        case authorisation_pending(completionBlock : TFLLocationManagerCompletionBlock?)
-        case autorised(completionBlock : TFLLocationManagerCompletionBlock?)
+        case authorisation_pending(completionBlocks : [TFLLocationManagerCompletionBlock])
+        case authorised(completionBlocks : [TFLLocationManagerCompletionBlock])
+        
+        func stateWithCompletionBlock(_ completionBlock : TFLLocationManagerCompletionBlock?) -> State {
+            switch self {
+            case .not_authorised:
+                return self
+            case let .authorisation_pending(completionBlocks):
+                if let completionBlock = completionBlock {
+                    return State.authorisation_pending(completionBlocks: completionBlocks + [completionBlock])
+                }
+                return self
+            case let .authorised(completionBlocks):
+                if let completionBlock = completionBlock {
+                    return State.authorisation_pending(completionBlocks: completionBlocks + [completionBlock])
+                }
+                return self
+            }
+        }
+        
+        var stateWithoutCompletionBlocks : State {
+            switch self {
+            case .not_authorised:
+                return self
+            case .authorisation_pending(_):
+                return State.authorisation_pending(completionBlocks: [])
+            case .authorised(_):
+                return State.authorised(completionBlocks: [])
+            }
+        }
+        
+        var completionBlocks : [TFLLocationManagerCompletionBlock] {
+            switch self {
+            case .not_authorised:
+                return []
+            case let .authorisation_pending(completionBlocks),let .authorised(completionBlocks):
+                return completionBlocks
+            }
+        }
     }
     
     fileprivate static let locationLoggingHandle : OSLog =  {
         let handle = OSLog(subsystem: TFLLogger.subsystem, category: TFLLogger.category.location.rawValue)
         return handle
     }()
-    var lastKnownCoordinate = kCLLocationCoordinate2DInvalid
+    var state = State.not_authorised
     static let sharedManager = TFLLocationManager()
-    var completionBlock : TFLLocationManagerCompletionBlock?
-    var enabled : Bool? {
-        var enabled : Bool? = nil
-        let authorisationStatus = CLLocationManager.authorizationStatus()
-        switch authorisationStatus {
-        case .notDetermined:
-            break
-        case .restricted,.denied:
-            enabled = false
-        default:
-            enabled = true
+    var enabled : Bool {
+        guard case .authorised = state else {
+            return false
         }
-        return enabled
+        return true
 
     }
     let locationManager =  CLLocationManager()
@@ -54,10 +83,16 @@ class TFLLocationManager : NSObject {
         super.init()
         self.locationManager.delegate = self
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
-        if case .none = self.enabled {
+        
+        let authorisationStatus = CLLocationManager.authorizationStatus()
+        switch authorisationStatus {
+        case .notDetermined:
+            self.state = .authorisation_pending(completionBlocks: [])
             self.locationManager.requestWhenInUseAuthorization()
-        }
-        else if enabled == true {
+        case .restricted,.denied:
+            break
+        default:
+            self.state = .authorised(completionBlocks: [])
             self.locationManager.startUpdatingLocation()
         }
     
@@ -72,22 +107,23 @@ class TFLLocationManager : NSObject {
 
 fileprivate extension TFLLocationManager {
     func requestLocation(using completionBlock:  TFLLocationManagerCompletionBlock?)  {
-        guard self.enabled == true else {
-            if self.enabled == false {
-                completionBlock?(kCLLocationCoordinate2DInvalid)
-            }
-            else {
-                self.completionBlock = completionBlock
-            }
-            return
+        objc_sync_enter(self)
+        defer {
+            objc_sync_exit(self)
         }
-       
-        TFLLogger.shared.signPostStart(osLog: TFLLocationManager.locationLoggingHandle, name: "updateLocation")
-        self.completionBlock = { coord in
-            TFLLogger.shared.signPostEnd(osLog: TFLLocationManager.locationLoggingHandle, name: "updateLocation")
-            completionBlock?(coord)
+        switch self.state {
+        case .not_authorised:
+            completionBlock?(kCLLocationCoordinate2DInvalid)
+        case .authorisation_pending:
+            state = state.stateWithCompletionBlock(completionBlock)
+        case .authorised:
+            TFLLogger.shared.signPostStart(osLog: TFLLocationManager.locationLoggingHandle, name: "updateLocation")
+            state = state.stateWithCompletionBlock { coord in
+                TFLLogger.shared.signPostEnd(osLog: TFLLocationManager.locationLoggingHandle, name: "updateLocation")
+                completionBlock?(coord)
+            }
+            self.locationManager.requestLocation()
         }
-        self.locationManager.requestLocation()
     }
 }
 
@@ -96,32 +132,45 @@ fileprivate extension TFLLocationManager {
 extension TFLLocationManager : CLLocationManagerDelegate {
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let coordinate = locations.first?.coordinate ?? kCLLocationCoordinate2DInvalid
-        lastKnownCoordinate = coordinate
         DispatchQueue.main.async {
-            self.completionBlock?(coordinate)
-            self.completionBlock = nil
+            objc_sync_enter(self)
+            defer {
+                objc_sync_exit(self)
+            }
+            self.state.completionBlocks.forEach { $0(coordinate) }
+            self.state = self.state.stateWithoutCompletionBlocks
         }
     }
     public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         DispatchQueue.main.async {
-            self.completionBlock?(kCLLocationCoordinate2DInvalid)
-            self.completionBlock = nil
+            objc_sync_enter(self)
+            defer {
+                objc_sync_exit(self)
+            }
+            self.state.completionBlocks.forEach { $0(kCLLocationCoordinate2DInvalid) }
+            self.state = self.state.stateWithoutCompletionBlocks
         }
     }
     public func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        objc_sync_enter(self)
+        defer {
+            objc_sync_exit(self)
+        }
+
         switch status {
         case .authorizedWhenInUse:
-            self.locationManager.startUpdatingLocation()
-            if let block = completionBlock {
-                self.completionBlock = nil
-                self.requestLocation(using: block)
+            guard case .authorisation_pending = state else {
+                precondition(false,"Invalid state. State needs to be authorisation pending")
             }
-
+            self.locationManager.startUpdatingLocation()
+            let completionBlocks = self.state.completionBlocks
+            self.state = State.authorised(completionBlocks: [])
+            completionBlocks.forEach { requestLocation(using:$0) }
         case .notDetermined:
             break
         default:
-            self.completionBlock?(kCLLocationCoordinate2DInvalid)
-            self.completionBlock = nil
+            self.state.completionBlocks.forEach { $0(kCLLocationCoordinate2DInvalid) }
+            self.state = self.state.stateWithoutCompletionBlocks
         }
     }
 }

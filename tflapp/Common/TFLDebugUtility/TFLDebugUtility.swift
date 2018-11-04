@@ -16,8 +16,8 @@ class TFLDebugUtility {
         self.debugView = debugView
     }
     
-    func showImageForPos(_ pos : CLLocationCoordinate2D) {
-        UIImage.imageForPos(pos,"MapView") { [weak self] image in
+    func showImageForPos(_ pos : CLLocationCoordinate2D,_ text : String? = nil) {
+        UIImage.imageForPos(pos,nil) { [weak self] image in
             if let image = image {
                 self?.showImage(image)
             }

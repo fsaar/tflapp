@@ -6,7 +6,7 @@ import os.signpost
 typealias TFLLocationManagerCompletionBlock  = (CLLocationCoordinate2D)->(Void)
 
 class TFLLocationManager : NSObject {
-    enum State {
+    private enum State {
         case not_authorised
         case authorisation_pending(completionBlocks : [TFLLocationManagerCompletionBlock])
         case authorised(completionBlocks : [TFLLocationManagerCompletionBlock])
@@ -22,7 +22,7 @@ class TFLLocationManager : NSObject {
                 return self
             case let .authorised(completionBlocks):
                 if let completionBlock = completionBlock {
-                    return State.authorisation_pending(completionBlocks: completionBlocks + [completionBlock])
+                    return State.authorised(completionBlocks: completionBlocks + [completionBlock])
                 }
                 return self
             }
@@ -53,7 +53,7 @@ class TFLLocationManager : NSObject {
         let handle = OSLog(subsystem: TFLLogger.subsystem, category: TFLLogger.category.location.rawValue)
         return handle
     }()
-    var state = State.not_authorised
+    private var state = State.not_authorised
     static let sharedManager = TFLLocationManager()
     var enabled : Bool {
         guard case .authorised = state else {
@@ -77,9 +77,9 @@ class TFLLocationManager : NSObject {
             self.locationManager.requestWhenInUseAuthorization()
         case .restricted,.denied:
             break
-        default:
-            self.state = .authorised(completionBlocks: [])
-            self.locationManager.startUpdatingLocation()
+        case .authorizedAlways,.authorizedWhenInUse:
+            // need to wait for didChangeAuthorization callback even when authorised
+            self.state = .authorisation_pending(completionBlocks: [])
         }
     
     }
@@ -148,9 +148,9 @@ extension TFLLocationManager : CLLocationManagerDelegate {
             guard case .authorisation_pending = state else {
                 precondition(false,"Invalid state. State needs to be authorisation pending")
             }
-            self.locationManager.startUpdatingLocation()
+            locationManager.startUpdatingLocation()
             let completionBlocks = self.state.completionBlocks
-            self.state = State.authorised(completionBlocks: [])
+            state = State.authorised(completionBlocks: [])
             completionBlocks.forEach { requestLocation(using:$0) }
         case .notDetermined:
             break

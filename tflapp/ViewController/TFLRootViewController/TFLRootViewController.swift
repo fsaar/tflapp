@@ -117,6 +117,7 @@ class TFLRootViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        TFLLocationManager.sharedManager.delegate = self
         if let mapViewController = self.mapViewController, let nearbyBusStationController = self.nearbyBusStationController {
             self.slideContainerController?.setContentControllers(with: mapViewController,and: nearbyBusStationController)
             self.slideContainerController?.sliderViewUpdateBlock =  { [weak self] slider, origin,final in
@@ -304,6 +305,15 @@ extension TFLRootViewController : TFLErrorContainerViewDelegate {
     }
 }
 
+
+extension TFLRootViewController : TFLLocationManagerDelegate {
+    func locationManager(_ locationManager : TFLLocationManager, didChangeEnabledStatus enabled : Bool) {
+        guard enabled else {
+            return
+        }
+        loadNearbyBusstops()
+    }
+}
 
 // MARK: TFLContentControllerDelegate
 

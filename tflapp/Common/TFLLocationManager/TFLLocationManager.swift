@@ -5,13 +5,22 @@ import os.signpost
 
 typealias TFLLocationManagerCompletionBlock  = (CLLocationCoordinate2D)->(Void)
 
+
+protocol TFLLocationManagerDelegate : class {
+    func locationManager(_ locationManager : TFLLocationManager, didChangeEnabledStatus enabled : Bool)
+}
+
 class TFLLocationManager : NSObject {
+    weak var delegate : TFLLocationManagerDelegate?
     private enum State {
+        case not_authorised
         case authorisation_pending(completionBlocks : [TFLLocationManagerCompletionBlock])
         case authorised(completionBlocks : [TFLLocationManagerCompletionBlock])
         
         func stateWithCompletionBlock(_ completionBlock : TFLLocationManagerCompletionBlock?) -> State {
             switch self {
+            case .not_authorised:
+                return self
             case let .authorisation_pending(completionBlocks):
                 if let completionBlock = completionBlock {
                     return State.authorisation_pending(completionBlocks: completionBlocks + [completionBlock])
@@ -27,6 +36,8 @@ class TFLLocationManager : NSObject {
         
         var stateWithoutCompletionBlocks : State {
             switch self {
+            case .not_authorised:
+                return self
             case .authorisation_pending:
                 return State.authorisation_pending(completionBlocks: [])
             case .authorised:
@@ -36,6 +47,8 @@ class TFLLocationManager : NSObject {
         
         var completionBlocks : [TFLLocationManagerCompletionBlock] {
             switch self {
+            case .not_authorised:
+                return []
             case let .authorisation_pending(completionBlocks),let .authorised(completionBlocks):
                 return completionBlocks
             }
@@ -46,7 +59,7 @@ class TFLLocationManager : NSObject {
         let handle = OSLog(subsystem: TFLLogger.subsystem, category: TFLLogger.category.location.rawValue)
         return handle
     }()
-    private var state = State.authorisation_pending(completionBlocks: [])
+    private var state = State.not_authorised
     static let sharedManager = TFLLocationManager()
     var enabled : Bool {
         guard case .authorised = state else {
@@ -69,7 +82,7 @@ class TFLLocationManager : NSObject {
             self.state = .authorisation_pending(completionBlocks: [])
             self.locationManager.requestWhenInUseAuthorization()
         case .restricted,.denied:
-            self.state = .authorisation_pending(completionBlocks: [])
+            self.state = .not_authorised
         case .authorizedAlways,.authorizedWhenInUse:
             // need to wait for didChangeAuthorization callback even when authorised
             self.state = .authorisation_pending(completionBlocks: [])
@@ -91,6 +104,8 @@ fileprivate extension TFLLocationManager {
             objc_sync_exit(self)
         }
         switch self.state {
+        case .not_authorised:
+            completionBlock?(kCLLocationCoordinate2DInvalid)
         case .authorisation_pending:
             state = state.stateWithCompletionBlock(completionBlock)
         case .authorised:
@@ -136,18 +151,20 @@ extension TFLLocationManager : CLLocationManagerDelegate {
 
         switch status {
         case .authorizedWhenInUse,.authorizedAlways:
-            guard case .authorisation_pending = state else {
-                precondition(false,"Invalid state. State needs to be authorisation pending")
+            if case .authorised = state {
+                precondition(false,"Invalid state. State must not be authorised")
             }
             locationManager.startUpdatingLocation()
             let completionBlocks = self.state.completionBlocks
             state = State.authorised(completionBlocks: [])
             completionBlocks.forEach { requestLocation(using:$0) }
+            self.delegate?.locationManager(self, didChangeEnabledStatus: true)
         case .notDetermined:
             break
         case .restricted,.denied:
             self.state.completionBlocks.forEach { $0(kCLLocationCoordinate2DInvalid) }
-            self.state = .authorisation_pending(completionBlocks: [])
+            self.state = .not_authorised
+            self.delegate?.locationManager(self, didChangeEnabledStatus: false)
         }
     }
 }

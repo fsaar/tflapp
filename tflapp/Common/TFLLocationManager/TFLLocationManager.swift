@@ -76,7 +76,7 @@ class TFLLocationManager : NSObject {
             self.state = .authorisation_pending(completionBlocks: [])
             self.locationManager.requestWhenInUseAuthorization()
         case .restricted,.denied:
-            break
+            self.state = .authorisation_pending(completionBlocks: [])
         case .authorizedAlways,.authorizedWhenInUse:
             // need to wait for didChangeAuthorization callback even when authorised
             self.state = .authorisation_pending(completionBlocks: [])
@@ -144,7 +144,7 @@ extension TFLLocationManager : CLLocationManagerDelegate {
         }
 
         switch status {
-        case .authorizedWhenInUse:
+        case .authorizedWhenInUse,.authorizedAlways:
             guard case .authorisation_pending = state else {
                 precondition(false,"Invalid state. State needs to be authorisation pending")
             }
@@ -154,7 +154,7 @@ extension TFLLocationManager : CLLocationManagerDelegate {
             completionBlocks.forEach { requestLocation(using:$0) }
         case .notDetermined:
             break
-        default:
+        case .restricted,.denied:
             self.state.completionBlocks.forEach { $0(kCLLocationCoordinate2DInvalid) }
             self.state = self.state.stateWithoutCompletionBlocks
         }

@@ -5,20 +5,6 @@ import os.signpost
 
 typealias TFLLocationManagerCompletionBlock  = (CLLocationCoordinate2D)->(Void)
 
-extension CLLocationCoordinate2D {
-    public static func ==(lhs : CLLocationCoordinate2D,rhs : CLLocationCoordinate2D) -> Bool {
-        return (lhs.latitude == rhs.latitude) && (lhs.longitude == rhs.longitude)
-    }
-    
-    var isValid : Bool {
-        let isNonNull = (self.latitude != 0) && (self.longitude != 0)
-        let isValid = CLLocationCoordinate2DIsValid(self)
-        return isNonNull && isValid
-    }
-}
-
-
-
 class TFLLocationManager : NSObject {
     enum State {
         case not_authorised
@@ -46,9 +32,9 @@ class TFLLocationManager : NSObject {
             switch self {
             case .not_authorised:
                 return self
-            case .authorisation_pending(_):
+            case .authorisation_pending:
                 return State.authorisation_pending(completionBlocks: [])
-            case .authorised(_):
+            case .authorised:
                 return State.authorised(completionBlocks: [])
             }
         }

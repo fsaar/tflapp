@@ -2,12 +2,6 @@
 import UIKit
 import MapKit
 
-extension CLLocationCoordinate2D {
-    static func +(lhs : CLLocationCoordinate2D,rhs : CLLocationCoordinate2D) -> CLLocationCoordinate2D {
-        return CLLocationCoordinate2DMake(lhs.latitude+rhs.latitude, lhs.longitude+rhs.longitude)
-    }
-}
-
 class TFLMapViewController: UIViewController {
     enum MapState {
         case inited

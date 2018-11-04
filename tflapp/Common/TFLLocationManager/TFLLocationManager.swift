@@ -9,9 +9,23 @@ extension CLLocationCoordinate2D {
     public static func ==(lhs : CLLocationCoordinate2D,rhs : CLLocationCoordinate2D) -> Bool {
         return (lhs.latitude == rhs.latitude) && (lhs.longitude == rhs.longitude)
     }
+    
+    var isValid : Bool {
+        let isNonNull = (self.latitude != 0) && (self.longitude != 0)
+        let isValid = CLLocationCoordinate2DIsValid(self)
+        return isNonNull && isValid
+    }
 }
 
+
+
 class TFLLocationManager : NSObject {
+    enum State {
+        case not_authorised
+        case authorisation_pending(completionBlock : TFLLocationManagerCompletionBlock?)
+        case autorised(completionBlock : TFLLocationManagerCompletionBlock?)
+    }
+    
     fileprivate static let locationLoggingHandle : OSLog =  {
         let handle = OSLog(subsystem: TFLLogger.subsystem, category: TFLLogger.category.location.rawValue)
         return handle
@@ -34,8 +48,8 @@ class TFLLocationManager : NSObject {
 
     }
     let locationManager =  CLLocationManager()
-    var foregroundNotificationHandler : TFLNotificationObserver?
-    var backgroundNotificationHandler : TFLNotificationObserver?
+  
+   
     override init() {
         super.init()
         self.locationManager.delegate = self
@@ -46,15 +60,7 @@ class TFLLocationManager : NSObject {
         else if enabled == true {
             self.locationManager.startUpdatingLocation()
         }
-        self.foregroundNotificationHandler = TFLNotificationObserver(notification: UIApplication.willEnterForegroundNotification) { [weak self]  _ in
-            self?.locationManager.requestLocation()
-            self?.locationManager.startUpdatingLocation()
-        
-        }
-        self.backgroundNotificationHandler = TFLNotificationObserver(notification: UIApplication.didEnterBackgroundNotification) { [weak self]  _ in
-            self?.lastKnownCoordinate = kCLLocationCoordinate2DInvalid
-            self?.locationManager.stopUpdatingLocation()
-        }
+    
     }
 
     func updateLocation(completionBlock: @escaping  TFLLocationManagerCompletionBlock)  {
@@ -66,19 +72,22 @@ class TFLLocationManager : NSObject {
 
 fileprivate extension TFLLocationManager {
     func requestLocation(using completionBlock:  TFLLocationManagerCompletionBlock?)  {
-        guard self.enabled != false else {
-            completionBlock?(kCLLocationCoordinate2DInvalid)
+        guard self.enabled == true else {
+            if self.enabled == false {
+                completionBlock?(kCLLocationCoordinate2DInvalid)
+            }
+            else {
+                self.completionBlock = completionBlock
+            }
             return
         }
-        guard lastKnownCoordinate == kCLLocationCoordinate2DInvalid else {
-            completionBlock?(lastKnownCoordinate)
-            return
-        }
+       
         TFLLogger.shared.signPostStart(osLog: TFLLocationManager.locationLoggingHandle, name: "updateLocation")
         self.completionBlock = { coord in
             TFLLogger.shared.signPostEnd(osLog: TFLLocationManager.locationLoggingHandle, name: "updateLocation")
             completionBlock?(coord)
         }
+        self.locationManager.requestLocation()
     }
 }
 
@@ -103,6 +112,11 @@ extension TFLLocationManager : CLLocationManagerDelegate {
         switch status {
         case .authorizedWhenInUse:
             self.locationManager.startUpdatingLocation()
+            if let block = completionBlock {
+                self.completionBlock = nil
+                self.requestLocation(using: block)
+            }
+
         case .notDetermined:
             break
         default:

@@ -10,7 +10,7 @@ class TFLRootViewController: UIViewController {
     fileprivate let networkBackgroundQueue = OperationQueue()
     fileprivate let tflClient = TFLClient()
     fileprivate let busStopDBGenerator = TFLBusStopDBGenerator()
-    fileprivate static let loggingHandle  = OSLog(subsystem: TFLLogger.subsystem, category: TFLLogger.category.refresh.rawValue)
+    fileprivate static let loggingHandle  = OSLog(subsystem: TFLLogger.subsystem, category: TFLLogger.category.rootViewController.rawValue)
     lazy var busInfoAggregator = TFLBusArrivalInfoAggregator()
     lazy var debugUtility = TFLDebugUtility(with: self.view)
     
@@ -95,13 +95,6 @@ class TFLRootViewController: UIViewController {
         let controller = self.storyboard?.instantiateViewController(withIdentifier: "TFLNearbyBusStationsController") as? TFLNearbyBusStationsController
         return controller
     }()
-    
-    fileprivate var currentUserCoordinates : CLLocationCoordinate2D? {
-        guard let userLocation = self.mapViewController?.mapView.userLocation, userLocation.isUpdating else {
-            return nil
-        }
-        return userLocation.coordinate
-    }
 
     fileprivate var slideContainerController : TFLSlideContainerController?
     private var foregroundNotificationHandler  : TFLNotificationObserver?
@@ -234,7 +227,7 @@ fileprivate extension TFLRootViewController {
                     self.state = state
                     self.refreshTimer?.start()
                     blocks.forEach { $0?() }
-                    os_log("completing request")
+     
                     objc_sync_exit(self)
                 }
             }
@@ -254,16 +247,9 @@ fileprivate extension TFLRootViewController {
     
     
     fileprivate func currentCoordinates(using completionBlock : @escaping (_ coord : CLLocationCoordinate2D?) -> Void) {
-        let locationServicesEnabled = TFLLocationManager.sharedManager.enabled 
-        if locationServicesEnabled,let coord  = self.currentUserCoordinates, coord.isValid {
+        TFLLocationManager.sharedManager.updateLocation { coord in
             self.debugUtility.showImageForPos(coord)
             completionBlock(coord)
-        }
-        else {
-            TFLLocationManager.sharedManager.updateLocation { coord in
-                self.debugUtility.showImageForPos(coord)
-                completionBlock(coord)
-            }
         }
     }
     

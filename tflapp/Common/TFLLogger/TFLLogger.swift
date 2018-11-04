@@ -17,6 +17,7 @@ class TFLLogger {
         case coredata = "coredata"
         case timer = "timer"
         case location = "location"
+        case rootViewController = "rootViewController"
     }
     
     static let subsystem : String = {

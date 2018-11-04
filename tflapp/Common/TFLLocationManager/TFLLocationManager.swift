@@ -7,14 +7,11 @@ typealias TFLLocationManagerCompletionBlock  = (CLLocationCoordinate2D)->(Void)
 
 class TFLLocationManager : NSObject {
     private enum State {
-        case not_authorised
         case authorisation_pending(completionBlocks : [TFLLocationManagerCompletionBlock])
         case authorised(completionBlocks : [TFLLocationManagerCompletionBlock])
         
         func stateWithCompletionBlock(_ completionBlock : TFLLocationManagerCompletionBlock?) -> State {
             switch self {
-            case .not_authorised:
-                return self
             case let .authorisation_pending(completionBlocks):
                 if let completionBlock = completionBlock {
                     return State.authorisation_pending(completionBlocks: completionBlocks + [completionBlock])
@@ -30,8 +27,6 @@ class TFLLocationManager : NSObject {
         
         var stateWithoutCompletionBlocks : State {
             switch self {
-            case .not_authorised:
-                return self
             case .authorisation_pending:
                 return State.authorisation_pending(completionBlocks: [])
             case .authorised:
@@ -41,8 +36,6 @@ class TFLLocationManager : NSObject {
         
         var completionBlocks : [TFLLocationManagerCompletionBlock] {
             switch self {
-            case .not_authorised:
-                return []
             case let .authorisation_pending(completionBlocks),let .authorised(completionBlocks):
                 return completionBlocks
             }
@@ -53,7 +46,7 @@ class TFLLocationManager : NSObject {
         let handle = OSLog(subsystem: TFLLogger.subsystem, category: TFLLogger.category.location.rawValue)
         return handle
     }()
-    private var state = State.not_authorised
+    private var state = State.authorisation_pending(completionBlocks: [])
     static let sharedManager = TFLLocationManager()
     var enabled : Bool {
         guard case .authorised = state else {
@@ -98,8 +91,6 @@ fileprivate extension TFLLocationManager {
             objc_sync_exit(self)
         }
         switch self.state {
-        case .not_authorised:
-            completionBlock?(kCLLocationCoordinate2DInvalid)
         case .authorisation_pending:
             state = state.stateWithCompletionBlock(completionBlock)
         case .authorised:
@@ -156,7 +147,7 @@ extension TFLLocationManager : CLLocationManagerDelegate {
             break
         case .restricted,.denied:
             self.state.completionBlocks.forEach { $0(kCLLocationCoordinate2DInvalid) }
-            self.state = self.state.stateWithoutCompletionBlocks
+            self.state = .authorisation_pending(completionBlocks: [])
         }
     }
 }

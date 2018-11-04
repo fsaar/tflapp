@@ -12,7 +12,10 @@ import MapKit
 extension UIImage {
 
     static func imageForPos(_ pos : CLLocationCoordinate2D,_ text : String? = nil,using completionBlock: @escaping (_ image : UIImage?) -> Void)  {
-        
+        guard pos.isValid else {
+            completionBlock(nil)
+            return
+        }
         let mapSnapshotOptions = MKMapSnapshotter.Options()
         
         let location = CLLocationCoordinate2DMake(pos.latitude, pos.longitude)

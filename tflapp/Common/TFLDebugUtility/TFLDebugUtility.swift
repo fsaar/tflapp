@@ -28,13 +28,19 @@ class TFLDebugUtility {
 // MARK: Helper Methods
 
 private extension TFLDebugUtility {
-    func showImage(_ image : UIImage) {
+    func imageView(with image : UIImage) -> UIImageView {
         let imageView = UIImageView(image: image)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
         imageView.layer.borderColor = UIColor.red.cgColor
         imageView.layer.borderWidth = 2.0
         imageView.isUserInteractionEnabled = true
+        return imageView
+    }
+    
+    
+    func showImage(_ image : UIImage) {
+        let imageView = self.imageView(with: image)
         self.debugView.addSubview(imageView)
         
         let tapHandler = UITapGestureRecognizer(target: self, action: #selector(self.hideImageView(_:)))

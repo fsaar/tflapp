@@ -15,20 +15,21 @@ class TFLLocationManager : NSObject {
     private enum State {
         case not_authorised
         case authorisation_pending(completionBlocks : [TFLLocationManagerCompletionBlock])
-        case authorised(completionBlocks : [TFLLocationManagerCompletionBlock])
-        
+        case authorised
+        case authorised_requestPending(completionBlocks : [TFLLocationManagerCompletionBlock])
+
         func stateWithCompletionBlock(_ completionBlock : TFLLocationManagerCompletionBlock?) -> State {
             switch self {
-            case .not_authorised:
+            case .not_authorised,.authorised:
                 return self
             case let .authorisation_pending(completionBlocks):
                 if let completionBlock = completionBlock {
                     return State.authorisation_pending(completionBlocks: completionBlocks + [completionBlock])
                 }
                 return self
-            case let .authorised(completionBlocks):
+            case let .authorised_requestPending(completionBlocks):
                 if let completionBlock = completionBlock {
-                    return State.authorised(completionBlocks: completionBlocks + [completionBlock])
+                    return State.authorised_requestPending(completionBlocks: completionBlocks + [completionBlock])
                 }
                 return self
             }
@@ -36,20 +37,20 @@ class TFLLocationManager : NSObject {
         
         var stateWithoutCompletionBlocks : State {
             switch self {
-            case .not_authorised:
+            case .not_authorised,.authorised:
                 return self
             case .authorisation_pending:
                 return State.authorisation_pending(completionBlocks: [])
-            case .authorised:
-                return State.authorised(completionBlocks: [])
+            case .authorised_requestPending:
+                return State.authorised_requestPending(completionBlocks: [])
             }
         }
         
         var completionBlocks : [TFLLocationManagerCompletionBlock] {
             switch self {
-            case .not_authorised:
+            case .not_authorised,.authorised:
                 return []
-            case let .authorisation_pending(completionBlocks),let .authorised(completionBlocks):
+            case let .authorisation_pending(completionBlocks),let .authorised_requestPending(completionBlocks):
                 return completionBlocks
             }
         }
@@ -110,11 +111,17 @@ fileprivate extension TFLLocationManager {
             state = state.stateWithCompletionBlock(completionBlock)
         case .authorised:
             TFLLogger.shared.signPostStart(osLog: TFLLocationManager.locationLoggingHandle, name: "updateLocation")
-            state = state.stateWithCompletionBlock { coord in
+            self.state = State.authorised_requestPending(completionBlocks:[{ coord  in
+                TFLLogger.shared.signPostEnd(osLog: TFLLocationManager.locationLoggingHandle, name: "updateLocation")
+                completionBlock?(coord)
+            }])
+            self.locationManager.requestLocation()
+        case .authorised_requestPending:
+            TFLLogger.shared.signPostStart(osLog: TFLLocationManager.locationLoggingHandle, name: "updateLocation")
+            self.state = state.stateWithCompletionBlock { coord  in
                 TFLLogger.shared.signPostEnd(osLog: TFLLocationManager.locationLoggingHandle, name: "updateLocation")
                 completionBlock?(coord)
             }
-            self.locationManager.requestLocation()
         }
     }
 }
@@ -129,8 +136,9 @@ extension TFLLocationManager : CLLocationManagerDelegate {
             defer {
                 objc_sync_exit(self)
             }
-            self.state.completionBlocks.forEach { $0(coordinate) }
-            self.state = self.state.stateWithoutCompletionBlocks
+            let completionBlocks = self.state.completionBlocks
+            self.state = State.authorised
+            completionBlocks.forEach { $0(coordinate) }
         }
     }
     public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -139,8 +147,14 @@ extension TFLLocationManager : CLLocationManagerDelegate {
             defer {
                 objc_sync_exit(self)
             }
-            self.state.completionBlocks.forEach { $0(kCLLocationCoordinate2DInvalid) }
-            self.state = self.state.stateWithoutCompletionBlocks
+            let completionBlocks = self.state.completionBlocks
+            if case .authorised_requestPending = self.state {
+                self.state = State.authorised
+            }
+            else {
+                self.state = self.state.stateWithoutCompletionBlocks
+            }
+            completionBlocks.forEach { $0(kCLLocationCoordinate2DInvalid) }
         }
     }
     public func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
@@ -156,7 +170,7 @@ extension TFLLocationManager : CLLocationManagerDelegate {
             }
             locationManager.startUpdatingLocation()
             let completionBlocks = self.state.completionBlocks
-            state = State.authorised(completionBlocks: [])
+            state = State.authorised
             completionBlocks.forEach { requestLocation(using:$0) }
             self.delegate?.locationManager(self, didChangeEnabledStatus: true)
         case .notDetermined:

@@ -211,19 +211,6 @@ fileprivate extension TFLRootViewController {
         }
     }
     
-    func showError(_ show : Bool, color : UIColor = .clear) {
-        guard let errorView = self.view.window else {
-            return
-        }
-        if show {
-            errorView.layer.borderWidth = 2
-            errorView.layer.borderColor = color.cgColor
-        }
-        else {
-            errorView.layer.borderWidth = 0
-            errorView.layer.borderColor = UIColor.clear.cgColor
-        }
-    }
 
     func loadNearbyBusstops(using completionBlock:CompletionBlock? = nil) {
         objc_sync_enter(self)
@@ -233,7 +220,6 @@ fileprivate extension TFLRootViewController {
         
         loadNearbyBusStopsCompletionBlocks += [completionBlock]
         guard state.isComplete else {
-            showError(true,color: .green)
             return
         }
         self.refreshTimer?.stop()
@@ -254,11 +240,9 @@ fileprivate extension TFLRootViewController {
             }
             
             guard let coord = coord,coord.isValid else {
-                self?.showError(true,color: .red)
                 completionBlock(.errorNoGPSAvailable)
                 return
             }
-            self?.showError(false)
 
             self?.updateUI(with: coord) { updated in
                 let state : State = updated ? .noError : .errorNoStationsNearby(coordinate: coord)
@@ -270,7 +254,6 @@ fileprivate extension TFLRootViewController {
     
     
     fileprivate func currentCoordinates(using completionBlock : @escaping (_ coord : CLLocationCoordinate2D?) -> Void) {
-        showError(true,color:.blue)
         TFLLocationManager.sharedManager.updateLocation { coord in
             self.debugUtility.showImageForPos(coord)
             completionBlock(coord)

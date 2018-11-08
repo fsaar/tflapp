@@ -16,6 +16,7 @@ class TFLRootViewController: UIViewController {
     
     fileprivate enum State {
         case errorNoGPSAvailable
+        case errorCouldntDetermineCurrentLocation
         case errorNoStationsNearby(coordinate : CLLocationCoordinate2D)
         case determineCurrentLocation
         case retrievingNearbyStations
@@ -24,7 +25,7 @@ class TFLRootViewController: UIViewController {
 
         var isErrorState : Bool {
             switch self {
-            case .errorNoGPSAvailable,.errorNoStationsNearby:
+            case .errorNoGPSAvailable,.errorNoStationsNearby,.errorCouldntDetermineCurrentLocation:
                 return true
             default:
                 return false
@@ -39,7 +40,7 @@ class TFLRootViewController: UIViewController {
         }
         var isComplete : Bool {
             switch self {
-            case .errorNoGPSAvailable,.errorNoStationsNearby:
+            case .errorNoGPSAvailable,.errorNoStationsNearby,.errorCouldntDetermineCurrentLocation:
                 return true
             case .noError:
                 return true
@@ -66,6 +67,12 @@ class TFLRootViewController: UIViewController {
             case .errorNoStationsNearby:
                 self.contentView.isHidden = true
                 self.errorContainerView.showNoStationsFoundError()
+            case .errorCouldntDetermineCurrentLocation:
+                self.contentView.isHidden = shouldHide
+                if shouldHide {
+                    self.errorContainerView.showNoStationsFoundError()
+                }
+                self.errorContainerView.showLoadingNearbyStationsIfNeedBe(isContentAvailable: isContentAvailable)
             case .determineCurrentLocation:
                 self.contentView.isHidden = shouldHide
                 self.errorContainerView.showLoadingCurrentLocationIfNeedBe(isContentAvailable: isContentAvailable)
@@ -240,7 +247,8 @@ fileprivate extension TFLRootViewController {
             }
             
             guard let coord = coord,coord.isValid else {
-                completionBlock(.errorNoGPSAvailable)
+                let state : State = TFLLocationManager.sharedManager.enabled ? .errorCouldntDetermineCurrentLocation : .errorNoGPSAvailable
+                completionBlock(state)
                 return
             }
 
@@ -255,7 +263,6 @@ fileprivate extension TFLRootViewController {
     
     fileprivate func currentCoordinates(using completionBlock : @escaping (_ coord : CLLocationCoordinate2D?) -> Void) {
         TFLLocationManager.sharedManager.updateLocation { coord in
-            self.debugUtility.showImageForPos(coord)
             completionBlock(coord)
         }
     }

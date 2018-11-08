@@ -46,8 +46,8 @@ public class TFLRequestManager : NSObject {
         let task = session.dataTask(with: URL) { [weak self] data, _, error in
             TFLLogger.shared.signPostEnd(osLog: TFLRequestManager.loggingHandle, name: "getDataWithURL")
 
-            if let strongSelf = self {
-                strongSelf.delegate?.didFinishURLTask(with: strongSelf, session: strongSelf.session)
+            if let self = self {
+                self.delegate?.didFinishURLTask(with: self, session: self.session)
 
             }
             completionBlock(data,error)

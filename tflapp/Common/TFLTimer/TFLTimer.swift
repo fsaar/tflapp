@@ -13,11 +13,13 @@ typealias TFLTimerHandler = (_ timer : TFLTimer)->()
         let enabled = self.timer == nil ? false : true
         return (enabled)
     }
+    var repeats : Bool = true
     let queue : DispatchQueue
-    init?(timerInterVal: TimeInterval,using queue : DispatchQueue = DispatchQueue.main,timerHandler:TFLTimerHandler?) {
+    init?(timerInterVal: TimeInterval,repeats : Bool = true,using queue : DispatchQueue = DispatchQueue.main,timerHandler:TFLTimerHandler?) {
         self.timerInterval = TimeInterval(timerInterVal)
         self.timerHandler = timerHandler
         self.queue = queue
+        self.repeats = repeats
         super.init()
         let isZeroOrNegative =  self.timerInterval <= TimeInterval(0)
         let hasNilHandler = timerHandler == nil
@@ -30,10 +32,10 @@ typealias TFLTimerHandler = (_ timer : TFLTimer)->()
     func start()
     {
         stop()
-        self.timer = Timer.scheduledTimer(withTimeInterval: timerInterval, repeats: true) { [weak self] _ in
+        self.timer = Timer.scheduledTimer(withTimeInterval: timerInterval, repeats: self.repeats) { [weak self] _ in
             self?.queue.async {
-                if let strongSelf = self {
-                    strongSelf.timerHandler?(strongSelf)
+                if let self = self {
+                    self.timerHandler?(self)
                 }
             }
         }

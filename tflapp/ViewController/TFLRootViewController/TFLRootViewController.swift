@@ -10,10 +10,13 @@ class TFLRootViewController: UIViewController {
     fileprivate let networkBackgroundQueue = OperationQueue()
     fileprivate let tflClient = TFLClient()
     fileprivate let busStopDBGenerator = TFLBusStopDBGenerator()
-    fileprivate static let loggingHandle  = OSLog(subsystem: TFLLogger.subsystem, category: TFLLogger.category.api.rawValue)
+    fileprivate static let loggingHandle  = OSLog(subsystem: TFLLogger.subsystem, category: TFLLogger.category.rootViewController.rawValue)
     lazy var busInfoAggregator = TFLBusArrivalInfoAggregator()
+    lazy var debugUtility = TFLDebugUtility(with: self.view)
+    
     fileprivate enum State {
         case errorNoGPSAvailable
+        case errorCouldntDetermineCurrentLocation
         case errorNoStationsNearby(coordinate : CLLocationCoordinate2D)
         case determineCurrentLocation
         case retrievingNearbyStations
@@ -22,7 +25,7 @@ class TFLRootViewController: UIViewController {
 
         var isErrorState : Bool {
             switch self {
-            case .errorNoGPSAvailable,.errorNoStationsNearby:
+            case .errorNoGPSAvailable,.errorNoStationsNearby,.errorCouldntDetermineCurrentLocation:
                 return true
             default:
                 return false
@@ -37,7 +40,7 @@ class TFLRootViewController: UIViewController {
         }
         var isComplete : Bool {
             switch self {
-            case .errorNoGPSAvailable,.errorNoStationsNearby:
+            case .errorNoGPSAvailable,.errorNoStationsNearby,.errorCouldntDetermineCurrentLocation:
                 return true
             case .noError:
                 return true
@@ -64,6 +67,12 @@ class TFLRootViewController: UIViewController {
             case .errorNoStationsNearby:
                 self.contentView.isHidden = true
                 self.errorContainerView.showNoStationsFoundError()
+            case .errorCouldntDetermineCurrentLocation:
+                self.contentView.isHidden = shouldHide
+                if shouldHide {
+                    self.errorContainerView.showNoStationsFoundError()
+                }
+                self.errorContainerView.showLoadingNearbyStationsIfNeedBe(isContentAvailable: isContentAvailable)
             case .determineCurrentLocation:
                 self.contentView.isHidden = shouldHide
                 self.errorContainerView.showLoadingCurrentLocationIfNeedBe(isContentAvailable: isContentAvailable)
@@ -73,7 +82,7 @@ class TFLRootViewController: UIViewController {
             case .loadingArrivals:
                 self.contentView.isHidden = shouldHide
                 self.errorContainerView.showLoadingArrivalTimesIfNeedBe(isContentAvailable: isContentAvailable)
-            case State.noError:
+            case .noError:
                 self.errorContainerView.hideErrorViews()
                 self.contentView.isHidden = false
             }
@@ -106,7 +115,7 @@ class TFLRootViewController: UIViewController {
     @IBOutlet weak var contentView : UIView!
 
     fileprivate(set) lazy var refreshTimer : TFLTimer? = {
-        TFLTimer(timerInterVal: DefaultRefreshInterval) { [weak self] _ in
+        TFLTimer(timerInterVal: DefaultRefreshInterval,repeats:false) { [weak self] _ in
             TFLLogger.shared.event(osLog: TFLRootViewController.loggingHandle, name: "refreshTimer")
 
             self?.loadNearbyBusstops()
@@ -115,6 +124,7 @@ class TFLRootViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        TFLLocationManager.sharedManager.delegate = self
         if let mapViewController = self.mapViewController, let nearbyBusStationController = self.nearbyBusStationController {
             self.slideContainerController?.setContentControllers(with: mapViewController,and: nearbyBusStationController)
             self.slideContainerController?.sliderViewUpdateBlock =  { [weak self] slider, origin,final in
@@ -133,7 +143,12 @@ class TFLRootViewController: UIViewController {
         }
 
         self.foregroundNotificationHandler = TFLNotificationObserver(notification: UIApplication.willEnterForegroundNotification) { [weak self]  _ in
-            self?.loadNearbyBusstops()
+            let retryIfRequestWasPending = !(self?.state.isComplete ?? true)
+            self?.loadNearbyBusstops {
+                if retryIfRequestWasPending {
+                    self?.loadNearbyBusstops()
+                }
+            }
             self?.refreshTimer?.start()
         }
         self.backgroundNotificationHandler = TFLNotificationObserver(notification:UIApplication.didEnterBackgroundNotification) { [weak self]  _ in
@@ -171,7 +186,7 @@ class TFLRootViewController: UIViewController {
 
 fileprivate extension TFLRootViewController {
     
-    func updateContentViewController(with arrivalsInfo: [TFLBusStopArrivalsInfo],isUpdatePending updatePending : Bool, and  coordinate: CLLocationCoordinate2D) {
+    func updateContentViewController(with arrivalsInfo: [TFLBusStopArrivalsInfo],isUpdatePending updatePending : Bool, and  coordinate: CLLocationCoordinate2D) -> Bool {
         let oldTuples = self.nearbyBusStationController?.busStopPredicationTuple ?? []
         var mergedInfo : [TFLBusStopArrivalsInfo] = []
     
@@ -191,47 +206,83 @@ fileprivate extension TFLRootViewController {
         switch (updatePending,filteredArrivalsInfo.isEmpty) {
         case (true,false):
             self.state = .loadingArrivals
+            return true
         case (false,false):
             self.mapViewController?.busStopPredicationCoordinateTuple = (filteredArrivalsInfo,coordinate)
-            self.state = .noError
+            return true
         case (true,true): // Wait til complete
-            break
+            return true
         case (false,true):
             self.mapViewController?.busStopPredicationCoordinateTuple = (filteredArrivalsInfo,coordinate)
-            self.state = .errorNoStationsNearby(coordinate: coordinate)
+            return false
         }
     }
+    
 
     func loadNearbyBusstops(using completionBlock:CompletionBlock? = nil) {
+        objc_sync_enter(self)
+        defer {
+            objc_sync_exit(self)
+        }
+        
         loadNearbyBusStopsCompletionBlocks += [completionBlock]
         guard state.isComplete else {
             return
         }
-        guard TFLLocationManager.sharedManager.enabled != false else {
-            self.state = .errorNoGPSAvailable
-            loadNearbyBusStopsCompletionBlocks.forEach { $0?() }
-            loadNearbyBusStopsCompletionBlocks = []
-            return
-        }
+        self.refreshTimer?.stop()
         self.state = .determineCurrentLocation
-        TFLLocationManager.sharedManager.updateLocation { [weak self] coord in
-            self?.updateContentViewController(with: [],isUpdatePending: false, and: coord)
-            self?.retrieveBusstops(for: coord) { busStopPredictionTuples,isComplete  in
-                
-                self?.updateContentViewController(with: busStopPredictionTuples, isUpdatePending: !isComplete, and: coord)
-                guard isComplete else {
-                    return
+    
+        self.currentCoordinates { [weak self] coord in
+            let completionBlock : (_ state : State) -> () = { [weak self] state in
+                if let self = self {
+                    objc_sync_enter(self)
+                    let blocks = self.loadNearbyBusStopsCompletionBlocks
+                    self.loadNearbyBusStopsCompletionBlocks = []
+                    self.state = state
+                    self.refreshTimer?.start()
+                    blocks.forEach { $0?() }
+     
+                    objc_sync_exit(self)
                 }
-                self?.loadNearbyBusStopsCompletionBlocks.forEach { $0?() }
-                self?.loadNearbyBusStopsCompletionBlocks = []
             }
             
+            guard let coord = coord,coord.isValid else {
+                let state : State = TFLLocationManager.sharedManager.enabled ? .errorCouldntDetermineCurrentLocation : .errorNoGPSAvailable
+                completionBlock(state)
+                return
+            }
+
+            self?.updateUI(with: coord) { updated in
+                let state : State = updated ? .noError : .errorNoStationsNearby(coordinate: coord)
+                completionBlock(state)
+            }
         }
     }
-
+    
+    
+    
+    fileprivate func currentCoordinates(using completionBlock : @escaping (_ coord : CLLocationCoordinate2D?) -> Void) {
+        TFLLocationManager.sharedManager.updateLocation { coord in
+            completionBlock(coord)
+        }
+    }
+    
+    fileprivate func updateUI(with coord : CLLocationCoordinate2D, using completionBlock:@escaping (_ updated : Bool) -> ()) {
+        
+        _ = self.updateContentViewController(with: [],isUpdatePending: false, and: coord)
+        self.retrieveBusstops(for: coord) { [weak self] busStopPredictionTuples,isComplete  in
+            
+            let updated = self?.updateContentViewController(with: busStopPredictionTuples, isUpdatePending: !isComplete, and: coord) ?? false
+            guard isComplete else {
+                return
+            }
+            completionBlock(updated)
+        }
+    }
+        
     func retrieveBusstops(for location:CLLocationCoordinate2D, using completionBlock:@escaping ([TFLBusStopArrivalsInfo],_ completed: Bool)->()) {
         self.state = .retrievingNearbyStations
-        if CLLocationCoordinate2DIsValid(location) {
+        if location.isValid {
             let userDefaultRadius = UserDefaults.standard.double(forKey: "Distance")
             let searchParam = TFLRootViewController.searchParameter
             let radius = userDefaultRadius < searchParam.min ? searchParam.initial : userDefaultRadius
@@ -267,6 +318,15 @@ extension TFLRootViewController : TFLErrorContainerViewDelegate {
     }
 }
 
+
+extension TFLRootViewController : TFLLocationManagerDelegate {
+    func locationManager(_ locationManager : TFLLocationManager, didChangeEnabledStatus enabled : Bool) {
+        guard enabled else {
+            return
+        }
+        loadNearbyBusstops()
+    }
+}
 
 // MARK: TFLContentControllerDelegate
 

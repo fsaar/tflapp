@@ -43,14 +43,19 @@ class TFLBusArrivalInfoAggregator {
                     self?.arrivalsForBusStops(initialLoad, and: currentLocation) { initialInfos in
                         mainQueueBlock(initialInfos,false)
                         self?.arrivalsForBusStops(remainder, and: currentLocation) { remainderInfos in
-                            self?.lastUpdate = Date()
-                            mainQueueBlock(initialInfos + remainderInfos,true)
+                            let arrivalInfos = initialInfos + remainderInfos
+                            if !arrivalInfos.isEmpty {
+                                self?.lastUpdate = Date()
+                            }
+                            mainQueueBlock(arrivalInfos,true)
                         }
                     }
                 }
                 else {
                     self?.arrivalsForBusStops(busStops, and: currentLocation) { arrivalInfos in
-                        self?.lastUpdate = Date()
+                        if !arrivalInfos.isEmpty {
+                            self?.lastUpdate = Date()
+                        }
                         mainQueueBlock(arrivalInfos,true)
                     }
                 }

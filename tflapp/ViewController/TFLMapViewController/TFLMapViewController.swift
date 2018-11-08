@@ -2,12 +2,6 @@
 import UIKit
 import MapKit
 
-extension CLLocationCoordinate2D {
-    static func +(lhs : CLLocationCoordinate2D,rhs : CLLocationCoordinate2D) -> CLLocationCoordinate2D {
-        return CLLocationCoordinate2DMake(lhs.latitude+rhs.latitude, lhs.longitude+rhs.longitude)
-    }
-}
-
 class TFLMapViewController: UIViewController {
     enum MapState {
         case inited
@@ -39,7 +33,9 @@ class TFLMapViewController: UIViewController {
     @IBOutlet weak var coverView : UIView!
     @IBOutlet weak var mapView : MKMapView! = nil {
         didSet {
-            mapView.layoutMargins = UIEdgeInsets(top:0, left:0,bottom:300,right:0)
+            let windowFrame = (UIApplication.shared.delegate as? AppDelegate)?.window?.frame ?? CGRect.zero
+            let botttomMargin = windowFrame.size.height / 2
+            mapView.layoutMargins = UIEdgeInsets(top:0, left:0,bottom:botttomMargin,right:0)
             mapView.delegate = self
             mapView.showsCompass = false
             mapView.register(TFLBusStopAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
@@ -47,7 +43,6 @@ class TFLMapViewController: UIViewController {
         }
     }
 
-    let defaultCoordinateOffset = CLLocationCoordinate2D(latitude: -1/300, longitude: 0)
     let defaultCoordinateSpan = MKCoordinateSpan(latitudeDelta: 1/300, longitudeDelta: 1/90)
     let mapViewUpdateQueue : OperationQueue = {
         let q = OperationQueue()
@@ -77,9 +72,8 @@ class TFLMapViewController: UIViewController {
                             .map { TFLMapViewAnnotation(with: $0) }
                         self.mapView.addAnnotations(toBeInsertedAnnotations)
                         
-                        let offsetCoordinate = coords + self.defaultCoordinateOffset
-                        if case .inited = self.state, CLLocationCoordinate2DIsValid(offsetCoordinate) {
-                            let region = MKCoordinateRegion(center: offsetCoordinate, span: self.defaultCoordinateSpan)
+                        if case .inited = self.state, coords.isValid {
+                            let region = MKCoordinateRegion(center: coords, span: self.defaultCoordinateSpan)
                             let animated = (oldTuple?.0 ?? []).isEmpty   ? false : true
                             self.mapView.setRegion(region, animated: animated)
                         }
@@ -91,8 +85,8 @@ class TFLMapViewController: UIViewController {
         }
     }
 
-    var observer : NSKeyValueObservation?
-    
+    private var observer : NSKeyValueObservation?
+    private var backgroundNotificationHandler : TFLNotificationObserver?
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         self.state = .userInteracted
@@ -109,6 +103,10 @@ class TFLMapViewController: UIViewController {
         super.viewDidLoad()
         observer = self.mapView.observe(\.isHidden,options: [.new]) { [weak self]  _,change in
             self?.resetStateIfMapViewHidden(change.newValue ?? false)
+        }
+        
+        self.backgroundNotificationHandler = TFLNotificationObserver(notification:UIApplication.didEnterBackgroundNotification) { [weak self]  _ in
+            self?.state = .inited
         }
         
     }

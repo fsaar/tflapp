@@ -72,6 +72,9 @@
 		5699A687218E2E3C00CD1427 /* UIImage+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5699A686218E2E3C00CD1427 /* UIImage+Helper.swift */; };
 		5699A68A218ED42D00CD1427 /* TFLDebugUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5699A689218ED42D00CD1427 /* TFLDebugUtility.swift */; };
 		5699A68C218EE77200CD1427 /* CLLocationCoordinate2D+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5699A68B218EE77100CD1427 /* CLLocationCoordinate2D+Helper.swift */; };
+		56A4907721977FF6004024D9 /* abbreviations.plist in Resources */ = {isa = PBXBuildFile; fileRef = 56A4907921977FF6004024D9 /* abbreviations.plist */; };
+		56A4907C219781C0004024D9 /* TFLRouteFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A4907B219781C0004024D9 /* TFLRouteFormatter.swift */; };
+		56A4907F219799EA004024D9 /* TFLCoreSpotLightDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A4907E219799EA004024D9 /* TFLCoreSpotLightDataProvider.swift */; };
 		56A81B2F1DD862DC001DF7F1 /* TFLAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A81B2E1DD862DC001DF7F1 /* TFLAppDelegate.swift */; };
 		56A81B341DD862DC001DF7F1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56A81B321DD862DC001DF7F1 /* Main.storyboard */; };
 		56A81B391DD862DC001DF7F1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 56A81B381DD862DC001DF7F1 /* Assets.xcassets */; };
@@ -150,7 +153,6 @@
 		566EF7D21DDB71CE006162D7 /* TFLBusStopStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusStopStack.swift; sourceTree = "<group>"; };
 		566EF7D61DDC4D14006162D7 /* TFLRootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLRootViewController.swift; sourceTree = "<group>"; };
 		566EF7E11DDC59ED006162D7 /* UIFont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
-		566EF7E31DDC5D69006162D7 /* tflapp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = tflapp.entitlements; sourceTree = "<group>"; };
 		567224FA20CD8EE3007DA481 /* TFLStationDetailMapBusRouteOverLay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLStationDetailMapBusRouteOverLay.swift; sourceTree = "<group>"; };
 		567224FC20D564BE007DA481 /* TFLMapViewAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLMapViewAnnotation.swift; sourceTree = "<group>"; };
 		567224FE20D570A5007DA481 /* TFLBusStopAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLBusStopAnnotationView.swift; sourceTree = "<group>"; };
@@ -182,6 +184,10 @@
 		5699A686218E2E3C00CD1427 /* UIImage+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Helper.swift"; sourceTree = "<group>"; };
 		5699A689218ED42D00CD1427 /* TFLDebugUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLDebugUtility.swift; sourceTree = "<group>"; };
 		5699A68B218EE77100CD1427 /* CLLocationCoordinate2D+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CLLocationCoordinate2D+Helper.swift"; sourceTree = "<group>"; };
+		56A4907021977B40004024D9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = en; path = en.lproj/tflapp.entitlements; sourceTree = "<group>"; };
+		56A4907821977FF6004024D9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = en.lproj/abbreviations.plist; sourceTree = "<group>"; };
+		56A4907B219781C0004024D9 /* TFLRouteFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLRouteFormatter.swift; sourceTree = "<group>"; };
+		56A4907E219799EA004024D9 /* TFLCoreSpotLightDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLCoreSpotLightDataProvider.swift; sourceTree = "<group>"; };
 		56A81B2B1DD862DC001DF7F1 /* London Bus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "London Bus.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		56A81B2E1DD862DC001DF7F1 /* TFLAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLAppDelegate.swift; sourceTree = "<group>"; };
 		56A81B331DD862DC001DF7F1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -325,6 +331,7 @@
 		565A1FC91DD8F8D1003CE960 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				56A4907D219799DF004024D9 /* TFLCoreSpotLightDataProvider */,
 				5699A688218ED3E100CD1427 /* TFLDebugUtility */,
 				5600FC8C217C8E2600B7EC7E /* TFLHUD */,
 				561CA50B210A655C0008B656 /* TFLSynchroniser */,
@@ -451,6 +458,15 @@
 			path = TFLDebugUtility;
 			sourceTree = "<group>";
 		};
+		56A4907D219799DF004024D9 /* TFLCoreSpotLightDataProvider */ = {
+			isa = PBXGroup;
+			children = (
+				56A4907B219781C0004024D9 /* TFLRouteFormatter.swift */,
+				56A4907E219799EA004024D9 /* TFLCoreSpotLightDataProvider.swift */,
+			);
+			path = TFLCoreSpotLightDataProvider;
+			sourceTree = "<group>";
+		};
 		56A81B221DD862DC001DF7F1 = {
 			isa = PBXGroup;
 			children = (
@@ -483,9 +499,10 @@
 				56A81B321DD862DC001DF7F1 /* Main.storyboard */,
 				56A81B381DD862DC001DF7F1 /* Assets.xcassets */,
 				56A81B3A1DD862DC001DF7F1 /* LaunchScreen.storyboard */,
-				566EF7E31DDC5D69006162D7 /* tflapp.entitlements */,
+				56A4907121977B40004024D9 /* tflapp.entitlements */,
 				56C0944B20D9ADD800581995 /* Settings.bundle */,
 				56A81B3D1DD862DC001DF7F1 /* Info.plist */,
+				56A4907921977FF6004024D9 /* abbreviations.plist */,
 				56D70D2F1DD9A7A6004CA293 /* Localization */,
 				566EF7D01DDB5679006162D7 /* TFLBusStops.sqlite */,
 				565A1FD01DD8FB2A003CE960 /* Model.xcdatamodeld */,
@@ -667,6 +684,7 @@
 				5689612720C08AFC00335DEB /* TFLStationDetailSectionHeaderView.xib in Resources */,
 				56D70D351DD9A7A6004CA293 /* Localizable.strings in Resources */,
 				56A81B391DD862DC001DF7F1 /* Assets.xcassets in Resources */,
+				56A4907721977FF6004024D9 /* abbreviations.plist in Resources */,
 				56A81B341DD862DC001DF7F1 /* Main.storyboard in Resources */,
 				56D70D341DD9A7A6004CA293 /* InfoPlist.strings in Resources */,
 			);
@@ -831,6 +849,7 @@
 				5689612320C074AE00335DEB /* TFLCDLineRoute+CoreDataProperties.swift in Sources */,
 				567F534B20BF19360022FEFF /* TFLStationDetailTableViewModel.swift in Sources */,
 				567F534720BECA1B0022FEFF /* TFLStationDetailTableViewCell.swift in Sources */,
+				56A4907F219799EA004024D9 /* TFLCoreSpotLightDataProvider.swift in Sources */,
 				5699A68C218EE77200CD1427 /* CLLocationCoordinate2D+Helper.swift in Sources */,
 				566EF7D31DDB71CE006162D7 /* TFLBusStopStack.swift in Sources */,
 				566EF7E21DDC59ED006162D7 /* UIFont.swift in Sources */,
@@ -840,6 +859,7 @@
 				56835920218243BE0096615D /* TFLStationDetailErrorView.swift in Sources */,
 				5692B5031DF2E4EB00C56A3C /* TFLMapViewController.swift in Sources */,
 				564EC70A1DE1917D008CFD11 /* TFLNearbyBusStationsController.swift in Sources */,
+				56A4907C219781C0004024D9 /* TFLRouteFormatter.swift in Sources */,
 				5699A687218E2E3C00CD1427 /* UIImage+Helper.swift in Sources */,
 				5692B5001DF2E26300C56A3C /* TFLSlideContainerController.swift in Sources */,
 				566EF7D71DDC4D14006162D7 /* TFLRootViewController.swift in Sources */,
@@ -860,6 +880,22 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		56A4907121977B40004024D9 /* tflapp.entitlements */ = {
+			isa = PBXVariantGroup;
+			children = (
+				56A4907021977B40004024D9 /* en */,
+			);
+			name = tflapp.entitlements;
+			sourceTree = "<group>";
+		};
+		56A4907921977FF6004024D9 /* abbreviations.plist */ = {
+			isa = PBXVariantGroup;
+			children = (
+				56A4907821977FF6004024D9 /* en */,
+			);
+			name = abbreviations.plist;
+			sourceTree = "<group>";
+		};
 		56A81B321DD862DC001DF7F1 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

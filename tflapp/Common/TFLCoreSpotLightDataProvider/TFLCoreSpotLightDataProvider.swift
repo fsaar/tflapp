@@ -11,26 +11,53 @@ import CoreData
 import CoreSpotlight
 import CoreServices
 
+extension TFLRouteFormatter {
+    init?(route : String) {
+        let separator = "&harr;"
+        let elements = route.components(separatedBy: separator)
+        guard elements.count == 2,let from = elements.first,let to = elements.last else {
+            return nil
+        }
+        self.init(from: String(from.trimmingCharacters(in: .whitespaces)), to: String(to.trimmingCharacters(in: .whitespaces)))
+    }
+}
+
+protocol TFLCoreSpotLightDataProviderDataSource : class {
+    func numberOfLinesForCoreSpotLightDataProvider(_ provider : TFLCoreSpotLightDataProvider) -> Int
+    func lineForCoreSpotLightDataProvider(_ provider : TFLCoreSpotLightDataProvider,at index : Int) -> String
+    func routesForCoreSpotLightDataProvider(_ provider : TFLCoreSpotLightDataProvider,for line : String) -> [String]
+}
+
+
+
 class TFLCoreSpotLightDataProvider {
-    
-    func searchableItems() -> [CSSearchableItem] {
-        let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
-        let fetchRequest = NSFetchRequest<TFLCDLineInfo>(entityName: String(describing: TFLCDLineInfo.self))
-        fetchRequest.fetchBatchSize = 100
-        var items : [CSSearchableItem] = []
-        context.performAndWait {
+    private weak var dataSource : TFLCoreSpotLightDataProviderDataSource?
+    init(with dataSource : TFLCoreSpotLightDataProviderDataSource) {
+        self.dataSource = dataSource
+    }
+    func searchableItems(on queue : OperationQueue = OperationQueue.main,
+                         using completionBlock: @escaping (_ items : [CSSearchableItem]) -> Void )   {
+        DispatchQueue.global().async { [weak self] in
+            guard let self = self, let dataSource = self.dataSource else {
+                completionBlock([])
+                return
+            }
+            let count = dataSource.numberOfLinesForCoreSpotLightDataProvider(self)
             
-            if let lineInfos = try? context.fetch(fetchRequest) {
-                items = lineInfos.compactMap { [weak self] lineInfo in
-                    guard let identifier = lineInfo.identifier,let attributeSet  = self?.searchableItemAttributeSet(with: lineInfo)  else {
-                        return nil
-                    }
-                    let item = CSSearchableItem(uniqueIdentifier: identifier, domainIdentifier: "com.samedialabs.tflapp.lines", attributeSet: attributeSet)
-                    return item
+            let items : [CSSearchableItem]  = (0 ..< count).compactMap { index in
+                let identifier = dataSource.lineForCoreSpotLightDataProvider(self, at: index)
+                let routes = dataSource.routesForCoreSpotLightDataProvider(self, for: identifier)
+                let image = self.busPredictionViewBackgroundImage(line: identifier.uppercased())
+                guard let attributeSet  = self.searchableItemAttributeSet(with: identifier,routes: routes,and: image) else {
+                    return nil
                 }
+                let item = CSSearchableItem(uniqueIdentifier: identifier, domainIdentifier: "com.samedialabs.tflapp.lines", attributeSet: attributeSet)
+                return item
+            }
+            queue.addOperation {
+                completionBlock(items)
             }
         }
-        return items
     }
     
 }
@@ -38,6 +65,8 @@ class TFLCoreSpotLightDataProvider {
 // MARK: Private
 
 private extension TFLCoreSpotLightDataProvider {
+   
+    
     func busPredictionViewBackgroundImage(line : String) -> UIImage {
         let bounds = CGRect(origin:.zero, size: CGSize(width: 50, height: 50))
         let busNumberRect = CGRect(x: 2, y: 15, width: 48, height: 20)
@@ -63,31 +92,14 @@ private extension TFLCoreSpotLightDataProvider {
         }
     }
     
-    func searchableItemAttributeSet(with lineInfo : TFLCDLineInfo ) -> CSSearchableItemAttributeSet? {
-        var itemAttributeSet : CSSearchableItemAttributeSet? = nil
-        lineInfo.managedObjectContext?.performAndWait {
-            if let identifier = lineInfo.identifier   {
-                let image = busPredictionViewBackgroundImage(line: identifier.uppercased())
-                let attrs = CSSearchableItemAttributeSet(itemContentType: kUTTypeItem as String)
-                attrs.displayName = "Routes"
-                attrs.thumbnailData = image.pngData()
-                let separator = "&harr;"
-                let routes : [String] =  lineInfo.routes?.compactMap { ($0 as? TFLCDLineRoute)?.name  } ?? []
-                let formatterList : [TFLRouteFormatter] = routes.compactMap { route in
-                    let elements = route.components(separatedBy: separator)
-                    guard elements.count == 2,let from = elements.first,let to = elements.last else {
-                        return nil
-                    }
-                    return TFLRouteFormatter(from: String(from.trimmingCharacters(in: .whitespaces)), to: String(to.trimmingCharacters(in: .whitespaces)))
-                }
-                
-                let stationNames = formatterList.shortRoutes.joined(separator: "\n")
-                print(stationNames)
-                attrs.contentDescription = stationNames
-                attrs.keywords = identifier == identifier.uppercased() ? [identifier.uppercased()] : [identifier.uppercased()]
-                itemAttributeSet = attrs
-            }
-        }
-        return itemAttributeSet
+    func searchableItemAttributeSet(with identifier : String,routes : [String], and image : UIImage?) -> CSSearchableItemAttributeSet? {
+        let attrs = CSSearchableItemAttributeSet(itemContentType: kUTTypeItem as String)
+        attrs.displayName = "Routes"
+        attrs.thumbnailData = image?.pngData()
+        let formatterList = routes.compactMap { TFLRouteFormatter(route: $0) }
+        let stationNames = formatterList.shortRoutes.joined(separator: "\n")
+        attrs.contentDescription = stationNames
+        attrs.keywords = identifier == identifier.uppercased() ? [identifier.uppercased()] : [identifier.uppercased()]
+        return attrs
     }
 }

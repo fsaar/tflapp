@@ -6,7 +6,7 @@ import os.signpost
 
 class TFLRootViewController: UIViewController {
     typealias CompletionBlock = ()->()
-    fileprivate static let searchParameter  : (min:Double,initial:Double) = (100,350)
+    fileprivate static let searchParameter  : (min:Double,initial:Double) = (100,500)
     fileprivate let networkBackgroundQueue = OperationQueue()
     fileprivate let tflClient = TFLClient()
     fileprivate let busStopDBGenerator = TFLBusStopDBGenerator()

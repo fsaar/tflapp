@@ -1,5 +1,6 @@
 import UIKit
 import MapKit
+import CoreSpotlight
 import os.signpost
 
 protocol TFLNearbyBusStationsControllerDelegate : class {
@@ -16,6 +17,11 @@ extension MutableCollection where Index == Int, Iterator.Element == TFLBusStopAr
             self[indexPath.row] = newValue
         }
     }
+}
+
+extension NSNotification.Name {
+    static let spotLightLineLookupNotification = NSNotification.Name("spotLightLineLookupNotification")
+    
 }
 
 class TFLNearbyBusStationsController : UIViewController {
@@ -87,12 +93,13 @@ class TFLNearbyBusStationsController : UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       
         addRefreshControl()
         updateLastUpdateTimeStamp()
         addContentOffsetObserver()
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = TFLNearbyBusStationsController.defaultTableViewRowHeight
+        NotificationCenter.default.addObserver(self, selector: #selector(self.spotlightLookupNotificationHandler(_:)), name: NSNotification.Name.spotLightLineLookupNotification, object: nil)
+        
     }
     
 
@@ -134,21 +141,36 @@ extension TFLNearbyBusStationsController : UITableViewDataSource {
         }
         return cell
     }
+    
+    @objc
+    func spotlightLookupNotificationHandler(_ notification : Notification) {
+        guard let line = notification.userInfo?[CSSearchableItemActivityIdentifier] as? String else {
+            return
+        }
+        self.navigationController?.popToRootViewController(animated: false)
+        self.updateAndShowLineInfo(line: line)
+    }
+    
 }
 
 extension TFLNearbyBusStationsController : TFLBusStationArrivalCellDelegate {
     
     func busStationArrivalCell(_ busStationArrivalCell: TFLBusStationArrivalsCell,didSelectLine line: String) {
-        updateLineInfoIfNeedbe(line) { [weak self] in
-            self?.performSegue(withIdentifier: SegueIdentifier.stationDetailSegue.rawValue, sender: line)
-        }
+        updateAndShowLineInfo(line: line)
     }
 }
 
 // MARK: Private
 
 fileprivate extension TFLNearbyBusStationsController {
-
+   
+    func updateAndShowLineInfo(line : String) {
+        updateLineInfoIfNeedbe(line) { [weak self] in
+            self?.performSegue(withIdentifier: SegueIdentifier.stationDetailSegue.rawValue, sender: line)
+        }
+    }
+    
+    
     func configure(_ cell : TFLBusStationArrivalsCell,at indexPath : IndexPath) {
         cell.configure(with: busStopArrivalViewModels[indexPath])
     }

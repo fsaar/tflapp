@@ -110,7 +110,7 @@ class TFLNearbyBusStationsController : UIViewController {
         switch segueIdentifier {
         case .stationDetailSegue:
             if let controller = segue.destination as? TFLStationDetailController, let line = sender as? String {
-                controller.line = line
+                controller.line = line.uppercased()
             }
         }
     }

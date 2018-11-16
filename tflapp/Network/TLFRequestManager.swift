@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 import os.signpost
+import CommonCrypto
 
 enum TFLRequestManagerErrorType : Error {
     case InvalidURL(urlString : String)
@@ -11,8 +12,9 @@ protocol TFLRequestManagerDelegate : class {
     func didFinishURLTask(with requestManager: TFLRequestManager,session : URLSession)
 }
 
-
-public class TFLRequestManager : NSObject {
+class TFLRequestManager : NSObject {
+    
+    let tfl_pupkey = "uubh7W0mYtERO6xZ7Gcs6qEba+iGgOYjY0eNbywNIzM="
     weak var delegate : TFLRequestManagerDelegate?
     fileprivate let TFLRequestManagerBaseURL = "https://api.tfl.gov.uk"
 
@@ -30,7 +32,11 @@ public class TFLRequestManager : NSObject {
         }
     }
     
-    var session = URLSession(configuration:  URLSessionConfiguration.default)
+    lazy var session : URLSession = {
+        let session = URLSession(configuration:  URLSessionConfiguration.default,delegate:self,delegateQueue:nil)
+        return session
+        
+    }()
 
 
     public func getDataWithRelativePath(relativePath: String ,and query: String? = nil, completionBlock:@escaping ((_ data : Data?,_ error:Error?) -> Void)) {
@@ -57,15 +63,45 @@ public class TFLRequestManager : NSObject {
 
         self.delegate?.didStartURLTask(with: self, session: session)
     }
-
-
 }
 
 
+extension TFLRequestManager : URLSessionDelegate {
+    #if !DEBUG
+    func urlSession(_ session: URLSession,
+                    didReceive challenge: URLAuthenticationChallenge,
+                    completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        
+        guard challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust,
+            let serverTrust = challenge.protectionSpace.serverTrust,
+            let baseURL = NSURLComponents(string: TFLRequestManagerBaseURL),
+            challenge.protectionSpace.host == baseURL.host else {
+                completionHandler(.cancelAuthenticationChallenge, nil)
+                return
+        }
+        
+        var result = SecTrustResultType.invalid
+        SecTrustEvaluate(serverTrust, &result)
+        let isServerTrusted = result == .unspecified || result == .proceed
+        
+        guard isServerTrusted,let certificate = SecTrustGetCertificateAtIndex(serverTrust, 0),
+            let serverPublicKey = SecCertificateCopyKey(certificate),
+            let serverPublicKeyData:NSData = SecKeyCopyExternalRepresentation(serverPublicKey, nil ),
+            sha256(serverPublicKeyData as Data) == tfl_pupkey else {
+                completionHandler(.cancelAuthenticationChallenge, nil)
+                return
+                
+        }
+        completionHandler(.useCredential, URLCredential(trust:serverTrust))
+        
+    }
+    #endif
+}
+
 // MARK: Private
 
-extension TFLRequestManager {
-    fileprivate func baseURL(withPath path: String,and query: String? = nil) -> URL? {
+fileprivate extension TFLRequestManager {
+     func baseURL(withPath path: String,and query: String? = nil) -> URL? {
         guard let baseURL = NSURLComponents(string: TFLRequestManagerBaseURL) else {
             return nil
         }
@@ -80,5 +116,12 @@ extension TFLRequestManager {
         }
         return baseURL.url
     }
-
+    
+    func sha256(_ data : Data) -> String {
+        var hash = [UInt8](repeating: 0,  count: Int(CC_SHA256_DIGEST_LENGTH))
+        data.withUnsafeBytes {
+            _ = CC_SHA256($0, CC_LONG(data.count), &hash)
+        }
+        return Data(bytes: hash).base64EncodedString()
+    }
 }

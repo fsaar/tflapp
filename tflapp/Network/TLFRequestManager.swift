@@ -12,7 +12,7 @@ protocol TFLRequestManagerDelegate : class {
     func didFinishURLTask(with requestManager: TFLRequestManager,session : URLSession)
 }
 
-class TFLRequestManager : NSObject,URLSessionDelegate {
+class TFLRequestManager : NSObject {
     
     let tfl_pupkey = "uubh7W0mYtERO6xZ7Gcs6qEba+iGgOYjY0eNbywNIzM="
     weak var delegate : TFLRequestManagerDelegate?
@@ -63,9 +63,10 @@ class TFLRequestManager : NSObject,URLSessionDelegate {
 
         self.delegate?.didStartURLTask(with: self, session: session)
     }
-    
- 
-    
+}
+
+
+extension TFLRequestManager : URLSessionDelegate {
     #if !DEBUG
     func urlSession(_ session: URLSession,
                     didReceive challenge: URLAuthenticationChallenge,
@@ -96,7 +97,6 @@ class TFLRequestManager : NSObject,URLSessionDelegate {
     }
     #endif
 }
-
 
 // MARK: Private
 

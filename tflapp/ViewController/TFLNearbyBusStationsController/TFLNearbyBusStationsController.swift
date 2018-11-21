@@ -57,7 +57,7 @@ class TFLNearbyBusStationsController : UIViewController {
     @IBOutlet weak var tableView : UITableView!
     
     fileprivate let synchroniser = TFLSynchroniser(tag:"com.samedialabs.queue.tableview")
-    
+    var currentUserCoordinate = kCLLocationCoordinate2DInvalid
     var busStopPredicationTuple :  [TFLBusStopArrivalsInfo] = [] {
         didSet {
             synchroniser.synchronise { synchroniseEnd in
@@ -110,6 +110,7 @@ class TFLNearbyBusStationsController : UIViewController {
         switch segueIdentifier {
         case .stationDetailSegue:
             if let controller = segue.destination as? TFLStationDetailController, let line = sender as? String {
+                controller.currentUserCoordinate   = currentUserCoordinate
                 controller.line = line.uppercased()
             }
         }

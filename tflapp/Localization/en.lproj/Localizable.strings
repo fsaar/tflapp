@@ -8,6 +8,7 @@
 "TFLNoStationsView.title" = "No stations found for your current location. You can increase the search distance in settings.";
 "TFLNoStationsView.retryButtonTitle" = "Try again";
 "TFLStationDetailTableViewModel.towards" = "towards";
+"TFLStationDetailNearby.title" = "Nearby";
 "TFLLoadArrivalTimesView.title" = "Loading bus schedules ...";
 "TFLNoGPSEnabledView.title" = "For this app to function properly location services need to be enabled in settings.";
 "TFLNoGPSEnabledView.settingsButtonTitle" = "Go to Settings";

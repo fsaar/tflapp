@@ -393,6 +393,25 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xfF-Zv-oeK">
+                                            <rect key="frame" x="76" y="26" width="51.5" height="16"/>
+                                            <subviews>
+                                                <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="nearby" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jLQ-Fs-fjb" userLabel="nearbyLabel">
+                                                    <rect key="frame" x="5" y="0.0" width="41.5" height="16"/>
+                                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <color key="textColor" red="0.0" green="0.58980089430000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstItem="jLQ-Fs-fjb" firstAttribute="leading" secondItem="xfF-Zv-oeK" secondAttribute="leading" constant="5" id="MJd-sc-gSI"/>
+                                                <constraint firstItem="jLQ-Fs-fjb" firstAttribute="centerY" secondItem="xfF-Zv-oeK" secondAttribute="centerY" id="ljK-xk-sKq"/>
+                                                <constraint firstAttribute="trailing" secondItem="jLQ-Fs-fjb" secondAttribute="trailing" constant="5" id="o5H-Le-e5X"/>
+                                                <constraint firstAttribute="height" constant="16" id="oHk-ek-799"/>
+                                            </constraints>
+                                        </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wvy-xF-A11" userLabel="upperPath">
                                             <rect key="frame" x="42" y="0.0" width="2" height="8"/>
                                             <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -431,6 +450,7 @@
                                         </view>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="xfF-Zv-oeK" secondAttribute="bottom" id="03t-kU-lWH"/>
                                         <constraint firstItem="omP-Wl-SR2" firstAttribute="centerY" secondItem="Uly-2b-PIo" secondAttribute="centerY" id="EIW-pm-VqB"/>
                                         <constraint firstItem="Wvy-xF-A11" firstAttribute="top" secondItem="Uly-2b-PIo" secondAttribute="top" id="GDs-FP-ncl"/>
                                         <constraint firstItem="vgU-fD-dTx" firstAttribute="centerX" secondItem="omP-Wl-SR2" secondAttribute="centerX" id="P4n-2g-GTE"/>
@@ -438,6 +458,7 @@
                                         <constraint firstItem="Wvy-xF-A11" firstAttribute="centerX" secondItem="omP-Wl-SR2" secondAttribute="centerX" id="YDE-Gc-7yB"/>
                                         <constraint firstAttribute="trailing" secondItem="zY3-4s-FS4" secondAttribute="trailing" constant="10" id="YVi-zi-Dwz"/>
                                         <constraint firstAttribute="bottom" secondItem="vgU-fD-dTx" secondAttribute="bottom" id="cbe-hi-u1b"/>
+                                        <constraint firstItem="xfF-Zv-oeK" firstAttribute="leading" secondItem="zY3-4s-FS4" secondAttribute="leading" id="dZq-rj-vre"/>
                                         <constraint firstItem="zY3-4s-FS4" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Uly-2b-PIo" secondAttribute="top" constant="5" id="ejc-vF-71k"/>
                                         <constraint firstItem="zY3-4s-FS4" firstAttribute="leading" secondItem="omP-Wl-SR2" secondAttribute="trailing" constant="20" id="ew6-Dg-LKM"/>
                                         <constraint firstItem="omP-Wl-SR2" firstAttribute="leading" secondItem="Uly-2b-PIo" secondAttribute="leading" constant="30" id="gMG-qw-uDw"/>
@@ -449,6 +470,8 @@
                                 <connections>
                                     <outlet property="lowerStationPath" destination="vgU-fD-dTx" id="TTd-b3-g8f"/>
                                     <outlet property="middleStationPath" destination="omP-Wl-SR2" id="tH0-yE-wMg"/>
+                                    <outlet property="nearbyContainer" destination="xfF-Zv-oeK" id="b65-c9-u59"/>
+                                    <outlet property="nearbyIndicator" destination="jLQ-Fs-fjb" id="QZf-i2-LJl"/>
                                     <outlet property="stationName" destination="zY3-4s-FS4" id="0jF-Ev-LBq"/>
                                     <outlet property="stopCodeLabel" destination="gHb-Mf-UEu" id="CC7-8R-2xh"/>
                                     <outlet property="upperStationPath" destination="Wvy-xF-A11" id="t6V-se-rFF"/>

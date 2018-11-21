@@ -37,6 +37,12 @@ extension UIFont {
         return font
     }
 
+    class func tflStationDetailNearbyTitle() -> UIFont {
+        let descriptor = UIFontDescriptor(name: "GillSans-Light", size: 12)
+        let font = UIFont(descriptor: descriptor, size: 12)
+        return font
+    }
+    
     class func tflStationDetailTitle() -> UIFont {
         let descriptor = UIFontDescriptor(name: "GillSans-Light", size: 17)
         let font = UIFont(descriptor: descriptor, size: 17)

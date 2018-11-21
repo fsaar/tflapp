@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MapKit
 import Foundation
 import CoreData
 
@@ -24,6 +25,7 @@ class TFLStationDetailController: UIViewController {
     @IBOutlet weak var titleHeaderView : TFLStationDetailHeaderView!
     var mapViewController : TFLStationDetailMapViewController?
     var tableViewController : TFLStationDetailTableViewController?
+    var currentUserCoordinate = kCLLocationCoordinate2DInvalid
     lazy var backBarButtonItem : UIBarButtonItem = {
         let image = #imageLiteral(resourceName: "back")
         let button = UIButton(frame: CGRect(origin:.zero,size:image.size))
@@ -48,11 +50,12 @@ class TFLStationDetailController: UIViewController {
             guard let line = line else {
                 return
             }
+            let location = CLLocation(latitude: currentUserCoordinate.latitude, longitude: currentUserCoordinate.longitude)
             let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
             context.perform {
                 let lineInfo =  TFLCDLineInfo.lineInfo(with: line, and: context)
                 let routes = lineInfo?.routes?.array as? [TFLCDLineRoute] ?? []
-                let models : [TFLStationDetailTableViewModel] =  routes.compactMap { TFLStationDetailTableViewModel(with: $0) }
+                let models : [TFLStationDetailTableViewModel] =  routes.compactMap { TFLStationDetailTableViewModel(with: $0,location:location) }
                 let mapModels : [TFLStationDetailMapViewModel] = routes.compactMap { TFLStationDetailMapViewModel(with: $0) }
                 OperationQueue.main.addOperation {
                     self.stationDetailErrorView?.isHidden = !models.isEmpty

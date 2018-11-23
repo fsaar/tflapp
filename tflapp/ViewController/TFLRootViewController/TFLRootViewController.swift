@@ -202,7 +202,7 @@ fileprivate extension TFLRootViewController {
         
         let filteredArrivalsInfo = mergedInfo.filter { !$0.liveArrivals().isEmpty }
         self.nearbyBusStationController?.busStopPredicationTuple = filteredArrivalsInfo
-
+        self.nearbyBusStationController?.currentUserCoordinate = coordinate
         switch (updatePending,filteredArrivalsInfo.isEmpty) {
         case (true,false):
             self.state = .loadingArrivals

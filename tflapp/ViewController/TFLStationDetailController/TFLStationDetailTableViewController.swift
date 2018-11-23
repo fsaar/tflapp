@@ -17,6 +17,8 @@ protocol TFLStationDetailTableViewControllerDelegate : class {
 class TFLStationDetailTableViewController: UITableViewController {
     weak var delegate : TFLStationDetailTableViewControllerDelegate?
     let sectionHeaderDefaultHeight = CGFloat(50)
+    let tableViewCellAnimationHeight = CGFloat(60)
+    
     fileprivate var currentSection : Int = 0 {
         didSet {
             self.delegate?.tflStationDetailTableViewController(self, didShowSection: currentSection)
@@ -85,13 +87,21 @@ extension TFLStationDetailTableViewController {
 
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: TFLStationDetailTableViewCell.self), for: indexPath)
         if let cell = cell as? TFLStationDetailTableViewCell {
             let model = viewModels[indexPath.section]
             cell.configure(with: model,at:indexPath.row)
         }
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let model = viewModels[indexPath.section]
+        let showAnimation = model.showAnimation(for: indexPath.row)
+        guard showAnimation else {
+            return UITableView.automaticDimension
+        }
+        return tableViewCellAnimationHeight
     }
 }
 

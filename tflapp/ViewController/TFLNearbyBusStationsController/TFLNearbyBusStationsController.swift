@@ -220,15 +220,37 @@ fileprivate extension TFLNearbyBusStationsController {
             if lineInfo.needsUpdate {
                 self.client.lineStationInfo(for: line,
                                             context:TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext,
-                                            with:.main)
+                                            with:.main) { [weak self] lineInfo,_ in
+                                              self?.updateSpotlightWithLineInfo(lineInfo)
+                                                
+                }
             }
         } else {
             TFLHUD.show()
             client.lineStationInfo(for: line,
                                    context:TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext,
-                                   with:.main) { _,_ in
+                                   with:.main) { [weak self] lineInfo,_ in
                                     TFLHUD.hide()
                                     completionblock?()
+                                    self?.updateSpotlightWithLineInfo(lineInfo)
+            }
+        }
+    }
+    
+    func updateSpotlightWithLineInfo(_ lineInfo : TFLCDLineInfo?) {
+        lineInfo?.managedObjectContext?.perform {
+            if let identifier = lineInfo?.identifier,
+                let routes : [String] =  lineInfo?.routes?.compactMap ({ ($0 as? TFLCDLineRoute)?.name  }) {
+                let dict = [ identifier : routes]
+                let lineRouteList = TFLLineInfoRouteDirectory(with: dict)
+                let provider = TFLCoreSpotLightDataProvider(with: lineRouteList)
+                provider.searchableItems { items in
+                    CSSearchableIndex.default().indexSearchableItems(items) { error in
+                        if let _ = error {
+                            return
+                        }
+                    }
+                }
             }
         }
     }

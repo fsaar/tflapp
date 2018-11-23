@@ -31,7 +31,7 @@ private extension AppDelegate {
     
     func setupSpotLight() {
         DispatchQueue.global().async {
-            let lineRouteList = TFLLineInfoRouteDirectory()
+            let lineRouteList = TFLLineInfoRouteDirectory.infoRouteDirectoryFromCoreData()
             let provider = TFLCoreSpotLightDataProvider(with: lineRouteList)
             provider.searchableItems { items in
                 CSSearchableIndex.default().indexSearchableItems(items) { error in

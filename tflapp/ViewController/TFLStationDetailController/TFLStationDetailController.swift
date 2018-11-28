@@ -50,7 +50,7 @@ class TFLStationDetailController: UIViewController {
             guard let line = line else {
                 return
             }
-            let location = CLLocation(latitude: currentUserCoordinate.latitude, longitude: currentUserCoordinate.longitude)
+            let location = currentUserCoordinate.location
             let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
             context.perform {
                 let lineInfo =  TFLCDLineInfo.lineInfo(with: line, and: context)

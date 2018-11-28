@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 import CoreData
 import CoreLocation
 import os.signpost
@@ -14,7 +15,7 @@ private let groupID =  "group.tflwidgetSharingData"
     let busStopFetchRequest : NSFetchRequest<TFLCDBusStop> = {
         let fetchRequest = NSFetchRequest<TFLCDBusStop>(entityName: "TFLCDBusStop")
         fetchRequest.returnsObjectsAsFaults = true
-        fetchRequest.shouldRefreshRefetchedObjects = true
+        fetchRequest.includesSubentities = false
         return fetchRequest
     }()
 
@@ -93,27 +94,12 @@ private let groupID =  "group.tflwidgetSharingData"
         super.init()
 
     }
-
+    
     func nearbyBusStops(with coordinate: CLLocationCoordinate2D, with radiusInMeter: Double = 350,and context: NSManagedObjectContext =  TFLBusStopStack.sharedDataStack.mainQueueManagedObjectContext,using completionBlock : @escaping ([TFLCDBusStop])->())  {
         
-
-        // London : long=-0.252395&lat=51.506788
-        // Latitude 1 Degree : 111.111 KM = 1/100 Degree => 1.11111 KM => 1/200 Degree ≈ 550m
-        // Longitude 1 Degree : cos(51.506788)*111.111 = 0.3235612467* 111.111 = 35.9512136821 => 1/70 Degree ≈ 500 m
-
-        let latDivisor  = 111.111 / radiusInMeter
-        let longDivisor = 0.3235612467 *  111.111 / radiusInMeter
-        let latOffset : Double =  1/latDivisor       // 1/200
-        let longOffset : Double =  1/longDivisor    // 1/70
-        let latLowerLimit = coordinate.latitude-latOffset
-        let latUpperLimit = coordinate.latitude+latOffset
-        let longLowerLimit = coordinate.longitude-longOffset
-        let longUpperLimit = coordinate.longitude+longOffset
-
-        let predicate = NSPredicate(format: "(long>=%f AND long<=%f) AND (lat>=%f AND lat <= %f) AND (status == YES)",longLowerLimit,longUpperLimit,latLowerLimit,latUpperLimit)
-        self.busStopFetchRequest.predicate = predicate
+        self.busStopFetchRequest.predicate = predicate(with: coordinate, and: radiusInMeter)
         var busStops : [TFLCDBusStop] = []
-        let currentLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+        let currentLocation = coordinate.location
         let privateContext = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
         privateContext.perform  {
             TFLLogger.shared.signPostStart(osLog: TFLBusStopStack.loggingHandle , name: "nearbyBusStops")
@@ -129,5 +115,24 @@ private let groupID =  "group.tflwidgetSharingData"
                 completionBlock(importedStops)
             }
         }
+    }
+}
+
+
+fileprivate extension TFLBusStopStack {
+    func predicate(with coordinate : CLLocationCoordinate2D, and radiusInMeter: Double) -> NSPredicate {
+        // London : long=-0.252395&lat=51.506788
+        // Latitude 1 Degree : 111.111 KM = 1/1111 Degree ≈ 100 m
+        // Longitude 1 Degree : cos(51.506788)*111.111 = 0.3235612467* 111.111 = 35.9512136821 => 1/359.512136 Degree ≈ 100 m
+        let factor = (radiusInMeter/100)
+        let latOffset : Double =  factor/1111.11
+        let longOffset : Double =  factor/359.512136
+        let latLowerLimit = coordinate.latitude-latOffset
+        let latUpperLimit = coordinate.latitude+latOffset
+        let longLowerLimit = coordinate.longitude-longOffset
+        let longUpperLimit = coordinate.longitude+longOffset
+        
+        let predicate = NSPredicate(format: "(long>=%f AND long<=%f) AND (lat>=%f AND lat <= %f) AND (status == YES)",longLowerLimit,longUpperLimit,latLowerLimit,latUpperLimit)
+        return predicate
     }
 }

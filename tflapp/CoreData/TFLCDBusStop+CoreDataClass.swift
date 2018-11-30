@@ -64,8 +64,7 @@ public class TFLCDBusStop: NSManagedObject {
     }
     
     func distance(to location: CLLocation) -> Double {
-        let stopLocation = CLLocation(latitude: self.lat, longitude: self.long)
-        return location.distance(from:stopLocation)
+        return location.distance(from:coord.location)
     }
     
     

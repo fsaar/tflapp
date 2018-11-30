@@ -196,7 +196,7 @@ fileprivate extension TFLRootViewController {
         case (true,false):
             mergedInfo = arrivalsInfo
         case (_,true):
-            let newTuples = oldTuples.map { $0.arrivalInfo(with:  CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)) }
+            let newTuples = oldTuples.map { $0.arrivalInfo(with:  coordinate.location) }
             mergedInfo = newTuples
         }
         

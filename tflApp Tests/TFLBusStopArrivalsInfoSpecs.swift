@@ -73,7 +73,7 @@ class TFLBusStopArrivalsInfoSpecs: QuickSpec {
                     coord = CLLocationCoordinate2D(latitude: 0.5, longitude: 0.5)
                     
                     busStationInfo = TFLBusStopArrivalsInfo.TFLContextFreeBusStopInfo(identifier: "id", stopLetter: "ST", towards: "destination", name: "name", coord: coord)
-                    location =  CLLocation(latitude: coord.latitude, longitude: coord.longitude)
+                    location =  coord.location
                     info = TFLBusStopArrivalsInfo(busStop:busStationInfo , location: location, arrivals: [busPrediction1,busPrediction2])
                 }
                 

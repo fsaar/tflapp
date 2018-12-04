@@ -50,9 +50,9 @@ public final class TFLClient {
         let busStopPath = "/StopPoint"
         let query = "lat=\(coordinate.latitude)&lon=\(coordinate.longitude)&stopTypes=NaptanPublicBusCoachTram&categories=Geo"
         let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
-        TFLLogger.shared.signPostStart(osLog: TFLClient.loggingHandle, name: "nearbyBusStops")
+        TFLLogger.shared.signPostStart(osLog: TFLClient.loggingHandle, name: "nearbyBusStops API")
         requestBusStops(with: busStopPath, query: query,context:context, with: backgroundQueue) {stops,error in
-            TFLLogger.shared.signPostEnd(osLog: TFLClient.loggingHandle, name: "nearbyBusStops")
+            TFLLogger.shared.signPostEnd(osLog: TFLClient.loggingHandle, name: "nearbyBusStops API")
             context.perform {
                 if context.hasChanges {
                     _ = try? context.save()

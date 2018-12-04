@@ -15,7 +15,7 @@ class TFLSlideContainerController: UIViewController {
     @IBOutlet fileprivate weak var sliderHandleContainerView : UIView!
     @IBOutlet fileprivate weak var sliderHandleBackgroundView : UIView! = nil {
         didSet {
-            self.sliderHandleBackgroundView.layer.cornerRadius = self.sliderHandleBackgroundView.frame.size.height/2
+            self.sliderHandleBackgroundView.layer.cornerRadius = 10
             self.sliderHandleBackgroundView.layer.maskedCorners = [.layerMaxXMinYCorner , .layerMinXMinYCorner]
         }
     }
@@ -28,7 +28,27 @@ class TFLSlideContainerController: UIViewController {
             self.sliderHandleView.layer.cornerRadius = self.sliderHandleView.frame.size.height/2
         }
     }
+    @IBOutlet fileprivate var leftCustomViewContainer : UIView!
+    @IBOutlet fileprivate var rightCustomViewContainer : UIView!
+    var leftCustomView : UIView? {
+        didSet {
+            guard let leftCustomView = leftCustomView else {
+                return
+            }
+            addCustomView(leftCustomView,to:leftCustomViewContainer)
+        }
+    }
+    
+    var rightCustomView : UIView? {
+        didSet {
+            guard let rightCustomView = rightCustomView else {
+                return
+            }
+            addCustomView(rightCustomView,to:rightCustomViewContainer)
+        }
+    }
 
+    
     func updateSliderContainerView(with position: CGPoint, animationTime : TimeInterval, velocity : CGFloat,final : Bool) {
         self.sliderContainerViewTopConstraint.constant = position.y
         let cappedVelocity = velocity > maxVelocity ? maxVelocity : velocity < -maxVelocity ? -maxVelocity : velocity
@@ -77,5 +97,15 @@ fileprivate extension TFLSlideContainerController {
         let hConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[contentView]|", options: [], metrics: nil, views: dict)
         let vConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|[contentView]|", options: [], metrics: nil, views: dict)
         containerView.addConstraints(hConstraints+vConstraints)
+    }
+    
+    fileprivate func addCustomView(_ view : UIView,to containerView : UIView) {
+        containerView.addSubview(view)
+        NSLayoutConstraint.activate([
+            view.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+            view.topAnchor.constraint(equalTo: containerView.topAnchor)
+            ])
     }
 }

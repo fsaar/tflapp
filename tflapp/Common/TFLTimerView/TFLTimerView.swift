@@ -41,13 +41,16 @@ class TFLTimerView : UIView {
         }
     }
     fileprivate var displayLink : CADisplayLink?
-    fileprivate lazy var timerLabel : UILabel = {
-       let label = UILabel(frame: .zero)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = UIColor.white
-        label.font = UIFont.systemFont(ofSize: 12)
-        label.textAlignment = .center
-        return label
+    fileprivate lazy var timerButton : UIButton = {
+       let button = UIButton(frame: .zero)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.gray, for: .highlighted)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+        button.titleLabel?.textAlignment = .center
+        button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        button.addTarget(self, action: #selector(self.timerButtonHandler(_:)), for: .touchUpInside)
+        return button
     }()
     
     fileprivate lazy var innerLayer : CAShapeLayer = {
@@ -124,12 +127,12 @@ class TFLTimerView : UIView {
     
     func reset() {
         self.state = .stopped
-        self.timerLabel.text =  "\(expiryTime)"
+        self.timerButton.setTitle("\(expiryTime)", for: .normal)
         self.borderLayer.strokeEnd = 1
         self.innerLayer.strokeEnd = 1
     }
     
-    @objc func tapHandler() {
+    @objc func timerButtonHandler(_ button : UIButton) {
         stop()
     }
 }
@@ -143,14 +146,12 @@ fileprivate extension TFLTimerView {
         self.heightAnchor.constraint(equalToConstant: length).isActive = true
         self.layer.addSublayer(self.borderLayer)
         self.layer.addSublayer(self.innerLayer)
-        self.addSubview(self.timerLabel)
+        self.addSubview(self.timerButton)
         NSLayoutConstraint.activate([
-            self.timerLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            self.timerLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+            self.timerButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            self.timerButton.centerYAnchor.constraint(equalTo: self.centerYAnchor)
         ])
-        self.timerLabel.text =  "\(expiryTime)"
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.tapHandler))
-        self.addGestureRecognizer(tapGestureRecognizer)
+        self.timerButton.setTitle("\(expiryTime)", for: .normal)
         
         self.clipsToBounds = true
         self.layer.cornerRadius = length / 2
@@ -194,7 +195,8 @@ fileprivate extension TFLTimerView {
             return
         }
         let timeLeft = Int(Double(timeInSecs) * percent) + 1
-        self.timerLabel.text = "\(timeLeft)"
+        self.timerButton.setTitle("\(timeLeft)", for: .normal)
+
 
         self.borderLayer.strokeEnd = CGFloat(percent)
         self.innerLayer.strokeEnd = CGFloat(percent)

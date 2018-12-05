@@ -13,7 +13,7 @@ protocol TFLTimerViewDelegate : class {
     func tflTimerViewDidExpire(_ timerView : TFLTimerView)
 }
 
-class TFLTimerView : UIView {
+class TFLTimerView : UIButton {
     fileprivate class DisplayLinkTarget {
         let block : () -> Void
         init (using block : @escaping ()-> Void) {
@@ -28,30 +28,19 @@ class TFLTimerView : UIView {
     fileprivate let length : CGFloat = 40
     fileprivate let defaultStopAnimationTime = Double(0.25)
     @IBInspectable fileprivate var expiryTime : Int = 60
-    fileprivate enum State {
+    fileprivate enum DisplayLinkState {
         case running(startDate : Date,expiryDate : Date,timeInSecs: Int)
         case stopped
     }
-    fileprivate var state = State.stopped {
+    fileprivate var displayLinkState = DisplayLinkState.stopped {
         didSet {
-            guard case .stopped = state else {
+            guard case .stopped = displayLinkState else {
                 return
             }
             self.displayLink?.invalidate()
         }
     }
     fileprivate var displayLink : CADisplayLink?
-    fileprivate lazy var timerButton : UIButton = {
-       let button = UIButton(frame: .zero)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitleColor(.white, for: .normal)
-        button.setTitleColor(.gray, for: .highlighted)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
-        button.titleLabel?.textAlignment = .center
-        button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        button.addTarget(self, action: #selector(self.timerButtonHandler(_:)), for: .touchUpInside)
-        return button
-    }()
     
     fileprivate lazy var innerLayer : CAShapeLayer = {
         let lineWidth : CGFloat = 4
@@ -71,9 +60,6 @@ class TFLTimerView : UIView {
         return shapeLayer
     }()
     
-    
-   
-    
     init(expiryTimeInSecods : Int) {
         self.expiryTime = expiryTimeInSecods
         super.init(frame: .zero)
@@ -91,12 +77,12 @@ class TFLTimerView : UIView {
     
     func start() {
         stop(animated: false)
-        guard case .stopped = state else {
+        guard case .stopped = displayLinkState else {
             return
         }
         let now = Date()
         let expiryDate = now.addingTimeInterval(Double(expiryTime))
-        self.state = State.running(startDate : now,expiryDate: expiryDate,timeInSecs: expiryTime)
+        self.displayLinkState = .running(startDate : now,expiryDate: expiryDate,timeInSecs: expiryTime)
         let target = DisplayLinkTarget { [animateCountDown] in
             animateCountDown()
         }
@@ -105,16 +91,16 @@ class TFLTimerView : UIView {
     }
     
     func stop(animated : Bool = true) {
-        guard case let .running(_,_,timeInSecs) = state else {
+        guard case let .running(_,_,timeInSecs) = displayLinkState else {
             return
         }
         guard animated else {
-            self.state = .stopped
+            self.displayLinkState = .stopped
             self.borderLayer.strokeEnd = 0
             self.innerLayer.strokeEnd = 0
             return
         }
-        guard let percent = expiryInPercent(with: self.state) else {
+        guard let percent = expiryInPercent(with: self.displayLinkState) else {
             return
         }
         let now = Date()
@@ -122,17 +108,21 @@ class TFLTimerView : UIView {
         let timeLeft = defaultStopAnimationTime - timeExpired
         let newStartTime = now.addingTimeInterval(-timeExpired)
         let newExpiryTime = now.addingTimeInterval(timeLeft)
-        self.state = State.running(startDate: newStartTime, expiryDate: newExpiryTime, timeInSecs: timeInSecs)
+        self.displayLinkState = .running(startDate: newStartTime, expiryDate: newExpiryTime, timeInSecs: timeInSecs)
     }
     
     func reset() {
-        self.state = .stopped
-        self.timerButton.setTitle("\(expiryTime)", for: .normal)
+        self.displayLinkState = .stopped
+        self.setTitle("\(expiryTime)", for: .normal)
         self.borderLayer.strokeEnd = 1
         self.innerLayer.strokeEnd = 1
     }
     
-    @objc func timerButtonHandler(_ button : UIButton) {
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: length, height: length)
+    }
+    
+    @objc func tapHandler(_ button : UIButton) {
         stop()
     }
 }
@@ -142,21 +132,18 @@ class TFLTimerView : UIView {
 fileprivate extension TFLTimerView {
 
     func setup() {
-        self.widthAnchor.constraint(equalToConstant: length).isActive = true
-        self.heightAnchor.constraint(equalToConstant: length).isActive = true
         self.layer.addSublayer(self.borderLayer)
         self.layer.addSublayer(self.innerLayer)
-        self.addSubview(self.timerButton)
-        NSLayoutConstraint.activate([
-            self.timerButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            self.timerButton.centerYAnchor.constraint(equalTo: self.centerYAnchor)
-        ])
-        self.timerButton.setTitle("\(expiryTime)", for: .normal)
-        
-        self.clipsToBounds = true
         self.layer.cornerRadius = length / 2
-        
-    
+        self.clipsToBounds = true
+
+        self.setTitle("\(expiryTime)", for: .normal)
+        self.setTitleColor(.white, for: .normal)
+        self.setTitleColor(.gray, for: .highlighted)
+        self.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+        self.titleLabel?.textAlignment = .center
+        self.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        self.addTarget(self, action: #selector(self.tapHandler(_:)), for: .touchUpInside)
     }
     
     
@@ -169,13 +156,12 @@ fileprivate extension TFLTimerView {
         shapeLayer.position = CGPoint(x:20,y:20)
         shapeLayer.transform = CATransform3DRotate(CATransform3DIdentity, CGFloat(-Double.pi / 2), 0, 0, 1.0)
         shapeLayer.lineCap = .round
-
         return shapeLayer
     }
     
-    func expiryInPercent(with state: State) -> Double? {
+    func expiryInPercent(with state: DisplayLinkState) -> Double? {
         let now = Date()
-        guard case let State.running(startTime,expiryTime,_) = state else {
+        guard case let .running(startTime,expiryTime,_) = state else {
             return nil
         }
         let secs = expiryTime.timeIntervalSince1970 - startTime.timeIntervalSince1970
@@ -186,16 +172,16 @@ fileprivate extension TFLTimerView {
     
     func animateCountDown() {
         let now = Date()
-        guard case let State.running(_,expiryTime,timeInSecs) = state else {
+        guard case let .running(_,expiryTime,timeInSecs) = displayLinkState else {
             return
         }
-        guard now < expiryTime, let percent = expiryInPercent(with: self.state) else {
+        guard now < expiryTime, let percent = expiryInPercent(with: self.displayLinkState) else {
             self.delegate?.tflTimerViewDidExpire(self)
-            state = .stopped
+            displayLinkState = .stopped
             return
         }
         let timeLeft = Int(Double(timeInSecs) * percent) + 1
-        self.timerButton.setTitle("\(timeLeft)", for: .normal)
+        self.setTitle("\(timeLeft)", for: .normal)
 
 
         self.borderLayer.strokeEnd = CGFloat(percent)

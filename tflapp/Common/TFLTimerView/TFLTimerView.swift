@@ -58,7 +58,7 @@ class TFLTimerView : UIView {
         let shapeLayer = self.shapeLayer(radius: 14)
         shapeLayer.lineWidth = lineWidth
         shapeLayer.fillColor = UIColor.clear.cgColor
-        shapeLayer.strokeColor = UIColor(red: 100, green: 0, blue: 0, alpha: 0.8).cgColor
+        shapeLayer.strokeColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.8).cgColor
         return shapeLayer
     }()
     

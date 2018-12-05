@@ -17,9 +17,9 @@
 		561FD9021F1FB1F50012466A /* TFLClientSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561FD9011F1FADD30012466A /* TFLClientSpecs.swift */; };
 		562DBF5A1E05B6780028F3CD /* TFLSnapHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562DBF591E05B6780028F3CD /* TFLSnapHandler.swift */; };
 		5632A7A221B342BB000E2E81 /* TFLUpdateStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632A7A121B342BB000E2E81 /* TFLUpdateStatusView.swift */; };
-		5632A7C521B5DF24000E2E81 /* TFLTimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632A7C421B5DF24000E2E81 /* TFLTimerView.swift */; };
 		563FF2F121A34524006DB5BB /* TFLCircleAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563FF2F021A34524006DB5BB /* TFLCircleAnimationView.swift */; };
 		5641F6EE1F19F68B00A3A9D2 /* TFLRequestManagerSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5641F6ED1F19F68100A3A9D2 /* TFLRequestManagerSpecs.swift */; };
+		56439A2021B861690076A906 /* TFLTimerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56439A1F21B861680076A906 /* TFLTimerButton.swift */; };
 		5646C4031DE62389006EA956 /* TFLBusStationArrivalsCellSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5646C4021DE62389006EA956 /* TFLBusStationArrivalsCellSpecs.swift */; };
 		564EC6F51DE0A2A0008CFD11 /* TFLButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564EC6F41DE0A2A0008CFD11 /* TFLButton.swift */; };
 		564EC7051DE1917D008CFD11 /* TFLBusPredictionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564EC6FF1DE1917D008CFD11 /* TFLBusPredictionView.swift */; };
@@ -128,10 +128,10 @@
 		561FD9011F1FADD30012466A /* TFLClientSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLClientSpecs.swift; sourceTree = "<group>"; };
 		562DBF591E05B6780028F3CD /* TFLSnapHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLSnapHandler.swift; sourceTree = "<group>"; };
 		5632A7A121B342BB000E2E81 /* TFLUpdateStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLUpdateStatusView.swift; sourceTree = "<group>"; };
-		5632A7C421B5DF24000E2E81 /* TFLTimerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLTimerView.swift; sourceTree = "<group>"; };
 		563FF2F021A34524006DB5BB /* TFLCircleAnimationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLCircleAnimationView.swift; sourceTree = "<group>"; };
 		5641F6ED1F19F68100A3A9D2 /* TFLRequestManagerSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLRequestManagerSpecs.swift; sourceTree = "<group>"; };
 		5642EF0720ED63AD00A7914F /* mapstogpx20180704_193755.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = mapstogpx20180704_193755.gpx; sourceTree = "<group>"; };
+		56439A1F21B861680076A906 /* TFLTimerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLTimerButton.swift; sourceTree = "<group>"; };
 		5646C4021DE62389006EA956 /* TFLBusStationArrivalsCellSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusStationArrivalsCellSpecs.swift; sourceTree = "<group>"; };
 		564EC6EF1DDFAA67008CFD11 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		564EC6F41DE0A2A0008CFD11 /* TFLButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLButton.swift; sourceTree = "<group>"; };
@@ -263,20 +263,20 @@
 			path = TFLSynchroniser;
 			sourceTree = "<group>";
 		};
-		5632A7C321B5DF24000E2E81 /* TFLTimerView */ = {
-			isa = PBXGroup;
-			children = (
-				5632A7C421B5DF24000E2E81 /* TFLTimerView.swift */,
-			);
-			path = TFLTimerView;
-			sourceTree = "<group>";
-		};
 		563FF2EF21A34524006DB5BB /* TFLCircleAnimationView */ = {
 			isa = PBXGroup;
 			children = (
 				563FF2F021A34524006DB5BB /* TFLCircleAnimationView.swift */,
 			);
 			path = TFLCircleAnimationView;
+			sourceTree = "<group>";
+		};
+		56439A1E21B861680076A906 /* TFLTimerButton */ = {
+			isa = PBXGroup;
+			children = (
+				56439A1F21B861680076A906 /* TFLTimerButton.swift */,
+			);
+			path = TFLTimerButton;
 			sourceTree = "<group>";
 		};
 		564EC6F31DE0A289008CFD11 /* TFLButton */ = {
@@ -355,7 +355,7 @@
 		565A1FC91DD8F8D1003CE960 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				5632A7C321B5DF24000E2E81 /* TFLTimerView */,
+				56439A1E21B861680076A906 /* TFLTimerButton */,
 				563FF2EF21A34524006DB5BB /* TFLCircleAnimationView */,
 				56A4907D219799DF004024D9 /* TFLCoreSpotLightDataProvider */,
 				5699A688218ED3E100CD1427 /* TFLDebugUtility */,
@@ -875,7 +875,6 @@
 				565A1FCF1DD8F93F003CE960 /* TFLNotificationObserver.swift in Sources */,
 				5666A75820F11C40003A38D4 /* TFLLogger.swift in Sources */,
 				5689612320C074AE00335DEB /* TFLCDLineRoute+CoreDataProperties.swift in Sources */,
-				5632A7C521B5DF24000E2E81 /* TFLTimerView.swift in Sources */,
 				567F534B20BF19360022FEFF /* TFLStationDetailTableViewModel.swift in Sources */,
 				567F534720BECA1B0022FEFF /* TFLStationDetailTableViewCell.swift in Sources */,
 				56A4907F219799EA004024D9 /* TFLCoreSpotLightDataProvider.swift in Sources */,
@@ -893,6 +892,7 @@
 				5699A687218E2E3C00CD1427 /* UIImage+Helper.swift in Sources */,
 				5692B5001DF2E26300C56A3C /* TFLSlideContainerController.swift in Sources */,
 				566EF7D71DDC4D14006162D7 /* TFLRootViewController.swift in Sources */,
+				56439A2021B861690076A906 /* TFLTimerButton.swift in Sources */,
 				563FF2F121A34524006DB5BB /* TFLCircleAnimationView.swift in Sources */,
 				5632A7A221B342BB000E2E81 /* TFLUpdateStatusView.swift in Sources */,
 				564EC7051DE1917D008CFD11 /* TFLBusPredictionView.swift in Sources */,

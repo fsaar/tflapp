@@ -83,8 +83,8 @@ class TFLUpdateStatusView : UIView {
             }
         }
     }
-    lazy var timerView : TFLTimerView = {
-        let timerView = TFLTimerView(expiryTimeInSecods: self.refreshInterval)
+    lazy var timerView : TFLTimerButton = {
+        let timerView = TFLTimerButton(expiryTimeInSecods: self.refreshInterval)
         timerView.translatesAutoresizingMaskIntoConstraints = false
         timerView.delegate = self
         return timerView
@@ -181,8 +181,8 @@ fileprivate extension TFLUpdateStatusView {
 }
 
 
-extension TFLUpdateStatusView : TFLTimerViewDelegate {
-    func tflTimerViewDidExpire(_ timerView : TFLTimerView) {
+extension TFLUpdateStatusView : TFLTimerButtonDelegate {
+    func tflTimerViewDidExpire(_ timerView : TFLTimerButton) {
         self.delegate?.didExpireTimerInStatusView(self)
     }
 }

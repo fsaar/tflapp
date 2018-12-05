@@ -1,6 +1,6 @@
 //
-//  TFLTimerView.swift
-//  TFLTimerView
+//  TFLTimerButton.swift
+//  TFLTimerButton
 //
 //  Created by Frank Saar on 02/12/2018.
 //  Copyright © 2018 Samedialabs. All rights reserved.
@@ -9,11 +9,11 @@
 import Foundation
 import UIKit
 
-protocol TFLTimerViewDelegate : class {
-    func tflTimerViewDidExpire(_ timerView : TFLTimerView)
+protocol TFLTimerButtonDelegate : class {
+    func tflTimerViewDidExpire(_ timerView : TFLTimerButton)
 }
 
-class TFLTimerView : UIButton {
+class TFLTimerButton : UIButton {
     fileprivate class DisplayLinkTarget {
         let block : () -> Void
         init (using block : @escaping ()-> Void) {
@@ -24,7 +24,7 @@ class TFLTimerView : UIButton {
         }
     }
     
-    weak var delegate : TFLTimerViewDelegate?
+    weak var delegate : TFLTimerButtonDelegate?
     fileprivate let length : CGFloat = 40
     fileprivate let defaultStopAnimationTime = Double(0.25)
     @IBInspectable fileprivate var expiryTime : Int = 60
@@ -129,7 +129,7 @@ class TFLTimerView : UIButton {
 
 // MARK: Private
 
-fileprivate extension TFLTimerView {
+fileprivate extension TFLTimerButton {
 
     func setup() {
         self.layer.addSublayer(self.borderLayer)

@@ -153,7 +153,7 @@ fileprivate extension TFLTimerView {
         let center = CGPoint(x: self.frame.size.width / 2.0, y: self.frame.size.height / 2.0)
         let bezierPath = UIBezierPath(arcCenter: center, radius: radius , startAngle: 0, endAngle: CGFloat(2 * Double.pi * 0.91), clockwise: true)
         shapeLayer.path = bezierPath.cgPath
-        shapeLayer.position = CGPoint(x:20,y:20)
+        shapeLayer.position = CGPoint(x:length / 2,y:length / 2)
         shapeLayer.transform = CATransform3DRotate(CATransform3DIdentity, CGFloat(-Double.pi / 2), 0, 0, 1.0)
         shapeLayer.lineCap = .round
         return shapeLayer

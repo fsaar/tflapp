@@ -28,20 +28,57 @@ class TFLUpdateStatusView : UIView {
     }
     fileprivate var refreshInterval = 60
     fileprivate var style = Style.detailed
+    
+    func showPropertyAnimator() -> UIViewPropertyAnimator  {
+        let animator = UIViewPropertyAnimator(duration: 0.25, curve: UIView.AnimationCurve.linear)
+        return animator
+    }
+    func hidePropertyAnimator() -> UIViewPropertyAnimator  {
+        let animator = UIViewPropertyAnimator(duration: 0.1, curve: UIView.AnimationCurve.linear)
+        return animator
+    }
+    var hideAnimator : UIViewPropertyAnimator?
+    var showAnimator : UIViewPropertyAnimator?
     var state = State.updating {
         didSet {
+            guard oldValue != state else {
+                return
+            }
+            
+            showAnimator?.stopAnimation(true)
+            hideAnimator?.stopAnimation(true)
+            hideAnimator = hidePropertyAnimator()
+            showAnimator = showPropertyAnimator()
             switch state {
             case .updating:
-                self.updatingStateContainerView.isHidden = false
-                self.updatePendingStateContainerView.isHidden = true
-                self.timerView.reset()
+                hideAnimator?.addAnimations {
+                    self.updatePendingStateContainerView.alpha = 0
+                }
+                showAnimator?.addAnimations {
+                    self.updatingStateContainerView.alpha = 1
+                }
+                hideAnimator?.addCompletion { _ in
+                    self.timerView.reset()
+                    self.showAnimator?.startAnimation()
+                }
+                hideAnimator?.startAnimation()
             case .updatePending:
-                self.updatingStateContainerView.isHidden = true
-                self.updatePendingStateContainerView.isHidden = false
-                self.timerView.start()
+                hideAnimator?.addAnimations {
+                    self.updatingStateContainerView.alpha = 0
+                }
+                showAnimator?.addAnimations {
+                    self.updatePendingStateContainerView.alpha = 1
+                }
+                hideAnimator?.addCompletion {  _ in
+                    self.showAnimator?.startAnimation()
+                }
+                showAnimator?.addCompletion { _ in
+                    self.timerView.start()
+                }
+                hideAnimator?.startAnimation()
             case .paused:
-                self.updatingStateContainerView.isHidden = true
-                self.updatePendingStateContainerView.isHidden = true
+                self.updatingStateContainerView.alpha = 0
+                self.updatePendingStateContainerView.alpha = 0
                 self.timerView.reset()
             }
         }
@@ -71,7 +108,7 @@ class TFLUpdateStatusView : UIView {
     
     fileprivate lazy var updatingStateContainerView : UIView = {
         let view = UIView(frame:.zero)
-        view.isHidden = true
+        view.alpha = 0
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .clear
         switch style {
@@ -98,13 +135,15 @@ class TFLUpdateStatusView : UIView {
     
     fileprivate lazy var updatePendingStateContainerView : UIView = {
         let view = UIView(frame:.zero)
-        view.isHidden = true
+        view.alpha = 0
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .clear
         view.addSubview(self.timerView)
         NSLayoutConstraint.activate([
             timerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            timerView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            timerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            timerView.topAnchor.constraint(equalTo: view.topAnchor),
+            timerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             ])
         return view
     }()
@@ -128,17 +167,15 @@ fileprivate extension TFLUpdateStatusView {
         self.addSubview(updatePendingStateContainerView)
         self.addSubview(updatingStateContainerView)
         NSLayoutConstraint.activate([
-            updatePendingStateContainerView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            updatePendingStateContainerView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             updatePendingStateContainerView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            updatePendingStateContainerView.topAnchor.constraint(equalTo:self.topAnchor),
-            updatePendingStateContainerView.bottomAnchor.constraint(equalTo:self.bottomAnchor),
             
             updatingStateContainerView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             updatingStateContainerView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             updatingStateContainerView.topAnchor.constraint(equalTo:self.topAnchor),
             updatingStateContainerView.bottomAnchor.constraint(equalTo:self.bottomAnchor)
             ])
-        self.updatePendingStateContainerView.isHidden = false
+        self.state = .paused
     }
     
 }

@@ -120,14 +120,14 @@ class TFLUpdateStatusView : UIView {
                 updatingStateLabel.trailingAnchor.constraint(equalTo: updatingStateIndicatorView.leadingAnchor,constant:-10),
                 updatingStateLabel.centerYAnchor.constraint(equalTo:view.centerYAnchor),
                 updatingStateIndicatorView.centerYAnchor.constraint(equalTo:view.centerYAnchor),
-                updatingStateIndicatorView.trailingAnchor.constraint(equalTo:view.trailingAnchor)
+                updatingStateIndicatorView.centerXAnchor.constraint(equalTo:view.trailingAnchor,constant: -20)
                 ])
         case .compact:
             view.addSubview(updatingStateIndicatorView)
             NSLayoutConstraint.activate([
                 updatingStateIndicatorView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor),
                 updatingStateIndicatorView.centerYAnchor.constraint(equalTo:view.centerYAnchor),
-                updatingStateIndicatorView.trailingAnchor.constraint(equalTo:view.trailingAnchor)
+                updatingStateIndicatorView.centerXAnchor.constraint(equalTo:view.trailingAnchor,constant:-20)
                 ])
         }
         return view

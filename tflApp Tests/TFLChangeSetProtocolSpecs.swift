@@ -29,7 +29,7 @@ fileprivate struct Pos : Hashable {
     }
 }
 
-fileprivate struct MovedPos : Hashable {
+fileprivate struct MovedPos : Hashable,CustomStringConvertible {
     let a : M
     let b : Int
     let c : Int
@@ -43,6 +43,9 @@ fileprivate struct MovedPos : Hashable {
         self.b = b
         self.c = c
     }
+    var description: String {
+        return "\(a): \(b) -> \(c)"
+    }
     public func hash(into hasher: inout Hasher) {
         hasher.combine(self.a)
         hasher.combine(self.b)
@@ -55,7 +58,7 @@ fileprivate struct MovedPos : Hashable {
 }
 
 
-fileprivate struct M : Hashable {
+fileprivate struct M : Hashable,CustomStringConvertible {
     let id : String
     let x : Int
     public static func ==(lhs: M, rhs: M) -> Bool {
@@ -63,6 +66,9 @@ fileprivate struct M : Hashable {
     }
     public static func compare(lhs: M, rhs: M) -> Bool {
         return lhs.x <= rhs.x
+    }
+    var description: String {
+        return "[\(id)-\(x)]"
     }
     init(_ id: String,_ x: Int) {
         self.id = id
@@ -193,8 +199,8 @@ class TFLChangeSetProtocolSpecs : QuickSpec {
                 let (inserted ,deleted ,updated, moved)  = oldList.transformTo(newList: newList, sortedBy : M.compare)
                 expect(Set(inserted.map { Pos($0) })) == Set([Pos(M("2",2),2)])
                 expect(Set(deleted.map { Pos($0) })) == Set([])
-                expect(Set(updated.map { Pos($0) })) == Set([Pos(M("3",0),0),Pos(M("5",5),3)])
-                expect(Set(moved.map { MovedPos($0) })) == Set([MovedPos(M("1",1),0,1)])
+                expect(Set(updated.map { Pos($0) })) == Set([Pos(M("1",1),1),Pos(M("5",5),3)])
+                expect(Set(moved.map { MovedPos($0) })) == Set([MovedPos(M("3",0),1,0)])
             }
             it("should return the correct tuple when deleting 1 to next pos and inserting 2: ([1,3,5] -> [3,2,5]") {
                 let oldList = [1,3,5].map { M("\($0)",$0) }

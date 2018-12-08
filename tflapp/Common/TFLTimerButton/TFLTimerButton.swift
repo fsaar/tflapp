@@ -44,7 +44,7 @@ class TFLTimerButton : UIButton {
     
     fileprivate lazy var innerLayer : CAShapeLayer = {
         let lineWidth : CGFloat = 4
-        let shapeLayer = self.shapeLayer(radius: 14)
+        let shapeLayer = self.shapeLayer(radius: 14,endAngle: CGFloat(2 * Double.pi * 0.92))
         shapeLayer.lineWidth = lineWidth
         shapeLayer.fillColor = UIColor.clear.cgColor
         shapeLayer.strokeColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.8).cgColor
@@ -53,10 +53,28 @@ class TFLTimerButton : UIButton {
     
     fileprivate lazy var borderLayer : CAShapeLayer = {
         let lineWidth : CGFloat = 6
-        let shapeLayer = self.shapeLayer(radius: 14)
+        let shapeLayer = self.shapeLayer(radius: 14,endAngle: CGFloat(2 * Double.pi * 0.92))
         shapeLayer.lineWidth = lineWidth
         shapeLayer.fillColor = self.backgroundColor?.cgColor
         shapeLayer.strokeColor = UIColor.white.cgColor
+        return shapeLayer
+    }()
+    
+    fileprivate lazy var outerBackgroundLayer : CAShapeLayer = {
+        let lineWidth : CGFloat = 6
+        let shapeLayer = self.shapeLayer(radius: 14,endAngle: CGFloat(2 * Double.pi))
+        shapeLayer.lineWidth = lineWidth
+        shapeLayer.fillColor = self.backgroundColor?.cgColor
+        shapeLayer.strokeColor = UIColor.white.cgColor
+        return shapeLayer
+    }()
+    
+    fileprivate lazy var innerBackgroundLayer : CAShapeLayer = {
+        let lineWidth : CGFloat = 4
+        let shapeLayer = self.shapeLayer(radius: 14,endAngle: CGFloat(2 * Double.pi))
+        shapeLayer.lineWidth = lineWidth
+        shapeLayer.fillColor = UIColor.clear.cgColor
+        shapeLayer.strokeColor = UIColor.lightGray.cgColor
         return shapeLayer
     }()
     
@@ -132,6 +150,8 @@ class TFLTimerButton : UIButton {
 fileprivate extension TFLTimerButton {
 
     func setup() {
+        self.layer.addSublayer(self.outerBackgroundLayer)
+        self.layer.addSublayer(self.innerBackgroundLayer)
         self.layer.addSublayer(self.borderLayer)
         self.layer.addSublayer(self.innerLayer)
         self.layer.cornerRadius = length / 2
@@ -147,11 +167,11 @@ fileprivate extension TFLTimerButton {
     }
     
     
-    func shapeLayer(radius : CGFloat) -> CAShapeLayer {
+    func shapeLayer(radius : CGFloat,endAngle : CGFloat) -> CAShapeLayer {
         let shapeLayer = CAShapeLayer()
         shapeLayer.frame = self.bounds
         let center = CGPoint(x: self.frame.size.width / 2.0, y: self.frame.size.height / 2.0)
-        let bezierPath = UIBezierPath(arcCenter: center, radius: radius , startAngle: 0, endAngle: CGFloat(2 * Double.pi * 0.91), clockwise: true)
+        let bezierPath = UIBezierPath(arcCenter: center, radius: radius , startAngle: 0, endAngle: endAngle, clockwise: true)
         shapeLayer.path = bezierPath.cgPath
         shapeLayer.position = CGPoint(x:length / 2,y:length / 2)
         shapeLayer.transform = CATransform3DRotate(CATransform3DIdentity, CGFloat(-Double.pi / 2), 0, 0, 1.0)

@@ -38,7 +38,7 @@ extension Collection where Element : Hashable {
             
             let deleted = try deletedSet.indexedList(basedOn: sortedOldList)
             
-            let moved : [(Element,Int,Int)] = try findMovedElements(in: newList,inserted: inserted ,deleted: deleted,sortedBy: compare)
+            let moved = try findMovedElements(in: newList,inserted: inserted ,deleted: deleted)
             let movedTypes = moved.map { $0.0 }
             
             let updatedTypes = unchangedSet.subtracting(Set(movedTypes))
@@ -92,8 +92,7 @@ fileprivate extension Collection where Element : Hashable{
     
     func findMovedElements(in newList : [Element],
                                      inserted : [(element:Element,index:Int)],
-                                     deleted : [(element:Element,index:Int)],
-                                     sortedBy compare: @escaping TFLTransformCollectionCompare<Element>) throws -> [(Element,Int,Int)]  {
+                                     deleted : [(element:Element,index:Int)]) throws -> [(Element,Int,Int)]  {
 
         // Reconstruct the unordered newList
         // 1. delete items from old list

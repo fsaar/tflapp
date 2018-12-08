@@ -79,6 +79,8 @@ fileprivate extension Set {
     }
 }
 
+
+
 fileprivate extension Collection where Element : Hashable{
     
     func findMovedElements(in newList : [Element],
@@ -86,10 +88,11 @@ fileprivate extension Collection where Element : Hashable{
                                      deleted : [(element:Element,index:Int)],
                                      sortedBy compare: @escaping TFLTransformCollectionCompare<Element>) throws -> [(Element,Int,Int)]  {
 
-
         // Reconstruct the unordered newList
         // 1. delete items from old list
         // 2. insert new items
+        // 3. identify all moved elements
+        // 4. reduce moved element list by transforming list from (2) into new list by applying moves from (3)
         
         let deletedTypes = deleted.map { $0.element }
         let reducedOldList = self.filter { !deletedTypes.contains($0) }
@@ -100,6 +103,7 @@ fileprivate extension Collection where Element : Hashable{
             return newList[index]
         }
         let unsortedNewList = try updatedList.mergeELements(with: inserted)
+        
         let movedTypes : [(Element,Int,Int)] = updatedList.compactMap { element in
             guard let index = unsortedNewList.index(of:element),let index2 = newList.index(of:element),index != index2 else {
                 return nil
@@ -107,17 +111,15 @@ fileprivate extension Collection where Element : Hashable{
             return (element,index,index2)
         }.sorted { $0.2 < $1.2 }
         
-        var transfomedList = unsortedNewList
-        var reducedMovedTypes : [(Element,Int,Int)] = []
-        for (element,from,to) in movedTypes     {
-            reducedMovedTypes += [(element,from,to)]
-            transfomedList = transfomedList.filter { $0 != element }
-            transfomedList.insert(element, at: to)
-            if transfomedList == newList {
-                break
+        let reducedMovedTypes : [(Element,Int,Int)]  = movedTypes.reduce(([],unsortedNewList)) { tuple,move in
+            var (sum,currentList) = tuple
+            guard currentList != newList else {
+                return (sum,newList)
             }
-        }
+            let (_,from,to) = move
+            currentList.insert(currentList.remove(at: from), at: to)
+            return (sum + [move],currentList)
+        }.0
         return reducedMovedTypes
     }
-
 }

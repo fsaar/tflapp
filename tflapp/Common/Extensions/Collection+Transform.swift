@@ -38,7 +38,6 @@ extension Collection where Element : Hashable {
             
             let deleted = try deletedSet.indexedList(basedOn: sortedOldList)
             
-          //  let movedTypes =
             let moved : [(Element,Int,Int)] = try findMovedElements(in: newList,inserted: inserted ,deleted: deleted,sortedBy: compare)
             let movedTypes = moved.map { $0.0 }
             
@@ -79,6 +78,14 @@ fileprivate extension Set {
     }
 }
 
+fileprivate extension Array {
+    func moveElement(from : Int, to : Int) -> Array {
+        var currentList = self
+        currentList.insert(currentList.remove(at: from), at: to)
+        return currentList
+    }
+}
+
 
 
 fileprivate extension Collection where Element : Hashable{
@@ -112,13 +119,13 @@ fileprivate extension Collection where Element : Hashable{
         }.sorted { $0.2 < $1.2 }
         
         let reducedMovedTypes : [(Element,Int,Int)]  = movedTypes.reduce(([],unsortedNewList)) { tuple,move in
-            var (sum,currentList) = tuple
+            let (sum,currentList) = tuple
             guard currentList != newList else {
                 return (sum,newList)
             }
             let (_,from,to) = move
-            currentList.insert(currentList.remove(at: from), at: to)
-            return (sum + [move],currentList)
+            let list = currentList.moveElement(from: from, to: to)
+            return (sum + [move],list)
         }.0
         return reducedMovedTypes
     }

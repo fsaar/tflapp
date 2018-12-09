@@ -68,8 +68,8 @@ class TFLBusStopArrivalsInfoSpecs: QuickSpec {
                 var location :  CLLocation!
                 var info : TFLBusStopArrivalsInfo!
                 beforeEach() {
-                    busPrediction1 = TFLBusPrediction(identifier: "identifier1", timeToLive: Date(timeIntervalSinceNow: 50), timeStamp: Date(), busStopIdentifier: "busstop1", lineIdentifier: "line1", lineName: "lineName", destination: "destination", timeToStation: 40)
-                    busPrediction2 = TFLBusPrediction(identifier: "identifier2", timeToLive: Date(timeIntervalSinceNow: 50), timeStamp: Date(), busStopIdentifier: "busstop2", lineIdentifier: "line2", lineName: "lineName2", destination: "destination2", timeToStation: 80)
+                    busPrediction1 = TFLBusPrediction(identifier: "identifier1", timeToLive: Date(timeIntervalSinceNow: 50), timeStamp: Date(), busStopIdentifier: "busstop1", lineIdentifier: "line1", lineName: "lineName", destination: "destination", timeToStation: 40,vehicleId: "vehicleId1")
+                    busPrediction2 = TFLBusPrediction(identifier: "identifier2", timeToLive: Date(timeIntervalSinceNow: 50), timeStamp: Date(), busStopIdentifier: "busstop2", lineIdentifier: "line2", lineName: "lineName2", destination: "destination2", timeToStation: 80,vehicleId: "vehicleId2")
                     coord = CLLocationCoordinate2D(latitude: 0.5, longitude: 0.5)
                     
                     busStationInfo = TFLBusStopArrivalsInfo.TFLContextFreeBusStopInfo(identifier: "id", stopLetter: "ST", towards: "destination", name: "name", coord: coord)

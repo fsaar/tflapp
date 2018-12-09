@@ -9,6 +9,22 @@ enum TFLClientError : Error {
     case InvalidLine
 }
 
+extension TFLBusPrediction {
+    init(identifier: String, timeToLive: Date, timeStamp: Date, busStopIdentifier: String, lineIdentifier: String, lineName: String, destination: String, timeToStation: UInt, vehicleId : String) {
+        self.identifier = identifier
+        self.timeToLive = timeToLive
+        self.timeStamp = timeStamp
+        self.busStopIdentifier = busStopIdentifier
+        self.lineIdentifier = lineIdentifier
+        self.lineName = lineName
+        self.destination = destination
+        self.timeToStation = timeToStation
+        self.vehicleId = vehicleId
+    }
+    
+    
+}
+
 public final class TFLClient {
     static let jsonDecoder = { ()-> JSONDecoder in
         let decoder = JSONDecoder()
@@ -24,6 +40,27 @@ public final class TFLClient {
         queue.qualityOfService = .userInitiated
         return queue
     }()
+    
+    public func vehicleArrivalsInfo(with vehicleId: String,
+                                     with operationQueue : OperationQueue = OperationQueue.main,
+                                     using completionBlock:@escaping (([TFLVehicleArrivalInfo]?,_ error:Error?) -> ()))  {
+        let vehicleArrivalsInfoPath = "/Vehicle/\(vehicleId)/Arrivals"
+        TFLLogger.shared.signPostStart(osLog: TFLClient.loggingHandle, name: "vehicleInfo",identifier: vehicleId)
+        tflManager.getDataWithRelativePath(relativePath: vehicleArrivalsInfoPath) { data, error in
+            TFLLogger.shared.signPostEnd(osLog: TFLClient.loggingHandle, name: "vehicleInfo",identifier: vehicleId)
+            guard let data = data else {
+                operationQueue.addOperation {
+                    completionBlock(nil,error)
+                }
+                return
+            }
+            let predictions = try? TFLClient.jsonDecoder.decode([TFLVehicleArrivalInfo].self,from: data)
+            operationQueue.addOperation {
+                completionBlock(predictions,nil)
+            }
+        }
+    }
+    
     public func arrivalsForStopPoint(with identifier: String,
                                      with operationQueue : OperationQueue = OperationQueue.main,
                                      using completionBlock:@escaping (([TFLBusPrediction]?,_ error:Error?) -> ()))  {

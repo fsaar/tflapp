@@ -218,7 +218,11 @@ fileprivate extension TFLRootViewController {
     
 
     func loadNearbyBusstops(using completionBlock:CompletionBlock? = nil) {
-        precondition(Thread.isMainThread)
+        objc_sync_enter(self)
+        defer {
+            objc_sync_exit(self)
+        }
+        
         loadNearbyBusStopsCompletionBlocks += [completionBlock]
         guard state.isComplete else {
             return
@@ -229,12 +233,13 @@ fileprivate extension TFLRootViewController {
         self.currentCoordinates { [weak self] coord in
             let completionBlock : (_ state : State) -> () = { [weak self] state in
                 if let self = self {
-                    precondition(Thread.isMainThread)
+                    objc_sync_enter(self)
                     let blocks = self.loadNearbyBusStopsCompletionBlocks
                     self.loadNearbyBusStopsCompletionBlocks = []
                     self.state = state
                     blocks.forEach { $0?() }
                     self.updateStatusView.state = .updatePending
+                    objc_sync_exit(self)
                 }
             }
             

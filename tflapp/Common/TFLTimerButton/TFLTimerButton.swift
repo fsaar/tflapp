@@ -55,29 +55,33 @@ class TFLTimerButton : UIButton {
         let lineWidth : CGFloat = 6
         let shapeLayer = self.shapeLayer(radius: 14,endAngle: CGFloat(2 * Double.pi * 0.92))
         shapeLayer.lineWidth = lineWidth
-        shapeLayer.fillColor = self.backgroundColor?.cgColor
-        shapeLayer.strokeColor = UIColor.white.cgColor
-        return shapeLayer
-    }()
-    
-    fileprivate lazy var outerBackgroundLayer : CAShapeLayer = {
-        let lineWidth : CGFloat = 6
-        let shapeLayer = self.shapeLayer(radius: 14,endAngle: CGFloat(2 * Double.pi))
-        shapeLayer.lineWidth = lineWidth
-        shapeLayer.fillColor = self.backgroundColor?.cgColor
-        shapeLayer.strokeColor = UIColor.white.cgColor
-        return shapeLayer
-    }()
-    
-    fileprivate lazy var innerBackgroundLayer : CAShapeLayer = {
-        let lineWidth : CGFloat = 4
-        let shapeLayer = self.shapeLayer(radius: 14,endAngle: CGFloat(2 * Double.pi))
-        shapeLayer.lineWidth = lineWidth
         shapeLayer.fillColor = UIColor.clear.cgColor
-        shapeLayer.strokeColor = UIColor.lightGray.cgColor
+        shapeLayer.strokeColor = UIColor.white.cgColor
         return shapeLayer
     }()
     
+    fileprivate lazy var circleBackgroundImage : UIImage = {
+        let bounds = CGRect(origin:.zero, size: CGSize(width: length, height: length))
+        let format = UIGraphicsImageRendererFormat()
+        format.opaque = false
+        let renderer = UIGraphicsImageRenderer(bounds: bounds,format: format)
+        return renderer.image { context in
+            UIColor.clear.setFill()
+            context.fill(bounds)
+            
+            let center = CGPoint(x: length / 2.0, y: length / 2.0)
+            let bezierPath = UIBezierPath(arcCenter: center, radius: 14 , startAngle: 0, endAngle: CGFloat(2 * Double.pi), clockwise: true)
+            UIColor.white.setStroke()
+            bezierPath.lineWidth = 6
+            bezierPath.stroke()
+            
+            let bezierPath2 = UIBezierPath(arcCenter: center, radius: 14 , startAngle: 0, endAngle: CGFloat(2 * Double.pi), clockwise: true)
+            UIColor.lightGray.setStroke()
+            bezierPath2.lineWidth = 4
+            bezierPath2.stroke()
+        }
+    }()
+
     init(expiryTimeInSecods : Int) {
         self.expiryTime = expiryTimeInSecods
         super.init(frame: .zero)
@@ -150,8 +154,7 @@ class TFLTimerButton : UIButton {
 fileprivate extension TFLTimerButton {
 
     func setup() {
-        self.layer.addSublayer(self.outerBackgroundLayer)
-        self.layer.addSublayer(self.innerBackgroundLayer)
+        self.layer.contents = self.circleBackgroundImage.cgImage
         self.layer.addSublayer(self.borderLayer)
         self.layer.addSublayer(self.innerLayer)
         self.layer.cornerRadius = length / 2

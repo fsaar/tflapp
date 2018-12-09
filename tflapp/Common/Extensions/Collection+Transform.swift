@@ -38,13 +38,8 @@ extension Collection where Element : Hashable {
             
             let deleted = try deletedSet.indexedList(basedOn: sortedOldList)
             
-            let movedTypes = try findMovedElements(in: newList,inserted: inserted ,deleted: deleted,sortedBy: compare)
-            let moved : [(Element,Int,Int)] = movedTypes.compactMap { el in
-                guard let oldIndex = sortedOldList.index(of: el), let newIndex = sortedNewList.index(of: el) else {
-                    return nil
-                }
-                return (el,oldIndex,newIndex)
-            }
+            let moved = try findMovedElements(in: newList,inserted: inserted ,deleted: deleted)
+            let movedTypes = moved.map { $0.0 }
             
             let updatedTypes = unchangedSet.subtracting(Set(movedTypes))
             let updated = try updatedTypes.indexedList(basedOn: sortedNewList)
@@ -83,47 +78,54 @@ fileprivate extension Set {
     }
 }
 
-fileprivate extension Collection where Element : Hashable{
-    func identifyMovedElementsFrom(unorderedList : [Element],movedTypes : [Element] = [],sortedBy compare: @escaping TFLTransformCollectionCompare<Element> ) -> [Element] {
-        guard unorderedList.count > 1 else {
-            return movedTypes
-        }
-        let unorderedTuple : (Element,Element)? = zip(unorderedList,unorderedList.dropFirst()).lazy.filter { !compare($0.0,$0.1) }.first
-        guard let (el1,el2) = unorderedTuple else {
-            return movedTypes
-        }
-        let lhsList = unorderedList.filter { $0 != el1 }
-        let rhsList = unorderedList.filter { $0 != el2 }
-        let lhsMovedTypes = identifyMovedElementsFrom(unorderedList: lhsList, movedTypes: movedTypes + [el1],sortedBy: compare)
-        let rhsMovedTypes = identifyMovedElementsFrom(unorderedList: rhsList, movedTypes: movedTypes + [el2],sortedBy: compare)
-        let newMovedTypes = lhsMovedTypes.count <= rhsMovedTypes.count ? lhsMovedTypes : rhsMovedTypes
-        return newMovedTypes
+fileprivate extension Array {
+    func moveElement(from : Int, to : Int) -> Array {
+        var currentList = self
+        currentList.insert(currentList.remove(at: from), at: to)
+        return currentList
     }
-    
-    
+}
 
+
+
+fileprivate extension Collection where Element : Hashable{
+    
     func findMovedElements(in newList : [Element],
                                      inserted : [(element:Element,index:Int)],
-                                     deleted : [(element:Element,index:Int)],
-                                     sortedBy compare: @escaping TFLTransformCollectionCompare<Element>) throws -> [Element] {
-
+                                     deleted : [(element:Element,index:Int)]) throws -> [(Element,Int,Int)]  {
 
         // Reconstruct the unordered newList
         // 1. delete items from old list
         // 2. insert new items
+        // 3. identify all moved elements
+        // 4. reduce moved element list by transforming list from (2) into new list by applying moves from (3)
         
         let deletedTypes = deleted.map { $0.element }
         let reducedOldList = self.filter { !deletedTypes.contains($0) }
-        let sortedInsertedByIndex = inserted.sorted { $0.1 < $1.1 }
         let updatedList : [Element] = try reducedOldList.compactMap { el in
             guard let index = newList.index(of: el) else {
                 throw CollectionError.findMovedElementsIndexOutOfRange
             }
             return newList[index]
-        }.mergeELements(with: sortedInsertedByIndex)
-
-        let movedTypes = identifyMovedElementsFrom(unorderedList: updatedList,sortedBy: compare)
-        return movedTypes
+        }
+        let unsortedNewList = try updatedList.mergeELements(with: inserted)
+        
+        let movedTypes : [(Element,Int,Int)] = updatedList.compactMap { element in
+            guard let index = unsortedNewList.index(of:element),let index2 = newList.index(of:element),index != index2 else {
+                return nil
+            }
+            return (element,index,index2)
+        }.sorted { $0.2 < $1.2 }
+        
+        let reducedMovedTypes : [(Element,Int,Int)]  = movedTypes.reduce(([],unsortedNewList)) { tuple,move in
+            let (sum,currentList) = tuple
+            guard currentList != newList else {
+                return (sum,newList)
+            }
+            let (_,from,to) = move
+            let list = currentList.moveElement(from: from, to: to)
+            return (sum + [move],list)
+        }.0
+        return reducedMovedTypes
     }
-
 }

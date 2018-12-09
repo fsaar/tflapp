@@ -44,6 +44,8 @@ class TFLLogger {
 fileprivate extension TFLLogger {
     
     func log(_ type: OSSignpostType,osLog: OSLog, name: StaticString, identifier : String? = nil) {
+//        let typeString = type == .begin ? "begin" :  type == .end ? "end" : type == .event ? "event" : "unknwon"
+//        print("\(typeString) :\(name)  \(identifier ?? "")")
         if let _ = identifier {
             let spid = OSSignpostID(log:osLog, object: identifier as AnyObject)
             os_signpost(type, log: osLog, name: name,signpostID: spid)

@@ -19,6 +19,12 @@ extension UIFont {
         return font
     }
     
+    class func tflUpdateStatusPendingTitle() -> UIFont {
+        let descriptor = UIFontDescriptor(name: "GillSans", size: 14)
+        let font = UIFont(descriptor: descriptor, size: 14)
+        return font
+    }
+    
     class func tflHUDTitle() -> UIFont {
         let descriptor = UIFontDescriptor(name: "GillSans-Light", size: 24)
         let font = UIFont(descriptor: descriptor, size: 24)

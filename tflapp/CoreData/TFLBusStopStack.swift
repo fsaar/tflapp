@@ -102,9 +102,9 @@ private let groupID =  "group.tflwidgetSharingData"
         let currentLocation = coordinate.location
         let privateContext = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
         privateContext.perform  {
-            TFLLogger.shared.signPostStart(osLog: TFLBusStopStack.loggingHandle , name: "nearbyBusStops")
+            TFLLogger.shared.signPostStart(osLog: TFLBusStopStack.loggingHandle , name: "nearbyBusStops coredata")
             if let stops =  try? privateContext.fetch(self.busStopFetchRequest) {
-                TFLLogger.shared.signPostEnd(osLog: TFLBusStopStack.loggingHandle, name: "nearbyBusStops")
+                TFLLogger.shared.signPostEnd(osLog: TFLBusStopStack.loggingHandle, name: "nearbyBusStops coredata")
                 busStops = stops.map { ($0.distance(to:currentLocation),$0) }
                                 .filter { $0.0 < radiusInMeter }
                                 .sorted { $0.0 < $1.0 }

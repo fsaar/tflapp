@@ -31,7 +31,7 @@ class TFLStationDetailTableViewCell: UITableViewCell {
         didSet {
             self.nearbyContainer.clipsToBounds = true
             self.nearbyContainer.layer.cornerRadius = 8
-            self.nearbyContainer.backgroundColor = UIColor.darkGray
+            self.nearbyContainer.backgroundColor = UIColor.blue
         }
     }
     @IBOutlet weak var nearbyIndicator : UILabel! = nil {

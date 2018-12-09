@@ -62,8 +62,9 @@ class TFLNearbyBusStationsController : UIViewController {
         didSet {
             synchroniser.synchronise { synchroniseEnd in
                 let models = self.busStopPredicationTuple.sortedByBusStopDistance().map { TFLBusStopArrivalsViewModel(with: $0) }
-                
+                TFLLogger.shared.signPostStart(osLog: TFLNearbyBusStationsController.loggingHandle, name: "Collectiontransform")
                 let (inserted ,deleted ,updated, moved) = self.busStopArrivalViewModels.transformTo(newList: models, sortedBy : TFLBusStopArrivalsViewModel.compare)
+                TFLLogger.shared.signPostEnd(osLog: TFLNearbyBusStationsController.loggingHandle, name: "Collectiontransform")
                 DispatchQueue.main.async {
                     self.tableView.performBatchUpdates({
                         self.busStopArrivalViewModels = models

@@ -50,7 +50,7 @@ class TFLRootViewController: UIViewController {
             }
         }
     }
-    fileprivate(set) var DefaultRefreshInterval : TimeInterval = 30
+    fileprivate let defaultRefreshInterval : Int = 30
     
     fileprivate var isContentAvailable : Bool {
         return !(self.nearbyBusStationController?.busStopPredicationTuple.isEmpty ?? true)
@@ -102,7 +102,13 @@ class TFLRootViewController: UIViewController {
         let controller = self.storyboard?.instantiateViewController(withIdentifier: "TFLNearbyBusStationsController") as? TFLNearbyBusStationsController
         return controller
     }()
-
+    fileprivate lazy var updateStatusView : TFLUpdateStatusView =  {
+        let view = TFLUpdateStatusView(style: .detailed, refreshInterval: self.defaultRefreshInterval)
+        view.delegate = self
+        view.state = .updatePending
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     fileprivate var slideContainerController : TFLSlideContainerController?
     private var foregroundNotificationHandler  : TFLNotificationObserver?
     private var backgroundNotificationHandler  : TFLNotificationObserver?
@@ -114,16 +120,10 @@ class TFLRootViewController: UIViewController {
 
     @IBOutlet weak var contentView : UIView!
 
-    fileprivate(set) lazy var refreshTimer : TFLTimer? = {
-        TFLTimer(timerInterVal: DefaultRefreshInterval,repeats:false) { [weak self] _ in
-            TFLLogger.shared.event(osLog: TFLRootViewController.loggingHandle, name: "refreshTimer")
-
-            self?.loadNearbyBusstops()
-        }
-    }()
-
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.slideContainerController?.rightCustomView = self.updateStatusView
+        
         TFLLocationManager.sharedManager.delegate = self
         if let mapViewController = self.mapViewController, let nearbyBusStationController = self.nearbyBusStationController {
             self.slideContainerController?.setContentControllers(with: mapViewController,and: nearbyBusStationController)
@@ -149,14 +149,11 @@ class TFLRootViewController: UIViewController {
                     self?.loadNearbyBusstops()
                 }
             }
-            self?.refreshTimer?.start()
         }
         self.backgroundNotificationHandler = TFLNotificationObserver(notification:UIApplication.didEnterBackgroundNotification) { [weak self]  _ in
-            self?.refreshTimer?.stop()
+            self?.updateStatusView.state = .paused
         }
-        TFLRequestManager.shared.delegate = self
         self.loadNearbyBusstops()
-        self.refreshTimer?.start()
         
 //        self.busStopDBGenerator.loadBusStops { [weak self] in
 //            self?.busStopDBGenerator.loadLineStations()
@@ -220,29 +217,23 @@ fileprivate extension TFLRootViewController {
     
 
     func loadNearbyBusstops(using completionBlock:CompletionBlock? = nil) {
-        objc_sync_enter(self)
-        defer {
-            objc_sync_exit(self)
-        }
-        
+        precondition(Thread.isMainThread)
         loadNearbyBusStopsCompletionBlocks += [completionBlock]
         guard state.isComplete else {
             return
         }
-        self.refreshTimer?.stop()
+        self.updateStatusView.state = .updating
         self.state = .determineCurrentLocation
     
         self.currentCoordinates { [weak self] coord in
             let completionBlock : (_ state : State) -> () = { [weak self] state in
                 if let self = self {
-                    objc_sync_enter(self)
+                    precondition(Thread.isMainThread)
                     let blocks = self.loadNearbyBusStopsCompletionBlocks
                     self.loadNearbyBusStopsCompletionBlocks = []
                     self.state = state
-                    self.refreshTimer?.start()
                     blocks.forEach { $0?() }
-     
-                    objc_sync_exit(self)
+                    self.updateStatusView.state = .updatePending
                 }
             }
             
@@ -340,24 +331,12 @@ extension TFLRootViewController : TFLNearbyBusStationsControllerDelegate  {
     }
 }
 
-// MARK: TFLRequestManagerDelegate
 
-extension TFLRootViewController : TFLRequestManagerDelegate {
-    
-    func didStartURLTask(with requestManager: TFLRequestManager,session : URLSession)
-    {
-        OperationQueue.main.addOperation {
-            UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        }
+// MARK: TFLStatusViewDelegate
 
-    }
-    
-    func didFinishURLTask(with requestManager: TFLRequestManager,session : URLSession)
-    {
-        session.getAllTasks { tasks in
-            OperationQueue.main.addOperation {
-                UIApplication.shared.isNetworkActivityIndicatorVisible = !tasks.isEmpty
-            }
-        }
+extension TFLRootViewController : TFLUpdateStatusViewDelegate {
+    func didExpireTimerInStatusView(_ tflStatusView : TFLUpdateStatusView) {
+        TFLLogger.shared.event(osLog: TFLRootViewController.loggingHandle, name: "refreshTimer")
+        self.loadNearbyBusstops()
     }
 }

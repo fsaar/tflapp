@@ -143,6 +143,7 @@ class TFLRootViewController: UIViewController {
         }
 
         self.foregroundNotificationHandler = TFLNotificationObserver(notification: UIApplication.willEnterForegroundNotification) { [weak self]  _ in
+            self?.updateStatusView.state = .updating
             let retryIfRequestWasPending = !(self?.state.isComplete ?? true)
             self?.loadNearbyBusstops {
                 if retryIfRequestWasPending {

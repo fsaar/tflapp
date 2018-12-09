@@ -9,22 +9,6 @@ enum TFLClientError : Error {
     case InvalidLine
 }
 
-extension TFLBusPrediction {
-    init(identifier: String, timeToLive: Date, timeStamp: Date, busStopIdentifier: String, lineIdentifier: String, lineName: String, destination: String, timeToStation: UInt, vehicleId : String) {
-        self.identifier = identifier
-        self.timeToLive = timeToLive
-        self.timeStamp = timeStamp
-        self.busStopIdentifier = busStopIdentifier
-        self.lineIdentifier = lineIdentifier
-        self.lineName = lineName
-        self.destination = destination
-        self.timeToStation = timeToStation
-        self.vehicleId = vehicleId
-    }
-    
-    
-}
-
 public final class TFLClient {
     static let jsonDecoder = { ()-> JSONDecoder in
         let decoder = JSONDecoder()

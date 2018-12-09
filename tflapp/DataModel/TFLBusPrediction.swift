@@ -78,6 +78,19 @@ public struct TFLBusPrediction : Equatable,Codable,CustomStringConvertible {
         return prefix + " in " + "\(Int(timeToStation/secondsPerMinute)) minutes [\(timeToStation) secs]\n"
     }
     
+    init(identifier: String, timeToLive: Date, timeStamp: Date, busStopIdentifier: String, lineIdentifier: String, lineName: String, destination: String, timeToStation: UInt,vehicleId : String) {
+        self.identifier = identifier
+        self.timeToLive = timeToLive
+        self.timeStamp = timeStamp
+        self.busStopIdentifier = busStopIdentifier
+        self.lineIdentifier = lineIdentifier
+        self.lineName = lineName
+        self.destination = destination
+        self.timeToStation = timeToStation
+        self.vehicleId = vehicleId
+    }
+    
+    
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)

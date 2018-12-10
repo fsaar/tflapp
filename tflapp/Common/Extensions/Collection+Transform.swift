@@ -78,10 +78,12 @@ fileprivate extension Set {
     }
 }
 
-fileprivate extension Array {
-    func moveElement(from : Int, to : Int) -> Array {
+fileprivate extension Array where Element : Equatable {
+    func moveElement(_ element : Element, to : Int) -> Array {
         var currentList = self
-        currentList.insert(currentList.remove(at: from), at: to)
+        if let from = index(of:element) {
+            currentList.insert(currentList.remove(at: from), at: to)
+        }
         return currentList
     }
 }
@@ -109,9 +111,9 @@ fileprivate extension Collection where Element : Hashable{
             return newList[index]
         }
         let unsortedNewList = try updatedList.mergeELements(with: inserted)
-        
+        let oldList = Array(self)
         let movedTypes : [(Element,Int,Int)] = updatedList.compactMap { element in
-            guard let index = unsortedNewList.index(of:element),let index2 = newList.index(of:element),index != index2 else {
+            guard let index = oldList.index(of:element),let index2 = newList.index(of:element),index != index2 else {
                 return nil
             }
             return (element,index,index2)
@@ -122,8 +124,8 @@ fileprivate extension Collection where Element : Hashable{
             guard currentList != newList else {
                 return (sum,newList)
             }
-            let (_,from,to) = move
-            let list = currentList.moveElement(from: from, to: to)
+            let (element,_,to) = move
+            let list = currentList.moveElement(element, to: to)
             return (sum + [move],list)
         }.0
         return reducedMovedTypes

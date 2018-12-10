@@ -51,6 +51,7 @@ class TFLUpdateStatusView : UIView {
             showAnimator = showPropertyAnimator()
             switch state {
             case .updating:
+                self.timerView.stop(animated: false)
                 hideAnimator?.addAnimations {
                     self.updatePendingStateContainerView.alpha = 0
                 }
@@ -183,6 +184,7 @@ fileprivate extension TFLUpdateStatusView {
 
 extension TFLUpdateStatusView : TFLTimerButtonDelegate {
     func tflTimerViewDidExpire(_ timerView : TFLTimerButton) {
+        self.state = .updating
         self.delegate?.didExpireTimerInStatusView(self)
     }
 }

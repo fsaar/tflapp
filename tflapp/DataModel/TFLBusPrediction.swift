@@ -57,6 +57,7 @@ public struct TFLBusPrediction : Equatable,Codable,CustomStringConvertible {
     }()
     
     private enum CodingKeys : String,CodingKey {
+        case vehicleId = "vehicleId"
         case identifier = "id"
         case timeToLive = "timeToLive"
         case timeStamp = "timestamp"
@@ -77,7 +78,7 @@ public struct TFLBusPrediction : Equatable,Codable,CustomStringConvertible {
         return prefix + " in " + "\(Int(timeToStation/secondsPerMinute)) minutes [\(timeToStation) secs]\n"
     }
     
-    init(identifier: String, timeToLive: Date, timeStamp: Date, busStopIdentifier: String, lineIdentifier: String, lineName: String, destination: String, timeToStation: UInt) {
+    init(identifier: String, timeToLive: Date, timeStamp: Date, busStopIdentifier: String, lineIdentifier: String, lineName: String, destination: String, timeToStation: UInt,vehicleId : String) {
         self.identifier = identifier
         self.timeToLive = timeToLive
         self.timeStamp = timeStamp
@@ -86,6 +87,7 @@ public struct TFLBusPrediction : Equatable,Codable,CustomStringConvertible {
         self.lineName = lineName
         self.destination = destination
         self.timeToStation = timeToStation
+        self.vehicleId = vehicleId
     }
     
     
@@ -102,6 +104,7 @@ public struct TFLBusPrediction : Equatable,Codable,CustomStringConvertible {
         try container.encode(lineName, forKey: .lineName)
         try container.encode(destination, forKey: .destination)
         try container.encode(timeToStation, forKey: .timeToStation)
+        try container.encode(vehicleId, forKey: .vehicleId)
     }
     
     public init(from decoder: Decoder) throws {
@@ -120,7 +123,8 @@ public struct TFLBusPrediction : Equatable,Codable,CustomStringConvertible {
         lineIdentifier = try container.decode(String.self, forKey: .lineIdentifier)
         lineName = try container.decode(String.self, forKey: .lineName)
         destination = try container.decode(String.self, forKey: .destination)
-        timeToStation = try container.decode(UInt.self, forKey: .timeToStation)        
+        timeToStation = try container.decode(UInt.self, forKey: .timeToStation)
+        vehicleId = try container.decode(String.self, forKey: .vehicleId)
     }
     
     let identifier : String
@@ -131,4 +135,5 @@ public struct TFLBusPrediction : Equatable,Codable,CustomStringConvertible {
     let lineName : String
     let destination : String
     let timeToStation : UInt
+    let vehicleId : String
 }

@@ -16,15 +16,20 @@ enum CollectionError : Error {
 extension Collection where Element : Hashable {
     func transformTo(newList : [Element],sortedBy compare: @escaping TFLTransformCollectionCompare<Element>)  -> (inserted : [(element:Element,index:Int)],deleted : [(element:Element,index:Int)], updated : [(element:Element,index:Int)],moved : [(element:Element,oldIndex:Int,newIndex:Int)])
     {
+        let sortedOldList = self.sorted(by: compare)
+        let sortedNewList = newList.sorted(by: compare)
+        return sortedOldList.transformTo(newList: sortedNewList)
+    }
+    
+    func transformTo(newList : [Element])  -> (inserted : [(element:Element,index:Int)],deleted : [(element:Element,index:Int)], updated : [(element:Element,index:Int)],moved : [(element:Element,oldIndex:Int,newIndex:Int)])
+    {
         guard !self.isEmpty else {
             return (newList.enumerated().map { ($0.1,$0.0) },[],[],[])
         }
         guard !newList.isEmpty else {
             return ([],self.enumerated().map { ($0.1,$0.0) },[],[])
         }
-
-        let sortedOldList = self.sorted(by: compare)
-        let sortedNewList = newList.sorted(by: compare)
+        let oldList = Array(self)
         let oldSet = Set(self)
         let newSet = Set(newList)
 
@@ -34,15 +39,15 @@ extension Collection where Element : Hashable {
         let deletedSet = oldSet.subtracting(newSet)
 
         do {
-            let inserted = try insertedSet.indexedList(basedOn: sortedNewList)
+            let inserted = try insertedSet.indexedList(basedOn: newList)
             
-            let deleted = try deletedSet.indexedList(basedOn: sortedOldList)
+            let deleted = try deletedSet.indexedList(basedOn: oldList)
             
             let moved = try findMovedElements(in: newList,inserted: inserted ,deleted: deleted)
             let movedTypes = moved.map { $0.0 }
             
             let updatedTypes = unchangedSet.subtracting(Set(movedTypes))
-            let updated = try updatedTypes.indexedList(basedOn: sortedNewList)
+            let updated = try updatedTypes.indexedList(basedOn: newList)
             return (inserted,deleted,updated,moved)
         }
         catch {

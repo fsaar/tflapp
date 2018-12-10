@@ -222,12 +222,12 @@ class TFLChangeSetProtocolSpecs : QuickSpec {
             }
             it("should return the correct tuple when deleting 1 and moving 5 to first pos: ([1,3,5] -> [5,3]") {
                 let oldList = [1,3,5].map { M("\($0)",$0) }
-                let newList =  [5,3].map { M("\($0)",$0) }
+                let newList =  [M("5",0),M("3",1)]
                 let (inserted ,deleted ,updated, moved)  = oldList.transformTo(newList: newList, sortedBy : M.compare)
                 expect(Set(inserted.map { Pos($0) })) == Set([])
                 expect(Set(deleted.map { Pos($0) })) == Set([Pos(M("1",1),0)])
-                expect(Set(updated.map { Pos($0) })) == Set([Pos(M("3",3),0)])
-                expect(Set(moved.map { MovedPos($0) })) == Set([MovedPos(M("5",5),2,0)])
+                expect(Set(updated.map { Pos($0) })) == Set([Pos(M("3",1),1)])
+                expect(Set(moved.map { MovedPos($0) })) == Set([MovedPos(M("5",0),2,0)])
             }
             it("should return the correct tuple when deleting 5 and moving 1 to last pos: ([1,3,5] -> [3,1]") {
                 let oldList = [1,3,5].map { M("\($0)",$0) }

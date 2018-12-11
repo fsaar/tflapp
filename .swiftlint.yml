@@ -80,6 +80,11 @@ disabled_rules: # rule identifiers to exclude from running
     - closure_spacing                          
     - unused_optional_binding  
 opt_in_rules: 
+    - legacy_hashing
+    - static_operator
+    - identical_operands
+    - unused_import
+    - unused_private_declaration	
     - explicit_init                            
     - block_based_kvo                          
     - contains_over_first_not_nil              

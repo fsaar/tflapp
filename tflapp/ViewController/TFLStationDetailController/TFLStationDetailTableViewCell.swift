@@ -31,12 +31,12 @@ class TFLStationDetailTableViewCell: UITableViewCell {
         didSet {
             self.nearbyContainer.clipsToBounds = true
             self.nearbyContainer.layer.cornerRadius = 8
-            self.nearbyContainer.backgroundColor = UIColor.blue
+            self.nearbyContainer.backgroundColor = UIColor(red: 0, green: 0, blue: 0.6, alpha: 1)
         }
     }
     @IBOutlet weak var nearbyIndicator : UILabel! = nil {
         didSet {
-            self.nearbyIndicator.backgroundColor = UIColor.darkGray
+            self.nearbyIndicator.backgroundColor = UIColor(red: 0, green: 0, blue: 0.6, alpha: 1)
             self.nearbyIndicator.font = UIFont.tflStationDetailNearbyTitle()
             self.nearbyIndicator.textColor = .white
             self.nearbyIndicator.text = NSLocalizedString("TFLStationDetailNearby.title", comment: "")

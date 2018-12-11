@@ -106,7 +106,7 @@ public class TFLCDBusStop: NSManagedObject {
                     var towards = ""
                     var lines : [String] = []
                     if let additionalProperties = dictionary[Identifiers.additionalProperties.rawValue] as? [[String:String]] {
-                        let towardsDict = additionalProperties.filter { $0["key"] ==  Identifiers.towardsKeyValue.rawValue }.first
+                        let towardsDict = additionalProperties.first { $0["key"] ==  Identifiers.towardsKeyValue.rawValue }
                         if let towardsDict = towardsDict?["value"]  {
                             towards = towardsDict
                         }

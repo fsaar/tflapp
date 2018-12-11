@@ -17,6 +17,7 @@ class TFLBusPredictionSpecs: QuickSpec {
             jsonData = """
             {
                 "id": "1836802865",
+                "towards" : "",
                 "vehicleId": "LTZ1218",
                 "naptanId": "490011791K",
                 "lineId": "38",

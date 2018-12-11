@@ -110,9 +110,9 @@ class TFLNearbyBusStationsController : UIViewController {
         }
         switch segueIdentifier {
         case .stationDetailSegue:
-            if let controller = segue.destination as? TFLStationDetailController, let line = sender as? String {
+            if let controller = segue.destination as? TFLStationDetailController, let (line,direction) = sender as? (String,String?) {
                 controller.currentUserCoordinate   = currentUserCoordinate
-                controller.line = line.uppercased()
+                controller.lineInfo = (line.uppercased(),direction)
             }
         }
     }
@@ -150,15 +150,15 @@ extension TFLNearbyBusStationsController : UITableViewDataSource {
             return
         }
         self.navigationController?.popToRootViewController(animated: false)
-        self.updateAndShowLineInfo(line: line)
+        self.updateAndShowLineInfo(line: line,towards: nil)
     }
     
 }
 
 extension TFLNearbyBusStationsController : TFLBusStationArrivalCellDelegate {
     
-    func busStationArrivalCell(_ busStationArrivalCell: TFLBusStationArrivalsCell,didSelectLine line: String) {
-        updateAndShowLineInfo(line: line)
+    func busStationArrivalCell(_ busStationArrivalCell: TFLBusStationArrivalsCell,didSelectLine line: String, towards direction : String) {
+        updateAndShowLineInfo(line: line,towards : direction)
     }
 }
 
@@ -166,9 +166,9 @@ extension TFLNearbyBusStationsController : TFLBusStationArrivalCellDelegate {
 
 fileprivate extension TFLNearbyBusStationsController {
    
-    func updateAndShowLineInfo(line : String) {
+    func updateAndShowLineInfo(line : String,towards direction : String?) {
         updateLineInfoIfNeedbe(line) { [weak self] in
-            self?.performSegue(withIdentifier: SegueIdentifier.stationDetailSegue.rawValue, sender: line)
+            self?.performSegue(withIdentifier: SegueIdentifier.stationDetailSegue.rawValue, sender: (line,direction))
         }
     }
     

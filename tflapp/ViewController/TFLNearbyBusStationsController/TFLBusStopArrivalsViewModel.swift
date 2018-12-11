@@ -7,6 +7,7 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
         let eta : String
         let identifier : String
         let timeToStation : Int
+        let towards : String
         static let minTitle = "1 \(NSLocalizedString("TFLBusStopArrivalsViewModel.min", comment: ""))"
         static let minsTitle = NSLocalizedString("TFLBusStopArrivalsViewModel.mins", comment: "")
 
@@ -36,7 +37,7 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
             self.line = busPrediction.lineName
             self.timeToStation = Int(busPrediction.timeToStation)
             self.eta =  arrivalTime(in: Int(timeToStation) - timeOffset )
-
+            self.towards = busPrediction.towards
         }
         public static func ==(lhs: LinePredictionViewModel,rhs :LinePredictionViewModel) -> (Bool) {
             return lhs.identifier == rhs.identifier

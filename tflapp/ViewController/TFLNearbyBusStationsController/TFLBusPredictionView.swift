@@ -13,7 +13,7 @@ extension MutableCollection where Index == Int, Iterator.Element == TFLBusStopAr
 }
 
 protocol TFLBusPredictionViewDelegate : class {
-    func busPredictionView(_ busPredictionView: TFLBusPredictionView,didSelectLine line: String)
+    func busPredictionView(_ busPredictionView: TFLBusPredictionView,didSelectLine line: String,towards direction : String)
 }
 
 class TFLBusPredictionView: UICollectionView {
@@ -81,7 +81,7 @@ extension TFLBusPredictionView : UICollectionViewDataSource {
 extension TFLBusPredictionView : UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let prediction = predictions[indexPath]
-        self.busPredictionViewDelegate?.busPredictionView(self, didSelectLine: prediction.line)
+        self.busPredictionViewDelegate?.busPredictionView(self, didSelectLine: prediction.line,towards: prediction.towards)
     }
 }
 

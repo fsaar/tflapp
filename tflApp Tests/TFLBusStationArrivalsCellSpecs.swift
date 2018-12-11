@@ -96,7 +96,8 @@ class TFLBusStationArrivalsCellSpecs: QuickSpec {
                  "destinationName": "Victoria",
                  "timestamp": "2016-11-16T15:59:35.1741351Z",
                  "timeToStation": UInt(902),
-                 "timeToLive": "2016-11-16T16:15:07Z"]
+                 "timeToLive": "2016-11-16T16:15:07Z",
+                 "towards": ""]
             let dict2 : [String:Any] =
                 ["id": "1836802866",
                  "vehicleId": "LTZ1218",
@@ -106,7 +107,8 @@ class TFLBusStationArrivalsCellSpecs: QuickSpec {
                  "destinationName": "Victoria",
                  "timestamp": "2016-11-16T15:59:35.1741351Z",
                  "timeToStation": UInt(60),
-                 "timeToLive": "2016-11-16T16:15:07Z"]
+                 "timeToLive": "2016-11-16T16:15:07Z",
+                 "towards": ""]
             let dict3 : [String:Any] =
                 ["id": "1836802867",
                  "vehicleId": "LTZ1218",
@@ -116,7 +118,8 @@ class TFLBusStationArrivalsCellSpecs: QuickSpec {
                  "destinationName": "Victoria",
                  "timestamp": "2016-11-16T15:59:35.1741351Z",
                  "timeToStation": UInt(1902),
-                 "timeToLive": "2016-11-16T16:15:07Z"]
+                 "timeToLive": "2016-11-16T16:15:07Z",
+                 "towards": ""]
             let dict4 : [String:Any] =
                 ["id": "1836802868",
                  "vehicleId": "LTZ1218",
@@ -126,7 +129,8 @@ class TFLBusStationArrivalsCellSpecs: QuickSpec {
                  "destinationName": "Victoria",
                  "timestamp": "2016-11-16T15:59:35.1741351Z",
                  "timeToStation": UInt(902),
-                 "timeToLive": "2016-11-16T16:15:07Z"]
+                 "timeToLive": "2016-11-16T16:15:07Z",
+                 "towards": ""]
             let tempPredictions = [dict1,dict2,dict3,dict4]
             referenceDate  = timeFormatter.date(from: "2016-11-16T16:15:01Z")
             

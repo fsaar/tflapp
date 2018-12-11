@@ -45,9 +45,9 @@ class TFLStationDetailController: UIViewController {
         }
     }
 
-    var line : String? = nil {
+    var lineInfo : (line:String?,towards:String?) = (nil,nil) {
         didSet {
-            guard let line = line else {
+            guard let line = lineInfo.line else {
                 return
             }
             let location = currentUserCoordinate.location
@@ -68,7 +68,7 @@ class TFLStationDetailController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.titleHeaderView.title = line ?? ""
+        self.titleHeaderView.title = lineInfo.line ?? ""
         self.navigationItem.titleView = self.titleHeaderView
         self.navigationItem.leftBarButtonItem = self.backBarButtonItem
     }

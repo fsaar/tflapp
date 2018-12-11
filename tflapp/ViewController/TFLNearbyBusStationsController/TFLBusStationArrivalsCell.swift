@@ -2,7 +2,7 @@ import UIKit
 import MapKit
 
 protocol TFLBusStationArrivalCellDelegate : class {
-    func busStationArrivalCell(_ busStationArrivalCell: TFLBusStationArrivalsCell,didSelectLine line: String)
+    func busStationArrivalCell(_ busStationArrivalCell: TFLBusStationArrivalsCell,didSelectLine line: String, towards direction : String)
 }
 
 class TFLBusStationArrivalsCell: UITableViewCell {
@@ -73,7 +73,7 @@ class TFLBusStationArrivalsCell: UITableViewCell {
 }
 
 extension TFLBusStationArrivalsCell : TFLBusPredictionViewDelegate {
-    func busPredictionView(_ busPredictionView: TFLBusPredictionView, didSelectLine line: String) {
-        self.delegate?.busStationArrivalCell(self, didSelectLine: line)
+    func busPredictionView(_ busPredictionView: TFLBusPredictionView, didSelectLine line: String,towards direction: String) {
+        self.delegate?.busStationArrivalCell(self, didSelectLine: line,towards: direction)
     }
 }

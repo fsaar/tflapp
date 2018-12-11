@@ -52,7 +52,7 @@ public class TFLCDBusStop: NSManagedObject {
         case lines = "lines"
     }
     static func ==(lhs : TFLCDBusStop,rhs: TFLCDBusStop) -> (Bool) {
-        return lhs.identifier == lhs.identifier
+        return lhs.identifier == rhs.identifier
     }
 
     override public var debugDescription: String {

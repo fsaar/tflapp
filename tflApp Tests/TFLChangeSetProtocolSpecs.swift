@@ -248,6 +248,16 @@ class TFLChangeSetProtocolSpecs : QuickSpec {
                 expect(Set(updated.map { Pos($0) })) == Set([Pos(M("1",2),1)])
                 expect(Set(moved.map { MovedPos($0) })) == Set([MovedPos(M("5",0),2,0)])
             }
+            
+            it("should handle invalid / non unique lists gracefully") {
+                let oldList = [1,2,3,4,5].map { M("\($0)",$0) }
+                let newList = [M("1",0),M("1",1),M("2",2),M("3",3),M("4",4),M("5",5)]
+                let (inserted ,deleted ,updated, moved)  = oldList.transformTo(newList: newList, sortedBy : M.compare)
+                expect(Set(inserted.map { Pos($0) })) == Set([])
+                expect(Set(deleted.map { Pos($0) })) == Set([])
+                expect(Set(updated.map { Pos($0) })) == Set([])
+                expect(Set(moved.map { MovedPos($0) })) == Set([])
+            }
         }
         
         context("when testing mergeELements") {

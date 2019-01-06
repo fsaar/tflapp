@@ -112,6 +112,7 @@ class TFLUpdateStatusView : UIView {
         view.alpha = 0
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .clear
+        view.isUserInteractionEnabled = true
         switch style {
         case .detailed:
             view.addSubview(updatingStateLabel)

@@ -110,9 +110,9 @@ class TFLNearbyBusStationsController : UIViewController {
         }
         switch segueIdentifier {
         case .stationDetailSegue:
-            if let controller = segue.destination as? TFLStationDetailController, let (line,direction) = sender as? (String,String?) {
+            if let controller = segue.destination as? TFLStationDetailController, let (line,vehicleID,station) = sender as? (String,String?,String?) {
                 controller.currentUserCoordinate   = currentUserCoordinate
-                controller.lineInfo = (line.uppercased(),direction)
+                controller.lineInfo = (line.uppercased(),vehicleID,station)
             }
         }
     }
@@ -150,15 +150,15 @@ extension TFLNearbyBusStationsController : UITableViewDataSource {
             return
         }
         self.navigationController?.popToRootViewController(animated: false)
-        self.updateAndShowLineInfo(line: line,towards: nil)
+        self.updateAndShowLineInfo(line: line,with: nil,at:nil)
     }
     
 }
 
 extension TFLNearbyBusStationsController : TFLBusStationArrivalCellDelegate {
     
-    func busStationArrivalCell(_ busStationArrivalCell: TFLBusStationArrivalsCell,didSelectLine line: String, towards direction : String) {
-        updateAndShowLineInfo(line: line,towards : direction)
+    func busStationArrivalCell(_ busStationArrivalCell: TFLBusStationArrivalsCell,didSelectLine line: String,with vehicleID: String,at station : String) {
+        updateAndShowLineInfo(line: line,with: vehicleID,at: station)
     }
 }
 
@@ -166,9 +166,9 @@ extension TFLNearbyBusStationsController : TFLBusStationArrivalCellDelegate {
 
 fileprivate extension TFLNearbyBusStationsController {
    
-    func updateAndShowLineInfo(line : String,towards direction : String?) {
+    func updateAndShowLineInfo(line : String,with vehicleID: String?,at station : String?) {
         updateLineInfoIfNeedbe(line) { [weak self] in
-            self?.performSegue(withIdentifier: SegueIdentifier.stationDetailSegue.rawValue, sender: (line,direction))
+            self?.performSegue(withIdentifier: SegueIdentifier.stationDetailSegue.rawValue, sender: (line,vehicleID,station))
         }
     }
     

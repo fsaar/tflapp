@@ -6,6 +6,8 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
         let line : String
         let eta : String
         let identifier : String
+        let busStopIdentifier : String
+        let vehicleID : String
         let timeToStation : Int
         let towards : String
         static let minTitle = "1 \(NSLocalizedString("TFLBusStopArrivalsViewModel.min", comment: ""))"
@@ -34,6 +36,8 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
             let timeStampSinceReferenceDate = busPrediction.timeStamp.timeIntervalSinceReferenceDate
             let timeOffset = Int(referenceTime - timeStampSinceReferenceDate)
             self.identifier = busPrediction.identifier
+            self.busStopIdentifier = busPrediction.busStopIdentifier
+            self.vehicleID = busPrediction.vehicleId
             self.line = busPrediction.lineName
             self.timeToStation = Int(busPrediction.timeToStation)
             self.eta =  arrivalTime(in: Int(timeToStation) - timeOffset )

@@ -36,18 +36,11 @@ import Foundation
  },
  
  */
-public struct TFLVehicleArrivalInfo : Equatable,Codable {
+public struct TFLVehicleArrivalInfo : CustomStringConvertible {
 
     enum TFLBusPredictionError : Error {
         case decodingError
     }
-    
-    static let isoDefault: ISO8601DateFormatter = {
-        let formatter = ISO8601DateFormatter()
-        return formatter
-    }()
-    
-    
     
     private enum CodingKeys : String,CodingKey {
         case vehicleId = "vehicleId"
@@ -61,21 +54,38 @@ public struct TFLVehicleArrivalInfo : Equatable,Codable {
         case platformName = "platformName"
     }
     
+    static let isoDefault: ISO8601DateFormatter = {
+        let formatter = ISO8601DateFormatter()
+        return formatter
+    }()
+    
+    public var description: String {
+        return "\(busStopIdentifier): \(timeToStation) [\(direction),\(currentLocation)]"
+    }
+    
+    let vehicleId : String
+    let busStopIdentifier : String
+    let direction : String
+    let towards : String
+    let timeToLive : Date
+    let expectedArrival : Date
+    let currentLocation : String
+    let timeToStation : UInt
+    let platformName : String
+
+}
+
+extension TFLVehicleArrivalInfo : Equatable {
     
     public static func ==(lhs: TFLVehicleArrivalInfo,rhs: TFLVehicleArrivalInfo) -> (Bool) {
         return lhs.vehicleId == rhs.vehicleId &&
-                lhs.busStopIdentifier  == rhs.busStopIdentifier &&
-                lhs.towards == rhs.towards &&
-                lhs.platformName == rhs.platformName
+            lhs.busStopIdentifier  == rhs.busStopIdentifier &&
+            lhs.towards == rhs.towards &&
+            lhs.platformName == rhs.platformName
     }
-    
+}
 
-//    public var description: String {
-//        let secondsPerMinute : UInt = 60
-//        let prefix = self.vehicleId + " towards " + naptanId
-//        return prefix + " in " + "\(Int(timeToStation/secondsPerMinute)) minutes [\(timeToStation) secs]\n"
-//    }
-    
+extension TFLVehicleArrivalInfo : Codable {
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
@@ -112,15 +122,4 @@ public struct TFLVehicleArrivalInfo : Equatable,Codable {
         platformName = try container.decode(String.self, forKey: .platformName)
     }
     
-    
-    let vehicleId : String
-    let busStopIdentifier : String
-    let direction : String
-    let towards : String
-    let timeToLive : Date
-    let expectedArrival : Date
-    let currentLocation : String
-    let timeToStation : UInt
-    let platformName : String
-
 }

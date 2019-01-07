@@ -146,8 +146,19 @@ fileprivate extension TFLStationDetailController {
     }
     
     func trackVehicle(with vehicleID : String,using completionBlock :((_ arrivalInfos : [TFLVehicleArrivalInfo]) -> Void)?) {
-        self.tflClient.vehicleArrivalsInfo(with: vehicleID) { arrivalInfos,_ in
-            completionBlock?(arrivalInfos ?? [])
+        self.tflClient.vehicleArrivalsInfo(with: vehicleID) { [weak self] arrivalInfos,_ in
+            let sortedInfos = (arrivalInfos ?? []).sorted { $0.timeToStation < $1.timeToStation }
+            guard let station = self?.lineInfo.station,
+                    let index = sortedInfos.map ({ $0.busStopIdentifier }).index(of:station ) else {
+                completionBlock?(sortedInfos )
+                return
+            }
+            
+            let sortedInfosRange = Array(sortedInfos[0...index])
+            for info in sortedInfosRange {
+                print(info.description)
+            }
+            completionBlock?(sortedInfosRange )
         }
     }
 }

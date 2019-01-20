@@ -25,9 +25,10 @@ class TFLStationDetailController: UIViewController {
     fileprivate let defaultRefreshInterval : Int = 30
     
     fileprivate lazy var containerView : UIView = {
-       let view = UIView(frame: .zero)
+        let view = UIView(frame: .zero)
         let width : CGFloat = 32
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.isHidden = true
         view.layer.cornerRadius = width / 2
         view.backgroundColor = UIColor(red: 0.7, green: 0.7, blue: 0.7, alpha: 1.0)
         view.addSubview(self.updateStatusView)
@@ -42,7 +43,6 @@ class TFLStationDetailController: UIViewController {
     fileprivate lazy var updateStatusView : TFLUpdateStatusView =  {
         let view = TFLUpdateStatusView(style: .compact, refreshInterval: self.defaultRefreshInterval)
         view.delegate = self
-        view.isHidden = true
         view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             view.widthAnchor.constraint(equalToConstant: 40),
@@ -78,6 +78,7 @@ class TFLStationDetailController: UIViewController {
 
     var lineInfo : (line:String?,vehicleID : String?,station:String?) = (nil,nil,nil) {
         didSet {
+            self.tableViewController?.station = lineInfo.station
             guard let line = lineInfo.line else {
                 return
             }
@@ -95,11 +96,7 @@ class TFLStationDetailController: UIViewController {
                 }
             }
             if let vehicleID = lineInfo.vehicleID {
-                updateStatusView.isHidden = false
-                updateStatusView.state = .updating
-                trackVehicle(with: vehicleID) { [updateStatusView] _ in
-                    updateStatusView.state = .updatePending
-                }
+                updateTableViewController(with: vehicleID)
             }
         }
     }
@@ -124,6 +121,7 @@ class TFLStationDetailController: UIViewController {
             tableViewController = segue.destination as? TFLStationDetailTableViewController
             tableViewController?.delegate = self
             _ = tableViewController?.view
+            tableViewController?.station = lineInfo.station
             tableViewController?.viewModels = tableViewviewModels
         case .mapViewControllerSegue:
             mapViewController = segue.destination as? TFLStationDetailMapViewController
@@ -139,7 +137,10 @@ class TFLStationDetailController: UIViewController {
     
    
 }
+
+////
 /// MARK: Private
+///
 fileprivate extension TFLStationDetailController {
     @objc func backBarButtonHandler() {
         self.navigationController?.popViewController(animated: true)
@@ -150,15 +151,21 @@ fileprivate extension TFLStationDetailController {
             let sortedInfos = (arrivalInfos ?? []).sorted { $0.timeToStation < $1.timeToStation }
             guard let station = self?.lineInfo.station,
                     let index = sortedInfos.map ({ $0.busStopIdentifier }).index(of:station ) else {
-                completionBlock?(sortedInfos )
+                completionBlock?([])
                 return
             }
             
             let sortedInfosRange = Array(sortedInfos[0...index])
-            for info in sortedInfosRange {
-                print(info.description)
-            }
+            
             completionBlock?(sortedInfosRange )
+        }
+    }
+    func updateTableViewController(with vehicleID : String) {
+        updateStatusView.state = .updating
+        trackVehicle(with: vehicleID) { [weak self] arrivalInfos in
+            self?.containerView.isHidden = arrivalInfos.isEmpty
+            self?.updateStatusView.state = .updatePending
+            self?.tableViewController?.arrivalInfos = arrivalInfos
         }
     }
 }
@@ -181,9 +188,6 @@ extension TFLStationDetailController : TFLUpdateStatusViewDelegate {
             return
             
         }
-        trackVehicle(with: vehicleID) { [weak self] _ in
-            self?.updateStatusView.state = .updatePending
-        }
-        
+        updateTableViewController(with: vehicleID)
     }
 }

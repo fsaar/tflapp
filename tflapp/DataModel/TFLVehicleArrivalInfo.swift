@@ -36,6 +36,24 @@ import Foundation
  },
  
  */
+
+extension Array where Element == TFLVehicleArrivalInfo {
+    func containsNaptanId(_ naptanID : String) -> Bool {
+        let identifiers = self.map { $0.busStopIdentifier }
+        let hasArrivalInfo = identifiers.contains(naptanID)
+        return hasArrivalInfo
+    }
+    
+    func info(with naptandID : String) -> TFLVehicleArrivalInfo? {
+        let identifiers = self.map { $0.busStopIdentifier }
+        guard let index = identifiers.index(of:naptandID) else {
+            return nil
+        }
+        return self[index]
+        
+    }
+}
+
 public struct TFLVehicleArrivalInfo : CustomStringConvertible {
 
     enum TFLBusPredictionError : Error {
@@ -52,6 +70,7 @@ public struct TFLVehicleArrivalInfo : CustomStringConvertible {
         case currentLocation = "currentLocation"
         case timeToStation = "timeToStation"
         case platformName = "platformName"
+        case stationName = "stationName"
     }
     
     static let isoDefault: ISO8601DateFormatter = {
@@ -60,7 +79,7 @@ public struct TFLVehicleArrivalInfo : CustomStringConvertible {
     }()
     
     public var description: String {
-        return "\(busStopIdentifier): \(timeToStation) [\(direction),\(currentLocation)]"
+        return "\(busStopIdentifier) \(stationName): \(timeToStation) [\(direction),\(currentLocation)]"
     }
     
     let vehicleId : String
@@ -72,6 +91,7 @@ public struct TFLVehicleArrivalInfo : CustomStringConvertible {
     let currentLocation : String
     let timeToStation : UInt
     let platformName : String
+    let stationName : String
 
 }
 
@@ -84,6 +104,18 @@ extension TFLVehicleArrivalInfo : Equatable {
             lhs.platformName == rhs.platformName
     }
 }
+
+extension TFLVehicleArrivalInfo : Hashable {
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(vehicleId)
+        hasher.combine(busStopIdentifier)
+        hasher.combine(towards)
+        hasher.combine(platformName)
+    }
+    
+}
+
 
 extension TFLVehicleArrivalInfo : Codable {
     
@@ -100,6 +132,7 @@ extension TFLVehicleArrivalInfo : Codable {
         try container.encode(currentLocation, forKey: .currentLocation)
         try container.encode(timeToStation, forKey: .timeToStation)
         try container.encode(platformName, forKey: .platformName)
+        try container.encode(stationName, forKey: .stationName)
     }
     
     public init(from decoder: Decoder) throws {
@@ -120,6 +153,7 @@ extension TFLVehicleArrivalInfo : Codable {
         currentLocation = try container.decode(String.self, forKey: .currentLocation)
         timeToStation = try container.decode(UInt.self, forKey: .timeToStation)
         platformName = try container.decode(String.self, forKey: .platformName)
+        stationName = try container.decode(String.self, forKey: .stationName)
     }
     
 }

@@ -14,11 +14,14 @@ protocol TFLStationDetailTableViewControllerDelegate : class {
     func tflStationDetailTableViewController(_ controller: TFLStationDetailTableViewController,with header: UITableViewHeaderFooterView, didPanBy distance: CGFloat)
 }
 
+// TODO: 1. propagate Refresh: when tapping refresh button refresh arrivalInfos
+// TODO: 2. refresh nearby station
+
 class TFLStationDetailTableViewController: UITableViewController {
     weak var delegate : TFLStationDetailTableViewControllerDelegate?
     let sectionHeaderDefaultHeight = CGFloat(50)
-    let tableViewCellAnimationHeight = CGFloat(60)
-    
+    fileprivate var scrolledToStationInitially : Bool = false
+
     fileprivate var currentSection : Int = 0 {
         didSet {
             self.delegate?.tflStationDetailTableViewController(self, didShowSection: currentSection)
@@ -49,19 +52,49 @@ class TFLStationDetailTableViewController: UITableViewController {
             }
         }
     }
+    var station : String?
+    
+    var arrivalInfos : [TFLVehicleArrivalInfo] = [] {
+        didSet {
+            let (inserted ,deleted ,updated, _) = oldValue.transformTo(newList: arrivalInfos)
+            let reloadList  = (inserted + deleted).map { $0.0 }
+            let updateList = updated.map { $0.0 }
+            
+            let indexPathsToReload  = viewModels.indexPaths(for: reloadList)
+            let visibleIndexPathSet = Set(self.tableView.indexPathsForVisibleRows ?? [])
+            let indexPathsSetToUpdate = Set(viewModels.indexPaths(for: updateList)).intersection(visibleIndexPathSet)
+            OperationQueue.main.addOperation {
+                
+                indexPathsSetToUpdate.forEach  { indexPath in
+                    guard let cell = self.tableView.cellForRow(at: indexPath) as? TFLStationDetailTableViewCell else {
+                        return
+                    }
+                    self.configure(cell: cell, at: indexPath)
+                }
+                self.tableView.reloadRows(at: indexPathsToReload  , with: .automatic)
+                if updated.isEmpty && !inserted.isEmpty {
+                    self.scrollToStationIfNeedBe(self.station)
+                }
+            }
+            
+            
+        }
+    }
     var viewModels : [TFLStationDetailTableViewModel] = [] {
         didSet {
             self.tableView.reloadData()
+            scrollToStationIfNeedBe(station)
         }
     }
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.sectionHeaderHeight = sectionHeaderDefaultHeight
+        self.tableView.rowHeight = UITableView.automaticDimension
         let sectionNib = UINib(nibName: String(describing: TFLStationDetailSectionHeaderView.self), bundle: nil)
         self.tableView.register(sectionNib, forHeaderFooterViewReuseIdentifier: String(describing: TFLStationDetailSectionHeaderView.self))
     }
-
 }
 
 // MARK: UITableViewDataSource
@@ -88,21 +121,11 @@ extension TFLStationDetailTableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: TFLStationDetailTableViewCell.self), for: indexPath)
-        if let cell = cell as? TFLStationDetailTableViewCell {
-            let model = viewModels[indexPath.section]
-            cell.configure(with: model,at:indexPath.row)
-        }
+        configure(cell: cell as? TFLStationDetailTableViewCell, at: indexPath)
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let model = viewModels[indexPath.section]
-        let showAnimation = model.showAnimation(for: indexPath.row)
-        guard showAnimation else {
-            return UITableView.automaticDimension
-        }
-        return tableViewCellAnimationHeight
-    }
+    
 }
 
 // MARK: UITableViewDelegate
@@ -125,4 +148,25 @@ extension TFLStationDetailTableViewController : TFLStationDetailSectionHeaderVie
     func didPanForHeaderView(_ headerView : TFLStationDetailSectionHeaderView,with distance : CGFloat) {
         self.delegate?.tflStationDetailTableViewController(self,with: headerView, didPanBy: distance)
     }
+}
+
+fileprivate extension TFLStationDetailTableViewController {
+    func configure(cell : TFLStationDetailTableViewCell?,at indexPath : IndexPath) {
+        guard let cell = cell else {
+            return
+        }
+        let model = viewModels[indexPath.section]
+        let stationNaptanId = model.stations[indexPath.row].naptanId
+        
+        let arrivalInfo = arrivalInfos.info(with:stationNaptanId)
+        cell.configure(with: model,and:arrivalInfo,at:indexPath.row)
+    }
+    
+    func scrollToStationIfNeedBe(_ station : String?) {
+        if let station = station , let indexPath = viewModels.indexPath(for:station) {
+            scrolledToStationInitially = true
+            self.tableView.scrollToRow(at: indexPath, at: UITableView.ScrollPosition.bottom, animated: false)
+        }
+    }
+
 }

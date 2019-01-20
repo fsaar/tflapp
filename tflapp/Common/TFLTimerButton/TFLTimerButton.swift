@@ -166,7 +166,7 @@ fileprivate extension TFLTimerButton {
         self.setTitle("\(expiryTime)", for: .normal)
         self.setTitleColor(.white, for: .normal)
         self.setTitleColor(.gray, for: .highlighted)
-        self.titleLabel?.font = UIFont.systemFont(ofSize: 11)
+        self.titleLabel?.font = UIFont.tflTimerButtonTitle()
         self.titleLabel?.textAlignment = .center
         self.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         self.addTarget(self, action: #selector(self.tapHandler(_:)), for: .touchUpInside)

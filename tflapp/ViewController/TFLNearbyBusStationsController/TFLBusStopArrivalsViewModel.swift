@@ -21,7 +21,7 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
                 case ..<30:
                     timeString = NSLocalizedString("TFLBusStopArrivalsViewModel.due", comment: "")
                 case 30..<60:
-                    timeString = "1 " + NSLocalizedString("TFLBusStopArrivalsViewModel.min", comment: "")
+                    timeString = "1 " + LinePredictionViewModel.minTitle
                 case 60..<(99*60):
                     let mins = secs/60
                     timeString = "\(mins) \(LinePredictionViewModel.minsTitle)"

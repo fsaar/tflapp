@@ -29,3 +29,6 @@
 "TFLStationDetailErrorView.title" = "Oops, something went wrong. No route information available.";
 
 "TFLUpdateStatusView.pending.title" = "Updating ...";
+"TFLArrivalInfoView.due" = "due";
+"TFLArrivalInfoView.min" = "min";
+"TFLArrivalInfoView.mins" = "mins";

@@ -14,6 +14,7 @@ protocol TFLTimerButtonDelegate : class {
 }
 
 class TFLTimerButton : UIButton {
+    fileprivate let lightImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
     fileprivate class DisplayLinkTarget {
         let block : () -> Void
         init (using block : @escaping ()-> Void) {
@@ -149,6 +150,8 @@ class TFLTimerButton : UIButton {
     
     @objc func tapHandler(_ button : UIButton) {
         stop()
+        self.lightImpactFeedbackGenerator.prepare()
+        self.lightImpactFeedbackGenerator.impactOccurred()
     }
 }
 

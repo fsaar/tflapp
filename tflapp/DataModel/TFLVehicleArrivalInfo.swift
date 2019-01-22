@@ -38,11 +38,6 @@ import Foundation
  */
 
 extension Array where Element == TFLVehicleArrivalInfo {
-    func containsNaptanId(_ naptanID : String) -> Bool {
-        let identifiers = self.map { $0.busStopIdentifier }
-        let hasArrivalInfo = identifiers.contains(naptanID)
-        return hasArrivalInfo
-    }
     
     func info(with naptandID : String) -> TFLVehicleArrivalInfo? {
         let identifiers = self.map { $0.busStopIdentifier }
@@ -50,7 +45,6 @@ extension Array where Element == TFLVehicleArrivalInfo {
             return nil
         }
         return self[index]
-        
     }
 }
 

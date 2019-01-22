@@ -24,7 +24,6 @@ disabled_rules: # rule identifiers to exclude from running
     - file_header                              
     - file_length                              
     - file_name                                
-    - first_where                              
     - function_default_parameter_at_end        
     - function_parameter_count                 
     - generic_type_name                        
@@ -79,7 +78,15 @@ disabled_rules: # rule identifiers to exclude from running
     - large_tuple                              
     - closure_spacing                          
     - unused_optional_binding  
+    - strong_iboutlet
 opt_in_rules: 
+    - duplicate_imports
+    - unused_setter_value
+    - only_single_muted_parameter
+    - last_where
+    - first_where
+    - unused_control_flow_label
+    - redundant_objc_attribute
     - legacy_hashing
     - static_operator
     - identical_operands

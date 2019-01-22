@@ -88,7 +88,7 @@ fileprivate extension Collection where Element : Hashable{
         guard unorderedList.count > 1 else {
             return movedTypes
         }
-        let unorderedTuple : (Element,Element)? = zip(unorderedList,unorderedList.dropFirst()).lazy.filter { !compare($0.0,$0.1) }.first
+        let unorderedTuple : (Element,Element)? = zip(unorderedList,unorderedList.dropFirst()).lazy.first { !compare($0.0,$0.1) }
         guard let (el1,el2) = unorderedTuple else {
             return movedTypes
         }

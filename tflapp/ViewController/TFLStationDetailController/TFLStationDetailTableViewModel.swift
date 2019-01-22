@@ -2,40 +2,30 @@ import UIKit
 import CoreData
 import MapKit
 
+
 extension Array where Element == TFLStationDetailTableViewModel {
+    func indexPaths(for models : [TFLVehicleArrivalInfo]) -> [IndexPath] {
+        let naptanIdentifiers = models.map { $0.busStopIdentifier }
+        let paths = indexPaths(for: naptanIdentifiers)
+        return paths
+    }
+    
+    
+    func indexPath(for station : String) -> IndexPath? {
+        let paths = indexPaths(for: [station])
+        return paths.first
+    }
+    
     // viewModels[section] -> stations[indexPath.row]
     //                              |- naptandId == arrivalInfo.busStopIdentifer
-    func indexPaths(for models : [TFLVehicleArrivalInfo]) -> [IndexPath] {
+    func indexPaths(for naptanIdentifiers : [String]) -> [IndexPath] {
         let indexPaths : [IndexPath] = self.enumerated().reduce([]) { sum,tuple in
             let (section,model) = tuple
-            let sectionIndexPaths : [IndexPath] = model.stations.enumerated().compactMap { tuple in
-                let (row,stationTuple) = tuple
-                guard let _ = models.info(with: stationTuple.naptanId) else {
-                    return nil
-                }
-                return IndexPath(row: row, section: section)
-            }
+            let modelNaptanIds = model.stations.map { $0.naptanId }
+            let sectionIndexPaths = naptanIdentifiers.compactMap { modelNaptanIds.index(of:$0) }.map { IndexPath(row:$0,section:section) }
             return sum + sectionIndexPaths
         }
         return indexPaths
-    }
-    
-    func indexPath(for station : String) -> IndexPath? {
-        let indexPaths : [IndexPath] = self.enumerated().reduce([]) { sum,tuple in
-            let (section,model) = tuple
-            let sectionIndexPaths : [IndexPath] = model.stations.enumerated().compactMap { tuple in
-                let (row,stationTuple) = tuple
-                guard station == stationTuple.naptanId else {
-                    return nil
-                }
-                return IndexPath(row: row, section: section)
-            }
-            guard let indexPath = sectionIndexPaths.first else {
-                return sum
-            }
-            return sum + [indexPath]
-        }
-        return indexPaths.first
     }
 }
 

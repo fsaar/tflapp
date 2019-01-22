@@ -14,8 +14,7 @@ protocol TFLStationDetailTableViewControllerDelegate : class {
     func tflStationDetailTableViewController(_ controller: TFLStationDetailTableViewController,with header: UITableViewHeaderFooterView, didPanBy distance: CGFloat)
 }
 
-// TODO: 1. propagate Refresh: when tapping refresh button refresh arrivalInfos
-// TODO: 2. refresh nearby station
+// TODO: 1. refresh nearby station
 
 class TFLStationDetailTableViewController: UITableViewController {
     weak var delegate : TFLStationDetailTableViewControllerDelegate?

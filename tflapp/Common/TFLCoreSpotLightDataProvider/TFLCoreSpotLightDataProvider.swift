@@ -99,7 +99,7 @@ private extension TFLCoreSpotLightDataProvider {
         let formatterList = routes.compactMap { TFLRouteFormatter(route: $0) }
         let stationNames = formatterList.shortRoutes.joined(separator: "\n")
         attrs.contentDescription = stationNames
-        attrs.keywords = identifier == identifier.uppercased() ? [identifier.uppercased()] : [identifier.uppercased()]
+        attrs.keywords = identifier.lowercased() == identifier.uppercased() ? [identifier] : [identifier.lowercased(),identifier.uppercased()]
         return attrs
     }
 }

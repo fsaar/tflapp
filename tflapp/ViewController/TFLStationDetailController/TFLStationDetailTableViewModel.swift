@@ -2,10 +2,37 @@ import UIKit
 import CoreData
 import MapKit
 
+
+extension Array where Element == TFLStationDetailTableViewModel {
+    func indexPaths(for models : [TFLVehicleArrivalInfo]) -> [IndexPath] {
+        let naptanIdentifiers = models.map { $0.busStopIdentifier }
+        let paths = indexPaths(for: naptanIdentifiers)
+        return paths
+    }
+    
+    
+    func indexPath(for station : String) -> IndexPath? {
+        let paths = indexPaths(for: [station])
+        return paths.first
+    }
+    
+    // viewModels[section] -> stations[indexPath.row]
+    //                              |- naptandId == arrivalInfo.busStopIdentifer
+    func indexPaths(for naptanIdentifiers : [String]) -> [IndexPath] {
+        let indexPaths : [IndexPath] = self.enumerated().reduce([]) { sum,tuple in
+            let (section,model) = tuple
+            let modelNaptanIds = model.stations.map { $0.naptanId }
+            let sectionIndexPaths = naptanIdentifiers.compactMap { modelNaptanIds.index(of:$0) }.map { IndexPath(row:$0,section:section) }
+            return sum + sectionIndexPaths
+        }
+        return indexPaths
+    }
+}
+
 struct TFLStationDetailTableViewModel {
     let minClostedStationDistance : Double = 50
     let routeName : String
-    let stations : [(stopCode: String,name : String,identifer: String)]
+    let stations : [(stopCode: String,name : String,identifer: String,naptanId:String)]
     fileprivate let closestStationIdentifer : String?
 
     init?(with route: TFLCDLineRoute,location : CLLocation) {
@@ -24,7 +51,7 @@ struct TFLStationDetailTableViewModel {
         else {
             closestStationIdentifer = nil
         }
-        let tuples = busStops.map { ($0.stopLetter ?? "",$0.name,$0.stationIdentifier) }
+        let tuples = busStops.map { ($0.stopLetter ?? "",$0.name,$0.stationIdentifier,$0.identifier) }
         
         let towards = NSLocalizedString("TFLStationDetailTableViewModel.towards", comment: "")
         let tempName = route.name.replacingOccurrences(of: HtmlEncodings.towards.rawValue, with: towards)

@@ -52,7 +52,7 @@ public class TFLCDBusStop: NSManagedObject {
         case lines = "lines"
     }
     static func ==(lhs : TFLCDBusStop,rhs: TFLCDBusStop) -> (Bool) {
-        return lhs.identifier == lhs.identifier
+        return lhs.identifier == rhs.identifier
     }
 
     override public var debugDescription: String {
@@ -106,7 +106,7 @@ public class TFLCDBusStop: NSManagedObject {
                     var towards = ""
                     var lines : [String] = []
                     if let additionalProperties = dictionary[Identifiers.additionalProperties.rawValue] as? [[String:String]] {
-                        let towardsDict = additionalProperties.filter { $0["key"] ==  Identifiers.towardsKeyValue.rawValue }.first
+                        let towardsDict = additionalProperties.first { $0["key"] ==  Identifiers.towardsKeyValue.rawValue }
                         if let towardsDict = towardsDict?["value"]  {
                             towards = towardsDict
                         }

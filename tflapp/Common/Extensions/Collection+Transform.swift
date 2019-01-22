@@ -23,6 +23,9 @@ extension Collection where Element : Hashable {
     
     func transformTo(newList : [Element])  -> (inserted : [(element:Element,index:Int)],deleted : [(element:Element,index:Int)], updated : [(element:Element,index:Int)],moved : [(element:Element,oldIndex:Int,newIndex:Int)])
     {
+        guard newList.count == Set(newList).count else {
+            return ([],[],[],[])
+        }
         guard !self.isEmpty else {
             return (newList.enumerated().map { ($0.1,$0.0) },[],[],[])
         }
@@ -86,7 +89,7 @@ fileprivate extension Set {
 fileprivate extension Array where Element : Equatable {
     func moveElement(_ element : Element, to : Int) -> Array {
         var currentList = self
-        if let from = index(of:element) {
+        if let from = index(of:element),0 ..< currentList.count ~= to {
             currentList.insert(currentList.remove(at: from), at: to)
         }
         return currentList

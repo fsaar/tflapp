@@ -13,6 +13,24 @@ extension UIFont {
         return font
     }
     
+    class func tflTimerButtonTitle() -> UIFont {
+        let descriptor = UIFontDescriptor(name: "GillSans-Light", size: 11)
+        let font = UIFont(descriptor: descriptor, size: 11)
+        return font
+    }
+    
+    class func tflStationDetailArrivalInfoTimeTitle() -> UIFont {
+        let descriptor = UIFontDescriptor(name: "GillSans-Light", size: 14)
+        let font = UIFont(descriptor: descriptor, size: 14)
+        return font
+    }
+    
+    class func tflStationDetailArrivalInfoVehicleTitle() -> UIFont {
+        let descriptor = UIFontDescriptor(name: "GillSans", size: 10)
+        let font = UIFont(descriptor: descriptor, size: 10)
+        return font
+    }
+    
     class func tflStationDetailErrorTitle() -> UIFont {
         let descriptor = UIFontDescriptor(name: "GillSans-Light", size: 20)
         let font = UIFont(descriptor: descriptor, size: 20)
@@ -44,7 +62,7 @@ extension UIFont {
     }
 
     class func tflStationDetailNearbyTitle() -> UIFont {
-        let descriptor = UIFontDescriptor(name: "GillSans-Light", size: 12)
+        let descriptor = UIFontDescriptor(name: "GillSans", size: 12)
         let font = UIFont(descriptor: descriptor, size: 12)
         return font
     }

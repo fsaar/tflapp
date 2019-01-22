@@ -26,6 +26,9 @@ class TFLTimerButton : UIButton {
     
     weak var delegate : TFLTimerButtonDelegate?
     fileprivate let length : CGFloat = 40
+    fileprivate let radius : CGFloat = 12
+    fileprivate let innerWidth : CGFloat = 3
+    fileprivate let outerWidth : CGFloat = 5
     fileprivate let defaultStopAnimationTime = Double(0.25)
     @IBInspectable fileprivate var expiryTime : Int = 60
     fileprivate enum DisplayLinkState {
@@ -43,8 +46,8 @@ class TFLTimerButton : UIButton {
     fileprivate var displayLink : CADisplayLink?
     
     fileprivate lazy var innerLayer : CAShapeLayer = {
-        let lineWidth : CGFloat = 4
-        let shapeLayer = self.shapeLayer(radius: 14,endAngle: CGFloat(2 * Double.pi * 0.92))
+        let lineWidth : CGFloat = innerWidth
+        let shapeLayer = self.shapeLayer(radius: radius,endAngle: CGFloat(2 * Double.pi * 0.92))
         shapeLayer.lineWidth = lineWidth
         shapeLayer.fillColor = UIColor.clear.cgColor
         shapeLayer.strokeColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.8).cgColor
@@ -52,8 +55,8 @@ class TFLTimerButton : UIButton {
     }()
     
     fileprivate lazy var borderLayer : CAShapeLayer = {
-        let lineWidth : CGFloat = 6
-        let shapeLayer = self.shapeLayer(radius: 14,endAngle: CGFloat(2 * Double.pi * 0.92))
+        let lineWidth : CGFloat = outerWidth
+        let shapeLayer = self.shapeLayer(radius: radius,endAngle: CGFloat(2 * Double.pi * 0.92))
         shapeLayer.lineWidth = lineWidth
         shapeLayer.fillColor = UIColor.clear.cgColor
         shapeLayer.strokeColor = UIColor.white.cgColor
@@ -70,14 +73,14 @@ class TFLTimerButton : UIButton {
             context.fill(bounds)
             
             let center = CGPoint(x: length / 2.0, y: length / 2.0)
-            let bezierPath = UIBezierPath(arcCenter: center, radius: 14 , startAngle: 0, endAngle: CGFloat(2 * Double.pi), clockwise: true)
+            let bezierPath = UIBezierPath(arcCenter: center, radius: radius , startAngle: 0, endAngle: CGFloat(2 * Double.pi), clockwise: true)
             UIColor.white.setStroke()
-            bezierPath.lineWidth = 6
+            bezierPath.lineWidth = outerWidth
             bezierPath.stroke()
             
-            let bezierPath2 = UIBezierPath(arcCenter: center, radius: 14 , startAngle: 0, endAngle: CGFloat(2 * Double.pi), clockwise: true)
+            let bezierPath2 = UIBezierPath(arcCenter: center, radius: radius , startAngle: 0, endAngle: CGFloat(2 * Double.pi), clockwise: true)
             UIColor.lightGray.setStroke()
-            bezierPath2.lineWidth = 4
+            bezierPath2.lineWidth = innerWidth
             bezierPath2.stroke()
         }
     }()
@@ -163,7 +166,7 @@ fileprivate extension TFLTimerButton {
         self.setTitle("\(expiryTime)", for: .normal)
         self.setTitleColor(.white, for: .normal)
         self.setTitleColor(.gray, for: .highlighted)
-        self.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+        self.titleLabel?.font = UIFont.tflTimerButtonTitle()
         self.titleLabel?.textAlignment = .center
         self.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         self.addTarget(self, action: #selector(self.tapHandler(_:)), for: .touchUpInside)

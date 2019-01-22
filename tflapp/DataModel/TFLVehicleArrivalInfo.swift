@@ -36,18 +36,29 @@ import Foundation
  },
  
  */
-public struct TFLVehicleArrivalInfo : Equatable,Codable {
+
+extension Array where Element == TFLVehicleArrivalInfo {
+    func containsNaptanId(_ naptanID : String) -> Bool {
+        let identifiers = self.map { $0.busStopIdentifier }
+        let hasArrivalInfo = identifiers.contains(naptanID)
+        return hasArrivalInfo
+    }
+    
+    func info(with naptandID : String) -> TFLVehicleArrivalInfo? {
+        let identifiers = self.map { $0.busStopIdentifier }
+        guard let index = identifiers.index(of:naptandID) else {
+            return nil
+        }
+        return self[index]
+        
+    }
+}
+
+public struct TFLVehicleArrivalInfo : CustomStringConvertible {
 
     enum TFLBusPredictionError : Error {
         case decodingError
     }
-    
-    static let isoDefault: ISO8601DateFormatter = {
-        let formatter = ISO8601DateFormatter()
-        return formatter
-    }()
-    
-    
     
     private enum CodingKeys : String,CodingKey {
         case vehicleId = "vehicleId"
@@ -59,23 +70,54 @@ public struct TFLVehicleArrivalInfo : Equatable,Codable {
         case currentLocation = "currentLocation"
         case timeToStation = "timeToStation"
         case platformName = "platformName"
+        case stationName = "stationName"
     }
     
+    static let isoDefault: ISO8601DateFormatter = {
+        let formatter = ISO8601DateFormatter()
+        return formatter
+    }()
+    
+    public var description: String {
+        return "\(busStopIdentifier) \(stationName): \(timeToStation) [\(direction),\(currentLocation)]"
+    }
+    
+    let vehicleId : String
+    let busStopIdentifier : String
+    let direction : String
+    let towards : String
+    let timeToLive : Date
+    let expectedArrival : Date
+    let currentLocation : String
+    let timeToStation : UInt
+    let platformName : String
+    let stationName : String
+
+}
+
+extension TFLVehicleArrivalInfo : Equatable {
     
     public static func ==(lhs: TFLVehicleArrivalInfo,rhs: TFLVehicleArrivalInfo) -> (Bool) {
         return lhs.vehicleId == rhs.vehicleId &&
-                lhs.busStopIdentifier  == rhs.busStopIdentifier &&
-                lhs.towards == rhs.towards &&
-                lhs.platformName == rhs.platformName
+            lhs.busStopIdentifier  == rhs.busStopIdentifier &&
+            lhs.towards == rhs.towards &&
+            lhs.platformName == rhs.platformName
+    }
+}
+
+extension TFLVehicleArrivalInfo : Hashable {
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(vehicleId)
+        hasher.combine(busStopIdentifier)
+        hasher.combine(towards)
+        hasher.combine(platformName)
     }
     
+}
 
-//    public var description: String {
-//        let secondsPerMinute : UInt = 60
-//        let prefix = self.vehicleId + " towards " + naptanId
-//        return prefix + " in " + "\(Int(timeToStation/secondsPerMinute)) minutes [\(timeToStation) secs]\n"
-//    }
-    
+
+extension TFLVehicleArrivalInfo : Codable {
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
@@ -90,6 +132,7 @@ public struct TFLVehicleArrivalInfo : Equatable,Codable {
         try container.encode(currentLocation, forKey: .currentLocation)
         try container.encode(timeToStation, forKey: .timeToStation)
         try container.encode(platformName, forKey: .platformName)
+        try container.encode(stationName, forKey: .stationName)
     }
     
     public init(from decoder: Decoder) throws {
@@ -110,17 +153,7 @@ public struct TFLVehicleArrivalInfo : Equatable,Codable {
         currentLocation = try container.decode(String.self, forKey: .currentLocation)
         timeToStation = try container.decode(UInt.self, forKey: .timeToStation)
         platformName = try container.decode(String.self, forKey: .platformName)
+        stationName = try container.decode(String.self, forKey: .stationName)
     }
     
-    
-    let vehicleId : String
-    let busStopIdentifier : String
-    let direction : String
-    let towards : String
-    let timeToLive : Date
-    let expectedArrival : Date
-    let currentLocation : String
-    let timeToStation : UInt
-    let platformName : String
-
 }

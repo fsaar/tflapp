@@ -16,7 +16,7 @@ class TFLArrivalInfoView : UIView {
     fileprivate lazy var vehicleIDLabel : UILabel = {
         let vehicleIDLabel = UILabel(frame: .zero)
         vehicleIDLabel.translatesAutoresizingMaskIntoConstraints = false
-        vehicleIDLabel.backgroundColor = UIColor.yellow
+        vehicleIDLabel.backgroundColor = UIColor.white
         vehicleIDLabel.textColor = .black
         vehicleIDLabel.minimumScaleFactor = 0.5
         vehicleIDLabel.numberOfLines = 1
@@ -59,7 +59,7 @@ class TFLArrivalInfoView : UIView {
             innerPath.fill()
             
             let numberPlateRectPath = UIBezierPath(roundedRect: nubmerPlateRect , cornerRadius: 0)
-            UIColor.yellow.setFill()
+            UIColor.white.setFill()
             UIColor.black.setStroke()
             numberPlateRectPath.lineWidth = 0.5
             numberPlateRectPath.fill()

@@ -10,9 +10,15 @@ class TFLAnimatedLabel: UIView {
         }
     }
     
+    var minimumScaleFactor : CGFloat = 0.5 {
+        didSet {
+            self.labels.forEach { $0.minimumScaleFactor = self.minimumScaleFactor  }
+        }
+    }
+    
     var textAlignment : NSTextAlignment = .left {
         didSet {
-            self.labels.forEach { $0.textAlignment = self.textAlignment }
+            self.labels.forEach { $0.textAlignment = self.textAlignment  }
         }
     }
     var textColor : UIColor = .black {
@@ -93,6 +99,7 @@ fileprivate extension TFLAnimatedLabel {
         label.textAlignment = self.textAlignment
         label.backgroundColor = self.backgroundColor
         label.isOpaque = true
+        label.minimumScaleFactor =  0.5
         return label
     }
     

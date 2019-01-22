@@ -100,6 +100,7 @@ fileprivate extension TFLAnimatedLabel {
         label.backgroundColor = self.backgroundColor
         label.isOpaque = true
         label.minimumScaleFactor =  0.5
+        label.adjustsFontSizeToFitWidth = true
         return label
     }
     

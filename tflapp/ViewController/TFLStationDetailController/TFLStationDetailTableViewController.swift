@@ -55,6 +55,14 @@ class TFLStationDetailTableViewController: UITableViewController {
     var arrivalInfos : [TFLVehicleArrivalInfo] = [] {
         didSet {
             let (inserted ,deleted ,updated, _) = oldValue.transformTo(newList: arrivalInfos)
+            guard !updated.isEmpty || inserted.isEmpty else {
+                OperationQueue.main.addOperation {
+                    self.tableView.reloadData()
+                    self.scrollToStationIfNeedBe(self.station)
+                }
+                return
+            }
+            
             let reloadList  = (inserted + deleted).map { $0.0 }
             let updateList = updated.map { $0.0 }
             
@@ -62,7 +70,6 @@ class TFLStationDetailTableViewController: UITableViewController {
             let visibleIndexPathSet = Set(self.tableView.indexPathsForVisibleRows ?? [])
             let indexPathsSetToUpdate = Set(viewModels.indexPaths(for: updateList)).intersection(visibleIndexPathSet)
             OperationQueue.main.addOperation {
-                
                 indexPathsSetToUpdate.forEach  { indexPath in
                     guard let cell = self.tableView.cellForRow(at: indexPath) as? TFLStationDetailTableViewCell else {
                         return
@@ -70,9 +77,6 @@ class TFLStationDetailTableViewController: UITableViewController {
                     self.configure(cell: cell, at: indexPath)
                 }
                 self.tableView.reloadRows(at: indexPathsToReload  , with: .automatic)
-                if updated.isEmpty && !inserted.isEmpty {
-                    self.scrollToStationIfNeedBe(self.station)
-                }
             }
             
             
@@ -162,14 +166,16 @@ fileprivate extension TFLStationDetailTableViewController {
     
     func scrollToStationIfNeedBe(_ station : String?) {
         if let station = station , let indexPath = viewModels.indexPath(for:station) {
-            preventFeedbackGenerator { [weak self] in
-                self?.tableView.scrollToRow(at: indexPath, at: UITableView.ScrollPosition.bottom, animated: false)
+            performWithoutFeedbackGenerator { [weak self] in
+                UIView.performWithoutAnimation {
+                    self?.tableView.scrollToRow(at: indexPath, at: UITableView.ScrollPosition.bottom, animated: false)
+                }
             }
             
         }
     }
     
-    func preventFeedbackGenerator(using block : @escaping () -> Void) {
+    func performWithoutFeedbackGenerator(using block : @escaping () -> Void) {
         var oldValue : UIImpactFeedbackGenerator?
         (oldValue, self.lightImpactFeedbackGenerator) = (self.lightImpactFeedbackGenerator,oldValue)
         block()

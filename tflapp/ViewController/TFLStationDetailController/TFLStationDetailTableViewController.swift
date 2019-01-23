@@ -15,7 +15,6 @@ protocol TFLStationDetailTableViewControllerDelegate : class {
 }
 
 // TODO: 1. refresh nearby station
-// TODO: 2. disable feedbackgenerator when scrolling to selected station
 
 class TFLStationDetailTableViewController: UITableViewController {
     weak var delegate : TFLStationDetailTableViewControllerDelegate?

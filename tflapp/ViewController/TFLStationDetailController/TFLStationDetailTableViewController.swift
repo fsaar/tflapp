@@ -15,11 +15,11 @@ protocol TFLStationDetailTableViewControllerDelegate : class {
 }
 
 // TODO: 1. refresh nearby station
+// TODO: 2. disable feedbackgenerator when scrolling to selected station
 
 class TFLStationDetailTableViewController: UITableViewController {
     weak var delegate : TFLStationDetailTableViewControllerDelegate?
     let sectionHeaderDefaultHeight = CGFloat(50)
-    fileprivate var scrolledToStationInitially : Bool = false
 
     fileprivate var currentSection : Int = 0 {
         didSet {
@@ -37,7 +37,7 @@ class TFLStationDetailTableViewController: UITableViewController {
         let headerView = self.tableView.headerView(forSection: section) as? TFLStationDetailSectionHeaderView
         headerView?.showBarView(show, animated: true)
     }
-    let lightImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
+    lazy var lightImpactFeedbackGenerator : UIImpactFeedbackGenerator? = UIImpactFeedbackGenerator(style: .light)
     fileprivate var visibleSections : Set<Int> = [] {
         didSet {
             let newSection = visibleSections.min()
@@ -45,8 +45,8 @@ class TFLStationDetailTableViewController: UITableViewController {
             if  newSection != oldSection, let currentSection = newSection {
                 self.currentSection = currentSection
                 if !oldValue.isEmpty {
-                    self.lightImpactFeedbackGenerator.prepare()
-                    self.lightImpactFeedbackGenerator.impactOccurred()
+                    self.lightImpactFeedbackGenerator?.prepare()
+                    self.lightImpactFeedbackGenerator?.impactOccurred()
                 }
             }
         }
@@ -163,8 +163,19 @@ fileprivate extension TFLStationDetailTableViewController {
     
     func scrollToStationIfNeedBe(_ station : String?) {
         if let station = station , let indexPath = viewModels.indexPath(for:station) {
-            scrolledToStationInitially = true
-            self.tableView.scrollToRow(at: indexPath, at: UITableView.ScrollPosition.bottom, animated: false)
+            preventFeedbackGenerator { [weak self] in
+                self?.tableView.scrollToRow(at: indexPath, at: UITableView.ScrollPosition.bottom, animated: false)
+            }
+            
+        }
+    }
+    
+    func preventFeedbackGenerator(using block : @escaping () -> Void) {
+        var oldValue : UIImpactFeedbackGenerator?
+        (oldValue, self.lightImpactFeedbackGenerator) = (self.lightImpactFeedbackGenerator,oldValue)
+        block()
+        OperationQueue.main.addOperation {
+            self.lightImpactFeedbackGenerator = oldValue
         }
     }
 

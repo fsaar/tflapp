@@ -112,7 +112,7 @@ fileprivate extension TFLStationDetailController {
         self.navigationController?.popViewController(animated: true)
     }
     
-    fileprivate func setup() {
+    func setup() {
         let arrivalInfos = lineInfo.arrivalInfos ?? []
         self.tableViewController?.station = lineInfo.station
 
@@ -137,7 +137,7 @@ fileprivate extension TFLStationDetailController {
         }
     }
     
-    fileprivate func controllerModels(for line : String,on queue : OperationQueue = .main,using completionBlock : @escaping (_ tableViewModels:[TFLStationDetailTableViewModel],_ mapViewModels: [TFLStationDetailMapViewModel]) -> Void) {
+    func controllerModels(for line : String,on queue : OperationQueue = .main,using completionBlock : @escaping (_ tableViewModels:[TFLStationDetailTableViewModel],_ mapViewModels: [TFLStationDetailMapViewModel]) -> Void) {
 
         let location = self.currentUserCoordinate.location
         let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext

@@ -9,8 +9,8 @@
 import UIKit
 
 class TFLArrivalInfoView : UIView {
-    static let minTitle = "1 \(NSLocalizedString("TFLArrivalInfoView.min", comment: ""))"
-    static let minsTitle = NSLocalizedString("TFLArrivalInfoView.mins", comment: "")
+    static let minTitle = "1 \(NSLocalizedString("Common.min", comment: ""))"
+    static let minsTitle = NSLocalizedString("Common.mins", comment: "")
 
     static let size = CGSize(width:58,height:46)
     fileprivate lazy var vehicleIDLabel : UILabel = {

@@ -117,39 +117,43 @@ fileprivate extension TFLStationDetailController {
         self.tableViewController?.station = lineInfo.station
 
         guard let line = lineInfo.line else {
-            self.tableViewController?.viewModels = []
-            self.mapViewController?.viewModels = []
             return
         }
         
-        let location = currentUserCoordinate.location
+        controllerModels(for:line) { [weak self] models,mapModels in
+            self?.stationDetailErrorView?.isHidden = !models.isEmpty
+            let normalizedInfos = self?.normalizeArrivalsInfo(arrivalInfos,station:self?.lineInfo.station ?? "",tableViewModels:models)
+            
+            self?.tableViewController?.updateData(with: models,newArrivalInfos: normalizedInfos)
+            self?.mapViewController?.viewModels = mapModels
+            
+            self?.tableViewviewModels = models
+            self?.mapViewModels = mapModels
+            
+            if let _ = self?.lineInfo.vehicleID {
+                self?.containerView.isHidden = false
+                self?.updateStatusView.state = .updatePending
+            }
+        }
+    }
+    
+    fileprivate func controllerModels(for line : String,on queue : OperationQueue = .main,using completionBlock : @escaping (_ tableViewModels:[TFLStationDetailTableViewModel],_ mapViewModels: [TFLStationDetailMapViewModel]) -> Void) {
+
+        let location = self.currentUserCoordinate.location
         let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
         context.perform {
             let lineInfo =  TFLCDLineInfo.lineInfo(with: line, and: context)
             let routes = lineInfo?.routes?.array as? [TFLCDLineRoute] ?? []
             let models : [TFLStationDetailTableViewModel] =  routes.compactMap { TFLStationDetailTableViewModel(with: $0,location:location) }
             let mapModels : [TFLStationDetailMapViewModel] = routes.compactMap { TFLStationDetailMapViewModel(with: $0) }
-            OperationQueue.main.addOperation {
-                self.stationDetailErrorView?.isHidden = !models.isEmpty
-                let normalizedInfos = self.normalizeArrivalsInfo(arrivalInfos,station:self.lineInfo.station ?? "",tableViewModels:models)
-
-                self.tableViewController?.arrivalInfos = normalizedInfos
-                self.tableViewController?.viewModels  = models
-                self.mapViewController?.viewModels = mapModels
-                self.tableViewController?.reloadData()
-                
-                self.tableViewviewModels = models
-                self.mapViewModels = mapModels
-                
-                if let _ = self.lineInfo.vehicleID {
-                    self.containerView.isHidden = false
-                    self.updateStatusView.state = .updatePending
-                }
+            queue.addOperation {
+                completionBlock(models,mapModels)
             }
         }
     }
     
-    func trackVehicle(with vehicleID : String,using completionBlock :((_ arrivalInfos : [TFLVehicleArrivalInfo]) -> Void)?) {
+    
+    func trackVehicle(with vehicleID : String,on queue : OperationQueue = .main,using completionBlock :((_ arrivalInfos : [TFLVehicleArrivalInfo]) -> Void)?) {
         guard let station = self.lineInfo.station  else {
             completionBlock?([])
             return
@@ -161,7 +165,9 @@ fileprivate extension TFLStationDetailController {
                 return
             }
             let normalizedInfos = self.normalizeArrivalsInfo(arrivalInfos,station:station,tableViewModels:self.tableViewviewModels)
-            completionBlock?(normalizedInfos )
+            queue.addOperation {
+                completionBlock?(normalizedInfos )
+            }
         }
     }
     
@@ -202,8 +208,7 @@ fileprivate extension TFLStationDetailController {
         trackVehicle(with: vehicleID) { [weak self] arrivalInfos in
             self?.containerView.isHidden = arrivalInfos.isEmpty
             self?.updateStatusView.state = .updatePending
-            self?.tableViewController?.arrivalInfos = arrivalInfos
-            self?.tableViewController?.reloadData()
+            self?.tableViewController?.updateData(newArrivalInfos: arrivalInfos)
         }
     }
 }

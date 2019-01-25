@@ -49,47 +49,24 @@ class TFLStationDetailTableViewController: UITableViewController {
         }
     }
     var station : String?
-    fileprivate var oldArrivalInfos : [TFLVehicleArrivalInfo] = []
-    var arrivalInfos : [TFLVehicleArrivalInfo] = [] {
-        didSet {
-            self.oldArrivalInfos = oldValue
-        }
-    }
-    var viewModels : [TFLStationDetailTableViewModel] = []
+    fileprivate var arrivalInfos : [TFLVehicleArrivalInfo] = []
+    fileprivate var viewModels : [TFLStationDetailTableViewModel] = []
 
-    func reloadData() {
-        let animate = !oldArrivalInfos.isEmpty
-        guard animate else {
-            OperationQueue.main.addOperation {
-                self.tableView.reloadData()
-                self.scrollToStationIfNeedBe(self.station)
-            }
+    func updateData(with newModels: [TFLStationDetailTableViewModel]? = nil,newArrivalInfos : [TFLVehicleArrivalInfo]? = nil) {
+        guard (newModels != nil) || (newArrivalInfos != nil) else {
             return
         }
-        let (inserted ,deleted ,updated, _) = oldArrivalInfos.transformTo(newList: arrivalInfos)
-        guard !updated.isEmpty || inserted.isEmpty else {
-            OperationQueue.main.addOperation {
-                self.tableView.reloadData()
-                self.scrollToStationIfNeedBe(self.station)
-            }
-            return
+        if let newModels = newModels {
+            viewModels = newModels
         }
 
-        let reloadList  = (inserted + deleted).map { $0.0 }
-        let updateList = updated.map { $0.0 }
-
-        let indexPathsToReload  = viewModels.indexPaths(for: reloadList)
-        let visibleIndexPathSet = Set(self.tableView.indexPathsForVisibleRows ?? [])
-        let indexPathsSetToUpdate = Set(viewModels.indexPaths(for: updateList)).intersection(visibleIndexPathSet)
-        OperationQueue.main.addOperation {
-            indexPathsSetToUpdate.forEach  { indexPath in
-                guard let cell = self.tableView.cellForRow(at: indexPath) as? TFLStationDetailTableViewCell else {
-                    return
-                }
-                self.configure(cell: cell, at: indexPath)
-            }
-            self.tableView.reloadRows(at: indexPathsToReload  , with: .automatic)
+        let oldArrivalInfos = arrivalInfos
+        if let newArrivalInfos = newArrivalInfos {
+            arrivalInfos = newArrivalInfos
         }
+        
+        let animated = !oldArrivalInfos.isEmpty
+        self.reloadAnimated(animated, oldArrivalInfos: oldArrivalInfos)
     }
 
     override func viewDidLoad() {
@@ -155,6 +132,34 @@ extension TFLStationDetailTableViewController : TFLStationDetailSectionHeaderVie
 }
 
 fileprivate extension TFLStationDetailTableViewController {
+    func reloadAnimated(_ animated : Bool,oldArrivalInfos : [TFLVehicleArrivalInfo]) {
+        guard animated else {
+            self.tableView.reloadData()
+            self.scrollToStationIfNeedBe(self.station)
+            return
+        }
+        let (inserted ,deleted ,updated, _) = oldArrivalInfos.transformTo(newList: arrivalInfos)
+        guard !updated.isEmpty || inserted.isEmpty else {
+            self.tableView.reloadData()
+            self.scrollToStationIfNeedBe(self.station)
+            return
+        }
+        
+        let reloadList  = (inserted + deleted).map { $0.0 }
+        let updateList = updated.map { $0.0 }
+        
+        let indexPathsToReload  = viewModels.indexPaths(for: reloadList)
+        let visibleIndexPathSet = Set(self.tableView.indexPathsForVisibleRows ?? [])
+        let indexPathsSetToUpdate = Set(viewModels.indexPaths(for: updateList)).intersection(visibleIndexPathSet)
+            indexPathsSetToUpdate.forEach  { indexPath in
+                guard let cell = self.tableView.cellForRow(at: indexPath) as? TFLStationDetailTableViewCell else {
+                    return
+                }
+                self.configure(cell: cell, at: indexPath)
+            }
+            self.tableView.reloadRows(at: indexPathsToReload  , with: .automatic)
+    }
+    
     func configure(cell : TFLStationDetailTableViewCell?,at indexPath : IndexPath) {
         guard let cell = cell else {
             return

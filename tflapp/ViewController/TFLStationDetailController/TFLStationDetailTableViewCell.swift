@@ -20,6 +20,7 @@ class TFLStationDetailTableViewCell: UITableViewCell {
 
         }
     }
+    let highlightedTransform = CGAffineTransform.identity.scaledBy(x: 1.10, y: 1.10)
     let animationContainer : TFLCircleAnimationView = {
         let view = TFLCircleAnimationView(frame:.zero)
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -91,17 +92,23 @@ class TFLStationDetailTableViewCell: UITableViewCell {
         super.prepareForReuse()
        
         self.stationName.text = nil
+        self.stationName.font =  UIFont.tflStationDetailTitle()
         self.upperContainer.isHidden = false
         self.lowerContainer.isHidden = false
         self.nearbyContainer.isHidden = true
         self.upperStationPath.isHidden = true
         self.lowerStationPath.isHidden = true
+        self.middleStationPath.transform = .identity
         self.arrivalInfoView.isHidden = true
         self.animationContainer.stopAnimation()
     }
 
-    func configure(with model: TFLStationDetailTableViewModel,and arrivalInfo : TFLVehicleArrivalInfo?, at index: Int) {
+    func configure(with model: TFLStationDetailTableViewModel,and arrivalInfo : TFLVehicleArrivalInfo?, at index: Int,highlight : Bool) {
         let tuple = model.stations[index]
+        if highlight {
+            self.stationName.font =  .tflStationDetailHighlightedTitle()
+            self.middleStationPath.transform =  highlightedTransform
+        }
         self.stationName.text = tuple.name
         self.stopCodeLabel.text = tuple.stopCode
         

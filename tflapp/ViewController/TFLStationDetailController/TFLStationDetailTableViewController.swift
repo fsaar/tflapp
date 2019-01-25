@@ -14,8 +14,6 @@ protocol TFLStationDetailTableViewControllerDelegate : class {
     func tflStationDetailTableViewController(_ controller: TFLStationDetailTableViewController,with header: UITableViewHeaderFooterView, didPanBy distance: CGFloat)
 }
 
-// TODO: 1. refresh nearby station
-
 class TFLStationDetailTableViewController: UITableViewController {
     weak var delegate : TFLStationDetailTableViewControllerDelegate?
     let sectionHeaderDefaultHeight = CGFloat(50)
@@ -51,44 +49,48 @@ class TFLStationDetailTableViewController: UITableViewController {
         }
     }
     var station : String?
-    
+    fileprivate var oldArrivalInfos : [TFLVehicleArrivalInfo] = []
     var arrivalInfos : [TFLVehicleArrivalInfo] = [] {
         didSet {
-            let (inserted ,deleted ,updated, _) = oldValue.transformTo(newList: arrivalInfos)
-            guard !updated.isEmpty || inserted.isEmpty else {
-                OperationQueue.main.addOperation {
-                    self.tableView.reloadData()
-                    self.scrollToStationIfNeedBe(self.station)
-                }
-                return
-            }
-            
-            let reloadList  = (inserted + deleted).map { $0.0 }
-            let updateList = updated.map { $0.0 }
-            
-            let indexPathsToReload  = viewModels.indexPaths(for: reloadList)
-            let visibleIndexPathSet = Set(self.tableView.indexPathsForVisibleRows ?? [])
-            let indexPathsSetToUpdate = Set(viewModels.indexPaths(for: updateList)).intersection(visibleIndexPathSet)
-            OperationQueue.main.addOperation {
-                indexPathsSetToUpdate.forEach  { indexPath in
-                    guard let cell = self.tableView.cellForRow(at: indexPath) as? TFLStationDetailTableViewCell else {
-                        return
-                    }
-                    self.configure(cell: cell, at: indexPath)
-                }
-                self.tableView.reloadRows(at: indexPathsToReload  , with: .automatic)
-            }
-            
-            
+            self.oldArrivalInfos = oldValue
         }
     }
-    var viewModels : [TFLStationDetailTableViewModel] = [] {
-        didSet {
-            self.tableView.reloadData()
-            scrollToStationIfNeedBe(station)
-        }
-    }
+    var viewModels : [TFLStationDetailTableViewModel] = []
 
+    func reloadData() {
+        let animate = !oldArrivalInfos.isEmpty
+        guard animate else {
+            OperationQueue.main.addOperation {
+                self.tableView.reloadData()
+                self.scrollToStationIfNeedBe(self.station)
+            }
+            return
+        }
+        let (inserted ,deleted ,updated, _) = oldArrivalInfos.transformTo(newList: arrivalInfos)
+        guard !updated.isEmpty || inserted.isEmpty else {
+            OperationQueue.main.addOperation {
+                self.tableView.reloadData()
+                self.scrollToStationIfNeedBe(self.station)
+            }
+            return
+        }
+
+        let reloadList  = (inserted + deleted).map { $0.0 }
+        let updateList = updated.map { $0.0 }
+
+        let indexPathsToReload  = viewModels.indexPaths(for: reloadList)
+        let visibleIndexPathSet = Set(self.tableView.indexPathsForVisibleRows ?? [])
+        let indexPathsSetToUpdate = Set(viewModels.indexPaths(for: updateList)).intersection(visibleIndexPathSet)
+        OperationQueue.main.addOperation {
+            indexPathsSetToUpdate.forEach  { indexPath in
+                guard let cell = self.tableView.cellForRow(at: indexPath) as? TFLStationDetailTableViewCell else {
+                    return
+                }
+                self.configure(cell: cell, at: indexPath)
+            }
+            self.tableView.reloadRows(at: indexPathsToReload  , with: .automatic)
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -159,9 +161,9 @@ fileprivate extension TFLStationDetailTableViewController {
         }
         let model = viewModels[indexPath.section]
         let stationNaptanId = model.stations[indexPath.row].naptanId
-        
+        let highlight = stationNaptanId == self.station
         let arrivalInfo = arrivalInfos.info(with:stationNaptanId)
-        cell.configure(with: model,and:arrivalInfo,at:indexPath.row)
+        cell.configure(with: model,and:arrivalInfo,at:indexPath.row,highlight: highlight)
     }
     
     func scrollToStationIfNeedBe(_ station : String?) {

@@ -110,9 +110,9 @@ class TFLNearbyBusStationsController : UIViewController {
         }
         switch segueIdentifier {
         case .stationDetailSegue:
-            if let controller = segue.destination as? TFLStationDetailController, let (line,vehicleID,station) = sender as? (String,String?,String?) {
+            if let controller = segue.destination as? TFLStationDetailController, let (line,vehicleID,station,infos) = sender as? (String,String?,String?,[TFLVehicleArrivalInfo]?) {
                 controller.currentUserCoordinate   = currentUserCoordinate
-                controller.lineInfo = (line.uppercased(),vehicleID,station)
+                controller.lineInfo = (line.uppercased(),vehicleID,station,infos)
             }
         }
     }
@@ -167,8 +167,25 @@ extension TFLNearbyBusStationsController : TFLBusStationArrivalCellDelegate {
 fileprivate extension TFLNearbyBusStationsController {
    
     func updateAndShowLineInfo(line : String,with vehicleID: String?,at station : String?) {
-        updateLineInfoIfNeedbe(line) { [weak self] in
-            self?.performSegue(withIdentifier: SegueIdentifier.stationDetailSegue.rawValue, sender: (line,vehicleID,station))
+ 
+        TFLHUD.show()
+        let group = DispatchGroup()
+        group.enter()
+        var arrivalInfos : [TFLVehicleArrivalInfo]?
+        self.updateLineInfoIfNeedbe(line) { 
+            group.leave()
+        }
+    
+        if let vehicleID = vehicleID, !vehicleID.isEmpty {
+            group.enter()
+            self.client.vehicleArrivalsInfo(with: vehicleID) { infos,_ in
+                arrivalInfos = infos
+                group.leave()
+            }
+        }
+        group.notify(queue: .main) {
+            TFLHUD.hide()
+            self.performSegue(withIdentifier: SegueIdentifier.stationDetailSegue.rawValue, sender: (line,vehicleID,station,arrivalInfos))
         }
     }
     
@@ -214,28 +231,28 @@ fileprivate extension TFLNearbyBusStationsController {
         }
     }
     
+
     func updateLineInfoIfNeedbe(_ line : String,using completionblock: (() -> Void)? = nil) {
-       
         if let lineInfo = TFLCDLineInfo.lineInfo(with: line, and: TFLBusStopStack.sharedDataStack.mainQueueManagedObjectContext) {
             completionblock?()
-            if lineInfo.needsUpdate {
+            if lineInfo.needsUpdate { // outdated , download but proceeed with older data
                 self.client.lineStationInfo(for: line,
                                             context:TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext,
                                             with:.main) { [weak self] lineInfo,_ in
-                                              self?.updateSpotlightWithLineInfo(lineInfo)
+                                                self?.updateSpotlightWithLineInfo(lineInfo)
                                                 
                 }
             }
-        } else {
-            TFLHUD.show()
+        } else { // no information available
             client.lineStationInfo(for: line,
                                    context:TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext,
                                    with:.main) { [weak self] lineInfo,_ in
-                                    TFLHUD.hide()
                                     completionblock?()
                                     self?.updateSpotlightWithLineInfo(lineInfo)
             }
         }
+        
+        
     }
     
     func updateSpotlightWithLineInfo(_ lineInfo : TFLCDLineInfo?) {

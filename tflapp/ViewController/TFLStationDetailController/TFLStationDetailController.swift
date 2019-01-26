@@ -43,6 +43,7 @@ class TFLStationDetailController: UIViewController {
     fileprivate lazy var updateStatusView : TFLUpdateStatusView =  {
         let view = TFLUpdateStatusView(style: .compact, refreshInterval: self.defaultRefreshInterval)
         view.delegate = self
+        view.state = .paused
         view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             view.widthAnchor.constraint(equalToConstant: 40),
@@ -65,41 +66,10 @@ class TFLStationDetailController: UIViewController {
         return UIBarButtonItem(customView: button)
     }()
     
-    private var mapViewModels : [TFLStationDetailMapViewModel] = [] {
-        didSet {
-             self.mapViewController?.viewModels = mapViewModels
-        }
-    }
-    private var tableViewviewModels : [TFLStationDetailTableViewModel] = [] {
-        didSet {
-            self.tableViewController?.viewModels = tableViewviewModels
-        }
-    }
+    private var mapViewModels : [TFLStationDetailMapViewModel] = []
+    private var tableViewviewModels : [TFLStationDetailTableViewModel] = []
 
-    var lineInfo : (line:String?,vehicleID : String?,station:String?) = (nil,nil,nil) {
-        didSet {
-            self.tableViewController?.station = lineInfo.station
-            guard let line = lineInfo.line else {
-                return
-            }
-            let location = currentUserCoordinate.location
-            let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
-            context.perform {
-                let lineInfo =  TFLCDLineInfo.lineInfo(with: line, and: context)
-                let routes = lineInfo?.routes?.array as? [TFLCDLineRoute] ?? []
-                let models : [TFLStationDetailTableViewModel] =  routes.compactMap { TFLStationDetailTableViewModel(with: $0,location:location) }
-                let mapModels : [TFLStationDetailMapViewModel] = routes.compactMap { TFLStationDetailMapViewModel(with: $0) }
-                OperationQueue.main.addOperation {
-                    self.stationDetailErrorView?.isHidden = !models.isEmpty
-                    self.tableViewviewModels = models
-                    self.mapViewModels = mapModels
-                }
-            }
-            if let vehicleID = lineInfo.vehicleID {
-                updateTableViewController(with: vehicleID)
-            }
-        }
-    }
+    var lineInfo : (line:String?,vehicleID : String?,station:String?,arrivalInfos :[TFLVehicleArrivalInfo]?) = (nil,nil,nil,nil)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -108,9 +78,10 @@ class TFLStationDetailController: UIViewController {
         self.navigationItem.leftBarButtonItem = self.backBarButtonItem
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.containerView)
+        
+        setup()
     }
-
-
+    
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let identifier = segue.identifier, let segueIdentifier = SegueIdentifier(rawValue: identifier) else {
@@ -120,13 +91,8 @@ class TFLStationDetailController: UIViewController {
         case .tableViewControllerSegue:
             tableViewController = segue.destination as? TFLStationDetailTableViewController
             tableViewController?.delegate = self
-            _ = tableViewController?.view
-            tableViewController?.station = lineInfo.station
-            tableViewController?.viewModels = tableViewviewModels
         case .mapViewControllerSegue:
             mapViewController = segue.destination as? TFLStationDetailMapViewController
-            _ = mapViewController?.view
-            mapViewController?.viewModels = mapViewModels
         }
     }
 
@@ -146,26 +112,103 @@ fileprivate extension TFLStationDetailController {
         self.navigationController?.popViewController(animated: true)
     }
     
-    func trackVehicle(with vehicleID : String,using completionBlock :((_ arrivalInfos : [TFLVehicleArrivalInfo]) -> Void)?) {
+    func setup() {
+        let arrivalInfos = lineInfo.arrivalInfos ?? []
+        self.tableViewController?.station = lineInfo.station
+
+        guard let line = lineInfo.line else {
+            return
+        }
+        
+        controllerModels(for:line) { [weak self] models,mapModels in
+            self?.stationDetailErrorView?.isHidden = !models.isEmpty
+            let normalizedInfos = self?.normalizeArrivalsInfo(arrivalInfos,station:self?.lineInfo.station ?? "",tableViewModels:models)
+            
+            self?.tableViewController?.updateData(with: models,newArrivalInfos: normalizedInfos)
+            self?.mapViewController?.viewModels = mapModels
+            
+            self?.tableViewviewModels = models
+            self?.mapViewModels = mapModels
+            
+            if let _ = self?.lineInfo.vehicleID {
+                self?.containerView.isHidden = false
+                self?.updateStatusView.state = .updatePending
+            }
+        }
+    }
+    
+    func controllerModels(for line : String,on queue : OperationQueue = .main,using completionBlock : @escaping (_ tableViewModels:[TFLStationDetailTableViewModel],_ mapViewModels: [TFLStationDetailMapViewModel]) -> Void) {
+
+        let location = self.currentUserCoordinate.location
+        let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
+        context.perform {
+            let lineInfo =  TFLCDLineInfo.lineInfo(with: line, and: context)
+            let routes = lineInfo?.routes?.array as? [TFLCDLineRoute] ?? []
+            let models : [TFLStationDetailTableViewModel] =  routes.compactMap { TFLStationDetailTableViewModel(with: $0,location:location) }
+            let mapModels : [TFLStationDetailMapViewModel] = routes.compactMap { TFLStationDetailMapViewModel(with: $0) }
+            queue.addOperation {
+                completionBlock(models,mapModels)
+            }
+        }
+    }
+    
+    
+    func trackVehicle(with vehicleID : String,on queue : OperationQueue = .main,using completionBlock :((_ arrivalInfos : [TFLVehicleArrivalInfo]) -> Void)?) {
+        guard let station = self.lineInfo.station  else {
+            completionBlock?([])
+            return
+        }
+       
         self.tflClient.vehicleArrivalsInfo(with: vehicleID) { [weak self] arrivalInfos,_ in
-            let sortedInfos = (arrivalInfos ?? []).sorted { $0.timeToStation < $1.timeToStation }
-            guard let station = self?.lineInfo.station,
-                    let index = sortedInfos.map ({ $0.busStopIdentifier }).index(of:station ) else {
+            guard let self = self else {
                 completionBlock?([])
                 return
             }
-            
-            let sortedInfosRange = Array(sortedInfos[0...index])
-            
-            completionBlock?(sortedInfosRange )
+            let normalizedInfos = self.normalizeArrivalsInfo(arrivalInfos,station:station,tableViewModels:self.tableViewviewModels)
+            queue.addOperation {
+                completionBlock?(normalizedInfos )
+            }
         }
     }
+    
+    func normalizeArrivalsInfo(_ arrivalInfos : [TFLVehicleArrivalInfo]?,station : String, tableViewModels : [TFLStationDetailTableViewModel]) -> [TFLVehicleArrivalInfo] {
+        guard let arrivalInfos = arrivalInfos else {
+            return []
+        }
+        let naptanRoute = naptanIdListWithStation(station, from: tableViewModels)
+        guard !naptanRoute.isEmpty || station.isEmpty else {
+            return []
+        }
+        let sortedInfos = arrivalInfos.sorted { info1,info2 in
+            let idx1 = naptanRoute.index(of:info1.busStopIdentifier) ?? 0
+            let idx2 = naptanRoute.index(of:info2.busStopIdentifier) ?? 0
+            return idx1 < idx2
+        }
+        
+        guard let index = sortedInfos.map ({ $0.busStopIdentifier }).index(of:station ) else {
+            return []
+        }
+        let sortedInfosRange = Array(sortedInfos[0...index])
+        return sortedInfosRange
+    }
+    
+    func naptanIdListWithStation(_ station : String,from tableViewModels : [TFLStationDetailTableViewModel]) -> [String] {
+        let naptanIDLists = tableViewModels.naptanIDLists
+        let naptanIdList = naptanIDLists.first { lists in
+            guard let _ = lists.index(of:station) else {
+                return false
+            }
+            return true
+        } ?? []
+        return naptanIdList
+    }
+    
     func updateTableViewController(with vehicleID : String) {
         updateStatusView.state = .updating
         trackVehicle(with: vehicleID) { [weak self] arrivalInfos in
             self?.containerView.isHidden = arrivalInfos.isEmpty
             self?.updateStatusView.state = .updatePending
-            self?.tableViewController?.arrivalInfos = arrivalInfos
+            self?.tableViewController?.updateData(newArrivalInfos: arrivalInfos)
         }
     }
 }

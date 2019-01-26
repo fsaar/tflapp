@@ -82,6 +82,7 @@ fileprivate extension TFLHUD {
         guard let delegate  = UIApplication.shared.delegate as? AppDelegate,let window  = delegate.window else {
             return
         }
+        window.isUserInteractionEnabled = false
         window.addSubview(self.visualEffectsView)
 
         NSLayoutConstraint.activate([
@@ -94,6 +95,9 @@ fileprivate extension TFLHUD {
     }
     
     func hide() {
+        let delegate  = UIApplication.shared.delegate as? AppDelegate
+        let window  = delegate?.window
+        window?.isUserInteractionEnabled = true
         blurAnimator.fractionComplete = 0
         visualEffectsView.removeFromSuperview()
     }

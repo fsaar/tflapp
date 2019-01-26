@@ -10,8 +10,8 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
         let vehicleID : String
         let timeToStation : Int
         let towards : String
-        static let minTitle = "1 \(NSLocalizedString("TFLBusStopArrivalsViewModel.min", comment: ""))"
-        static let minsTitle = NSLocalizedString("TFLBusStopArrivalsViewModel.mins", comment: "")
+        static let minTitle = "1 \(NSLocalizedString("Common.min", comment: ""))"
+        static let minsTitle = NSLocalizedString("Common.mins", comment: "")
 
         init(with busPrediction: TFLBusPrediction,using referenceTime : TimeInterval) {
             func arrivalTime(in secs : Int) -> String {

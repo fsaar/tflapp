@@ -9,8 +9,8 @@
 import UIKit
 
 class TFLArrivalInfoView : UIView {
-    static let minTitle = "1 \(NSLocalizedString("TFLArrivalInfoView.min", comment: ""))"
-    static let minsTitle = NSLocalizedString("TFLArrivalInfoView.mins", comment: "")
+    static let minTitle = "1 \(NSLocalizedString("Common.min", comment: ""))"
+    static let minsTitle = NSLocalizedString("Common.mins", comment: "")
 
     static let size = CGSize(width:58,height:46)
     fileprivate lazy var vehicleIDLabel : UILabel = {
@@ -19,8 +19,10 @@ class TFLArrivalInfoView : UIView {
         vehicleIDLabel.backgroundColor = UIColor.white
         vehicleIDLabel.textColor = .black
         vehicleIDLabel.minimumScaleFactor = 0.5
+        vehicleIDLabel.adjustsFontSizeToFitWidth = true
         vehicleIDLabel.numberOfLines = 1
         vehicleIDLabel.textAlignment = .center
+        vehicleIDLabel.widthAnchor.constraint(equalToConstant: 44).isActive = true
         vehicleIDLabel.font = .tflStationDetailArrivalInfoVehicleTitle()
         return vehicleIDLabel
     }()
@@ -32,7 +34,7 @@ class TFLArrivalInfoView : UIView {
         timeLabel.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
         timeLabel.textAlignment = .center
         timeLabel.font = .tflStationDetailArrivalInfoTimeTitle()
-        timeLabel.widthAnchor.constraint(equalToConstant: TFLArrivalInfoView.size.width - 4)
+        timeLabel.widthAnchor.constraint(equalToConstant: TFLArrivalInfoView.size.width - 4).isActive = true
         return timeLabel
     }()
     
@@ -41,7 +43,7 @@ class TFLArrivalInfoView : UIView {
     
     static fileprivate var busArrivalInfoViewBackgroundImage: UIImage = {
         let bounds = CGRect(origin:.zero, size: CGSize(width: TFLArrivalInfoView.size.width, height: TFLArrivalInfoView.size.height))
-        let nubmerPlateRect = CGRect(x: 6, y: 4, width: TFLArrivalInfoView.size.width - 12, height: 16)
+        let numberPlateRect = CGRect(x: 5, y: 4, width: TFLArrivalInfoView.size.width - 10, height: 16)
         let format = UIGraphicsImageRendererFormat()
         format.opaque = true
         let renderer = UIGraphicsImageRenderer(bounds: bounds,format: format)
@@ -58,7 +60,7 @@ class TFLArrivalInfoView : UIView {
             bgColor.setFill()
             innerPath.fill()
             
-            let numberPlateRectPath = UIBezierPath(roundedRect: nubmerPlateRect , cornerRadius: 0)
+            let numberPlateRectPath = UIBezierPath(roundedRect: numberPlateRect , cornerRadius: 0)
             UIColor.white.setFill()
             UIColor.black.setStroke()
             numberPlateRectPath.lineWidth = 0.5

@@ -1,6 +1,4 @@
 "TFLBusStopArrivalsViewModel.towards" = "towards ";
-"TFLBusStopArrivalsViewModel.min" = "min";
-"TFLBusStopArrivalsViewModel.mins" = "mins";
 "TFLBusStopArrivalsViewModel.due" = "due";
 "TFLBusStationArrivalsCell.noDataError" = "No data available.";
 "TFLLoadLocationView.title" = "Retrieving current location ...";
@@ -27,8 +25,8 @@
 "TFLNearbyBusStationsController.last_updated" = "last updated: ";
 "TFLHUD.title" = "Loading ...";
 "TFLStationDetailErrorView.title" = "Oops, something went wrong. No route information available.";
-
 "TFLUpdateStatusView.pending.title" = "Updating ...";
 "TFLArrivalInfoView.due" = "due";
-"TFLArrivalInfoView.min" = "min";
-"TFLArrivalInfoView.mins" = "mins";
+
+"Common.min" = "min";
+"Common.mins" = "mins";

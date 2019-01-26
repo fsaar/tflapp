@@ -6,6 +6,12 @@ import os.signpost
 
 class TFLRootViewController: UIViewController {
     typealias CompletionBlock = ()->()
+    fileprivate var defaultRadius : Double {
+        let userDefaultRadius = UserDefaults.standard.double(forKey: "Distance")
+        let searchParam = TFLRootViewController.searchParameter
+        let radius = userDefaultRadius < searchParam.min ? searchParam.initial : userDefaultRadius
+        return radius
+    }
     fileprivate static let searchParameter  : (min:Double,initial:Double) = (100,500)
     fileprivate let networkBackgroundQueue = OperationQueue()
     fileprivate let tflClient = TFLClient()
@@ -185,6 +191,8 @@ class TFLRootViewController: UIViewController {
 fileprivate extension TFLRootViewController {
     
     func updateContentViewController(with arrivalsInfo: [TFLBusStopArrivalsInfo],isUpdatePending updatePending : Bool, and  coordinate: CLLocationCoordinate2D) -> Bool {
+        let radius = self.defaultRadius
+
         let oldTuples = self.nearbyBusStationController?.busStopPredicationTuple ?? []
         var mergedInfo : [TFLBusStopArrivalsInfo] = []
     
@@ -198,7 +206,7 @@ fileprivate extension TFLRootViewController {
             mergedInfo = newTuples
         }
         
-        let filteredArrivalsInfo = mergedInfo.filter { !$0.liveArrivals().isEmpty }
+        let filteredArrivalsInfo = mergedInfo.filter { !$0.liveArrivals().isEmpty }.filter { $0.busStopDistance <= radius }
         self.nearbyBusStationController?.busStopPredicationTuple = filteredArrivalsInfo
         self.nearbyBusStationController?.currentUserCoordinate = coordinate
         switch (updatePending,filteredArrivalsInfo.isEmpty) {
@@ -276,15 +284,15 @@ fileprivate extension TFLRootViewController {
             completionBlock(updated)
         }
     }
-        
+    
+
+    
     func retrieveBusstops(for location:CLLocationCoordinate2D, using completionBlock:@escaping ([TFLBusStopArrivalsInfo],_ completed: Bool)->()) {
         self.state = .retrievingNearbyStations
         if location.isValid {
-            let userDefaultRadius = UserDefaults.standard.double(forKey: "Distance")
-            let searchParam = TFLRootViewController.searchParameter
-            let radius = userDefaultRadius < searchParam.min ? searchParam.initial : userDefaultRadius
+            
             self.state = .loadingArrivals
-            self.busInfoAggregator.loadArrivalTimesForStoreStopPoints(with: location,with: radius, using: completionBlock)
+            self.busInfoAggregator.loadArrivalTimesForStoreStopPoints(with: location,with: self.defaultRadius, using: completionBlock)
             self.updateNearbyBusStops(for: location)
         }
         else

@@ -16,16 +16,24 @@ extension Array where Element == TFLStationDetailTableViewModel {
         return paths.first
     }
     
-    // viewModels[section] -> stations[indexPath.row]
-    //                              |- naptandId == arrivalInfo.busStopIdentifer
     func indexPaths(for naptanIdentifiers : [String]) -> [IndexPath] {
-        let indexPaths : [IndexPath] = self.enumerated().reduce([]) { sum,tuple in
-            let (section,model) = tuple
-            let modelNaptanIds = model.stations.map { $0.naptanId }
-            let sectionIndexPaths = naptanIdentifiers.compactMap { modelNaptanIds.index(of:$0) }.map { IndexPath(row:$0,section:section) }
+        let indexPaths : [IndexPath] = self.naptanIDLists.enumerated().reduce([]) { sum,tuple in
+            let (section,naptanIDList) = tuple
+            let sectionIndexPaths = naptanIdentifiers.compactMap { naptanIDList.index(of:$0) }
+                                                        .map { IndexPath(row:$0,section:section) }
             return sum + sectionIndexPaths
         }
         return indexPaths
+    }
+    
+    // viewModels[section] -> stations[indexPath.row]
+    //                              |- naptandId == arrivalInfo.busStopIdentifer
+    var naptanIDLists : [[String]] {
+        let lists : [[String]] = self.reduce([]) { sum,model in
+            let modelNaptanIds = model.stations.map { $0.naptanId }
+            return sum + [modelNaptanIds]
+        }
+        return lists
     }
 }
 

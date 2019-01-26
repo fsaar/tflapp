@@ -1,5 +1,6 @@
 import UIKit
 import MapKit
+import CoreSpotlight
 import os.signpost
 
 protocol TFLNearbyBusStationsControllerDelegate : class {
@@ -18,10 +19,16 @@ extension MutableCollection where Index == Int, Iterator.Element == TFLBusStopAr
     }
 }
 
+extension NSNotification.Name {
+    static let spotLightLineLookupNotification = NSNotification.Name("spotLightLineLookupNotification")
+    
+}
+
 class TFLNearbyBusStationsController : UIViewController {
     enum SegueIdentifier : String {
         case stationDetailSegue =  "TFLStationDetailSegue"
     }
+    let client = TFLClient()
     static let defaultTableViewRowHeight = CGFloat (120)
     
     fileprivate static let loggingHandle  = OSLog(subsystem: TFLLogger.subsystem, category: TFLLogger.category.refresh.rawValue)
@@ -50,13 +57,14 @@ class TFLNearbyBusStationsController : UIViewController {
     @IBOutlet weak var tableView : UITableView!
     
     fileprivate let synchroniser = TFLSynchroniser(tag:"com.samedialabs.queue.tableview")
-    
+    var currentUserCoordinate = kCLLocationCoordinate2DInvalid
     var busStopPredicationTuple :  [TFLBusStopArrivalsInfo] = [] {
         didSet {
             synchroniser.synchronise { synchroniseEnd in
                 let models = self.busStopPredicationTuple.sortedByBusStopDistance().map { TFLBusStopArrivalsViewModel(with: $0) }
-                
+                TFLLogger.shared.signPostStart(osLog: TFLNearbyBusStationsController.loggingHandle, name: "Collectiontransform")
                 let (inserted ,deleted ,updated, moved) = self.busStopArrivalViewModels.transformTo(newList: models, sortedBy : TFLBusStopArrivalsViewModel.compare)
+                TFLLogger.shared.signPostEnd(osLog: TFLNearbyBusStationsController.loggingHandle, name: "Collectiontransform")
                 DispatchQueue.main.async {
                     self.tableView.performBatchUpdates({
                         self.busStopArrivalViewModels = models
@@ -86,12 +94,13 @@ class TFLNearbyBusStationsController : UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       
         addRefreshControl()
         updateLastUpdateTimeStamp()
         addContentOffsetObserver()
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = TFLNearbyBusStationsController.defaultTableViewRowHeight
+        NotificationCenter.default.addObserver(self, selector: #selector(self.spotlightLookupNotificationHandler(_:)), name: NSNotification.Name.spotLightLineLookupNotification, object: nil)
+        
     }
     
 
@@ -101,8 +110,9 @@ class TFLNearbyBusStationsController : UIViewController {
         }
         switch segueIdentifier {
         case .stationDetailSegue:
-            if let controller = segue.destination as? TFLStationDetailController, let line = sender as? String {
-                controller.line = line
+            if let controller = segue.destination as? TFLStationDetailController, let (line,vehicleID,station,infos) = sender as? (String,String?,String?,[TFLVehicleArrivalInfo]?) {
+                controller.currentUserCoordinate   = currentUserCoordinate
+                controller.lineInfo = (line.uppercased(),vehicleID,station,infos)
             }
         }
     }
@@ -133,18 +143,53 @@ extension TFLNearbyBusStationsController : UITableViewDataSource {
         }
         return cell
     }
+    
+    @objc
+    func spotlightLookupNotificationHandler(_ notification : Notification) {
+        guard let line = notification.userInfo?[CSSearchableItemActivityIdentifier] as? String else {
+            return
+        }
+        self.navigationController?.popToRootViewController(animated: false)
+        self.updateAndShowLineInfo(line: line,with: nil,at:nil)
+    }
+    
 }
 
 extension TFLNearbyBusStationsController : TFLBusStationArrivalCellDelegate {
-    func busStationArrivalCell(_ busStationArrivalCell: TFLBusStationArrivalsCell,didSelectLine line: String) {
-        self.performSegue(withIdentifier: SegueIdentifier.stationDetailSegue.rawValue, sender: line)
+    
+    func busStationArrivalCell(_ busStationArrivalCell: TFLBusStationArrivalsCell,didSelectLine line: String,with vehicleID: String,at station : String) {
+        updateAndShowLineInfo(line: line,with: vehicleID,at: station)
     }
 }
 
 // MARK: Private
 
 fileprivate extension TFLNearbyBusStationsController {
-
+   
+    func updateAndShowLineInfo(line : String,with vehicleID: String?,at station : String?) {
+ 
+        TFLHUD.show()
+        let group = DispatchGroup()
+        group.enter()
+        var arrivalInfos : [TFLVehicleArrivalInfo]?
+        self.updateLineInfoIfNeedbe(line) { 
+            group.leave()
+        }
+    
+        if let vehicleID = vehicleID, !vehicleID.isEmpty {
+            group.enter()
+            self.client.vehicleArrivalsInfo(with: vehicleID) { infos,_ in
+                arrivalInfos = infos
+                group.leave()
+            }
+        }
+        group.notify(queue: .main) {
+            TFLHUD.hide()
+            self.performSegue(withIdentifier: SegueIdentifier.stationDetailSegue.rawValue, sender: (line,vehicleID,station,arrivalInfos))
+        }
+    }
+    
+    
     func configure(_ cell : TFLBusStationArrivalsCell,at indexPath : IndexPath) {
         cell.configure(with: busStopArrivalViewModels[indexPath])
     }
@@ -185,4 +230,47 @@ fileprivate extension TFLNearbyBusStationsController {
             }
         }
     }
+    
+
+    func updateLineInfoIfNeedbe(_ line : String,using completionblock: (() -> Void)? = nil) {
+        if let lineInfo = TFLCDLineInfo.lineInfo(with: line, and: TFLBusStopStack.sharedDataStack.mainQueueManagedObjectContext) {
+            completionblock?()
+            if lineInfo.needsUpdate { // outdated , download but proceeed with older data
+                self.client.lineStationInfo(for: line,
+                                            context:TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext,
+                                            with:.main) { [weak self] lineInfo,_ in
+                                                self?.updateSpotlightWithLineInfo(lineInfo)
+                                                
+                }
+            }
+        } else { // no information available
+            client.lineStationInfo(for: line,
+                                   context:TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext,
+                                   with:.main) { [weak self] lineInfo,_ in
+                                    completionblock?()
+                                    self?.updateSpotlightWithLineInfo(lineInfo)
+            }
+        }
+        
+        
+    }
+    
+    func updateSpotlightWithLineInfo(_ lineInfo : TFLCDLineInfo?) {
+        lineInfo?.managedObjectContext?.perform {
+            if let identifier = lineInfo?.identifier,
+                let routes : [String] =  lineInfo?.routes?.compactMap ({ ($0 as? TFLCDLineRoute)?.name  }) {
+                let dict = [ identifier : routes]
+                let lineRouteList = TFLLineInfoRouteDirectory(with: dict)
+                let provider = TFLCoreSpotLightDataProvider(with: lineRouteList)
+                provider.searchableItems { items in
+                    CSSearchableIndex.default().indexSearchableItems(items) { error in
+                        if let _ = error {
+                            return
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
 }

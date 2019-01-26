@@ -22,7 +22,7 @@
 			<key>MinimumValue</key>
 			<integer>100</integer>
 			<key>MaximumValue</key>
-			<integer>600</integer>
+			<integer>500</integer>
 			<key>MinimumValueImage</key>
 			<string>location_min</string>
 			<key>MaximumValueImage</key>

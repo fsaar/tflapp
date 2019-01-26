@@ -18,7 +18,7 @@ fileprivate class CollectionViewDataSource : NSObject,UICollectionViewDataSource
 
 }
 
-fileprivate class TestAnimatedLabel : TFLAnimiatedLabel {
+fileprivate class TestAnimatedLabel : TFLAnimatedLabel {
     var textSet = false
     
     override func setText(_ newText: String?, animated: Bool) {
@@ -100,6 +100,7 @@ class TFLBusPredictionViewCellSpecs: QuickSpec {
             let dict1 : [String:Any] =
                 ["id": "1836802865",
                  "vehicleId": "LTZ1218",
+                 "towards": "",
                  "naptanId": "490011791K",
                  "lineId": "38",
                  "lineName": "38",
@@ -110,6 +111,7 @@ class TFLBusPredictionViewCellSpecs: QuickSpec {
             let dict2 : [String:Any] =
                 ["id": "1836802866",
                  "vehicleId": "LTZ1218",
+                 "towards": "",
                  "naptanId": "490011791K",
                  "lineId": "39",
                  "lineName": "39",
@@ -120,6 +122,7 @@ class TFLBusPredictionViewCellSpecs: QuickSpec {
             let dict3 : [String:Any] =
                 ["id": "1836802867",
                  "vehicleId": "LTZ1218",
+                 "towards": "",
                  "naptanId": "490011791K",
                  "lineId": "40",
                  "lineName": "40",
@@ -130,6 +133,7 @@ class TFLBusPredictionViewCellSpecs: QuickSpec {
             let dict4 : [String:Any] =
                 ["id": "1836802868",
                  "vehicleId": "LTZ1218",
+                 "towards": "",
                  "naptanId": "490011791K",
                  "lineId": "40",
                  "lineName": "40",

@@ -17,6 +17,7 @@ protocol TFLStationDetailTableViewControllerDelegate : class {
 class TFLStationDetailTableViewController: UITableViewController {
     weak var delegate : TFLStationDetailTableViewControllerDelegate?
     let sectionHeaderDefaultHeight = CGFloat(50)
+
     fileprivate var currentSection : Int = 0 {
         didSet {
             self.delegate?.tflStationDetailTableViewController(self, didShowSection: currentSection)
@@ -33,7 +34,7 @@ class TFLStationDetailTableViewController: UITableViewController {
         let headerView = self.tableView.headerView(forSection: section) as? TFLStationDetailSectionHeaderView
         headerView?.showBarView(show, animated: true)
     }
-    let lightImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
+    lazy var lightImpactFeedbackGenerator : UIImpactFeedbackGenerator? = UIImpactFeedbackGenerator(style: .light)
     fileprivate var visibleSections : Set<Int> = [] {
         didSet {
             let newSection = visibleSections.min()
@@ -41,25 +42,40 @@ class TFLStationDetailTableViewController: UITableViewController {
             if  newSection != oldSection, let currentSection = newSection {
                 self.currentSection = currentSection
                 if !oldValue.isEmpty {
-                    self.lightImpactFeedbackGenerator.prepare()
-                    self.lightImpactFeedbackGenerator.impactOccurred()
+                    self.lightImpactFeedbackGenerator?.prepare()
+                    self.lightImpactFeedbackGenerator?.impactOccurred()
                 }
             }
         }
     }
-    var viewModels : [TFLStationDetailTableViewModel] = [] {
-        didSet {
-            self.tableView.reloadData()
+    var station : String?
+    fileprivate var arrivalInfos : [TFLVehicleArrivalInfo] = []
+    fileprivate var viewModels : [TFLStationDetailTableViewModel] = []
+
+    func updateData(with newModels: [TFLStationDetailTableViewModel]? = nil,newArrivalInfos : [TFLVehicleArrivalInfo]? = nil) {
+        guard (newModels != nil) || (newArrivalInfos != nil) else {
+            return
         }
+        if let newModels = newModels {
+            viewModels = newModels
+        }
+
+        let oldArrivalInfos = arrivalInfos
+        if let newArrivalInfos = newArrivalInfos {
+            arrivalInfos = newArrivalInfos
+        }
+        
+        let animated = !oldArrivalInfos.isEmpty
+        self.reloadAnimated(animated, oldArrivalInfos: oldArrivalInfos)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.sectionHeaderHeight = sectionHeaderDefaultHeight
+        self.tableView.rowHeight = UITableView.automaticDimension
         let sectionNib = UINib(nibName: String(describing: TFLStationDetailSectionHeaderView.self), bundle: nil)
         self.tableView.register(sectionNib, forHeaderFooterViewReuseIdentifier: String(describing: TFLStationDetailSectionHeaderView.self))
     }
-
 }
 
 // MARK: UITableViewDataSource
@@ -85,14 +101,12 @@ extension TFLStationDetailTableViewController {
 
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: TFLStationDetailTableViewCell.self), for: indexPath)
-        if let cell = cell as? TFLStationDetailTableViewCell {
-            let model = viewModels[indexPath.section]
-            cell.configure(with: model,at:indexPath.row)
-        }
+        configure(cell: cell as? TFLStationDetailTableViewCell, at: indexPath)
         return cell
     }
+    
+    
 }
 
 // MARK: UITableViewDelegate
@@ -115,4 +129,66 @@ extension TFLStationDetailTableViewController : TFLStationDetailSectionHeaderVie
     func didPanForHeaderView(_ headerView : TFLStationDetailSectionHeaderView,with distance : CGFloat) {
         self.delegate?.tflStationDetailTableViewController(self,with: headerView, didPanBy: distance)
     }
+}
+
+fileprivate extension TFLStationDetailTableViewController {
+    func reloadAnimated(_ animated : Bool,oldArrivalInfos : [TFLVehicleArrivalInfo]) {
+        guard animated else {
+            self.tableView.reloadData()
+            self.scrollToStationIfNeedBe(self.station)
+            return
+        }
+        let (inserted ,deleted ,updated, _) = oldArrivalInfos.transformTo(newList: arrivalInfos)
+        guard !updated.isEmpty || inserted.isEmpty else {
+            self.tableView.reloadData()
+            self.scrollToStationIfNeedBe(self.station)
+            return
+        }
+        
+        let reloadList  = (inserted + deleted).map { $0.0 }
+        let updateList = updated.map { $0.0 }
+        
+        let indexPathsToReload  = viewModels.indexPaths(for: reloadList)
+        let visibleIndexPathSet = Set(self.tableView.indexPathsForVisibleRows ?? [])
+        let indexPathsSetToUpdate = Set(viewModels.indexPaths(for: updateList)).intersection(visibleIndexPathSet)
+            indexPathsSetToUpdate.forEach  { indexPath in
+                guard let cell = self.tableView.cellForRow(at: indexPath) as? TFLStationDetailTableViewCell else {
+                    return
+                }
+                self.configure(cell: cell, at: indexPath)
+            }
+            self.tableView.reloadRows(at: indexPathsToReload  , with: .automatic)
+    }
+    
+    func configure(cell : TFLStationDetailTableViewCell?,at indexPath : IndexPath) {
+        guard let cell = cell else {
+            return
+        }
+        let model = viewModels[indexPath.section]
+        let stationNaptanId = model.stations[indexPath.row].naptanId
+        let highlight = stationNaptanId == self.station
+        let arrivalInfo = arrivalInfos.info(with:stationNaptanId)
+        cell.configure(with: model,and:arrivalInfo,at:indexPath.row,highlight: highlight)
+    }
+    
+    func scrollToStationIfNeedBe(_ station : String?) {
+        if let station = station , let indexPath = viewModels.indexPath(for:station) {
+            performWithoutFeedbackGenerator { [weak self] in
+                UIView.performWithoutAnimation {
+                    self?.tableView.scrollToRow(at: indexPath, at: UITableView.ScrollPosition.bottom, animated: false)
+                }
+            }
+            
+        }
+    }
+    
+    func performWithoutFeedbackGenerator(using block : @escaping () -> Void) {
+        var oldValue : UIImpactFeedbackGenerator?
+        (oldValue, self.lightImpactFeedbackGenerator) = (self.lightImpactFeedbackGenerator,oldValue)
+        block()
+        OperationQueue.main.addOperation {
+            self.lightImpactFeedbackGenerator = oldValue
+        }
+    }
+
 }

@@ -19,6 +19,32 @@ public final class TFLClient {
         let handle = OSLog(subsystem: TFLLogger.subsystem, category: TFLLogger.category.api.rawValue)
         return handle
     }()
+    let backgroundQueue : OperationQueue = {
+        let queue = OperationQueue()
+        queue.qualityOfService = .userInitiated
+        return queue
+    }()
+    
+    public func vehicleArrivalsInfo(with vehicleId: String,
+                                     with operationQueue : OperationQueue = OperationQueue.main,
+                                     using completionBlock:@escaping (([TFLVehicleArrivalInfo]?,_ error:Error?) -> ()))  {
+        let vehicleArrivalsInfoPath = "/Vehicle/\(vehicleId)/Arrivals"
+        TFLLogger.shared.signPostStart(osLog: TFLClient.loggingHandle, name: "vehicleInfo",identifier: vehicleId)
+        tflManager.getDataWithRelativePath(relativePath: vehicleArrivalsInfoPath) { data, error in
+            TFLLogger.shared.signPostEnd(osLog: TFLClient.loggingHandle, name: "vehicleInfo",identifier: vehicleId)
+            guard let data = data else {
+                operationQueue.addOperation {
+                    completionBlock(nil,error)
+                }
+                return
+            }
+            let predictions = try? TFLClient.jsonDecoder.decode([TFLVehicleArrivalInfo].self,from: data)
+            operationQueue.addOperation {
+                completionBlock(predictions,nil)
+            }
+        }
+    }
+    
     public func arrivalsForStopPoint(with identifier: String,
                                      with operationQueue : OperationQueue = OperationQueue.main,
                                      using completionBlock:@escaping (([TFLBusPrediction]?,_ error:Error?) -> ()))  {
@@ -45,11 +71,9 @@ public final class TFLClient {
         let busStopPath = "/StopPoint"
         let query = "lat=\(coordinate.latitude)&lon=\(coordinate.longitude)&stopTypes=NaptanPublicBusCoachTram&categories=Geo"
         let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
-        let queue = OperationQueue()
-        queue.qualityOfService = QualityOfService.userInitiated
-        TFLLogger.shared.signPostStart(osLog: TFLClient.loggingHandle, name: "nearbyBusStops")
-        requestBusStops(with: busStopPath, query: query,context:context, with: queue) {stops,error in
-            TFLLogger.shared.signPostEnd(osLog: TFLClient.loggingHandle, name: "nearbyBusStops")
+        TFLLogger.shared.signPostStart(osLog: TFLClient.loggingHandle, name: "nearbyBusStops API")
+        requestBusStops(with: busStopPath, query: query,context:context, with: backgroundQueue) {stops,error in
+            TFLLogger.shared.signPostEnd(osLog: TFLClient.loggingHandle, name: "nearbyBusStops API")
             context.perform {
                 if context.hasChanges {
                     _ = try? context.save()
@@ -77,20 +101,21 @@ public final class TFLClient {
     }
 
     public func lineStationInfo(for line: String,
+                        context: NSManagedObjectContext,
                          with operationQueue : OperationQueue = OperationQueue.main,
-                         using completionBlock: @escaping ((TFLCDLineInfo?,_ error:Error?) -> ()))  {
+                         using completionBlock: ((TFLCDLineInfo?,_ error:Error?) -> ())? = nil)  {
         guard !line.isEmpty else {
             operationQueue.addOperation {
-                completionBlock(nil,TFLClientError.InvalidLine)
+                completionBlock?(nil,TFLClientError.InvalidLine)
             }
             return
         }
         let lineStationPath = "/Line/\(line)/Route/Sequence/all"
         TFLLogger.shared.signPostStart(osLog: TFLClient.loggingHandle, name: "lineStationInfo",identifier: line)
-        lineStationInfo(with: lineStationPath, query: "serviceTypes=Regular&excludeCrowding=true", context: TFLCoreDataStack.sharedDataStack.privateQueueManagedObjectContext) { lineInfo , error in
+        lineStationInfo(with: lineStationPath, query: "serviceTypes=Regular&excludeCrowding=true", context: context) { lineInfo , error in
             TFLLogger.shared.signPostEnd(osLog: TFLClient.loggingHandle, name: "lineStationInfo",identifier: line)
             operationQueue.addOperation {
-                completionBlock(lineInfo,error)
+                completionBlock?(lineInfo,error)
             }
         }
     }
@@ -107,6 +132,9 @@ fileprivate extension TFLClient {
                 , options: JSONSerialization.ReadingOptions(rawValue:0)) as? [String : Any] {
                 if let jsonDict = jsonDict {
                     TFLCDLineInfo.lineInfo(with: jsonDict, and: context) { lineInfo in
+                        context.perform {
+                            try? context.save()
+                        }
                         operationQueue.addOperation {
                             completionBlock(lineInfo,nil)
                         }

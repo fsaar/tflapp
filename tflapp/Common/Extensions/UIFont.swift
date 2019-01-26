@@ -13,6 +13,42 @@ extension UIFont {
         return font
     }
     
+    class func tflTimerButtonTitle() -> UIFont {
+        let descriptor = UIFontDescriptor(name: "GillSans-Light", size: 11)
+        let font = UIFont(descriptor: descriptor, size: 11)
+        return font
+    }
+    
+    class func tflStationDetailArrivalInfoTimeTitle() -> UIFont {
+        let descriptor = UIFontDescriptor(name: "GillSans-Light", size: 14)
+        let font = UIFont(descriptor: descriptor, size: 14)
+        return font
+    }
+    
+    class func tflStationDetailArrivalInfoVehicleTitle() -> UIFont {
+        let descriptor = UIFontDescriptor(name: "GillSans", size: 10)
+        let font = UIFont(descriptor: descriptor, size: 10)
+        return font
+    }
+    
+    class func tflStationDetailErrorTitle() -> UIFont {
+        let descriptor = UIFontDescriptor(name: "GillSans-Light", size: 20)
+        let font = UIFont(descriptor: descriptor, size: 20)
+        return font
+    }
+    
+    class func tflUpdateStatusPendingTitle() -> UIFont {
+        let descriptor = UIFontDescriptor(name: "GillSans", size: 14)
+        let font = UIFont(descriptor: descriptor, size: 14)
+        return font
+    }
+    
+    class func tflHUDTitle() -> UIFont {
+        let descriptor = UIFontDescriptor(name: "GillSans-Light", size: 24)
+        let font = UIFont(descriptor: descriptor, size: 24)
+        return font
+    }
+    
     class func tflRefreshTitle() -> UIFont {
         let descriptor = UIFontDescriptor(name: "GillSans-Light", size: 12)
         let font = UIFont(descriptor: descriptor, size: 12)
@@ -25,8 +61,20 @@ extension UIFont {
         return font
     }
 
+    class func tflStationDetailNearbyTitle() -> UIFont {
+        let descriptor = UIFontDescriptor(name: "GillSans", size: 12)
+        let font = UIFont(descriptor: descriptor, size: 12)
+        return font
+    }
+    
     class func tflStationDetailTitle() -> UIFont {
         let descriptor = UIFontDescriptor(name: "GillSans-Light", size: 17)
+        let font = UIFont(descriptor: descriptor, size: 17)
+        return font
+    }
+    
+    class func tflStationDetailHighlightedTitle() -> UIFont {
+        let descriptor = UIFontDescriptor(name: "GillSans", size: 18)
         let font = UIFont(descriptor: descriptor, size: 17)
         return font
     }

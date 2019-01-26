@@ -20,26 +20,5 @@ class TFLRootViewControllerSpecs: QuickSpec {
         it("should NOT be nil") {
             expect(controller).notTo(beNil())
         }
-        
-        context("When testing refreshTimer") {
-            it("should start timer in viewDidLoad") {
-                _ = controller.view
-                expect(controller.refreshTimer!.hasStarted) == true
-            }
-            
-            it("should stop timer when going into background") {
-                _ = controller.view
-                NotificationCenter.default.post(name: UIApplication.didEnterBackgroundNotification, object: nil)
-                expect(controller.refreshTimer!.hasStarted) == false
-            }
-            
-            it("should start timer when coming to foreground") {
-                _ = controller.view
-                NotificationCenter.default.post(name: UIApplication.didEnterBackgroundNotification, object: nil)
-                NotificationCenter.default.post(name: UIApplication.willEnterForegroundNotification, object: nil)
-                expect(controller.refreshTimer!.hasStarted) == true
-            }
-            
-        }
     }
 }

@@ -70,6 +70,7 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
             busPredictions = {
                 let dict1 : [String : Any] = ["id": "1836802865",
                                               "vehicleId": "LTZ1218",
+                                              "towards" : "",
                                               "naptanId": "490011791K",
                                               "lineId": "38",
                                               "lineName": "38",
@@ -79,6 +80,7 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
                                               "timeToLive": "2016-11-16T16:15:07Z"]
                 let dict2 : [String : Any] = ["id": "1836802866",
                                               "vehicleId": "LTZ1218",
+                                              "towards" : "",
                                               "naptanId": "490011791K",
                                               "lineId": "39",
                                               "lineName": "39",
@@ -88,6 +90,7 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
                                               "timeToLive": "2016-11-16T16:15:07Z"]
                 let dict3 : [String : Any] = ["id": "1836802867",
                                               "vehicleId": "LTZ1218",
+                                              "towards" : "",
                                               "naptanId": "490011791K",
                                               "lineId": "40",
                                               "lineName": "40",
@@ -97,6 +100,7 @@ class TFLBusStopArrivalsViewModelSpecs: QuickSpec {
                                               "timeToLive": "2016-11-16T16:15:07Z"]
                 let dict4 : [String : Any] = ["id": "1836802868",
                                               "vehicleId": "LTZ1218",
+                                              "towards" : "",
                                               "naptanId": "490011791K",
                                               "lineId": "40",
                                               "lineName": "40",

@@ -10,23 +10,21 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
             self.line.backgroundColor = UIColor.red
         }
     }
-    @IBOutlet weak var arrivalTime : TFLAnimiatedLabel! = nil {
+    @IBOutlet weak var arrivalTime : TFLAnimatedLabel! = nil {
         didSet {
             self.arrivalTime.font = UIFont.tflFontBusArrivalTime()
             self.arrivalTime.textColor = .black
             self.arrivalTime.isOpaque = true
-            self.arrivalTime.bgColor = bgColor
+            self.arrivalTime.backgroundColor = bgColor
             self.arrivalTime.textAlignment = .center
-        }
-    }
-    @IBOutlet weak var bgImage : UIImageView! = nil {
-        didSet {
-            self.bgImage.image = TFLBusPredictionViewCell.busPredictionViewBackgroundImage
         }
     }
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.contentView.layer.contents = TFLBusPredictionViewCell.busPredictionViewBackgroundImage.cgImage
+        self.contentView.layer.contentsGravity = .resizeAspectFill
+        self.contentView.isOpaque = true
         self.selectedBackgroundView = nil
         prepareForReuse()
 
@@ -58,7 +56,7 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         self.line.text = nil
-        self.arrivalTime.setText("-")
+        self.arrivalTime.setText("-",animated: false)
     }
 
     func configure(with predictionViewModel: TFLBusStopArrivalsViewModel.LinePredictionViewModel,as update : Bool = false) {

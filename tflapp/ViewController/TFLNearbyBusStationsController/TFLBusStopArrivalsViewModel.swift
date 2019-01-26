@@ -6,9 +6,12 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
         let line : String
         let eta : String
         let identifier : String
+        let busStopIdentifier : String
+        let vehicleID : String
         let timeToStation : Int
-        static let minTitle = "1 \(NSLocalizedString("TFLBusStopArrivalsViewModel.min", comment: ""))"
-        static let minsTitle = NSLocalizedString("TFLBusStopArrivalsViewModel.mins", comment: "")
+        let towards : String
+        static let minTitle = "1 \(NSLocalizedString("Common.min", comment: ""))"
+        static let minsTitle = NSLocalizedString("Common.mins", comment: "")
 
         init(with busPrediction: TFLBusPrediction,using referenceTime : TimeInterval) {
             func arrivalTime(in secs : Int) -> String {
@@ -18,7 +21,7 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
                 case ..<30:
                     timeString = NSLocalizedString("TFLBusStopArrivalsViewModel.due", comment: "")
                 case 30..<60:
-                    timeString = "1 " + NSLocalizedString("TFLBusStopArrivalsViewModel.min", comment: "")
+                    timeString = LinePredictionViewModel.minTitle
                 case 60..<(99*60):
                     let mins = secs/60
                     timeString = "\(mins) \(LinePredictionViewModel.minsTitle)"
@@ -33,10 +36,12 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
             let timeStampSinceReferenceDate = busPrediction.timeStamp.timeIntervalSinceReferenceDate
             let timeOffset = Int(referenceTime - timeStampSinceReferenceDate)
             self.identifier = busPrediction.identifier
+            self.busStopIdentifier = busPrediction.busStopIdentifier
+            self.vehicleID = busPrediction.vehicleId
             self.line = busPrediction.lineName
             self.timeToStation = Int(busPrediction.timeToStation)
             self.eta =  arrivalTime(in: Int(timeToStation) - timeOffset )
-
+            self.towards = busPrediction.towards
         }
         public static func ==(lhs: LinePredictionViewModel,rhs :LinePredictionViewModel) -> (Bool) {
             return lhs.identifier == rhs.identifier

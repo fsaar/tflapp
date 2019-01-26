@@ -73,17 +73,32 @@ class TFLStationDetailTableViewCell: UITableViewCell {
         return infoView
     }()
     
+    lazy var droppingBallView : TFLDroppingBallView = {
+        let view = TFLDroppingBallView(frame:.zero)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .clear
+        NSLayoutConstraint.activate([
+            view.widthAnchor.constraint(equalToConstant: 20)
+        ])
+        return view
+    }()
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         self.middleContainer.insertSubview(self.animationContainer, belowSubview: self.middleStationPath)
         self.contentView.sendSubviewToBack(self.lowerContainer)
         self.upperContainer.addSubview(self.arrivalInfoView)
-
+        self.upperContainer.insertSubview(droppingBallView,belowSubview:self.arrivalInfoView)
+     
         NSLayoutConstraint.activate([
             self.middleStationPath.centerXAnchor.constraint(equalTo: self.animationContainer.centerXAnchor),
             self.middleStationPath.centerYAnchor.constraint(equalTo: self.animationContainer.centerYAnchor),
             self.upperStationPath.centerXAnchor.constraint(equalTo: arrivalInfoView.centerXAnchor),
-            self.upperStationPath.centerYAnchor.constraint(equalTo: arrivalInfoView.centerYAnchor)
+            self.upperStationPath.centerYAnchor.constraint(equalTo: arrivalInfoView.centerYAnchor),
+            
+            self.droppingBallView.centerXAnchor.constraint(equalTo: upperStationPath.centerXAnchor),
+            self.droppingBallView.topAnchor.constraint(equalTo: arrivalInfoView.bottomAnchor,constant:-10),
+            self.droppingBallView.bottomAnchor.constraint(equalTo: middleContainer.centerYAnchor)
         ])
         prepareForReuse()
     }
@@ -101,6 +116,8 @@ class TFLStationDetailTableViewCell: UITableViewCell {
         self.middleStationPath.transform = .identity
         self.arrivalInfoView.isHidden = true
         self.animationContainer.stopAnimation()
+        self.droppingBallView.stopAnimation()
+        self.droppingBallView.isHidden = true
     }
 
     func configure(with model: TFLStationDetailTableViewModel,and arrivalInfo : TFLVehicleArrivalInfo?, at index: Int,highlight : Bool) {
@@ -115,7 +132,7 @@ class TFLStationDetailTableViewCell: UITableViewCell {
         let position = Position(index: index, max: max(model.stations.count-1,0))
         let showAnimation = model.showAnimation(for: index)
         let hasArrivalInfo = arrivalInfo != nil
-        showPathComponents(for: position)
+        showPathComponents(for: position,hasArrivalInfo: hasArrivalInfo)
         setComponentHeight(for: position,hasAnimation: showAnimation,hasArrivalInfo: hasArrivalInfo)
         
         if showAnimation {
@@ -125,6 +142,8 @@ class TFLStationDetailTableViewCell: UITableViewCell {
         
         if let arrivalInfo = arrivalInfo {
             let animated = arrivalInfoView.isHidden ? false : true
+            self.droppingBallView.startAnimation()
+            self.droppingBallView.isHidden = false
             arrivalInfoView.isHidden = false
             arrivalInfoView.configure(with:  arrivalInfo.vehicleId, and: arrivalInfo.timeToStation,animated: animated)
         }
@@ -156,9 +175,10 @@ fileprivate extension TFLStationDetailTableViewCell {
     }
     
     
-    func showPathComponents(for position : Position) {
+    func showPathComponents(for position : Position,hasArrivalInfo : Bool) {
         switch position {
         case .top:
+            self.upperStationPath.isHidden = hasArrivalInfo ? false : true
             self.lowerStationPath.isHidden = false
         case .bottom:
             self.upperStationPath.isHidden = false

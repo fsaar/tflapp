@@ -35,12 +35,28 @@ class TFLNearbyBusStationsController : UIViewController {
 
     weak var delegate : TFLNearbyBusStationsControllerDelegate?
     
+    fileprivate let copyrightText : NSAttributedString = {
+        let title  = NSLocalizedString("TFLRootViewController.ackTitle", comment: "")
+        let subTitle = NSLocalizedString("TFLRootViewController.ackSubTitle" , comment: "")
+        let titleDict = [NSAttributedString.Key.font :  UIFont.tflFontPoweredBy(),NSAttributedString.Key.foregroundColor : UIColor.black]
+        let subTitleDict = [NSAttributedString.Key.font :  UIFont.tflFontOsData(),NSAttributedString.Key.foregroundColor: UIColor.black]
+        let ack = "\(title)\n\(subTitle)"
+        
+        let attributedString = NSMutableAttributedString(string: ack)
+        let titleRange = (ack as NSString).range(of: title)
+        let subTitleRange = (ack as NSString).range(of: subTitle)
+        attributedString.addAttributes(titleDict, range: titleRange)
+        attributedString.addAttributes(subTitleDict, range: subTitleRange)
+        return attributedString
+    }()
+    
     @IBOutlet weak var ackLabel : UILabel! = nil {
         didSet {
-            self.ackLabel.font = UIFont.tflFontPoweredBy()
-            self.ackLabel.text = NSLocalizedString("TFLRootViewController.ackTitle", comment: "")
-            self.ackLabel.textColor = .black
-            self.ackLabel.isHidden = true
+            
+            ackLabel.numberOfLines = 2
+            ackLabel.attributedText = copyrightText
+            ackLabel.textColor = .black
+            ackLabel.isHidden = true
         }
     }
     

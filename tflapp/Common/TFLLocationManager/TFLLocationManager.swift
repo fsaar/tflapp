@@ -168,11 +168,12 @@ extension TFLLocationManager : CLLocationManagerDelegate {
             if case .authorised = state {
                 precondition(false,"Invalid state. State must not be authorised")
             }
-            locationManager.startUpdatingLocation()
             let completionBlocks = self.state.completionBlocks
             state = State.authorised
-            completionBlocks.forEach { requestLocation(using:$0) }
+
             self.delegate?.locationManager(self, didChangeEnabledStatus: true)
+            completionBlocks.forEach { self.requestLocation(using:$0) }
+
         case .notDetermined:
             break
         case .restricted,.denied:

@@ -7,14 +7,14 @@ protocol TFLNoGPSEnabledViewDelegate : class {
 class TFLNoGPSEnabledView : UIView {
     @IBOutlet weak var infoLabel : UILabel! = nil {
         didSet {
-            self.infoLabel.font = UIFont.tflFont(size: 15)
+            self.infoLabel.font = UIFont.tflFont(size: 16)
             self.infoLabel.textColor = .white
             self.infoLabel.text = NSLocalizedString("TFLNoGPSEnabledView.title", comment: "")
         }
     }
     @IBOutlet weak var titleLabel : UILabel! = nil {
         didSet {
-            self.titleLabel.font = UIFont.tflBoldFont(size: 18)
+            self.titleLabel.font = UIFont.tflFont(size: 18)
             self.titleLabel.textColor = .white
             self.titleLabel.text = NSLocalizedString("TFLNoGPSEnabledView.headerTitle", comment: "")
         }

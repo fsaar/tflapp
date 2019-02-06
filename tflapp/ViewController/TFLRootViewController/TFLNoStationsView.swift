@@ -8,7 +8,7 @@ protocol TFLNoStationsViewDelegate : class {
 class TFLNoStationsView : UIView {
     @IBOutlet weak var infoLabel : UILabel! = nil {
         didSet {
-            self.infoLabel.font = UIFont.tflBoldFont(size: 18)
+            self.infoLabel.font = UIFont.tflFont(size: 18)
             self.infoLabel.textColor = .white
             self.infoLabel.text = NSLocalizedString("TFLNoStationsView.title", comment: "")
         }

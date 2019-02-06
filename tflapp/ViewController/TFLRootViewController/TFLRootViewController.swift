@@ -78,7 +78,6 @@ class TFLRootViewController: UIViewController {
                 if shouldHide {
                     self.errorContainerView.showNoStationsFoundError()
                 }
-                self.errorContainerView.showLoadingNearbyStationsIfNeedBe(isContentAvailable: isContentAvailable)
             case .determineCurrentLocation:
                 self.contentView.isHidden = shouldHide
                 self.errorContainerView.showLoadingCurrentLocationIfNeedBe(isContentAvailable: isContentAvailable)

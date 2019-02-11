@@ -19,9 +19,9 @@ class TFLRootViewController: UIViewController {
     fileprivate let tflClient = TFLClient()
     fileprivate let busStopDBGenerator = TFLBusStopDBGenerator()
     fileprivate static let loggingHandle  = OSLog(subsystem: TFLLogger.subsystem, category: TFLLogger.category.rootViewController.rawValue)
-    lazy var busInfoAggregator = TFLBusArrivalInfoAggregator()
-    lazy var debugUtility = TFLDebugUtility(with: self.view)
-    lazy var networkMonitor : NWPathMonitor = {
+    fileprivate lazy var busInfoAggregator = TFLBusArrivalInfoAggregator()
+  
+    fileprivate lazy var networkMonitor : NWPathMonitor = {
         let monitor = NWPathMonitor()
         monitor.pathUpdateHandler = { [weak self] path in
             let isOffline = path.status != .satisfied

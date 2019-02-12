@@ -33,7 +33,10 @@ class TFLRequestManager : NSObject {
     }
     
     lazy var session : URLSession = {
-        let session = URLSession(configuration:  URLSessionConfiguration.default,delegate:self,delegateQueue:nil)
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.timeoutIntervalForResource = 120
+        configuration.timeoutIntervalForRequest = 60
+        let session = URLSession(configuration:  configuration,delegate:self,delegateQueue:nil)
         return session
         
     }()

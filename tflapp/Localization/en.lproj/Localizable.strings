@@ -27,6 +27,7 @@
 "TFLHUD.title" = "Loading ...";
 "TFLStationDetailErrorView.title" = "Oops, something went wrong. No route information available.";
 "TFLUpdateStatusView.pending.title" = "Updating ...";
+"TFLOfflineView.offline.title" = "Offline";
 "TFLArrivalInfoView.due" = "due";
 
 "Common.min" = "min";

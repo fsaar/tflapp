@@ -69,14 +69,17 @@ class TFLLocationManager : NSObject {
         return true
 
     }
-    let locationManager =  CLLocationManager()
-  
+    fileprivate lazy var locationManager : CLLocationManager = {
+        let manager = CLLocationManager()
+        manager.delegate = self
+        manager.desiredAccuracy = kCLLocationAccuracyBest
+        manager.pausesLocationUpdatesAutomatically = false
+        return manager
+    }()
+    fileprivate var isFirstStartup : Bool = false
    
     override init() {
         super.init()
-        self.locationManager.delegate = self
-        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        
         let authorisationStatus = CLLocationManager.authorizationStatus()
         switch authorisationStatus {
         case .notDetermined:
@@ -109,13 +112,15 @@ fileprivate extension TFLLocationManager {
             completionBlock?(kCLLocationCoordinate2DInvalid)
         case .authorisation_pending:
             state = state.stateWithCompletionBlock(completionBlock)
+            locationManager.startUpdatingLocation()
         case .authorised:
             TFLLogger.shared.signPostStart(osLog: TFLLocationManager.locationLoggingHandle, name: "updateLocation")
             self.state = State.authorised_requestPending(completionBlocks:[{ coord  in
                 TFLLogger.shared.signPostEnd(osLog: TFLLocationManager.locationLoggingHandle, name: "updateLocation")
                 completionBlock?(coord)
             }])
-            self.locationManager.requestLocation()
+            locationManager.startUpdatingLocation()
+
         case .authorised_requestPending:
             TFLLogger.shared.signPostStart(osLog: TFLLocationManager.locationLoggingHandle, name: "updateLocation")
             self.state = state.stateWithCompletionBlock { coord  in
@@ -142,6 +147,7 @@ extension TFLLocationManager : CLLocationManagerDelegate {
         }
     }
     public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        manager.stopUpdatingLocation()
         DispatchQueue.main.async {
             objc_sync_enter(self)
             defer {

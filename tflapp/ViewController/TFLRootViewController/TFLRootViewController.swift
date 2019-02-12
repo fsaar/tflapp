@@ -2,7 +2,7 @@ import CoreLocation
 import UIKit
 import CoreData
 import os.signpost
-
+import Network
 
 class TFLRootViewController: UIViewController {
     typealias CompletionBlock = ()->()
@@ -12,14 +12,23 @@ class TFLRootViewController: UIViewController {
         let radius = userDefaultRadius < searchParam.min ? searchParam.initial : userDefaultRadius
         return radius
     }
+    @IBOutlet weak var containerViewBottomConstraint : NSLayoutConstraint!
+    @IBOutlet weak var offlineView : UIView!
     fileprivate static let searchParameter  : (min:Double,initial:Double) = (100,500)
     fileprivate let networkBackgroundQueue = OperationQueue()
     fileprivate let tflClient = TFLClient()
     fileprivate let busStopDBGenerator = TFLBusStopDBGenerator()
     fileprivate static let loggingHandle  = OSLog(subsystem: TFLLogger.subsystem, category: TFLLogger.category.rootViewController.rawValue)
-    lazy var busInfoAggregator = TFLBusArrivalInfoAggregator()
-    lazy var debugUtility = TFLDebugUtility(with: self.view)
-    
+    fileprivate lazy var busInfoAggregator = TFLBusArrivalInfoAggregator()
+  
+    fileprivate lazy var networkMonitor : NWPathMonitor = {
+        let monitor = NWPathMonitor()
+        monitor.pathUpdateHandler = { [weak self] path in
+            let isOffline = path.status != .satisfied
+            self?.showOfflineView(isOffline)
+        }
+        return monitor
+    }()
     fileprivate enum State {
         case errorNoGPSAvailable
         case errorCouldntDetermineCurrentLocation
@@ -127,6 +136,8 @@ class TFLRootViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.networkMonitor.start(queue: .main)
+
         self.slideContainerController?.rightCustomView = self.updateStatusView
         
         TFLLocationManager.sharedManager.delegate = self
@@ -188,6 +199,12 @@ class TFLRootViewController: UIViewController {
 // MARK: Private
 
 fileprivate extension TFLRootViewController {
+    func showOfflineView(_ show : Bool = true) {
+        self.containerViewBottomConstraint.constant = show ? self.offlineView.frame.size.height : 0
+        UIView.animate(withDuration: 0.25) {
+            self.view.layoutIfNeeded()
+        }
+    }
     
     func updateContentViewController(with arrivalsInfo: [TFLBusStopArrivalsInfo],isUpdatePending updatePending : Bool, and  coordinate: CLLocationCoordinate2D) -> Bool {
         let radius = self.defaultRadius

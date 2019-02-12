@@ -5,9 +5,7 @@ import CoreSpotlight
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    fileprivate var lineRouteList : TFLLineInfoRouteDirectory?
-    fileprivate var provider : TFLCoreSpotLightDataProvider?
-    
+    fileprivate var spotlight : (lineRouteList:TFLLineInfoRouteDirectory,provider:TFLCoreSpotLightDataProvider)?
     var window: UIWindow?
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         initCoreData()
@@ -34,10 +32,12 @@ private extension AppDelegate {
     func setupSpotLight() {
         DispatchQueue.global().async {
             let routeList = TFLLineInfoRouteDirectory.infoRouteDirectoryFromCoreData()
-            self.lineRouteList = routeList
-            self.provider = TFLCoreSpotLightDataProvider(with: routeList)
-            self.provider?.searchableItems { items in
-                CSSearchableIndex.default().indexSearchableItems(items) { error in
+            let provider = TFLCoreSpotLightDataProvider(with: routeList)
+            self.spotlight = (routeList,provider)
+            
+            provider.searchableItems { items in
+                CSSearchableIndex.default().indexSearchableItems(items) { [weak self] error in
+                    self?.spotlight = nil
                     if let _ = error {
                         return
                     }

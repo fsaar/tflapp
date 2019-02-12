@@ -10,18 +10,28 @@ import UIKit
 import MapKit
 import Foundation
 import CoreData
+import Network
 
 class TFLStationDetailController: UIViewController {
     enum SegueIdentifier : String {
         case tableViewControllerSegue =  "TFLStationDetailTableViewControllerSegue"
         case mapViewControllerSegue = "TFLStationDetailMapViewControllerSegue"
     }
+    @IBOutlet weak var offlineView : UIView!
+    @IBOutlet weak var tableViewContainerViewBottomConstraint : NSLayoutConstraint!
     @IBOutlet weak var stationDetailErrorView : TFLStationDetailErrorView! {
         didSet {
             stationDetailErrorView.isHidden = !self.mapViewModels.isEmpty 
         }
     }
-    
+    fileprivate lazy var networkMonitor : NWPathMonitor = {
+        let monitor = NWPathMonitor()
+        monitor.pathUpdateHandler = { [weak self] path in
+            let isOffline = path.status != .satisfied
+            self?.showOfflineView(isOffline)
+        }
+        return monitor
+    }()
     fileprivate let defaultRefreshInterval : Int = 30
     
     fileprivate lazy var containerView : UIView = {
@@ -73,6 +83,7 @@ class TFLStationDetailController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.networkMonitor.start(queue: .main)
         self.titleHeaderView.title = lineInfo.line ?? ""
         self.navigationItem.titleView = self.titleHeaderView
         self.navigationItem.leftBarButtonItem = self.backBarButtonItem
@@ -108,6 +119,13 @@ class TFLStationDetailController: UIViewController {
 /// MARK: Private
 ///
 fileprivate extension TFLStationDetailController {
+    func showOfflineView(_ show : Bool = true) {
+        self.tableViewContainerViewBottomConstraint.constant = show ? self.offlineView.frame.size.height : 0
+        UIView.animate(withDuration: 0.25) {
+            self.view.layoutIfNeeded()
+        }
+    }
+    
     @objc func backBarButtonHandler() {
         self.navigationController?.popViewController(animated: true)
     }

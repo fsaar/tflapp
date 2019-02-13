@@ -1,7 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11134" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11106"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -14,9 +17,48 @@
                         <viewControllerLayoutGuide type="bottom" id="xb3-aO-Qok"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kvU-5F-ebR" userLabel="containerVIew">
+                                <rect key="frame" x="78" y="352.5" width="258" height="191"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stops" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rTB-Mw-hos">
+                                        <rect key="frame" x="40" y="97" width="218" height="94"/>
+                                        <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="77"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Bus" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CKi-3k-HzJ">
+                                        <rect key="frame" x="106" y="3" width="142" height="94"/>
+                                        <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="77"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="busTemplate" translatesAutoresizingMaskIntoConstraints="NO" id="NwJ-mc-yg8">
+                                        <rect key="frame" x="0.0" y="0.0" width="116" height="100"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="CKi-3k-HzJ" firstAttribute="centerY" secondItem="NwJ-mc-yg8" secondAttribute="centerY" id="1nB-LP-Jyl"/>
+                                    <constraint firstItem="CKi-3k-HzJ" firstAttribute="leading" secondItem="NwJ-mc-yg8" secondAttribute="trailing" constant="-10" id="6I6-oj-Xir"/>
+                                    <constraint firstItem="rTB-Mw-hos" firstAttribute="top" secondItem="CKi-3k-HzJ" secondAttribute="bottom" id="CEE-cQ-pyR"/>
+                                    <constraint firstItem="rTB-Mw-hos" firstAttribute="leading" secondItem="NwJ-mc-yg8" secondAttribute="leading" constant="40" id="CRp-nS-bDW"/>
+                                    <constraint firstAttribute="trailing" secondItem="CKi-3k-HzJ" secondAttribute="trailing" constant="10" id="EOR-4P-Fza"/>
+                                    <constraint firstItem="NwJ-mc-yg8" firstAttribute="leading" secondItem="kvU-5F-ebR" secondAttribute="leading" id="h2R-ik-3OI"/>
+                                    <constraint firstItem="NwJ-mc-yg8" firstAttribute="top" secondItem="kvU-5F-ebR" secondAttribute="top" id="wnV-rU-lYA"/>
+                                    <constraint firstAttribute="bottom" secondItem="rTB-Mw-hos" secondAttribute="bottom" id="xsM-eA-xjD"/>
+                                    <constraint firstAttribute="trailing" secondItem="rTB-Mw-hos" secondAttribute="trailing" id="yiA-K9-4LV"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="kvU-5F-ebR" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="4Pl-Kd-QOG"/>
+                            <constraint firstItem="kvU-5F-ebR" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="zTC-cS-zHB"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -24,4 +66,7 @@
             <point key="canvasLocation" x="53" y="375"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="busTemplate" width="100" height="100"/>
+    </resources>
 </document>

@@ -175,6 +175,7 @@ fileprivate extension TFLStationDetailTableViewController {
         if let station = station , let indexPath = viewModels.indexPath(for:station) {
             performWithoutFeedbackGenerator { [weak self] in
                 UIView.performWithoutAnimation {
+                    self?.currentSection = indexPath.section
                     self?.tableView.scrollToRow(at: indexPath, at: UITableView.ScrollPosition.bottom, animated: false)
                 }
             }

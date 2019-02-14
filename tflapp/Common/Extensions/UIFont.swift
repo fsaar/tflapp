@@ -43,6 +43,12 @@ extension UIFont {
         return font
     }
     
+    class func tflOfflineTitle() -> UIFont {
+        let descriptor = UIFontDescriptor(name: "GillSans", size: 22)
+        let font = UIFont(descriptor: descriptor, size: 22)
+        return font
+    }
+    
     class func tflHUDTitle() -> UIFont {
         let descriptor = UIFontDescriptor(name: "GillSans-Light", size: 24)
         let font = UIFont(descriptor: descriptor, size: 24)

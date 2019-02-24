@@ -21,6 +21,8 @@
 		5641F6EE1F19F68B00A3A9D2 /* TFLRequestManagerSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5641F6ED1F19F68100A3A9D2 /* TFLRequestManagerSpecs.swift */; };
 		56439A2021B861690076A906 /* TFLTimerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56439A1F21B861680076A906 /* TFLTimerButton.swift */; };
 		5646C4031DE62389006EA956 /* TFLBusStationArrivalsCellSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5646C4021DE62389006EA956 /* TFLBusStationArrivalsCellSpecs.swift */; };
+		564CA5A4222355F400E69A1C /* PolyLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564CA5A3222355F400E69A1C /* PolyLine.swift */; };
+		564CA5A62223561600E69A1C /* PolyLineSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564CA5A52223561600E69A1C /* PolyLineSpecs.swift */; };
 		564EC6F51DE0A2A0008CFD11 /* TFLButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564EC6F41DE0A2A0008CFD11 /* TFLButton.swift */; };
 		564EC7051DE1917D008CFD11 /* TFLBusPredictionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564EC6FF1DE1917D008CFD11 /* TFLBusPredictionView.swift */; };
 		564EC7061DE1917D008CFD11 /* TFLBusPredictionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564EC7001DE1917D008CFD11 /* TFLBusPredictionViewCell.swift */; };
@@ -138,6 +140,8 @@
 		5642EF0720ED63AD00A7914F /* mapstogpx20180704_193755.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = mapstogpx20180704_193755.gpx; sourceTree = "<group>"; };
 		56439A1F21B861680076A906 /* TFLTimerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLTimerButton.swift; sourceTree = "<group>"; };
 		5646C4021DE62389006EA956 /* TFLBusStationArrivalsCellSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusStationArrivalsCellSpecs.swift; sourceTree = "<group>"; };
+		564CA5A3222355F400E69A1C /* PolyLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolyLine.swift; sourceTree = "<group>"; };
+		564CA5A52223561600E69A1C /* PolyLineSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolyLineSpecs.swift; sourceTree = "<group>"; };
 		564EC6EF1DDFAA67008CFD11 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		564EC6F41DE0A2A0008CFD11 /* TFLButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLButton.swift; sourceTree = "<group>"; };
 		564EC6FF1DE1917D008CFD11 /* TFLBusPredictionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusPredictionView.swift; sourceTree = "<group>"; };
@@ -218,6 +222,7 @@
 		56BA8F9220FE9BB60031A3E4 /* QuickSpec+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "QuickSpec+Helper.swift"; sourceTree = "<group>"; };
 		56BDFDA121FBC109009B0FEF /* TFLDroppingBallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLDroppingBallView.swift; sourceTree = "<group>"; };
 		56C0944B20D9ADD800581995 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		56C21B3122183D4A0040B7AE /* Model 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 2.xcdatamodel"; sourceTree = "<group>"; };
 		56C6A3461DF44F6A00067D06 /* TFLStationDetailMapViewAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLStationDetailMapViewAnnotation.swift; sourceTree = "<group>"; };
 		56C8288F1DE8E9FA00E52086 /* TFLChangeSetProtocolSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLChangeSetProtocolSpecs.swift; sourceTree = "<group>"; };
 		56C828951DEA396400E52086 /* TFLCollectionFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLCollectionFlowLayout.swift; sourceTree = "<group>"; };
@@ -289,6 +294,14 @@
 			path = TFLTimerButton;
 			sourceTree = "<group>";
 		};
+		564CA5A2222355CB00E69A1C /* PolyLine */ = {
+			isa = PBXGroup;
+			children = (
+				564CA5A3222355F400E69A1C /* PolyLine.swift */,
+			);
+			path = PolyLine;
+			sourceTree = "<group>";
+		};
 		564EC6F31DE0A289008CFD11 /* TFLButton */ = {
 			isa = PBXGroup;
 			children = (
@@ -314,6 +327,7 @@
 		5657D3671DE387E6004E4CD0 /* tflApp Tests */ = {
 			isa = PBXGroup;
 			children = (
+				564CA5A52223561600E69A1C /* PolyLineSpecs.swift */,
 				5683592321839E8B0096615D /* TFLHUDSpecs.swift */,
 				56835921218392070096615D /* TFLAnimatedLabelSpecs.swift */,
 				56DA42EB21051E8A00ED9C54 /* TFLBusStopArrivalsInfoSpecs.swift */,
@@ -365,6 +379,7 @@
 		565A1FC91DD8F8D1003CE960 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				564CA5A2222355CB00E69A1C /* PolyLine */,
 				56E7217B221234C600733B9F /* TFLOfflineView */,
 				56439A1E21B861680076A906 /* TFLTimerButton */,
 				563FF2EF21A34524006DB5BB /* TFLCircleAnimationView */,
@@ -832,6 +847,7 @@
 			files = (
 				56DA42EC21051E8A00ED9C54 /* TFLBusStopArrivalsInfoSpecs.swift in Sources */,
 				5685ADC41DEF8DDC009FD6A5 /* TFLBusPredictionViewCellSpecs.swift in Sources */,
+				564CA5A62223561600E69A1C /* PolyLineSpecs.swift in Sources */,
 				5641F6EE1F19F68B00A3A9D2 /* TFLRequestManagerSpecs.swift in Sources */,
 				56DD18FD20A0B078003335D1 /* TFLTimerSpecs.swift in Sources */,
 				56577D0120A0CF7700B40318 /* TFLRootViewControllerSpecs.swift in Sources */,
@@ -855,6 +871,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				56D70D141DD9A25F004CA293 /* TFLLocationManager.swift in Sources */,
+				564CA5A4222355F400E69A1C /* PolyLine.swift in Sources */,
 				567F533F20BDB9C50022FEFF /* TFLStationDetailHeaderView.swift in Sources */,
 				56C6A3471DF44F6A00067D06 /* TFLStationDetailMapViewAnnotation.swift in Sources */,
 				5672250320D578C6007DA481 /* TFLStationDetailBusStopAnnotationView.swift in Sources */,
@@ -1235,9 +1252,10 @@
 		565A1FD01DD8FB2A003CE960 /* Model.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				56C21B3122183D4A0040B7AE /* Model 2.xcdatamodel */,
 				565A1FD11DD8FB2A003CE960 /* Model.xcdatamodel */,
 			);
-			currentVersion = 565A1FD11DD8FB2A003CE960 /* Model.xcdatamodel */;
+			currentVersion = 56C21B3122183D4A0040B7AE /* Model 2.xcdatamodel */;
 			path = Model.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

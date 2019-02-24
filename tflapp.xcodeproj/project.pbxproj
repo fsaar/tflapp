@@ -23,6 +23,7 @@
 		5646C4031DE62389006EA956 /* TFLBusStationArrivalsCellSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5646C4021DE62389006EA956 /* TFLBusStationArrivalsCellSpecs.swift */; };
 		564CA5A4222355F400E69A1C /* PolyLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564CA5A3222355F400E69A1C /* PolyLine.swift */; };
 		564CA5A62223561600E69A1C /* PolyLineSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564CA5A52223561600E69A1C /* PolyLineSpecs.swift */; };
+		564CA5A8222356B200E69A1C /* Array+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564CA5A7222356B200E69A1C /* Array+Helper.swift */; };
 		564EC6F51DE0A2A0008CFD11 /* TFLButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564EC6F41DE0A2A0008CFD11 /* TFLButton.swift */; };
 		564EC7051DE1917D008CFD11 /* TFLBusPredictionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564EC6FF1DE1917D008CFD11 /* TFLBusPredictionView.swift */; };
 		564EC7061DE1917D008CFD11 /* TFLBusPredictionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564EC7001DE1917D008CFD11 /* TFLBusPredictionViewCell.swift */; };
@@ -142,6 +143,7 @@
 		5646C4021DE62389006EA956 /* TFLBusStationArrivalsCellSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusStationArrivalsCellSpecs.swift; sourceTree = "<group>"; };
 		564CA5A3222355F400E69A1C /* PolyLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolyLine.swift; sourceTree = "<group>"; };
 		564CA5A52223561600E69A1C /* PolyLineSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolyLineSpecs.swift; sourceTree = "<group>"; };
+		564CA5A7222356B200E69A1C /* Array+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Helper.swift"; sourceTree = "<group>"; };
 		564EC6EF1DDFAA67008CFD11 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		564EC6F41DE0A2A0008CFD11 /* TFLButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLButton.swift; sourceTree = "<group>"; };
 		564EC6FF1DE1917D008CFD11 /* TFLBusPredictionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusPredictionView.swift; sourceTree = "<group>"; };
@@ -462,6 +464,7 @@
 				560CF3042173569600ED0BA5 /* Date+String.swift */,
 				5699A686218E2E3C00CD1427 /* UIImage+Helper.swift */,
 				56E721812214CF6D00733B9F /* UIViewController+Helper.swift */,
+				564CA5A7222356B200E69A1C /* Array+Helper.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -889,6 +892,7 @@
 				56823EAE1DDDA5B300E79B1A /* TFLNoGPSEnabledView.swift in Sources */,
 				568E068521E6B14D00E92AF7 /* TFLArrivalInfoView.swift in Sources */,
 				567F533D20BDB34E0022FEFF /* TFLStationDetailController.swift in Sources */,
+				564CA5A8222356B200E69A1C /* Array+Helper.swift in Sources */,
 				567F534920BF13040022FEFF /* TFLStationDetailTableViewController.swift in Sources */,
 				56C828961DEA396400E52086 /* TFLCollectionFlowLayout.swift in Sources */,
 				567224FD20D564BF007DA481 /* TFLMapViewAnnotation.swift in Sources */,

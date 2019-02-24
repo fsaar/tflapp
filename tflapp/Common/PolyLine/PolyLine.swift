@@ -45,23 +45,8 @@ import MapKit
 //11. Convert each value to its ASCII equivalent:
 //`~oia@
 
-extension CLLocationCoordinate2D : Equatable {
-    public static func ==(lhs : CLLocationCoordinate2D,rhs : CLLocationCoordinate2D) -> Bool {
-        return (lhs.latitude == rhs.latitude) && (lhs.longitude == rhs.longitude)
-    }
-}
 
-extension Array {
-    var evenElements : [Element] {
-        return self.enumerated().filter { ($0.0 % 2) == 0 }.map { $0.1 }
-    }
-    var oddElements : [Element] {
-        return self.enumerated().filter { ($0.0 % 2) == 1 }.map { $0.1 }
-    }
-}
-
-
-class PolyLine : NSObject {
+class PolyLine {
     fileprivate let fiveBitBlockLength = 5
     fileprivate let precision : Double
     
@@ -94,9 +79,8 @@ class PolyLine : NSObject {
         guard decodedList.count % 2 == 0 else {
             return []
         }
-        let decodedLats = decodedList.evenElements.reduce([]) { combine($0,$1) }.map { Double($0) / precision  }
-        let decodedLongs = decodedList.oddElements.reduce([]) { combine($0,$1) }.map { Double($0) / precision  }
-        let coords = zip(decodedLats,decodedLongs).map { CLLocationCoordinate2DMake($0.0, $0.1)}
+        
+        let coords = undiff(decodedList)
         guard case .none = (coords.first { !CLLocationCoordinate2DIsValid($0) }) else {
             return []
         }
@@ -108,16 +92,9 @@ class PolyLine : NSObject {
             return nil
         }
         
-        let latValues : [Double] = coordinates.map { trunc($0.latitude * precision) }
-        let diffedLatValues = [latValues[0]] + zip(latValues.dropFirst(),latValues).map { $0.0 - $0.1 }
-
-        let longValues : [Double] = coordinates.map { trunc($0.longitude * precision) }
-        let diffedLongValues = [longValues[0]] + zip(longValues.dropFirst(),longValues).map { $0.0 - $0.1 }
+        let diffedValues = diff(coordinates)
         
-        let doubleList = zip(diffedLatValues,diffedLongValues).reduce([]) { $0 + [$1.0,$1.1] }
-        let values = doubleList.map { Int32($0) }
-        
-        let leftShiftedTwosComplementAdjusted : [Int32] = values.map { $0 < 0 ? ~($0 << 1) : $0 << 1 }
+        let leftShiftedTwosComplementAdjusted = diffedValues.map { $0 < 0 ? ~($0 << 1) : $0 << 1 }
         let byteBlocks : [UInt8] = leftShiftedTwosComplementAdjusted.reduce([]) { list,value in
             let elements = (0...7).map { (value >> (fiveBitBlockLength * $0)) & 0x1f }.map { UInt8($0) }
             let firstIndex = Array(elements.reversed()).firstIndex { $0 != 0}
@@ -139,5 +116,23 @@ fileprivate extension PolyLine {
     func combine(_ list : [Int32],_ value : Int32) -> [Int32] {
         let lastElement = list.last ?? 0
         return list + [lastElement + value]
+    }
+    
+    func diff(_ coordinates : [CLLocationCoordinate2D]) -> [Int32] {
+        let latValues = coordinates.map { Int32($0.latitude * precision) }
+        let diffedLatValues = [latValues[0]] + zip(latValues.dropFirst(),latValues).map { $0.0 - $0.1 }
+        
+        let longValues = coordinates.map { Int32($0.longitude * precision) }
+        let diffedLongValues = [longValues[0]] + zip(longValues.dropFirst(),longValues).map { $0.0 - $0.1 }
+        
+        let diffedList = zip(diffedLatValues,diffedLongValues).reduce([]) { $0 + [$1.0,$1.1] }
+        return diffedList
+    }
+    
+    func undiff(_ values : [Int32]) -> [CLLocationCoordinate2D] {
+        let decodedLats = values.evenElements.reduce([]) { combine($0,$1) }.map { Double($0) / precision  }
+        let decodedLongs = values.oddElements.reduce([]) { combine($0,$1) }.map { Double($0) / precision  }
+        let coords = zip(decodedLats,decodedLongs).map { CLLocationCoordinate2DMake($0.0, $0.1)}
+        return coords
     }
 }

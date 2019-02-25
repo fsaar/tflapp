@@ -97,11 +97,10 @@ class PolyLine {
         let leftShiftedTwosComplementAdjusted = diffedValues.map { $0 < 0 ? ~($0 << 1) : $0 << 1 }
         let byteBlocks : [UInt8] = leftShiftedTwosComplementAdjusted.reduce([]) { list,value in
             let elements = (0...7).map { (value >> (fiveBitBlockLength * $0)) & 0x1f }.map { UInt8($0) }
-            let firstIndex = Array(elements.reversed()).firstIndex { $0 != 0}
-            guard let index = firstIndex, index < 7 else {
+            let index = elements.lastIndex { $0 != 0 }
+            guard let lastIndex = index else {
                 return list
             }
-            let lastIndex = 7 - index
             let oredElements = elements[0..<lastIndex] .map { $0 | 0x20 } + [elements[lastIndex]]
             return list + oredElements
         }

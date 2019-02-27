@@ -87,6 +87,22 @@ class PolyLineSpecs: QuickSpec {
                         let list2 = polyLine.decode(polyLine: polyLine.encode(coordinates: list)!)
                         expect(list).to(equal(list2))
                     }
+                    
+                    it ("should decode under a certain threshold") {
+                        let polyLine = PolyLine(precision: 5)
+                        
+                        let encodedPolyline = """
+                                                gkkyHp{u@pBWN{HF{D@e@PBJAp@EfBKzFe@rOSxAKb@oArEy@~BOl@}@dEs@fD_@jBu@vDoBtKy@rE_AxEGXGXwAlGeBjH[jA_AdDq@|BcAfEg@nCPJGKCLCj@Bk@BMFJQKCZChADhFDpANvAPnAb@xBZlAJVDRV`@B@JVLj@Fl@^Ap@F|@B\\NCCBOB@LRjD`@fF^xETnCf@fGDf@Fn@n@pGvA|NH|@ZhBKDH|@Z|D^pEHx@Fr@PrBJPL~ANbBHvB@HHfANpBp@~Hr@dHZbDBTBVNlBX|DJpA@^C`AEfDDh@@d@RhDbAhJb@rDLfABNpAHn@BBD@JCFE@CzM\\AfAnBBdAv@~IXvCFv@FDn@HtEG`BGbAMhAEzA_@vFm@pKIrACn@CtBbEA^NGpCWjIOlDGxB[pDa@hDY~DG|AEzBEd@QjC_@pEu@~HIbAQxB}@xJObAa@xCOnAi@vFCpB@h@Bz@ZpEDZJGGDC@j@`E\\fDBtBAdAWnDKxAEj@Gv@Cx@A`AQrB[nDYxBKzAAfA@lIHIHIj@ArBKvBg@`F_AbGAFUnAKt@Ej@WbCSdCO|BWtDEp@AFQxBc@|EUbCUzDG~@Cj@UzDAl@I`ASvAc@pCWdACFQn@uCbIaArD_AzE]hBG\\K`BD`B@|ACz@Iv@ZL
+                                                """
+    
+                        let total : Double = (1...100).reduce(0) { sum,_ in
+                            let start = Date()
+                            _ = polyLine.decode(polyLine: encodedPolyline)
+                            let timeNeeded = Date().timeIntervalSince(start)
+                            return sum + timeNeeded
+                        }
+                        expect(total / 100) <= 0.0095
+                    }
                 }
                 
                 context("given a precision of 6") {

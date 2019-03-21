@@ -11,6 +11,10 @@
 		5600FC8E217C8E4400B7EC7E /* TFLHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5600FC8D217C8E4400B7EC7E /* TFLHUD.swift */; };
 		560CF3052173569600ED0BA5 /* Date+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560CF3042173569600ED0BA5 /* Date+String.swift */; };
 		560CF30721735C4900ED0BA5 /* TFLDateSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560CF30621735C4900ED0BA5 /* TFLDateSpecs.swift */; };
+		56113B29223BA68200C8EDA4 /* CLLocationCoordinate2DSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56113B28223BA68200C8EDA4 /* CLLocationCoordinate2DSpecs.swift */; };
+		56113B2B223BA70000C8EDA4 /* LoopRoute.json in Resources */ = {isa = PBXBuildFile; fileRef = 56113B2A223BA70000C8EDA4 /* LoopRoute.json */; };
+		56113B2E223F7DC900C8EDA4 /* GoogleRouteInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56113B2D223F7DC900C8EDA4 /* GoogleRouteInfo.swift */; };
+		56113B30224021BA00C8EDA4 /* LoopRoute2.json in Resources */ = {isa = PBXBuildFile; fileRef = 56113B2F224021BA00C8EDA4 /* LoopRoute2.json */; };
 		561CA509210A607F0008B656 /* Collection+IndexPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561CA507210A607E0008B656 /* Collection+IndexPath.swift */; };
 		561CA50A210A607F0008B656 /* Collection+Transform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561CA508210A607F0008B656 /* Collection+Transform.swift */; };
 		561CA50D210A656B0008B656 /* TFLSynchroniser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561CA50C210A656B0008B656 /* TFLSynchroniser.swift */; };
@@ -130,6 +134,10 @@
 		5600FC8D217C8E4400B7EC7E /* TFLHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLHUD.swift; sourceTree = "<group>"; };
 		560CF3042173569600ED0BA5 /* Date+String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+String.swift"; sourceTree = "<group>"; };
 		560CF30621735C4900ED0BA5 /* TFLDateSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLDateSpecs.swift; sourceTree = "<group>"; };
+		56113B28223BA68200C8EDA4 /* CLLocationCoordinate2DSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CLLocationCoordinate2DSpecs.swift; sourceTree = "<group>"; };
+		56113B2A223BA70000C8EDA4 /* LoopRoute.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LoopRoute.json; sourceTree = "<group>"; };
+		56113B2D223F7DC900C8EDA4 /* GoogleRouteInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleRouteInfo.swift; sourceTree = "<group>"; };
+		56113B2F224021BA00C8EDA4 /* LoopRoute2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LoopRoute2.json; sourceTree = "<group>"; };
 		561CA507210A607E0008B656 /* Collection+IndexPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Collection+IndexPath.swift"; sourceTree = "<group>"; };
 		561CA508210A607F0008B656 /* Collection+Transform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Collection+Transform.swift"; sourceTree = "<group>"; };
 		561CA50C210A656B0008B656 /* TFLSynchroniser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLSynchroniser.swift; sourceTree = "<group>"; };
@@ -272,6 +280,14 @@
 			path = TFLHUD;
 			sourceTree = "<group>";
 		};
+		56113B2C223F7DAE00C8EDA4 /* GoogleRouteInfo */ = {
+			isa = PBXGroup;
+			children = (
+				56113B2D223F7DC900C8EDA4 /* GoogleRouteInfo.swift */,
+			);
+			path = GoogleRouteInfo;
+			sourceTree = "<group>";
+		};
 		561CA50B210A655C0008B656 /* TFLSynchroniser */ = {
 			isa = PBXGroup;
 			children = (
@@ -335,6 +351,7 @@
 				56DA42EB21051E8A00ED9C54 /* TFLBusStopArrivalsInfoSpecs.swift */,
 				560CF30621735C4900ED0BA5 /* TFLDateSpecs.swift */,
 				56DD18FC20A0B078003335D1 /* TFLTimerSpecs.swift */,
+				56113B28223BA68200C8EDA4 /* CLLocationCoordinate2DSpecs.swift */,
 				561FD9011F1FADD30012466A /* TFLClientSpecs.swift */,
 				5641F6ED1F19F68100A3A9D2 /* TFLRequestManagerSpecs.swift */,
 				5657D3701DE38ADF004E4CD0 /* TFLBusPredictionSpecs.swift */,
@@ -346,6 +363,8 @@
 				56C8288F1DE8E9FA00E52086 /* TFLChangeSetProtocolSpecs.swift */,
 				56577D0020A0CF7700B40318 /* TFLRootViewControllerSpecs.swift */,
 				5657D36A1DE387E6004E4CD0 /* Info.plist */,
+				56113B2A223BA70000C8EDA4 /* LoopRoute.json */,
+				56113B2F224021BA00C8EDA4 /* LoopRoute2.json */,
 				56BA8F8C20FBE22A0031A3E4 /* Arrivals.json */,
 				56BA8F8E20FBE4550031A3E4 /* Busstops.json */,
 				56BA8F9020FBE7550031A3E4 /* TestUrlProtocol.swift */,
@@ -381,6 +400,7 @@
 		565A1FC91DD8F8D1003CE960 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				56113B2C223F7DAE00C8EDA4 /* GoogleRouteInfo */,
 				564CA5A2222355CB00E69A1C /* PolyLine */,
 				56E7217B221234C600733B9F /* TFLOfflineView */,
 				56439A1E21B861680076A906 /* TFLTimerButton */,
@@ -739,6 +759,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				56BA8F8F20FBE4550031A3E4 /* Busstops.json in Resources */,
+				56113B2B223BA70000C8EDA4 /* LoopRoute.json in Resources */,
+				56113B30224021BA00C8EDA4 /* LoopRoute2.json in Resources */,
 				56BA8F8D20FBE22A0031A3E4 /* Arrivals.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -862,6 +884,7 @@
 				561FD9021F1FB1F50012466A /* TFLClientSpecs.swift in Sources */,
 				56B86EAD1DE4FED000A89D16 /* TFLBusStopArrivalsViewModelSpecs.swift in Sources */,
 				5657D3731DE3A00A004E4CD0 /* TFLCDBusStopSpecs.swift in Sources */,
+				56113B29223BA68200C8EDA4 /* CLLocationCoordinate2DSpecs.swift in Sources */,
 				56BA8F9120FBE7550031A3E4 /* TestUrlProtocol.swift in Sources */,
 				5657D3751DE3B480004E4CD0 /* TFLNotificationObserverSpec.swift in Sources */,
 				5646C4031DE62389006EA956 /* TFLBusStationArrivalsCellSpecs.swift in Sources */,
@@ -931,6 +954,7 @@
 				56823EA81DDDA45600E79B1A /* TFLLoadNearbyStationsView.swift in Sources */,
 				561CA50A210A607F0008B656 /* Collection+Transform.swift in Sources */,
 				567F533A20BC20610022FEFF /* TFLCDLineInfo+CoreDataProperties.swift in Sources */,
+				56113B2E223F7DC900C8EDA4 /* GoogleRouteInfo.swift in Sources */,
 				56835920218243BE0096615D /* TFLStationDetailErrorView.swift in Sources */,
 				5692B5031DF2E4EB00C56A3C /* TFLMapViewController.swift in Sources */,
 				56E721802213625C00733B9F /* TFLSplashscreenController.swift in Sources */,

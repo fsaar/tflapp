@@ -18,7 +18,9 @@ class TFLRootViewController: UIViewController {
     fileprivate static let searchParameter  : (min:Double,initial:Double) = (100,500)
     fileprivate let networkBackgroundQueue = OperationQueue()
     fileprivate let tflClient = TFLClient()
+    #if DEBUG
     fileprivate let busStopDBGenerator = TFLBusStopDBGenerator()
+    #endif
     fileprivate static let loggingHandle  = OSLog(subsystem: TFLLogger.subsystem, category: TFLLogger.category.rootViewController.rawValue)
     fileprivate lazy var busInfoAggregator = TFLBusArrivalInfoAggregator()
   

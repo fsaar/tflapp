@@ -1,15 +1,14 @@
 //
 //  TFLCDLineRoute+CoreDataProperties.swift
-//  tflapp
+//  
 //
-//  Created by Frank Saar on 31/05/2018.
-//  Copyright © 2018 SAMedialabs. All rights reserved.
+//  Created by Frank Saar on 16/02/2019.
 //
 //
 
 import Foundation
 import CoreData
-
+import MapKit
 
 extension TFLCDLineRoute {
 
@@ -20,6 +19,7 @@ extension TFLCDLineRoute {
     @NSManaged public var name: String
     @NSManaged public var stations: [String]?
     @NSManaged public var serviceType: String
+    @NSManaged public var polyline: String?
     @NSManaged public var line: TFLCDLineInfo?
 
 }

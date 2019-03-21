@@ -101,7 +101,27 @@ class PolyLineSpecs: QuickSpec {
                             let timeNeeded = Date().timeIntervalSince(start)
                             return sum + timeNeeded
                         }
-                        expect(total / 100) <= 0.0095
+                        expect(total / 100) <= 0.0110
+                    }
+                    
+                    it ("should decode polyline correctly") {
+                        let polyLine = PolyLine(precision: 5)
+                        let encodedPolyLine = "_meyH~ms@N|@BCrByA[w@gDkGIIGCKHS`@sAxB}CnEkAlAy@l@k@^iAr@PlA@Zj@YA_@@WBg@EuDsAQGMMCQ@Su@Y_Bk@AN@OaC}@g@UwD"
+                        let list = polyLine.decode(polyLine: encodedPolyLine)
+                        expect(list).notTo(beEmpty())
+                        let encodedPolyLine2 =  polyLine.encode(coordinates: list)!
+                        expect(encodedPolyLine2) == encodedPolyLine
+                        let list2 = polyLine.decode(polyLine:encodedPolyLine2)
+                        expect(list).to(equal(list2))
+                    }
+                    
+                    it ("should encode & decode correctly") {
+                        let polyLine = PolyLine(precision: 5)
+                        let list = [CLLocationCoordinate2D(latitude: 51.48228, longitude: -0.26779 )]
+                         let encodedPolyLine2 =  polyLine.encode(coordinates: list)!
+                        expect(encodedPolyLine2) == "gcfyHths@"
+                        let list2 = polyLine.decode(polyLine:encodedPolyLine2)
+                        expect(list).to(equal(list2))
                     }
                 }
                 

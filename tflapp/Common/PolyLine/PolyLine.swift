@@ -8,7 +8,7 @@
 
 import Foundation
 import MapKit
-
+import simd
 //
 //01 Take the initial signed value:
 //-179.9832104
@@ -48,10 +48,11 @@ import MapKit
 
 class PolyLine {
     fileprivate let fiveBitBlockLength = 5
-    fileprivate let precision : Double
-    
+    fileprivate let precisionMultiplicator : Double
+    fileprivate let precision : Int
     init(precision : Int) {
-        self.precision = pow(10.0, Double(precision))
+        self.precision = precision
+        self.precisionMultiplicator = pow(10.0, Double(precision))
     }
     
     func decode(polyLine : String) -> [CLLocationCoordinate2D] {
@@ -117,11 +118,52 @@ fileprivate extension PolyLine {
         return list + [lastElement + value]
     }
     
+    
+    
+    func multiplyByPrecisionMultiplicator(_ a : Double) -> Double {
+        let defaultValue = Double(Int(a*precisionMultiplicator))
+        guard defaultValue/precisionMultiplicator != a else {
+            return defaultValue
+        }
+        guard let index = "\(a)".index(of: ".") else {
+            return defaultValue
+        }
+        let aString  = "\(a)"
+        let stringValue = aString[..<index]+aString[aString.index(after: index)...]+String(repeating: "0", count: precision)
+        let newIndex = stringValue.index(index, offsetBy: precision)
+        let newString = "\(stringValue[..<newIndex]).\(stringValue[newIndex...])"
+        guard let doubleValue = Double(newString) else {
+            return defaultValue
+        }
+        return doubleValue
+    }
+    
+    func divideByPrecisionMultiplicator(_ a : Double) -> Double {
+        let defaultValue = Double(a / precisionMultiplicator)
+        guard defaultValue * precisionMultiplicator != a else {
+            return defaultValue
+        }
+        guard let pos = "\(a)".index(of: ".") else {
+            return defaultValue
+        }
+        let value = "\(a)".split(separator: ".").joined(separator: "")
+        var prefixedValue = "\(String(repeating: "0", count: self.precision))\(value)"
+        prefixedValue.insert(".", at: pos)
+        guard let doubleValue = Double(prefixedValue) else {
+            return defaultValue
+        }
+        return doubleValue
+    }
+    
     func diff(_ coordinates : [CLLocationCoordinate2D]) -> [Int32] {
-        let latValues = coordinates.map { Int32($0.latitude * precision) }
+        guard !coordinates.isEmpty else {
+            return []
+        }
+       
+        let latValues = coordinates.map { Int32(multiplyByPrecisionMultiplicator($0.latitude)) }
         let diffedLatValues = [latValues[0]] + zip(latValues.dropFirst(),latValues).map { $0.0 - $0.1 }
         
-        let longValues = coordinates.map { Int32($0.longitude * precision) }
+        let longValues = coordinates.map { Int32(multiplyByPrecisionMultiplicator($0.longitude)) }
         let diffedLongValues = [longValues[0]] + zip(longValues.dropFirst(),longValues).map { $0.0 - $0.1 }
         
         let diffedList = zip(diffedLatValues,diffedLongValues).reduce([]) { $0 + [$1.0,$1.1] }
@@ -129,8 +171,8 @@ fileprivate extension PolyLine {
     }
     
     func undiff(_ values : [Int32]) -> [CLLocationCoordinate2D] {
-        let decodedLats = values.evenElements.reduce([]) { combine($0,$1) }.map { Double($0) / precision  }
-        let decodedLongs = values.oddElements.reduce([]) { combine($0,$1) }.map { Double($0) / precision  }
+        let decodedLats = values.evenElements.reduce([]) { combine($0,$1) }.map { divideByPrecisionMultiplicator(Double($0)) }
+        let decodedLongs = values.oddElements.reduce([]) { combine($0,$1) }.map { divideByPrecisionMultiplicator(Double($0))  }
         let coords = zip(decodedLats,decodedLongs).map { CLLocationCoordinate2DMake($0.0, $0.1)}
         return coords
     }

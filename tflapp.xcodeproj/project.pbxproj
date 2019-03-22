@@ -796,7 +796,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\nif [ -e \".env\" ]\nthen\nsource .env\nfind . -name TLFRequestManager.swift -exec sed -i \"\" \"s/PASTE_YOUR_APPLICATION_ID_HERE/$TFLApplicationID/g\" {} \\;\nfind . -name TLFRequestManager.swift -exec sed -i \"\" \"s/PASTE_YOUR_APPLICATION_KEY_HERE/$TFLApplicationKey/g\" {} \\;\nfind . -name Info.plist -exec sed -i \"\" \"s/PASTE_YOUR_FABRIC_API_KEY_HERE/$TFLFABBRICSAPIKEY/g\" {} \\;\nfi\n";
+			shellScript = "\nif [ -e \".env\" ]\nthen\nsource .env\nif [ \"${CONFIGURATION}\" = \"Debug\" ]; then\n    find . -name CLLocationCoordinate2D+Helper.swift -exec sed -i \"\" \"s/PASTE_YOUR_GOOGLE_ROUTES_API_KEY_HERE/$TFLGoogleRoutesAPIKey/g\" {} \\;\nfi\nfind . -name TLFRequestManager.swift -exec sed -i \"\" \"s/PASTE_YOUR_APPLICATION_ID_HERE/$TFLApplicationID/g\" {} \\;\nfind . -name TLFRequestManager.swift -exec sed -i \"\" \"s/PASTE_YOUR_APPLICATION_KEY_HERE/$TFLApplicationKey/g\" {} \\;\nfind . -name Info.plist -exec sed -i \"\" \"s/PASTE_YOUR_FABRIC_API_KEY_HERE/$TFLFABBRICSAPIKEY/g\" {} \\;\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		564EC6F21DDFE205008CFD11 /* Remove API Keys */ = {
@@ -811,7 +811,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -e \".env\" ]\nthen\nsource .env\nfind . -name TLFRequestManager.swift -exec sed -i \"\" \"s/$TFLApplicationID/PASTE_YOUR_APPLICATION_ID_HERE/g\" {} \\;\nfind . -name TLFRequestManager.swift -exec sed -i \"\" \"s/$TFLApplicationKey/PASTE_YOUR_APPLICATION_KEY_HERE/g\" {} \\;\nfind . -name Info.plist -exec sed -i \"\" \"s/$TFLFABBRICSAPIKEY/PASTE_YOUR_FABRIC_API_KEY_HERE/g\" {} \\;\nfi\n";
+			shellScript = "if [ -e \".env\" ]\nthen\nsource .env\nfind . -name CLLocationCoordinate2D+Helper.swift -exec sed -i \"\" \"s/$TFLGoogleRoutesAPIKey/PASTE_YOUR_GOOGLE_ROUTES_API_KEY_HERE/g\" {} \\;\nfind . -name TLFRequestManager.swift -exec sed -i \"\" \"s/$TFLApplicationID/PASTE_YOUR_APPLICATION_ID_HERE/g\" {} \\;\nfind . -name TLFRequestManager.swift -exec sed -i \"\" \"s/$TFLApplicationKey/PASTE_YOUR_APPLICATION_KEY_HERE/g\" {} \\;\nfind . -name Info.plist -exec sed -i \"\" \"s/$TFLFABBRICSAPIKEY/PASTE_YOUR_FABRIC_API_KEY_HERE/g\" {} \\;\nfi\n";
 		};
 		567CE45B20E412F100DADE45 /* Swift Lint */ = {
 			isa = PBXShellScriptBuildPhase;

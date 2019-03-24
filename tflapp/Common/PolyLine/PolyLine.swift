@@ -140,19 +140,25 @@ fileprivate extension PolyLine {
     
     func divideByPrecisionMultiplicator(_ a : Double) -> Double {
         let defaultValue = Double(a / precisionMultiplicator)
-        guard defaultValue * precisionMultiplicator != a else {
+        guard multiplyByPrecisionMultiplicator(defaultValue) != a else {
             return defaultValue
         }
-        guard let pos = "\(a)".index(of: ".") else {
+        let sgn = Double(sign(a))
+        var aString = "\(abs(a))"
+        if case .none = aString.index(of: ".")  {
+            aString = "\(aString).0"
+        }
+        guard let pos = aString.index(of: ".") else {
             return defaultValue
         }
-        let value = "\(a)".split(separator: ".").joined(separator: "")
-        var prefixedValue = "\(String(repeating: "0", count: self.precision))\(value)"
+        let value = aString.split(separator: ".").joined(separator: "")
+        var prefixedValue = "\(String(repeating: "0", count: precision))\(value)"
         prefixedValue.insert(".", at: pos)
         guard let doubleValue = Double(prefixedValue) else {
             return defaultValue
         }
-        return doubleValue
+        let signedDoubleValue =  doubleValue * sgn
+        return signedDoubleValue
     }
     
     func diff(_ coordinates : [CLLocationCoordinate2D]) -> [Int32] {

@@ -122,10 +122,10 @@ fileprivate extension PolyLine {
         guard defaultValue/precisionMultiplicator != a else {
             return defaultValue
         }
-        guard let index = "\(a)".index(of: ".") else {
+        let aString  = String(format: "%f", a)
+        guard let index = aString.index(of: ".") else {
             return defaultValue
         }
-        let aString  = "\(a)"
         let stringValue = aString[..<index]+aString[aString.index(after: index)...]+String(repeating: "0", count: precision)
         let newIndex = stringValue.index(index, offsetBy: precision)
         let newString = "\(stringValue[..<newIndex]).\(stringValue[newIndex...])"

@@ -81,7 +81,7 @@ class PolyLine {
             return []
         }
         
-        let coords = undiff(decodedList)
+        let coords = undiffToCoordinates(decodedList)
         guard case .none = (coords.first { !CLLocationCoordinate2DIsValid($0) }) else {
             return []
         }
@@ -98,10 +98,7 @@ class PolyLine {
         let leftShiftedTwosComplementAdjusted = diffedValues.map { $0 < 0 ? ~($0 << 1) : $0 << 1 }
         let byteBlocks : [UInt8] = leftShiftedTwosComplementAdjusted.reduce([]) { list,value in
             let elements = (0...7).map { (value >> (fiveBitBlockLength * $0)) & 0x1f }.map { UInt8($0) }
-            let index = elements.lastIndex { $0 != 0 }
-            guard let lastIndex = index else {
-                return list
-            }
+            let lastIndex = elements.lastIndex { $0 != 0 } ?? 0
             let oredElements = elements[0..<lastIndex] .map { $0 | 0x20 } + [elements[lastIndex]]
             return list + oredElements
         }
@@ -176,7 +173,7 @@ fileprivate extension PolyLine {
         return diffedList
     }
     
-    func undiff(_ values : [Int32]) -> [CLLocationCoordinate2D] {
+    func undiffToCoordinates(_ values : [Int32]) -> [CLLocationCoordinate2D] {
         let decodedLats = values.evenElements.reduce([]) { combine($0,$1) }.map { divideByPrecisionMultiplicator(Double($0)) }
         let decodedLongs = values.oddElements.reduce([]) { combine($0,$1) }.map { divideByPrecisionMultiplicator(Double($0))  }
         let coords = zip(decodedLats,decodedLongs).map { CLLocationCoordinate2DMake($0.0, $0.1)}

@@ -101,7 +101,7 @@ class PolyLineSpecs: QuickSpec {
                             let timeNeeded = Date().timeIntervalSince(start)
                             return sum + timeNeeded
                         }
-                        expect(total / 100) <= 0.0140
+                        expect(total / 100) <= 0.0110
                     }
                     
                     it ("should decode polyline correctly") {

@@ -115,47 +115,8 @@ fileprivate extension PolyLine {
         return list + [lastElement + value]
     }
     
-    
-    
-    func multiplyByPrecisionMultiplicator(_ a : Double) -> Double {
-        let defaultValue = Double(Int(a*precisionMultiplicator))
-        guard defaultValue/precisionMultiplicator != a else {
-            return defaultValue
-        }
-        let aString  = String(format: "%f", a)
-        guard let index = aString.index(of: ".") else {
-            return defaultValue
-        }
-        let stringValue = aString[..<index]+aString[aString.index(after: index)...]+String(repeating: "0", count: precision)
-        let newIndex = stringValue.index(index, offsetBy: precision)
-        let newString = "\(stringValue[..<newIndex]).\(stringValue[newIndex...])"
-        guard let doubleValue = Double(newString) else {
-            return defaultValue
-        }
-        return doubleValue
-    }
-    
-    func divideByPrecisionMultiplicator(_ a : Double) -> Double {
-        let defaultValue = Double(a / precisionMultiplicator)
-        guard multiplyByPrecisionMultiplicator(defaultValue) != a else {
-            return defaultValue
-        }
-        let sgn = Double(sign(a))
-        var aString = "\(abs(a))"
-        if case .none = aString.index(of: ".")  {
-            aString = "\(aString).0"
-        }
-        guard let pos = aString.index(of: ".") else {
-            return defaultValue
-        }
-        let value = aString.split(separator: ".").joined(separator: "")
-        var prefixedValue = "\(String(repeating: "0", count: precision))\(value)"
-        prefixedValue.insert(".", at: pos)
-        guard let doubleValue = Double(prefixedValue) else {
-            return defaultValue
-        }
-        let signedDoubleValue =  doubleValue * sgn
-        return signedDoubleValue
+    func roundValue(_ value : Double) -> Double {
+        return floor(abs(value) + 0.5) * (value >= 0 ? 1 : -1)
     }
     
     func diff(_ coordinates : [CLLocationCoordinate2D]) -> [Int32] {
@@ -163,10 +124,10 @@ fileprivate extension PolyLine {
             return []
         }
        
-        let latValues = coordinates.map { Int32(multiplyByPrecisionMultiplicator($0.latitude)) }
+        let latValues = coordinates.map { Int32(roundValue($0.latitude * self.precisionMultiplicator)) }
         let diffedLatValues = [latValues[0]] + zip(latValues.dropFirst(),latValues).map { $0.0 - $0.1 }
         
-        let longValues = coordinates.map { Int32(multiplyByPrecisionMultiplicator($0.longitude)) }
+        let longValues = coordinates.map { Int32(roundValue($0.longitude * self.precisionMultiplicator)) }
         let diffedLongValues = [longValues[0]] + zip(longValues.dropFirst(),longValues).map { $0.0 - $0.1 }
         
         let diffedList = zip(diffedLatValues,diffedLongValues).reduce([]) { $0 + [$1.0,$1.1] }
@@ -174,8 +135,8 @@ fileprivate extension PolyLine {
     }
     
     func undiffToCoordinates(_ values : [Int32]) -> [CLLocationCoordinate2D] {
-        let decodedLats = values.evenElements.reduce([]) { combine($0,$1) }.map { divideByPrecisionMultiplicator(Double($0)) }
-        let decodedLongs = values.oddElements.reduce([]) { combine($0,$1) }.map { divideByPrecisionMultiplicator(Double($0))  }
+        let decodedLats = values.evenElements.reduce([]) { combine($0,$1) }.map { Double($0) / self.precisionMultiplicator }
+        let decodedLongs = values.oddElements.reduce([]) { combine($0,$1) }.map { Double($0) / self.precisionMultiplicator  }
         let coords = zip(decodedLats,decodedLongs).map { CLLocationCoordinate2DMake($0.0, $0.1)}
         return coords
     }

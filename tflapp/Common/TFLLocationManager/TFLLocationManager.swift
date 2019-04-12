@@ -61,6 +61,7 @@ class TFLLocationManager : NSObject {
         return handle
     }()
     private var state = State.not_authorised
+
     static let sharedManager = TFLLocationManager()
     var enabled : Bool {
         guard case .authorised = state else {
@@ -78,7 +79,7 @@ class TFLLocationManager : NSObject {
     }()
     fileprivate var isFirstStartup : Bool = false
    
-    override init() {
+    fileprivate override init() {
         super.init()
         let authorisationStatus = CLLocationManager.authorizationStatus()
         switch authorisationStatus {

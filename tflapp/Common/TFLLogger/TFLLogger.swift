@@ -20,6 +20,7 @@ class TFLLogger {
         case rootViewController = "rootViewController"
         case arrivalInfoAggregator = "arrivalInfoAggregator"
     }
+    fileprivate init() { }
     
     static let subsystem : String = {
         let identifier = Bundle.main.infoDictionary?[kCFBundleIdentifierKey as String] as? String ?? ""

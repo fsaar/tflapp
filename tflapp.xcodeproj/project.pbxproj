@@ -106,6 +106,7 @@
 		56C828901DE8E9FA00E52086 /* TFLChangeSetProtocolSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C8288F1DE8E9FA00E52086 /* TFLChangeSetProtocolSpecs.swift */; };
 		56C828961DEA396400E52086 /* TFLCollectionFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C828951DEA396400E52086 /* TFLCollectionFlowLayout.swift */; };
 		56D0AF331E141D2C00F466C4 /* TFLAnimatedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D0AF321E141D2C00F466C4 /* TFLAnimatedLabel.swift */; };
+		56D6E37A2259547D00A2FAE9 /* PolylineDict.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D6E3792259547D00A2FAE9 /* PolylineDict.swift */; };
 		56D70D141DD9A25F004CA293 /* TFLLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D70D131DD9A25F004CA293 /* TFLLocationManager.swift */; };
 		56D70D341DD9A7A6004CA293 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 56D70D301DD9A7A6004CA293 /* InfoPlist.strings */; };
 		56D70D351DD9A7A6004CA293 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 56D70D321DD9A7A6004CA293 /* Localizable.strings */; };
@@ -237,6 +238,8 @@
 		56C8288F1DE8E9FA00E52086 /* TFLChangeSetProtocolSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLChangeSetProtocolSpecs.swift; sourceTree = "<group>"; };
 		56C828951DEA396400E52086 /* TFLCollectionFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLCollectionFlowLayout.swift; sourceTree = "<group>"; };
 		56D0AF321E141D2C00F466C4 /* TFLAnimatedLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLAnimatedLabel.swift; sourceTree = "<group>"; };
+		56D6E3772259528600A2FAE9 /* PolylineDict.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PolylineDict.plist; sourceTree = "<group>"; };
+		56D6E3792259547D00A2FAE9 /* PolylineDict.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolylineDict.swift; sourceTree = "<group>"; };
 		56D70D131DD9A25F004CA293 /* TFLLocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLLocationManager.swift; sourceTree = "<group>"; };
 		56D70D311DD9A7A6004CA293 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		56D70D331DD9A7A6004CA293 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -400,6 +403,7 @@
 		565A1FC91DD8F8D1003CE960 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				56D6E3782259546F00A2FAE9 /* PolyLineDict */,
 				56113B2C223F7DAE00C8EDA4 /* GoogleRouteInfo */,
 				564CA5A2222355CB00E69A1C /* PolyLine */,
 				56E7217B221234C600733B9F /* TFLOfflineView */,
@@ -578,6 +582,7 @@
 				56A4907921977FF6004024D9 /* abbreviations.plist */,
 				56D70D2F1DD9A7A6004CA293 /* Localization */,
 				566EF7D01DDB5679006162D7 /* TFLBusStops.sqlite */,
+				56D6E3772259528600A2FAE9 /* PolylineDict.plist */,
 				565A1FD01DD8FB2A003CE960 /* Model.xcdatamodeld */,
 				5642EF0720ED63AD00A7914F /* mapstogpx20180704_193755.gpx */,
 				564EC6EF1DDFAA67008CFD11 /* LICENSE */,
@@ -591,6 +596,14 @@
 				56D0AF321E141D2C00F466C4 /* TFLAnimatedLabel.swift */,
 			);
 			path = TFLAnimatedLabel;
+			sourceTree = "<group>";
+		};
+		56D6E3782259546F00A2FAE9 /* PolyLineDict */ = {
+			isa = PBXGroup;
+			children = (
+				56D6E3792259547D00A2FAE9 /* PolylineDict.swift */,
+			);
+			path = PolyLineDict;
 			sourceTree = "<group>";
 		};
 		56D70D121DD9A24E004CA293 /* TFLLocationManager */ = {
@@ -925,6 +938,7 @@
 				566EF7C71DDA3A2B006162D7 /* TFLBusPrediction.swift in Sources */,
 				56C2D6DC1DE5D6B000F43628 /* TFLBusStopArrivalsViewModel.swift in Sources */,
 				566EF7CC1DDB0851006162D7 /* TFLCDBusStop+CoreDataClass.swift in Sources */,
+				56D6E37A2259547D00A2FAE9 /* PolylineDict.swift in Sources */,
 				564EC6F51DE0A2A0008CFD11 /* TFLButton.swift in Sources */,
 				567F533920BC20610022FEFF /* TFLCDLineInfo+CoreDataClass.swift in Sources */,
 				56823EA61DDDA39600E79B1A /* TFLLoadLocationView.swift in Sources */,

@@ -48,6 +48,7 @@ class TFLStationDetailMapViewController: UIViewController {
             let mapRect = overlays.reduce(MKMapRect.null) { $0.union($1.boundingMapRect) }
             let insetRect = mapRect.insetBy(dx: -10000, dy: -10000)
             self.mapView.region = MKCoordinateRegion(insetRect)
+            self.selectedOverlayIndex = 0
         }
     }
 
@@ -66,7 +67,7 @@ extension TFLStationDetailMapViewController : MKMapViewDelegate {
         guard let busRouteOverlay = overlay as? TFLStationDetailMapBusRouteOverLay else {
             return MKOverlayRenderer()
         }
-        let coords = busRouteOverlay.model.stations.map { $0.coords }
+        let coords = busRouteOverlay.model.coords
         let polyline = MKPolyline(coordinates: coords, count: coords.count)
         let renderer = MKPolylineRenderer(polyline: polyline)
         renderer.lineWidth = 2

@@ -58,6 +58,17 @@ class PolyLineSpecs: QuickSpec {
             
             
             describe("when decoding") {
+                fit("should be able to decode polylinedict") {
+                    let fileName = Bundle.main.url(forResource: "PolylineDict", withExtension: "plist")!
+                    let dict  = NSDictionary(contentsOf: fileName)!
+                    
+                    let polyLine = PolyLine(precision: 5)
+                    for (_,value) in dict {
+                        let coords = polyLine.decode(polyLine: value as! String)
+                        expect(coords).notTo(beEmpty())
+                    }
+                }
+                
                 it("should return empty list for any invalid string") {
                     let polyLine = PolyLine(precision: 5)
                     let coords = polyLine.decode(polyLine: "--------")

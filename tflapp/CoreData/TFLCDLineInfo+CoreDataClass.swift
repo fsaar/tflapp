@@ -82,6 +82,7 @@ public class TFLCDLineInfo: NSManagedObject {
         var lineInfo : TFLCDLineInfo?
         managedObjectContext.performAndWait {
             let fetchRequest = NSFetchRequest<TFLCDLineInfo>(entityName: String(describing: TFLCDLineInfo.self))
+            fetchRequest.relationshipKeyPathsForPrefetching = ["routes"]
             let predicate = NSPredicate(format: "identifier == %@",identifier.lowercased())
             fetchRequest.predicate = predicate
             lineInfo =  (try? managedObjectContext.fetch(fetchRequest))?.first

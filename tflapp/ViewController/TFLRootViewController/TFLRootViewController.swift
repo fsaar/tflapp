@@ -311,13 +311,13 @@ fileprivate extension TFLRootViewController {
     
     
     
-    fileprivate func currentCoordinates(using completionBlock : @escaping (_ coord : CLLocationCoordinate2D?) -> Void) {
+     func currentCoordinates(using completionBlock : @escaping (_ coord : CLLocationCoordinate2D?) -> Void) {
         TFLLocationManager.sharedManager.updateLocation { coord in
             completionBlock(coord)
         }
     }
     
-    fileprivate func updateUI(with coord : CLLocationCoordinate2D, using completionBlock:@escaping (_ updated : Bool) -> ()) {
+     func updateUI(with coord : CLLocationCoordinate2D, using completionBlock:@escaping (_ updated : Bool) -> ()) {
         
         _ = self.updateContentViewController(with: [],isUpdatePending: false, and: coord)
         self.retrieveBusstops(for: coord) { [weak self] busStopPredictionTuples,isComplete  in

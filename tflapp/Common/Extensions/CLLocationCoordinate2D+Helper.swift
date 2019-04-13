@@ -119,59 +119,7 @@ extension Array where Element == CLLocationCoordinate2D {
 
     }
     
-    func hiresRoutes(completionBlock : @escaping ([CLLocationCoordinate2D]) -> Void) {
-        let group = DispatchGroup()
-        let coordsList = self
-        let tuples = [(CLLocationCoordinate2D,CLLocationCoordinate2D)](zip(coordsList,coordsList.dropFirst()))
-        let directions : [MKDirections] = tuples.map { tuple in
-            let (start,end) = tuple
-            let request = MKDirections.Request()
-            request.source = MKMapItem(placemark: MKPlacemark(coordinate:start))
-            request.destination = MKMapItem(placemark: MKPlacemark(coordinate:end))
-            request.requestsAlternateRoutes = false
-     //       request.transportType = .any
-            let directions = MKDirections(request: request)
-            return directions
-        }
-        
-        
-        var list : [(Int,[CLLocationCoordinate2D])] = []
-        for (index,directions) in directions.enumerated() {
-            group.enter()
-            DispatchQueue.global().async {
-                directions.calculate { response, error in
-                    if let response = response {
-                        let coords : [CLLocationCoordinate2D] = response.routes.reduce([]) { sum,route  in
-                            let polyline = route.polyline
-                            var coords = [CLLocationCoordinate2D](repeating: kCLLocationCoordinate2DInvalid,count: polyline.pointCount)
-                            polyline.getCoordinates(&coords, range: NSRange(location: 0, length: polyline.pointCount))
-                            return sum + coords
-                        }
-                        let (start,end) = tuples[index]
-                        let newCoords = [start] + coords + [end]
-                        list += [(index,newCoords)]
-                    }
-                    else {
-                        if let error = error {
-                            print(error)
-                        }
-                        let (start,end) = tuples[index]
-                        list += [(index,[start,end])]
-                    }
-                    group.leave()
-                }
-            }
-        }
-        group.notify(queue: .main) {
-            guard list.count == self.count - 1 else {
-                completionBlock([])
-                return
-            }
-            let sortedList = list.sorted { $0.0 < $1.0 }.reduce([]) { $0 + $1.1 }
-            completionBlock(sortedList)
-            return
-        }
-    }
+    
     #endif
 
 }

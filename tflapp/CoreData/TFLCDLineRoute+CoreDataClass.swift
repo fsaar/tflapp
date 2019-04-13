@@ -53,44 +53,22 @@ public class TFLCDLineRoute: NSManagedObject {
                     #if DEBUG
                     
                     let polyLine = PolyLine(precision: 5)
+                    let key = stations.sorted(by:<).joined(separator: "-")
                     let busStops = TFLCDBusStop.busStops(with: stations, and: managedObjectContext)
                     let coords = busStops.map { CLLocationCoordinate2DMake($0.lat, $0.long) }.filter { $0.isValid }
-                   
-                    guard let key = polyLine.encode(coordinates: coords) else {
-                        completionBlock(route)
-                        return
-                    }
                     if let polyLineString = self.polyLineDict[key] {
+                        print("reusing polyline")
                         route.polyline  = polyLineString
                         completionBlock(route)
                         return
                     }
                     
-                    let polylineEmpty = route.polyline?.isEmpty ?? true
-                    if !coords.isEmpty && polylineEmpty {
-                        let session = URLSession(configuration: URLSessionConfiguration.default)
-
-                        var hiresCoords : [CLLocationCoordinate2D] = []
-                        let group = DispatchGroup()
-                        group.enter()
-                        coords.googleHiresRoutes(with: session) { coords in
-                            hiresCoords = coords
-                            group.leave()
-                        }
-                        group.notify(queue: .global()) {
-                            let polyLineString = polyLine.encode(coordinates: hiresCoords)
-                            // Verify
-                            if let polyLineString = polyLineString {
-                                let list = polyLine.decode(polyLine: polyLineString)
-                                precondition(list == hiresCoords)
-                            }
+                    hiresRoutePolyline(polyLine, with: coords) { polyLineString in
+                        managedObjectContext.perform {
                             route.polyline  = polyLineString
                             polyLineDict[key] = polyLineString
                             completionBlock(route)
                         }
-                    }
-                    else {
-                        completionBlock(route)
                     }
                     #else
                         completionBlock(route)
@@ -101,6 +79,31 @@ public class TFLCDLineRoute: NSManagedObject {
                     completionBlock(route)
                 }
             }
+        }
+    }
+}
+
+fileprivate extension TFLCDLineRoute {
+    class func verifyPolylineString(_ polyLine : PolyLine,polyLineString : String?,coords : [CLLocationCoordinate2D]) -> Bool {
+        guard let polyLineString = polyLineString else {
+            return false
+        }
+        let list = polyLine.decode(polyLine: polyLineString)
+        return list == coords
+    }
+    
+    class func hiresRoutePolyline(_ polyLine : PolyLine,with coords : [CLLocationCoordinate2D], using completionBlock: @escaping (String?) -> Void) {
+        guard !coords.isEmpty else {
+            completionBlock(nil)
+            return
+        }
+        let session = URLSession(configuration: URLSessionConfiguration.default)
+        
+        coords.googleHiresRoutes(with: session) { hiresCoords in
+            let polyLineString = polyLine.encode(coordinates: hiresCoords)
+            let valid = verifyPolylineString(polyLine, polyLineString: polyLineString, coords: hiresCoords)
+            precondition(valid)
+            completionBlock(polyLineString)
         }
     }
 }

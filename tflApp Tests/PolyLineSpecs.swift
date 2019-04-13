@@ -58,7 +58,7 @@ class PolyLineSpecs: QuickSpec {
             
             
             describe("when decoding") {
-                fit("should be able to decode polylinedict") {
+                it("should be able to decode polylinedict") {
                     let fileName = Bundle.main.url(forResource: "PolylineDict", withExtension: "plist")!
                     let dict  = NSDictionary(contentsOf: fileName)!
                     

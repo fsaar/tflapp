@@ -113,6 +113,7 @@
 		56DA42EC21051E8A00ED9C54 /* TFLBusStopArrivalsInfoSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DA42EB21051E8A00ED9C54 /* TFLBusStopArrivalsInfoSpecs.swift */; };
 		56DD18FD20A0B078003335D1 /* TFLTimerSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DD18FC20A0B078003335D1 /* TFLTimerSpecs.swift */; };
 		56DD190020A0B0C1003335D1 /* TFLTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DD18FF20A0B0C1003335D1 /* TFLTimer.swift */; };
+		56E1C2A8226135A3006D81D4 /* PolylineDict.plist in Resources */ = {isa = PBXBuildFile; fileRef = 56D6E3772259528600A2FAE9 /* PolylineDict.plist */; };
 		56E7217D221234C600733B9F /* TFLOfflineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E7217C221234C600733B9F /* TFLOfflineView.swift */; };
 		56E721802213625C00733B9F /* TFLSplashscreenController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E7217F2213625C00733B9F /* TFLSplashscreenController.swift */; };
 		56E721822214CF6D00733B9F /* UIViewController+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E721812214CF6D00733B9F /* UIViewController+Helper.swift */; };
@@ -788,6 +789,7 @@
 				5689612720C08AFC00335DEB /* TFLStationDetailSectionHeaderView.xib in Resources */,
 				56D70D351DD9A7A6004CA293 /* Localizable.strings in Resources */,
 				56A81B391DD862DC001DF7F1 /* Assets.xcassets in Resources */,
+				56E1C2A8226135A3006D81D4 /* PolylineDict.plist in Resources */,
 				56A4907721977FF6004024D9 /* abbreviations.plist in Resources */,
 				56A81B341DD862DC001DF7F1 /* Main.storyboard in Resources */,
 				56D70D341DD9A7A6004CA293 /* InfoPlist.strings in Resources */,

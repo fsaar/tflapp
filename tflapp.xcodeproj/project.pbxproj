@@ -816,7 +816,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\nif [ -e \".env\" ]\nthen\nsource .env\nif [ \"${CONFIGURATION}\" = \"Debug\" ]; then\n    find . -name CLLocationCoordinate2D+Helper.swift -exec sed -i \"\" \"s/PASTE_YOUR_GOOGLE_ROUTES_API_KEY_HERE/$TFLGoogleRoutesAPIKey/g\" {} \\;\nfi\nfind . -name TLFRequestManager.swift -exec sed -i \"\" \"s/PASTE_YOUR_APPLICATION_ID_HERE/$TFLApplicationID/g\" {} \\;\nfind . -name TLFRequestManager.swift -exec sed -i \"\" \"s/PASTE_YOUR_APPLICATION_KEY_HERE/$TFLApplicationKey/g\" {} \\;\nfind . -name Info.plist -exec sed -i \"\" \"s/PASTE_YOUR_FABRIC_API_KEY_HERE/$TFLFABBRICSAPIKEY/g\" {} \\;\nfi\n";
+			shellScript = "\nif [ -e \".env\" ]\nthen\nsource .env\nif [ \"${CONFIGURATION}\" = \"DataBaseGeneration\" ]; then\n    find . -name CLLocationCoordinate2D+Helper.swift -exec sed -i \"\" \"s/PASTE_YOUR_GOOGLE_ROUTES_API_KEY_HERE/$TFLGoogleRoutesAPIKey/g\" {} \\;\nfi\nfind . -name TLFRequestManager.swift -exec sed -i \"\" \"s/PASTE_YOUR_APPLICATION_ID_HERE/$TFLApplicationID/g\" {} \\;\nfind . -name TLFRequestManager.swift -exec sed -i \"\" \"s/PASTE_YOUR_APPLICATION_KEY_HERE/$TFLApplicationKey/g\" {} \\;\nfind . -name Info.plist -exec sed -i \"\" \"s/PASTE_YOUR_FABRIC_API_KEY_HERE/$TFLFABBRICSAPIKEY/g\" {} \\;\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		564EC6F21DDFE205008CFD11 /* Remove API Keys */ = {

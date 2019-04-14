@@ -14,7 +14,9 @@ import MapKit
 
 @objc(TFLCDLineRoute)
 public class TFLCDLineRoute: NSManagedObject {
+    #if DATABASEGENERATION
     static var polyLineDict = PolylineDict()
+    #endif
     private enum Identifiers : String {
         case name = "name"
         case stations = "naptanIds"

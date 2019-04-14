@@ -1,7 +1,7 @@
 import Foundation
 import CoreData
 import UIKit
-
+#if DATABASEGENERATION
 @objc public final class TFLCoreDataStack : NSObject {
 
     static let sharedDataStack = TFLCoreDataStack()
@@ -43,3 +43,4 @@ import UIKit
         }
     }
 }
+#endif

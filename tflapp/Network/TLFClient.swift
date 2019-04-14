@@ -85,7 +85,7 @@ public final class TFLClient {
         }
 
     }
-
+    #if DATABASEGENERATION
     public func busStops(with page: UInt,
                          with operationQueue : OperationQueue = OperationQueue.main,
                          using completionBlock: @escaping (([TFLCDBusStop]?,_ error:Error?) -> ()))  {
@@ -99,7 +99,7 @@ public final class TFLClient {
             }
         }
     }
-
+    #endif
     public func lineStationInfo(for line: String,
                         context: NSManagedObjectContext,
                          with operationQueue : OperationQueue = OperationQueue.main,

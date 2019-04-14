@@ -18,7 +18,7 @@ class TFLRootViewController: UIViewController {
     fileprivate static let searchParameter  : (min:Double,initial:Double) = (100,500)
     fileprivate let networkBackgroundQueue = OperationQueue()
     fileprivate let tflClient = TFLClient()
-    #if DEBUG
+    #if DATABASEGENERATION
     fileprivate let busStopDBGenerator = TFLBusStopDBGenerator()
     #endif
     fileprivate static let loggingHandle  = OSLog(subsystem: TFLLogger.subsystem, category: TFLLogger.category.rootViewController.rawValue)
@@ -176,11 +176,14 @@ class TFLRootViewController: UIViewController {
         self.backgroundNotificationHandler = TFLNotificationObserver(notification:UIApplication.didEnterBackgroundNotification) { [weak self]  _ in
             self?.updateStatusView.state = .paused
         }
-        self.loadNearbyBusstops()
-        
-//        self.busStopDBGenerator.loadBusStops { [weak self] in
-//            self?.busStopDBGenerator.loadLineStations()
-//        }
+        #if DATABASEGENERATION
+        self.busStopDBGenerator.loadBusStops { [weak self] in
+            self?.busStopDBGenerator.loadLineStations()
+        }
+        #else
+            self.loadNearbyBusstops()
+        #endif
+
     }
 
     override func viewWillAppear(_ animated: Bool) {

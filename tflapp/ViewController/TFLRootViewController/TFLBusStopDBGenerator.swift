@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-#if DEBUG
+#if DATABASEGENERATION
 
 class TFLBusStopDBGenerator {
     // MARK: DataBase Generation

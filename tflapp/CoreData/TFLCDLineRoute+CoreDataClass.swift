@@ -50,8 +50,8 @@ public class TFLCDLineRoute: NSManagedObject {
 
                     if route.stations != stations && (!stations.isEmpty || (route.stations == .none)) { route.stations = stations }
                     if route.serviceType != serviceType && (!serviceType.isEmpty || (route.serviceType == .none)) { route.serviceType = serviceType }
-                    #if DEBUG
-                    
+                    #if DATABASEGENERATION
+
                     let polyLine = PolyLine(precision: 5)
                     let key = stations.sorted(by:<).joined(separator: "-")
                     let busStops = TFLCDBusStop.busStops(with: stations, and: managedObjectContext)
@@ -84,7 +84,7 @@ public class TFLCDLineRoute: NSManagedObject {
 }
 
 fileprivate extension TFLCDLineRoute {
-    
+    #if DATABASEGENERATION
     class func hiresRoutePolyline(_ polyLine : PolyLine,with coords : [CLLocationCoordinate2D], using completionBlock: @escaping (String?) -> Void) {
         guard !coords.isEmpty else {
             completionBlock(nil)
@@ -99,4 +99,5 @@ fileprivate extension TFLCDLineRoute {
             completionBlock(polyLineString)
         }
     }
+   #endif
 }

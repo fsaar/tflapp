@@ -84,13 +84,6 @@ public class TFLCDLineRoute: NSManagedObject {
 }
 
 fileprivate extension TFLCDLineRoute {
-    class func verifyPolylineString(_ polyLine : PolyLine,polyLineString : String?,coords : [CLLocationCoordinate2D]) -> Bool {
-        guard let polyLineString = polyLineString else {
-            return false
-        }
-        let list = polyLine.decode(polyLine: polyLineString)
-        return list == coords
-    }
     
     class func hiresRoutePolyline(_ polyLine : PolyLine,with coords : [CLLocationCoordinate2D], using completionBlock: @escaping (String?) -> Void) {
         guard !coords.isEmpty else {
@@ -101,7 +94,7 @@ fileprivate extension TFLCDLineRoute {
         
         coords.googleHiresRoutes(with: session) { hiresCoords in
             let polyLineString = polyLine.encode(coordinates: hiresCoords)
-            let valid = verifyPolylineString(polyLine, polyLineString: polyLineString, coords: hiresCoords)
+            let valid = polyLine.verify(polyLine: polyLineString ?? "", coordinates: hiresCoords)
             precondition(valid)
             completionBlock(polyLineString)
         }

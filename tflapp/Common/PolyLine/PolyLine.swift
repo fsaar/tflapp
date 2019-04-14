@@ -55,6 +55,14 @@ class PolyLine {
         self.precisionMultiplicator = pow(10.0, Double(precision))
     }
     
+    func verify(polyLine : String,coordinates : [CLLocationCoordinate2D]) -> Bool {
+        let coordsToVerify = self.decode(polyLine: polyLine)
+        let polylineToVerify = self.encode(coordinates: coordinates)
+        let decodeOK = coordsToVerify == coordinates
+        let encodeOK = polylineToVerify == polyLine
+        return decodeOK && encodeOK
+    }
+    
     func decode(polyLine : String) -> [CLLocationCoordinate2D] {
         guard !polyLine.isEmpty,let data = polyLine.data(using: .utf8) as Data? else {
             return []

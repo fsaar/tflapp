@@ -43,6 +43,28 @@ class PolyLineSpecs: QuickSpec {
             expect(polyLine).notTo(beNil())
         }
         
+        context("when verifying") {
+            it("it should return true if polyline corresponds to coordinates") {
+                let polyLineString = "_p~iF~ps|U_ulLnnqC_mqNvxq`@"
+                let coordinates = [CLLocationCoordinate2D(latitude: 38.5, longitude: -120.2),
+                                   CLLocationCoordinate2D(latitude: 40.7, longitude: -120.95),
+                                   CLLocationCoordinate2D(latitude: 43.252, longitude: -126.453)]
+                let polyLine = PolyLine(precision: 5)
+                expect(polyLine.verify(polyLine: polyLineString,coordinates: coordinates)) == true
+
+            }
+            
+            it("it should return false if polyline doesn't correspond to coordinates") {
+                let polyLineString = "@"
+                let coordinates = [CLLocationCoordinate2D(latitude: 38.5, longitude: -120.2),
+                                   CLLocationCoordinate2D(latitude: 40.7, longitude: -120.95),
+                                   CLLocationCoordinate2D(latitude: 43.252, longitude: -126.453)]
+                let polyLine = PolyLine(precision: 5)
+                expect(polyLine.verify(polyLine: polyLineString,coordinates: coordinates)) == false
+            }
+        }
+            
+        
         context("when decoding") {
             it("should handle bogus values gracefully") {
                 let polyLine = PolyLine(precision: 5)
@@ -112,7 +134,7 @@ class PolyLineSpecs: QuickSpec {
                             let timeNeeded = Date().timeIntervalSince(start)
                             return sum + timeNeeded
                         }
-                        expect(total / 100) <= 0.0110
+                        expect(total / 100) <= 0.025
                     }
                     
                     it ("should decode polyline correctly") {

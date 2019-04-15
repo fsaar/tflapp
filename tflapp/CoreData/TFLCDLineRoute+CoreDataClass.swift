@@ -15,7 +15,7 @@ import MapKit
 @objc(TFLCDLineRoute)
 public class TFLCDLineRoute: NSManagedObject {
     #if DATABASEGENERATION
-    static var polyLineDict = PolylineDict()
+    static var polyLineDict = PolylineDict(fileName: "rawPolyLineDict.plist")
     #endif
     private enum Identifiers : String {
         case name = "name"
@@ -38,7 +38,7 @@ public class TFLCDLineRoute: NSManagedObject {
         }
     }
 
-    class func route(with dictionary: [String: Any], and managedObjectContext: NSManagedObjectContext,using completionBlock : @escaping (_ route : TFLCDLineRoute?) -> () ) {
+    class func route(for line : String,with dictionary: [String: Any], and managedObjectContext: NSManagedObjectContext,using completionBlock : @escaping (_ route : TFLCDLineRoute?) -> () ) {
         guard let name = dictionary[Identifiers.name.rawValue] as? String else {
             completionBlock(nil)
             return
@@ -46,7 +46,7 @@ public class TFLCDLineRoute: NSManagedObject {
         self.routeEntity(with: name, and: managedObjectContext) { route in
             managedObjectContext.perform {
                 if let route = route {
-                    print("retrieving route \(name)")
+                    print("retrieving route \(name) for \(line)")
                     let serviceType = dictionary[Identifiers.serviceType.rawValue] as? String ?? ""
                     let stations = dictionary[Identifiers.stations.rawValue] as? [String] ?? []
 
@@ -55,7 +55,8 @@ public class TFLCDLineRoute: NSManagedObject {
                     #if DATABASEGENERATION
 
                     let polyLine = PolyLine(precision: 5)
-                    let key = stations.sorted(by:<).joined(separator: "-")
+                    let stationKey = stations.sorted(by:<).joined(separator: "-")
+                    let key = "#\(line)|\(stationKey)"
                     let busStops = TFLCDBusStop.busStops(with: stations, and: managedObjectContext)
                     let coords = busStops.map { CLLocationCoordinate2DMake($0.lat, $0.long) }.filter { $0.isValid }
                     if let polyLineString = self.polyLineDict[key] {

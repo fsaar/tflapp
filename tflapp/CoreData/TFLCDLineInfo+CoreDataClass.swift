@@ -47,7 +47,7 @@ public class TFLCDLineInfo: NSManagedObject {
                         let group = DispatchGroup()
                         for routeDict in  routeDictList {
                             group.enter()
-                            TFLCDLineRoute.route(with: routeDict, and: managedObjectContext) { route in
+                            TFLCDLineRoute.route(for:identifier, with: routeDict, and: managedObjectContext) { route in
                                 if let route = route {
                                     lineInfo.addToRoutes(route)
                                 }

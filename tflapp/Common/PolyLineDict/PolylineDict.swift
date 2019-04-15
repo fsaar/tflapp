@@ -7,14 +7,14 @@
 //
 
 import Foundation
-
+#if DATABASEGENERATION
 class PolylineDict {
     fileprivate let queue : OperationQueue = {
         let q = OperationQueue()
         q.maxConcurrentOperationCount = 1
         return q
     }()
-    
+    fileprivate let filename : String
     subscript(key : String) -> String? {
         get {
             let group = DispatchGroup()
@@ -39,10 +39,10 @@ class PolylineDict {
     }
     
     var innerDict : [String:String] = [:]
-    init() {
-        
+    init(fileName : String = "PolylineDict.plist") {
+        self.filename = fileName
         copyPolyLineDictIfNeedBe()
-        if let fileName = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last?.appendingPathComponent("PolylineDict.plist"),let dict = NSDictionary(contentsOf: fileName) {
+        if let fileName = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last?.appendingPathComponent(self.filename),let dict = NSDictionary(contentsOf: fileName) {
             print("Loaded PolylineDict: \(dict.allKeys.count) entries !")
             for (key,value) in dict {
                 if let (keyString,valueString) = (key,value) as? (String,String) {
@@ -53,19 +53,21 @@ class PolylineDict {
     }
     
     func save() {
-        guard let fileName = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last?.appendingPathComponent("PolylineDict.plist") else {
+        guard let name = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last?.appendingPathComponent(self.filename) else {
             return
         }
         let dict = NSDictionary(dictionary: innerDict)
-        dict.write(to: fileName, atomically: true)
+        dict.write(to: name, atomically: true)
         print("saved! \(dict.allKeys.count) entries !")
     }    
 }
 
 fileprivate extension PolylineDict {
     func copyPolyLineDictIfNeedBe() {
-        guard let sourceURL = Bundle.main.url(forResource: "PolylineDict", withExtension: "plist"),
-            let destinationURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last?.appendingPathComponent("PolylineDict.plist") else {
+        let pathExtension = (self.filename as NSString).pathExtension
+        let name = (self.filename as NSString).deletingPathExtension
+        guard let sourceURL = Bundle.main.url(forResource: name, withExtension: pathExtension),
+            let destinationURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last?.appendingPathComponent(self.filename) else {
                 return
         }
         if FileManager.default.fileExists(atPath: destinationURL.path) {
@@ -76,3 +78,4 @@ fileprivate extension PolylineDict {
         try? FileManager.default.copyItem(at: sourceURL, to: destinationURL)
     }
 }
+#endif

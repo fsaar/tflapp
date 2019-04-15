@@ -10,7 +10,7 @@ extension String {
 
 extension Array where Element == CLLocationCoordinate2D {
     
-    #if DEBUG
+    #if DATABASEGENERATION
     var hasLoop : Bool {
         return !loopRanges.isEmpty
     }
@@ -58,21 +58,21 @@ extension Array where Element == CLLocationCoordinate2D {
         return coordinates
     }
     
-    func routeSections(n: Int,wayPoints : Int) -> [CountableClosedRange<Int>] {
-        let increment = wayPoints + 1
-        let limits = stride(from:0,to:n-1,by:increment).map { ($0,Swift.min($0 + increment, n-1)) }
+    func routeSections(n: Int) -> [CountableClosedRange<Int>] {
+        let limits = stride(from:0,to:n-1,by:1).map { ($0,Swift.min($0 + 1, n-1)) }
                                                     .filter { $0.0 != $0.1 }
         let ranges = limits.map { $0.0...$0.1 }
         return ranges
         
     }
     
-    func URLsForRouteSections(n: Int,wayPoints : Int) -> [URL] {
-        let sections = routeSections(n: n,wayPoints: wayPoints)
+    func URLsForRouteSections(_ sections : [CountableClosedRange<Int>]) -> [URL] {
         let urls : [URL] = sections.map { range in
             let sublist = Array(self[range])
             let (start,end) = (sublist[0],sublist[1])
             // https://developers.google.com/maps/documentation/directions/intro
+            // https://console.cloud.google.com/apis/credentials/
+            // https://console.cloud.google.com/billing/
             let GOOGLE_ROUTES_API_KEY = "PASTE_YOUR_GOOGLE_ROUTES_API_KEY_HERE"
             let url = URL(string: "https://maps.googleapis.com/maps/api/directions/json?origin=\(start.latitude),\(start.longitude)&destination=\(end.latitude),\(end.longitude)&mode=transit&transit_mode=bus&key=\(GOOGLE_ROUTES_API_KEY)")!
             return url
@@ -81,7 +81,8 @@ extension Array where Element == CLLocationCoordinate2D {
     }
 
     func googleHiresRoutes(with session : URLSession ,completionBlock : @escaping ([CLLocationCoordinate2D]) -> Void) {
-        let urls = URLsForRouteSections(n: self.count, wayPoints: 0)
+        let sections = routeSections(n: self.count)
+        let urls = URLsForRouteSections(sections)
         var list : [(Int,[CLLocationCoordinate2D])] = []
         let polyLine = PolyLine(precision: 5)
         let group = DispatchGroup()
@@ -93,6 +94,16 @@ extension Array where Element == CLLocationCoordinate2D {
                     if !coordinates.isEmpty {
                         list += [(index,coordinates)]
                     }
+                    else {
+                        print("- no polyline -")
+                        let range = sections[index]
+                        let sublist = Array(self[range])
+                        let coordinates = [sublist[0],sublist[1]]
+                        list += [(index,coordinates)]
+                    }
+                }
+                else if let data = data,let dataString = String(data: data, encoding: .utf8) {
+                    print(dataString)
                 }
                 group.leave()
             }
@@ -100,12 +111,13 @@ extension Array where Element == CLLocationCoordinate2D {
         }
         group.notify(queue: .main) {
             guard list.count == self.count - 1 else {
+                print("- hires route failed -")
                 completionBlock([])
                 return
             }
             let sortedList = list.sorted { $0.0 < $1.0 }.map { $0.1 }
             let coords = sortedList.reduce([]) { $0 + $1  }
-            completionBlock(coords.removeLoops())
+            completionBlock(coords)
         }
     }
     func save() {
@@ -118,10 +130,7 @@ extension Array where Element == CLLocationCoordinate2D {
         try? jsonData.write(to: fileURL)
 
     }
-    
-    
     #endif
-
 }
 
 extension CLLocationCoordinate2D : Equatable {

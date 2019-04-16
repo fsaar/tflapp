@@ -103,6 +103,7 @@ extension Array where Element == CLLocationCoordinate2D {
                     }
                 }
                 else if let data = data,let dataString = String(data: data, encoding: .utf8) {
+                    print("- no GoogleRouteInfo JSON -")
                     print(dataString)
                 }
                 group.leave()

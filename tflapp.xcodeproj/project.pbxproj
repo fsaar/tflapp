@@ -111,9 +111,9 @@
 		56D70D341DD9A7A6004CA293 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 56D70D301DD9A7A6004CA293 /* InfoPlist.strings */; };
 		56D70D351DD9A7A6004CA293 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 56D70D321DD9A7A6004CA293 /* Localizable.strings */; };
 		56DA42EC21051E8A00ED9C54 /* TFLBusStopArrivalsInfoSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DA42EB21051E8A00ED9C54 /* TFLBusStopArrivalsInfoSpecs.swift */; };
+		56DB35D72265201100B164CB /* rawPolyLineDict.plist in Resources */ = {isa = PBXBuildFile; fileRef = 56DB35D62265201100B164CB /* rawPolyLineDict.plist */; };
 		56DD18FD20A0B078003335D1 /* TFLTimerSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DD18FC20A0B078003335D1 /* TFLTimerSpecs.swift */; };
 		56DD190020A0B0C1003335D1 /* TFLTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DD18FF20A0B0C1003335D1 /* TFLTimer.swift */; };
-		56E1C2A8226135A3006D81D4 /* PolylineDict.plist in Resources */ = {isa = PBXBuildFile; fileRef = 56D6E3772259528600A2FAE9 /* PolylineDict.plist */; };
 		56E7217D221234C600733B9F /* TFLOfflineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E7217C221234C600733B9F /* TFLOfflineView.swift */; };
 		56E721802213625C00733B9F /* TFLSplashscreenController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E7217F2213625C00733B9F /* TFLSplashscreenController.swift */; };
 		56E721822214CF6D00733B9F /* UIViewController+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E721812214CF6D00733B9F /* UIViewController+Helper.swift */; };
@@ -240,12 +240,12 @@
 		56C8288F1DE8E9FA00E52086 /* TFLChangeSetProtocolSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLChangeSetProtocolSpecs.swift; sourceTree = "<group>"; };
 		56C828951DEA396400E52086 /* TFLCollectionFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLCollectionFlowLayout.swift; sourceTree = "<group>"; };
 		56D0AF321E141D2C00F466C4 /* TFLAnimatedLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLAnimatedLabel.swift; sourceTree = "<group>"; };
-		56D6E3772259528600A2FAE9 /* PolylineDict.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PolylineDict.plist; sourceTree = "<group>"; };
 		56D6E3792259547D00A2FAE9 /* PolylineDict.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolylineDict.swift; sourceTree = "<group>"; };
 		56D70D131DD9A25F004CA293 /* TFLLocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLLocationManager.swift; sourceTree = "<group>"; };
 		56D70D311DD9A7A6004CA293 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		56D70D331DD9A7A6004CA293 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		56DA42EB21051E8A00ED9C54 /* TFLBusStopArrivalsInfoSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusStopArrivalsInfoSpecs.swift; sourceTree = "<group>"; };
+		56DB35D62265201100B164CB /* rawPolyLineDict.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = rawPolyLineDict.plist; sourceTree = "<group>"; };
 		56DD18FC20A0B078003335D1 /* TFLTimerSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLTimerSpecs.swift; sourceTree = "<group>"; };
 		56DD18FF20A0B0C1003335D1 /* TFLTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLTimer.swift; sourceTree = "<group>"; };
 		56E7217C221234C600733B9F /* TFLOfflineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLOfflineView.swift; sourceTree = "<group>"; };
@@ -585,7 +585,7 @@
 				56A4907921977FF6004024D9 /* abbreviations.plist */,
 				56D70D2F1DD9A7A6004CA293 /* Localization */,
 				566EF7D01DDB5679006162D7 /* TFLBusStops.sqlite */,
-				56D6E3772259528600A2FAE9 /* PolylineDict.plist */,
+				56DB35D62265201100B164CB /* rawPolyLineDict.plist */,
 				565A1FD01DD8FB2A003CE960 /* Model.xcdatamodeld */,
 				5642EF0720ED63AD00A7914F /* mapstogpx20180704_193755.gpx */,
 				564EC6EF1DDFAA67008CFD11 /* LICENSE */,
@@ -791,10 +791,10 @@
 				56C0944C20D9AE0C00581995 /* Settings.bundle in Resources */,
 				566EF7D11DDB5685006162D7 /* TFLBusStops.sqlite in Resources */,
 				56A81B3C1DD862DC001DF7F1 /* LaunchScreen.storyboard in Resources */,
+				56DB35D72265201100B164CB /* rawPolyLineDict.plist in Resources */,
 				5689612720C08AFC00335DEB /* TFLStationDetailSectionHeaderView.xib in Resources */,
 				56D70D351DD9A7A6004CA293 /* Localizable.strings in Resources */,
 				56A81B391DD862DC001DF7F1 /* Assets.xcassets in Resources */,
-				56E1C2A8226135A3006D81D4 /* PolylineDict.plist in Resources */,
 				56A4907721977FF6004024D9 /* abbreviations.plist in Resources */,
 				56A81B341DD862DC001DF7F1 /* Main.storyboard in Resources */,
 				56D70D341DD9A7A6004CA293 /* InfoPlist.strings in Resources */,

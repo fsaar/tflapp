@@ -18,7 +18,9 @@ class TFLRootViewController: UIViewController {
     fileprivate static let searchParameter  : (min:Double,initial:Double) = (100,500)
     fileprivate let networkBackgroundQueue = OperationQueue()
     fileprivate let tflClient = TFLClient()
+    #if DATABASEGENERATION
     fileprivate let busStopDBGenerator = TFLBusStopDBGenerator()
+    #endif
     fileprivate static let loggingHandle  = OSLog(subsystem: TFLLogger.subsystem, category: TFLLogger.category.rootViewController.rawValue)
     fileprivate lazy var busInfoAggregator = TFLBusArrivalInfoAggregator()
   
@@ -174,11 +176,14 @@ class TFLRootViewController: UIViewController {
         self.backgroundNotificationHandler = TFLNotificationObserver(notification:UIApplication.didEnterBackgroundNotification) { [weak self]  _ in
             self?.updateStatusView.state = .paused
         }
-        self.loadNearbyBusstops()
-        
-//        self.busStopDBGenerator.loadBusStops { [weak self] in
-//            self?.busStopDBGenerator.loadLineStations()
-//        }
+        #if DATABASEGENERATION
+        self.busStopDBGenerator.loadBusStops { [weak self] in
+            self?.busStopDBGenerator.loadLineStations()
+        }
+        #else
+            self.loadNearbyBusstops()
+        #endif
+
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -309,13 +314,13 @@ fileprivate extension TFLRootViewController {
     
     
     
-    fileprivate func currentCoordinates(using completionBlock : @escaping (_ coord : CLLocationCoordinate2D?) -> Void) {
+     func currentCoordinates(using completionBlock : @escaping (_ coord : CLLocationCoordinate2D?) -> Void) {
         TFLLocationManager.sharedManager.updateLocation { coord in
             completionBlock(coord)
         }
     }
     
-    fileprivate func updateUI(with coord : CLLocationCoordinate2D, using completionBlock:@escaping (_ updated : Bool) -> ()) {
+     func updateUI(with coord : CLLocationCoordinate2D, using completionBlock:@escaping (_ updated : Bool) -> ()) {
         
         _ = self.updateContentViewController(with: [],isUpdatePending: false, and: coord)
         self.retrieveBusstops(for: coord) { [weak self] busStopPredictionTuples,isComplete  in

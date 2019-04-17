@@ -99,7 +99,7 @@ fileprivate extension TFLSlideContainerController {
         containerView.addConstraints(hConstraints+vConstraints)
     }
     
-    fileprivate func addCustomView(_ view : UIView,to containerView : UIView) {
+     func addCustomView(_ view : UIView,to containerView : UIView) {
         containerView.addSubview(view)
         NSLayoutConstraint.activate([
             view.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),

@@ -85,7 +85,7 @@ public final class TFLClient {
         }
 
     }
-
+    #if DATABASEGENERATION
     public func busStops(with page: UInt,
                          with operationQueue : OperationQueue = OperationQueue.main,
                          using completionBlock: @escaping (([TFLCDBusStop]?,_ error:Error?) -> ()))  {
@@ -99,7 +99,7 @@ public final class TFLClient {
             }
         }
     }
-
+    #endif
     public func lineStationInfo(for line: String,
                         context: NSManagedObjectContext,
                          with operationQueue : OperationQueue = OperationQueue.main,
@@ -128,8 +128,7 @@ fileprivate extension TFLClient {
                          with operationQueue : OperationQueue = OperationQueue.main,
                          completionBlock: @escaping ((TFLCDLineInfo?,_ error:Error?) -> ()))  {
         tflManager.getDataWithRelativePath(relativePath: relativePath,and: query) {  data, _ in
-            if let data = data,let jsonDict = try? JSONSerialization.jsonObject(with: data as Data
-                , options: JSONSerialization.ReadingOptions(rawValue:0)) as? [String : Any] {
+            if let data = data,let jsonDict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String : Any] {
                 if let jsonDict = jsonDict {
                     TFLCDLineInfo.lineInfo(with: jsonDict, and: context) { lineInfo in
                         context.perform {

@@ -129,21 +129,17 @@ fileprivate extension TFLClient {
                          completionBlock: @escaping ((TFLCDLineInfo?,_ error:Error?) -> ()))  {
         tflManager.getDataWithRelativePath(relativePath: relativePath,and: query) {  data, _ in
             if let data = data,let jsonDict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String : Any] {
-                if let jsonDict = jsonDict {
-                    TFLCDLineInfo.lineInfo(with: jsonDict, and: context) { lineInfo in
-                        context.perform {
-                            try? context.save()
-                        }
-                        operationQueue.addOperation {
-                            completionBlock(lineInfo,nil)
-                        }
-
+            
+                TFLCDLineInfo.lineInfo(with: jsonDict, and: context) { lineInfo in
+                    context.perform {
+                        try? context.save()
                     }
-                } else {
                     operationQueue.addOperation {
-                        completionBlock(nil,TFLClientError.InvalidFormat(data: data))
+                        completionBlock(lineInfo,nil)
                     }
+
                 }
+                
             } else {
                 operationQueue.addOperation {
                     completionBlock(nil,TFLClientError.InvalidFormat(data: data))
@@ -161,7 +157,7 @@ fileprivate extension TFLClient {
             if let data = data,
                 let jsonDict = try? JSONSerialization.jsonObject(with: data as Data
                     , options: JSONSerialization.ReadingOptions(rawValue:0)) as? [String : Any] {
-                if let jsonList = jsonDict?["stopPoints"] as? [[String: Any]] {
+                if let jsonList = jsonDict["stopPoints"] as? [[String: Any]] {
                     self?.stopPoints(from: jsonList, context: context) { stops in
                         operationQueue.addOperation {
                             completionBlock(stops,nil)

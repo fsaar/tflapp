@@ -18,7 +18,7 @@ extension Data {
             }
             var hash = [UInt8](repeating: 0,  count: Int(CC_SHA256_DIGEST_LENGTH))
             _ = CC_SHA256(unsafePointer, CC_LONG(self.count), &hash)
-            return Data(bytes: hash).base64EncodedString()
+            return Data(hash).base64EncodedString()
         }
         return sha
     }

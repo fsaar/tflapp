@@ -111,7 +111,7 @@ class PolyLine {
             return list + oredElements
         }
         let offsetAdjusted = byteBlocks.map { $0 + 63 }
-        let data = Data(bytes:offsetAdjusted)
+        let data = Data(offsetAdjusted)
         let encodedString = String(data: data, encoding: .utf8)
         return encodedString
     }

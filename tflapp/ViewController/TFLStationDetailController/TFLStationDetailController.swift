@@ -198,12 +198,12 @@ fileprivate extension TFLStationDetailController {
             return []
         }
         let sortedInfos = arrivalInfos.sorted { info1,info2 in
-            let idx1 = naptanRoute.index(of:info1.busStopIdentifier) ?? 0
-            let idx2 = naptanRoute.index(of:info2.busStopIdentifier) ?? 0
+            let idx1 = naptanRoute.firstIndex(of:info1.busStopIdentifier) ?? 0
+            let idx2 = naptanRoute.firstIndex(of:info2.busStopIdentifier) ?? 0
             return idx1 < idx2
         }
         
-        guard let index = sortedInfos.map ({ $0.busStopIdentifier }).index(of:station ) else {
+        guard let index = sortedInfos.map ({ $0.busStopIdentifier }).firstIndex(of:station ) else {
             return []
         }
         let sortedInfosRange = Array(sortedInfos[0...index])
@@ -213,7 +213,7 @@ fileprivate extension TFLStationDetailController {
     func naptanIdListWithStation(_ station : String,from tableViewModels : [TFLStationDetailTableViewModel]) -> [String] {
         let naptanIDLists = tableViewModels.naptanIDLists
         let naptanIdList = naptanIDLists.first { lists in
-            guard let _ = lists.index(of:station) else {
+            guard let _ = lists.firstIndex(of:station) else {
                 return false
             }
             return true

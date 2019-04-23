@@ -15,6 +15,9 @@
 		56113B2B223BA70000C8EDA4 /* LoopRoute.json in Resources */ = {isa = PBXBuildFile; fileRef = 56113B2A223BA70000C8EDA4 /* LoopRoute.json */; };
 		56113B2E223F7DC900C8EDA4 /* GoogleRouteInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56113B2D223F7DC900C8EDA4 /* GoogleRouteInfo.swift */; };
 		56113B30224021BA00C8EDA4 /* LoopRoute2.json in Resources */ = {isa = PBXBuildFile; fileRef = 56113B2F224021BA00C8EDA4 /* LoopRoute2.json */; };
+		561C1832226FC1D7008016B7 /* String+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561C1831226FC1D7008016B7 /* String+Helper.swift */; };
+		561C1834226FC20C008016B7 /* StringSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561C1833226FC20C008016B7 /* StringSpecs.swift */; };
+		561C1836226FC6F1008016B7 /* Data+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561C1835226FC6F1008016B7 /* Data+Helper.swift */; };
 		561CA509210A607F0008B656 /* Collection+IndexPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561CA507210A607E0008B656 /* Collection+IndexPath.swift */; };
 		561CA50A210A607F0008B656 /* Collection+Transform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561CA508210A607F0008B656 /* Collection+Transform.swift */; };
 		561CA50D210A656B0008B656 /* TFLSynchroniser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561CA50C210A656B0008B656 /* TFLSynchroniser.swift */; };
@@ -141,6 +144,9 @@
 		56113B2A223BA70000C8EDA4 /* LoopRoute.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LoopRoute.json; sourceTree = "<group>"; };
 		56113B2D223F7DC900C8EDA4 /* GoogleRouteInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleRouteInfo.swift; sourceTree = "<group>"; };
 		56113B2F224021BA00C8EDA4 /* LoopRoute2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LoopRoute2.json; sourceTree = "<group>"; };
+		561C1831226FC1D7008016B7 /* String+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Helper.swift"; sourceTree = "<group>"; };
+		561C1833226FC20C008016B7 /* StringSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringSpecs.swift; sourceTree = "<group>"; };
+		561C1835226FC6F1008016B7 /* Data+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+Helper.swift"; sourceTree = "<group>"; };
 		561CA507210A607E0008B656 /* Collection+IndexPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Collection+IndexPath.swift"; sourceTree = "<group>"; };
 		561CA508210A607F0008B656 /* Collection+Transform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Collection+Transform.swift"; sourceTree = "<group>"; };
 		561CA50C210A656B0008B656 /* TFLSynchroniser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLSynchroniser.swift; sourceTree = "<group>"; };
@@ -351,6 +357,7 @@
 		5657D3671DE387E6004E4CD0 /* tflApp Tests */ = {
 			isa = PBXGroup;
 			children = (
+				561C1833226FC20C008016B7 /* StringSpecs.swift */,
 				564CA5A52223561600E69A1C /* PolyLineSpecs.swift */,
 				5683592321839E8B0096615D /* TFLHUDSpecs.swift */,
 				56835921218392070096615D /* TFLAnimatedLabelSpecs.swift */,
@@ -492,6 +499,8 @@
 				5699A686218E2E3C00CD1427 /* UIImage+Helper.swift */,
 				56E721812214CF6D00733B9F /* UIViewController+Helper.swift */,
 				564CA5A7222356B200E69A1C /* Array+Helper.swift */,
+				561C1831226FC1D7008016B7 /* String+Helper.swift */,
+				561C1835226FC6F1008016B7 /* Data+Helper.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -903,6 +912,7 @@
 				5683592421839E8B0096615D /* TFLHUDSpecs.swift in Sources */,
 				561FD9021F1FB1F50012466A /* TFLClientSpecs.swift in Sources */,
 				56B86EAD1DE4FED000A89D16 /* TFLBusStopArrivalsViewModelSpecs.swift in Sources */,
+				561C1834226FC20C008016B7 /* StringSpecs.swift in Sources */,
 				5657D3731DE3A00A004E4CD0 /* TFLCDBusStopSpecs.swift in Sources */,
 				56113B29223BA68200C8EDA4 /* CLLocationCoordinate2DSpecs.swift in Sources */,
 				56BA8F9120FBE7550031A3E4 /* TestUrlProtocol.swift in Sources */,
@@ -974,12 +984,14 @@
 				566EF7E21DDC59ED006162D7 /* UIFont.swift in Sources */,
 				56823EA81DDDA45600E79B1A /* TFLLoadNearbyStationsView.swift in Sources */,
 				561CA50A210A607F0008B656 /* Collection+Transform.swift in Sources */,
+				561C1832226FC1D7008016B7 /* String+Helper.swift in Sources */,
 				567F533A20BC20610022FEFF /* TFLCDLineInfo+CoreDataProperties.swift in Sources */,
 				56113B2E223F7DC900C8EDA4 /* GoogleRouteInfo.swift in Sources */,
 				56835920218243BE0096615D /* TFLStationDetailErrorView.swift in Sources */,
 				5692B5031DF2E4EB00C56A3C /* TFLMapViewController.swift in Sources */,
 				56E721802213625C00733B9F /* TFLSplashscreenController.swift in Sources */,
 				56E7217D221234C600733B9F /* TFLOfflineView.swift in Sources */,
+				561C1836226FC6F1008016B7 /* Data+Helper.swift in Sources */,
 				564EC70A1DE1917D008CFD11 /* TFLNearbyBusStationsController.swift in Sources */,
 				5656717A219A244700F3B7EE /* TFLLineInfoRouteDirectory.swift in Sources */,
 				56A4907C219781C0004024D9 /* TFLRouteFormatter.swift in Sources */,
@@ -1073,6 +1085,7 @@
 				RUN_CLANG_STATIC_ANALYZER = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/London Bus.app/London Bus";
 			};
 			name = Debug;
@@ -1092,6 +1105,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				RUN_CLANG_STATIC_ANALYZER = NO;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/London Bus.app/London Bus";
 			};
 			name = Release;
@@ -1373,6 +1387,7 @@
 				RUN_CLANG_STATIC_ANALYZER = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/London Bus.app/London Bus";
 			};
 			name = DataBaseGeneration;

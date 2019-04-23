@@ -77,7 +77,7 @@ extension Collection where Element : Hashable {
 fileprivate extension Set {
     func indexedList(basedOn list:[Element]) throws -> [(Element,Int)] {
         let indexList : [(Element,Int)] = try self.compactMap { el in
-            guard let index = list.index(of:el) else {
+            guard let index = list.firstIndex(of:el) else {
                 throw SetIndexListError.elementNotInTargetList
             }
             return (el,index)
@@ -89,7 +89,7 @@ fileprivate extension Set {
 fileprivate extension Array where Element : Equatable {
     func moveElement(_ element : Element, to : Int) -> Array {
         var currentList = self
-        if let from = index(of:element),0 ..< currentList.count ~= to {
+        if let from = firstIndex(of:element),0 ..< currentList.count ~= to {
             currentList.insert(currentList.remove(at: from), at: to)
         }
         return currentList
@@ -113,7 +113,7 @@ fileprivate extension Collection where Element : Hashable{
         let deletedTypes = deleted.map { $0.element }
         let reducedOldList = self.filter { !deletedTypes.contains($0) }
         let updatedList : [Element] = try reducedOldList.compactMap { el in
-            guard let index = newList.index(of: el) else {
+            guard let index = newList.firstIndex(of: el) else {
                 throw CollectionError.findMovedElementsIndexOutOfRange
             }
             return newList[index]
@@ -121,7 +121,7 @@ fileprivate extension Collection where Element : Hashable{
         let unsortedNewList = try updatedList.mergeELements(with: inserted)
         let oldList = Array(self)
         let movedTypes : [(Element,Int,Int)] = updatedList.compactMap { element in
-            guard let index = oldList.index(of:element),let index2 = newList.index(of:element),index != index2 else {
+            guard let index = oldList.firstIndex(of:element),let index2 = newList.firstIndex(of:element),index != index2 else {
                 return nil
             }
             return (element,index,index2)

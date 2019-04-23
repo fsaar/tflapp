@@ -20,8 +20,8 @@ class TFLRequestManager : NSObject {
 
     fileprivate static let loggingHandle  = OSLog(subsystem: TFLLogger.subsystem, category: TFLLogger.category.network.rawValue)
 
-    fileprivate let TFLApplicationID = "528a18f1"
-    fileprivate let TFLApplicationKey = "86f44a61de39e94b3738d9fe6cfcdf35"
+    fileprivate let TFLApplicationID = "PASTE_YOUR_APPLICATION_ID_HERE"
+    fileprivate let TFLApplicationKey = "PASTE_YOUR_APPLICATION_KEY_HERE"
     public static let shared =  TFLRequestManager()
 
     var protocolClasses : [AnyClass] = [] {

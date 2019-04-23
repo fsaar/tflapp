@@ -73,7 +73,7 @@ extension Array where Element == CLLocationCoordinate2D {
             // https://developers.google.com/maps/documentation/directions/intro
             // https://console.cloud.google.com/apis/credentials/
             // https://console.cloud.google.com/billing/
-            let GOOGLE_ROUTES_API_KEY = "AIzaSyDl65KzF_1bjdocjr4aQDEJtft-7PzhbRk"
+            let GOOGLE_ROUTES_API_KEY = "PASTE_YOUR_GOOGLE_ROUTES_API_KEY_HERE"
             let url = URL(string: "https://maps.googleapis.com/maps/api/directions/json?origin=\(start.latitude),\(start.longitude)&destination=\(end.latitude),\(end.longitude)&mode=transit&transit_mode=bus&key=\(GOOGLE_ROUTES_API_KEY)")!
             return url
         }

@@ -38,5 +38,12 @@ class TFLBusStopAnnotationView: MKMarkerAnnotationView {
             return
         }
         tapActionHandler?(mapViewAnnotation)
+        UIView.animate(withDuration: 0.25, animations: {
+            self.transform = CGAffineTransform.identity.scaledBy(x: 1.2, y: 1.2)
+        }) { _ in
+            UIView.animate(withDuration: 0.25) {
+                self.transform = .identity
+            }
+        }
     }
  }

@@ -47,7 +47,6 @@ class TFLRootViewController: UIViewController {
                 return true
             default:
                 return false
-
             }
         }
         var isDeterminingCurrentLocation : Bool {
@@ -143,7 +142,7 @@ class TFLRootViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.networkMonitor.start(queue: .main)
-
+        self.mapViewController?.delegate = nearbyBusStationController
         self.slideContainerController?.rightCustomView = self.updateStatusView
         
         TFLLocationManager.sharedManager.delegate = self

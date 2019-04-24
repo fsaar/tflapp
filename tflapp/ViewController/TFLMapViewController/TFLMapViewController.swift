@@ -2,6 +2,10 @@
 import UIKit
 import MapKit
 
+protocol TFLMapViewControllerDelegate : class {
+    func mapViewController(_ mapViewController : UIViewController,didSelectStationWith identifier : String)
+}
+
 class TFLMapViewController: UIViewController {
     enum MapState {
         case inited
@@ -28,7 +32,7 @@ class TFLMapViewController: UIViewController {
             self.visualEffectsViews.layer.cornerRadius = 5
         }
     }
-    
+    weak var delegate : TFLMapViewControllerDelegate?
     fileprivate var state : MapState = .inited
     @IBOutlet weak var coverView : UIView!
     @IBOutlet weak var mapView : MKMapView! = nil {
@@ -117,7 +121,13 @@ extension TFLMapViewController : MKMapViewDelegate {
         guard let mapViewAnnotation = annotation as? TFLMapViewAnnotation else {
             return nil
         }
-        return TFLBusStopAnnotationView(annotation: mapViewAnnotation, reuseIdentifier: String(describing: TFLBusStopAnnotationView.self))
+        return TFLBusStopAnnotationView(annotation: mapViewAnnotation,
+                                        reuseIdentifier: String(describing: TFLBusStopAnnotationView.self)) { [weak self] mapViewAnnotation in
+            guard let self = self else {
+                return
+            }
+            self.delegate?.mapViewController(self, didSelectStationWith: mapViewAnnotation.identifier)
+        }
     }
 
 }

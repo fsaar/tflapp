@@ -178,6 +178,18 @@ extension TFLNearbyBusStationsController : TFLBusStationArrivalCellDelegate {
     }
 }
 
+/// MARK: TFLMapViewControllerDelegate
+
+extension TFLNearbyBusStationsController : TFLMapViewControllerDelegate {
+    func mapViewController(_ mapViewController: UIViewController, didSelectStationWith identifier: String) {
+        guard let index = self.busStopArrivalViewModels.firstIndex (where:{ $0.identifier == identifier }) else {
+            return
+        }
+        self.tableView.scrollToRow(at: IndexPath(row: index, section: 0), at: .top, animated: true)
+    }
+}
+
+
 // MARK: Private
 
 fileprivate extension TFLNearbyBusStationsController {

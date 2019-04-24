@@ -53,7 +53,7 @@ class TFLCollectionFlowLayout : UICollectionViewFlowLayout {
 private extension TFLCollectionFlowLayout {
     
     func appearingAnimationType(forItemAppearingAt indexPath: IndexPath) -> (TFLCollectionFlowLayoutAppearingItemAnimationType) {
-        guard let startIndex = self.insertIndexPaths.index(of: indexPath),let itemCount = self.collectionView?.numberOfItems(inSection: 0),self.insertIndexPaths.count != itemCount else {
+        guard let startIndex = self.insertIndexPaths.firstIndex(of: indexPath),let itemCount = self.collectionView?.numberOfItems(inSection: 0),self.insertIndexPaths.count != itemCount else {
             return .scale
         }
         let indices = Array(indexPath.item..<itemCount)

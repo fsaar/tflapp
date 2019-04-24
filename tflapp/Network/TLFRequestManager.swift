@@ -90,7 +90,7 @@ extension TFLRequestManager : URLSessionDelegate {
         guard isServerTrusted,let certificate = SecTrustGetCertificateAtIndex(serverTrust, 0),
             let serverPublicKey = SecCertificateCopyKey(certificate),
             let serverPublicKeyData:NSData = SecKeyCopyExternalRepresentation(serverPublicKey, nil ),
-            sha256(serverPublicKeyData as Data) == tfl_pupkey else {
+            (serverPublicKeyData as Data).sha256() == tfl_pupkey else {
                 completionHandler(.cancelAuthenticationChallenge, nil)
                 return
                 
@@ -118,13 +118,5 @@ fileprivate extension TFLRequestManager {
             baseURL.query = auth
         }
         return baseURL.url
-    }
-    
-    func sha256(_ data : Data) -> String {
-        var hash = [UInt8](repeating: 0,  count: Int(CC_SHA256_DIGEST_LENGTH))
-        data.withUnsafeBytes {
-            _ = CC_SHA256($0, CC_LONG(data.count), &hash)
-        }
-        return Data(bytes: hash).base64EncodedString()
     }
 }

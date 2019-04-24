@@ -19,7 +19,7 @@ extension Array where Element == TFLStationDetailTableViewModel {
     func indexPaths(for naptanIdentifiers : [String]) -> [IndexPath] {
         let indexPaths : [IndexPath] = self.naptanIDLists.enumerated().reduce([]) { sum,tuple in
             let (section,naptanIDList) = tuple
-            let sectionIndexPaths = naptanIdentifiers.compactMap { naptanIDList.index(of:$0) }
+            let sectionIndexPaths = naptanIdentifiers.compactMap { naptanIDList.firstIndex(of:$0) }
                                                         .map { IndexPath(row:$0,section:section) }
             return sum + sectionIndexPaths
         }

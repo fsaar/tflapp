@@ -80,6 +80,8 @@ disabled_rules: # rule identifiers to exclude from running
     - unused_optional_binding  
     - strong_iboutlet
 opt_in_rules: 
+    - deployment_target
+    - weak_computed_property
     - duplicate_imports
     - unused_setter_value
     - only_single_muted_parameter

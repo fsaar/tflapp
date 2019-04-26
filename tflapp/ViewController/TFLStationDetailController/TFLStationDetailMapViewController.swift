@@ -10,7 +10,13 @@ import UIKit
 import Foundation
 import MapKit
 
+protocol TFLStationDetailMapViewControllerDelegate : class {
+    func stationDetailMapViewController(_ stationDetailMapViewController : TFLStationDetailMapViewController,didSelectStationWith identifier : String)
+}
+
 class TFLStationDetailMapViewController: UIViewController {
+    weak var delegate : TFLStationDetailMapViewControllerDelegate?
+    
     @IBOutlet weak var mapView : MKMapView! = nil {
         didSet {
             mapView.delegate = self
@@ -26,11 +32,13 @@ class TFLStationDetailMapViewController: UIViewController {
                 let overlay = overlays[index]
                 let stations = overlay.model.stations
                 mapView.addOverlay(overlay)
-                var annotations : [TFLStationDetailMapViewAnnotation] = []
-                for tuple in stations.enumerated() {
-                    annotations += [TFLStationDetailMapViewAnnotation(with: tuple.1.stopCode, coordinate: tuple.1.coords, and: tuple.0)]
+                let annotations : [TFLStationDetailMapViewAnnotation] = stations.enumerated().map { tuple in
+                                                                                                    TFLStationDetailMapViewAnnotation(with: tuple.1.identifier,
+                                                                                                                                      stopCode: tuple.1.stopCode,
+                                                                                                                                      coordinate: tuple.1.coords,
+                                                                                                                                      and: tuple.0)
                 }
-
+              
                 self.mapView.addAnnotations(annotations)
             }
 
@@ -79,7 +87,12 @@ extension TFLStationDetailMapViewController : MKMapViewDelegate {
         guard let mapViewAnnotation = annotation as? TFLStationDetailMapViewAnnotation else {
             return nil
         }
-
-        return TFLStationDetailBusStopAnnotationView(annotation: mapViewAnnotation, reuseIdentifier: String(describing: TFLStationDetailBusStopAnnotationView.self))
+        let annotationView = TFLStationDetailBusStopAnnotationView(annotation: mapViewAnnotation, reuseIdentifier: String(describing: TFLStationDetailBusStopAnnotationView.self)) { [weak self] annotation in
+            guard let self = self else {
+                return
+            }
+             self.delegate?.stationDetailMapViewController(self, didSelectStationWith: annotation.identifier)
+        }
+        return annotationView
     }
 }

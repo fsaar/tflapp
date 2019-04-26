@@ -83,6 +83,7 @@ class TFLStationDetailController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        mapViewController?.delegate = tableViewController
         self.networkMonitor.start(queue: .main)
         self.titleHeaderView.title = lineInfo.line ?? ""
         self.navigationItem.titleView = self.titleHeaderView

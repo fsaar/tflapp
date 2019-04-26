@@ -181,7 +181,8 @@ extension TFLNearbyBusStationsController : TFLBusStationArrivalCellDelegate {
 /// MARK: TFLMapViewControllerDelegate
 
 extension TFLNearbyBusStationsController : TFLMapViewControllerDelegate {
-    func mapViewController(_ mapViewController: UIViewController, didSelectStationWith identifier: String) {
+   
+    func mapViewController(_ mapViewController: TFLMapViewController, didSelectStationWith identifier: String) {
         guard let index = self.busStopArrivalViewModels.firstIndex (where:{ $0.identifier == identifier }) else {
             return
         }

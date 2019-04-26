@@ -3,7 +3,7 @@ import UIKit
 import MapKit
 
 protocol TFLMapViewControllerDelegate : class {
-    func mapViewController(_ mapViewController : UIViewController,didSelectStationWith identifier : String)
+    func mapViewController(_ mapViewController : TFLMapViewController,didSelectStationWith identifier : String)
 }
 
 class TFLMapViewController: UIViewController {

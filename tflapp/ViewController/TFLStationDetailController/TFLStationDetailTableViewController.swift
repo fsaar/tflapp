@@ -193,3 +193,17 @@ fileprivate extension TFLStationDetailTableViewController {
     }
 
 }
+
+extension TFLStationDetailTableViewController : TFLStationDetailMapViewControllerDelegate {
+    func stationDetailMapViewController(_ stationDetailMapViewController : TFLStationDetailMapViewController,didSelectStationWith identifier : String) {
+        guard currentSection < viewModels.count else {
+            return
+        }
+        let model = viewModels[currentSection]
+        guard let row = model.stations.firstIndex (where:{ $0.naptanId == identifier }) else {
+            return
+        }
+        let indexPath = IndexPath(row: row, section: currentSection)
+        self.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+    }
+}

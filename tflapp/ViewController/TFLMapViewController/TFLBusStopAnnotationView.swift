@@ -9,20 +9,35 @@
 import UIKit
 import MapKit
 
-class TFLBusStopAnnotationView: MKMarkerAnnotationView {
+typealias TFLBusStopAnnotationViewTapHandler = (_ annotation : TFLMapViewAnnotation) -> Void
 
-    override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
+class TFLBusStopAnnotationView: MKMarkerAnnotationView {
+    
+    var tapActionHandler : TFLBusStopAnnotationViewTapHandler?
+    init(annotation: TFLMapViewAnnotation?, reuseIdentifier: String?,using tapActionHandler: TFLBusStopAnnotationViewTapHandler? = nil) {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
+        self.tapActionHandler = tapActionHandler
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(tapGestureHandler))
+        self.addGestureRecognizer(recognizer)
         glyphText = annotation?.title ?? ""
         isEnabled = false
         glyphTintColor = .white
         markerTintColor = .red
         titleVisibility = .hidden
         displayPriority = MKFeatureDisplayPriority(rawValue: 1000)
+        self.layer.anchorPoint = CGPoint(x:0.5,y:1)
     }
 
     @available(iOS,unavailable)
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    @objc
+    func tapGestureHandler() {
+        guard let mapViewAnnotation = annotation as? TFLMapViewAnnotation else {
+            return
+        }
+        tapActionHandler?(mapViewAnnotation)
     }
  }

@@ -18,6 +18,7 @@
 		561C1832226FC1D7008016B7 /* String+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561C1831226FC1D7008016B7 /* String+Helper.swift */; };
 		561C1834226FC20C008016B7 /* StringSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561C1833226FC20C008016B7 /* StringSpecs.swift */; };
 		561C1836226FC6F1008016B7 /* Data+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561C1835226FC6F1008016B7 /* Data+Helper.swift */; };
+		561C18382273BD61008016B7 /* MKAnnotationView+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561C18372273BD61008016B7 /* MKAnnotationView+Helper.swift */; };
 		561CA509210A607F0008B656 /* Collection+IndexPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561CA507210A607E0008B656 /* Collection+IndexPath.swift */; };
 		561CA50A210A607F0008B656 /* Collection+Transform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561CA508210A607F0008B656 /* Collection+Transform.swift */; };
 		561CA50D210A656B0008B656 /* TFLSynchroniser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561CA50C210A656B0008B656 /* TFLSynchroniser.swift */; };
@@ -147,6 +148,7 @@
 		561C1831226FC1D7008016B7 /* String+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Helper.swift"; sourceTree = "<group>"; };
 		561C1833226FC20C008016B7 /* StringSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringSpecs.swift; sourceTree = "<group>"; };
 		561C1835226FC6F1008016B7 /* Data+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+Helper.swift"; sourceTree = "<group>"; };
+		561C18372273BD61008016B7 /* MKAnnotationView+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MKAnnotationView+Helper.swift"; sourceTree = "<group>"; };
 		561CA507210A607E0008B656 /* Collection+IndexPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Collection+IndexPath.swift"; sourceTree = "<group>"; };
 		561CA508210A607F0008B656 /* Collection+Transform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Collection+Transform.swift"; sourceTree = "<group>"; };
 		561CA50C210A656B0008B656 /* TFLSynchroniser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLSynchroniser.swift; sourceTree = "<group>"; };
@@ -491,6 +493,7 @@
 		566EF7E01DDC59D9006162D7 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				561C18372273BD61008016B7 /* MKAnnotationView+Helper.swift */,
 				5699A68B218EE77100CD1427 /* CLLocationCoordinate2D+Helper.swift */,
 				561CA508210A607F0008B656 /* Collection+Transform.swift */,
 				561CA507210A607E0008B656 /* Collection+IndexPath.swift */,
@@ -968,6 +971,7 @@
 				565A1FC81DD8F6E6003CE960 /* TFLCoreDataStack.swift in Sources */,
 				56A98CE92115A9B100E69BCB /* TFLBusArrivalInfoAggregator.swift in Sources */,
 				565A1FD21DD8FB2A003CE960 /* Model.xcdatamodeld in Sources */,
+				561C18382273BD61008016B7 /* MKAnnotationView+Helper.swift in Sources */,
 				56E721822214CF6D00733B9F /* UIViewController+Helper.swift in Sources */,
 				56823EAC1DDDA54100E79B1A /* TFLLoadArrivalTimesView.swift in Sources */,
 				5683021D20C476A30035CCA1 /* TFLStationDetailMapViewController.swift in Sources */,

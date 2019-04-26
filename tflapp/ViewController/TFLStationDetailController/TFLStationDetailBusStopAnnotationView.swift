@@ -9,21 +9,26 @@
 import UIKit
 import MapKit
 
+typealias TFLStationDetailBusStopAnnotationViewTapHandler = (_ annotation : TFLStationDetailMapViewAnnotation) -> Void
+
+
 class TFLStationDetailBusStopAnnotationView: MKMarkerAnnotationView {
 
-    override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
+    var tapActionHandler : TFLStationDetailBusStopAnnotationViewTapHandler?
+    init(annotation: TFLStationDetailMapViewAnnotation?, reuseIdentifier: String?,using tapActionHandler: TFLStationDetailBusStopAnnotationViewTapHandler? = nil)  {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
-        var priority = MKFeatureDisplayPriority(rawValue: 750)
-        if let annotation = annotation as? TFLStationDetailMapViewAnnotation {
-            priority = annotation.priority
-        }
+        self.tapActionHandler = tapActionHandler
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(tapGestureHandler))
+        self.addGestureRecognizer(recognizer)
+        
         collisionMode =  .circle
         glyphText = annotation?.title ?? ""
         isEnabled = false
         glyphTintColor = .white
         markerTintColor = .red
         titleVisibility = .hidden
-        displayPriority = priority
+        displayPriority = annotation?.priority ?? MKFeatureDisplayPriority(rawValue: 750)
+        self.layer.anchorPoint = CGPoint(x:0.5,y:1)
     }
 
     @available(iOS,unavailable)
@@ -31,6 +36,11 @@ class TFLStationDetailBusStopAnnotationView: MKMarkerAnnotationView {
         fatalError("init(coder:) has not been implemented")
     }
 
-
-
+    @objc
+    func tapGestureHandler() {
+        guard let mapViewAnnotation = annotation as? TFLStationDetailMapViewAnnotation else {
+            return
+        }
+        tapActionHandler?(mapViewAnnotation)
+    }
 }

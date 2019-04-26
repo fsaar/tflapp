@@ -311,8 +311,6 @@ fileprivate extension TFLRootViewController {
         }
     }
     
-    
-    
      func currentCoordinates(using completionBlock : @escaping (_ coord : CLLocationCoordinate2D?) -> Void) {
         TFLLocationManager.sharedManager.updateLocation { coord in
             completionBlock(coord)
@@ -331,8 +329,6 @@ fileprivate extension TFLRootViewController {
             completionBlock(updated)
         }
     }
-    
-
     
     func retrieveBusstops(for location:CLLocationCoordinate2D, using completionBlock:@escaping ([TFLBusStopArrivalsInfo],_ completed: Bool)->()) {
         self.state = .retrievingNearbyStations
@@ -355,7 +351,7 @@ fileprivate extension TFLRootViewController {
     }
 }
 
-// MARK: TFLErrorContainerViewDelegate
+// MARK: - TFLErrorContainerViewDelegate
 
 extension TFLRootViewController : TFLErrorContainerViewDelegate {
     func didTap(noStationsButton: UIButton,in view : TFLNoStationsView) {
@@ -371,6 +367,8 @@ extension TFLRootViewController : TFLErrorContainerViewDelegate {
 }
 
 
+// MARK: - TFLLocationManagerDelegate
+
 extension TFLRootViewController : TFLLocationManagerDelegate {
     func locationManager(_ locationManager : TFLLocationManager, didChangeEnabledStatus enabled : Bool) {
         guard enabled else {
@@ -380,9 +378,13 @@ extension TFLRootViewController : TFLLocationManagerDelegate {
     }
 }
 
-// MARK: TFLContentControllerDelegate
+// MARK: - TFLNearbyBusStationsControllerDelegate
 
 extension TFLRootViewController : TFLNearbyBusStationsControllerDelegate  {
+    func nearbyBusStationsController(_ controller: TFLNearbyBusStationsController, didSelectBusstopWith identifier: String) {
+       self.mapViewController?.showBusStop(with: identifier, animated: true)
+    }
+    
     func lastRefresh(of controller: TFLNearbyBusStationsController) -> Date? {
         return busInfoAggregator.lastUpdate
     }
@@ -393,7 +395,7 @@ extension TFLRootViewController : TFLNearbyBusStationsControllerDelegate  {
 }
 
 
-// MARK: TFLStatusViewDelegate
+// MARK: - TFLUpdateStatusViewDelegate
 
 extension TFLRootViewController : TFLUpdateStatusViewDelegate {
     func didExpireTimerInStatusView(_ tflStatusView : TFLUpdateStatusView) {

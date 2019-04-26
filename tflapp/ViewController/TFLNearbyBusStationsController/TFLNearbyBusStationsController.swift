@@ -6,6 +6,7 @@ import os.signpost
 protocol TFLNearbyBusStationsControllerDelegate : class {
     func refresh(controller: TFLNearbyBusStationsController, using completionBlock:@escaping ()->())
     func lastRefresh(of controller : TFLNearbyBusStationsController) -> Date?
+    func nearbyBusStationsController(_ controller: TFLNearbyBusStationsController,didSelectBusstopWith identifier: String)
 }
 
 extension MutableCollection where Index == Int, Iterator.Element == TFLBusStopArrivalsViewModel {
@@ -169,6 +170,13 @@ extension TFLNearbyBusStationsController : UITableViewDataSource {
         self.updateAndShowLineInfo(line: line,with: nil,at:nil)
     }
     
+}
+
+extension TFLNearbyBusStationsController : UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let model = busStopArrivalViewModels[indexPath]
+        self.delegate?.nearbyBusStationsController(self, didSelectBusstopWith: model.identifier)
+    }
 }
 
 extension TFLNearbyBusStationsController : TFLBusStationArrivalCellDelegate {

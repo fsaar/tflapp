@@ -12,6 +12,7 @@ import CoreData
 protocol TFLStationDetailTableViewControllerDelegate : class {
     func tflStationDetailTableViewController(_ controller: TFLStationDetailTableViewController,didShowSection section: Int)
     func tflStationDetailTableViewController(_ controller: TFLStationDetailTableViewController,with header: UITableViewHeaderFooterView, didPanBy distance: CGFloat)
+    func tflStationDetailTableViewController(_ controller: TFLStationDetailTableViewController,didSelectBusstopWith identifier: String)
 }
 
 class TFLStationDetailTableViewController: UITableViewController {
@@ -118,6 +119,12 @@ extension TFLStationDetailTableViewController {
 
     override func tableView(_ tableView: UITableView, didEndDisplayingHeaderView view: UIView, forSection section: Int) {
         visibleSections = visibleSections.subtracting([section])
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let model = viewModels[indexPath.section]
+        let identifier = model.stations[indexPath.row].naptanId
+        delegate?.tflStationDetailTableViewController(self, didSelectBusstopWith: identifier)
     }
 }
 

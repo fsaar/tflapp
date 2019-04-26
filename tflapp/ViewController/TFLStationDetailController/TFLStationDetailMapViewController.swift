@@ -16,6 +16,7 @@ protocol TFLStationDetailMapViewControllerDelegate : class {
 
 class TFLStationDetailMapViewController: UIViewController {
     weak var delegate : TFLStationDetailMapViewControllerDelegate?
+    fileprivate var selectableIdentifer : String?
     
     @IBOutlet weak var mapView : MKMapView! = nil {
         didSet {
@@ -68,9 +69,40 @@ class TFLStationDetailMapViewController: UIViewController {
         self.mapView.removeAnnotations(self.mapView.annotations)
         self.selectedOverlayIndex = index
     }
+    
+    func showBusStop(with identifier : String, animated : Bool) {
+        guard let index = self.selectedOverlayIndex,index < overlays.count else {
+            return
+        }
+        let overlay = overlays[index]
+        let stations = overlay.model.stations
+        
+        guard let model = stations.first (where: { $0.identifier == identifier }) else {
+                return
+        }
+        let coords = model.coords
+        let span = MKCoordinateSpan(latitudeDelta: 1/500, longitudeDelta: 1/180)
+        let region = MKCoordinateRegion(center: coords, span: span)
+        selectableIdentifer = identifier
+        self.mapView.setRegion(region, animated: animated)
+    }
 }
 
 extension TFLStationDetailMapViewController : MKMapViewDelegate {
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        guard let identifier = selectableIdentifer else {
+            return
+        }
+        selectableIdentifer = nil
+        let annnotations = self.mapView.annotations.compactMap { $0 as? TFLStationDetailMapViewAnnotation }
+        guard let annotation = annnotations.first (where : {$0.identifier == identifier }),
+            let annotationView = self.mapView.view(for: annotation) else {
+                return
+        }
+        annotationView.animateCurrentPosition()
+    }
+    
+    
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         guard let busRouteOverlay = overlay as? TFLStationDetailMapBusRouteOverLay else {
             return MKOverlayRenderer()

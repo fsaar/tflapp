@@ -28,6 +28,7 @@ class TFLStationDetailBusStopAnnotationView: MKMarkerAnnotationView {
         markerTintColor = .red
         titleVisibility = .hidden
         displayPriority = annotation?.priority ?? MKFeatureDisplayPriority(rawValue: 750)
+        self.layer.anchorPoint = CGPoint(x:0.5,y:1)
     }
 
     @available(iOS,unavailable)

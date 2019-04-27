@@ -80,6 +80,8 @@ disabled_rules: # rule identifiers to exclude from running
     - unused_optional_binding  
     - strong_iboutlet
 opt_in_rules: 
+    - deployment_target
+    - weak_computed_property
     - duplicate_imports
     - unused_setter_value
     - only_single_muted_parameter
@@ -161,7 +163,7 @@ cyclomatic_complexity:
   - 15
 # they can set both implicitly with an array
 type_body_length:
-  - 150 # warning
+  - 155 # warning
   - 200 # error
 # or they can set both explicitly
 file_length:

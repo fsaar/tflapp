@@ -2,6 +2,10 @@
 import UIKit
 import MapKit
 
+protocol TFLMapViewControllerDelegate : class {
+    func mapViewController(_ mapViewController : TFLMapViewController,didSelectStationWith identifier : String)
+}
+
 class TFLMapViewController: UIViewController {
     enum MapState {
         case inited
@@ -28,7 +32,7 @@ class TFLMapViewController: UIViewController {
             self.visualEffectsViews.layer.cornerRadius = 5
         }
     }
-    
+    weak var delegate : TFLMapViewControllerDelegate?
     fileprivate var state : MapState = .inited
     @IBOutlet weak var coverView : UIView!
     @IBOutlet weak var mapView : MKMapView! = nil {
@@ -110,14 +114,46 @@ class TFLMapViewController: UIViewController {
         }
         
     }
+    fileprivate var selectableIdentifer : String?
+    
+    func showBusStop(with identifier : String, animated : Bool) {
+        guard let busStopArrivalsInfos = busStopPredicationCoordinateTuple?.0,
+            let model = busStopArrivalsInfos.first (where: { $0.identifier == identifier }) else {
+            return
+        }
+        let coords = model.busStop.coord
+        let span = MKCoordinateSpan(latitudeDelta: 1/500, longitudeDelta: 1/180)
+        let region = MKCoordinateRegion(center: coords, span: span)
+        selectableIdentifer = identifier
+        self.mapView.setRegion(region, animated: animated)
+    }
 }
 
 extension TFLMapViewController : MKMapViewDelegate {
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        guard let identifier = selectableIdentifer else {
+            return
+        }
+        selectableIdentifer = nil
+        let annnotations = self.mapView.annotations.compactMap { $0 as? TFLMapViewAnnotation }
+        guard let annotation = annnotations.first (where : {$0.identifier == identifier }),
+            let annotationView = self.mapView.view(for: annotation) else {
+                return
+        }
+        annotationView.animateCurrentPosition()
+    }
+    
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         guard let mapViewAnnotation = annotation as? TFLMapViewAnnotation else {
             return nil
         }
-        return TFLBusStopAnnotationView(annotation: mapViewAnnotation, reuseIdentifier: String(describing: TFLBusStopAnnotationView.self))
+        return TFLBusStopAnnotationView(annotation: mapViewAnnotation,
+                                        reuseIdentifier: String(describing: TFLBusStopAnnotationView.self)) { [weak self] mapViewAnnotation in
+            guard let self = self else {
+                return
+            }
+            self.delegate?.mapViewController(self, didSelectStationWith: mapViewAnnotation.identifier)
+        }
     }
 
 }

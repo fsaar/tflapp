@@ -93,13 +93,13 @@ fileprivate extension TFLSlideContainerController {
         addChild(controller)
         containerView.addSubview(controller.view)
         controller.didMove(toParent: self)
-        let dict : [String : Any] = ["contentView" : controller.view]
+        let dict : [String : Any] = ["contentView" : controller.view as Any] 
         let hConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[contentView]|", options: [], metrics: nil, views: dict)
         let vConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|[contentView]|", options: [], metrics: nil, views: dict)
         containerView.addConstraints(hConstraints+vConstraints)
     }
     
-    fileprivate func addCustomView(_ view : UIView,to containerView : UIView) {
+     func addCustomView(_ view : UIView,to containerView : UIView) {
         containerView.addSubview(view)
         NSLayoutConstraint.activate([
             view.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),

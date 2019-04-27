@@ -47,7 +47,7 @@ public class TFLCDLineInfo: NSManagedObject {
                         let group = DispatchGroup()
                         for routeDict in  routeDictList {
                             group.enter()
-                            TFLCDLineRoute.route(with: routeDict, and: managedObjectContext) { route in
+                            TFLCDLineRoute.route(for:identifier, with: routeDict, and: managedObjectContext) { route in
                                 if let route = route {
                                     lineInfo.addToRoutes(route)
                                 }
@@ -82,6 +82,7 @@ public class TFLCDLineInfo: NSManagedObject {
         var lineInfo : TFLCDLineInfo?
         managedObjectContext.performAndWait {
             let fetchRequest = NSFetchRequest<TFLCDLineInfo>(entityName: String(describing: TFLCDLineInfo.self))
+            fetchRequest.relationshipKeyPathsForPrefetching = ["routes"]
             let predicate = NSPredicate(format: "identifier == %@",identifier.lowercased())
             fetchRequest.predicate = predicate
             lineInfo =  (try? managedObjectContext.fetch(fetchRequest))?.first

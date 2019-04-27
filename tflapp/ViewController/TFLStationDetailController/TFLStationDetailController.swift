@@ -83,6 +83,7 @@ class TFLStationDetailController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        mapViewController?.delegate = tableViewController
         self.networkMonitor.start(queue: .main)
         self.titleHeaderView.title = lineInfo.line ?? ""
         self.navigationItem.titleView = self.titleHeaderView
@@ -115,9 +116,9 @@ class TFLStationDetailController: UIViewController {
    
 }
 
-////
-/// MARK: Private
-///
+//
+// MARK: - Private
+//
 fileprivate extension TFLStationDetailController {
     func showOfflineView(_ show : Bool = true) {
         self.tableViewContainerViewBottomConstraint.constant = show ? self.offlineView.frame.size.height : 0
@@ -198,12 +199,12 @@ fileprivate extension TFLStationDetailController {
             return []
         }
         let sortedInfos = arrivalInfos.sorted { info1,info2 in
-            let idx1 = naptanRoute.index(of:info1.busStopIdentifier) ?? 0
-            let idx2 = naptanRoute.index(of:info2.busStopIdentifier) ?? 0
+            let idx1 = naptanRoute.firstIndex(of:info1.busStopIdentifier) ?? 0
+            let idx2 = naptanRoute.firstIndex(of:info2.busStopIdentifier) ?? 0
             return idx1 < idx2
         }
         
-        guard let index = sortedInfos.map ({ $0.busStopIdentifier }).index(of:station ) else {
+        guard let index = sortedInfos.map ({ $0.busStopIdentifier }).firstIndex(of:station ) else {
             return []
         }
         let sortedInfosRange = Array(sortedInfos[0...index])
@@ -213,7 +214,7 @@ fileprivate extension TFLStationDetailController {
     func naptanIdListWithStation(_ station : String,from tableViewModels : [TFLStationDetailTableViewModel]) -> [String] {
         let naptanIDLists = tableViewModels.naptanIDLists
         let naptanIdList = naptanIDLists.first { lists in
-            guard let _ = lists.index(of:station) else {
+            guard let _ = lists.firstIndex(of:station) else {
                 return false
             }
             return true
@@ -231,10 +232,17 @@ fileprivate extension TFLStationDetailController {
     }
 }
 
+// MARK: - TFLStationDetailTableViewControllerDelegate
+
 extension TFLStationDetailController : TFLStationDetailTableViewControllerDelegate {
+    func tflStationDetailTableViewController(_ controller: TFLStationDetailTableViewController, didSelectBusstopWith identifier: String) {
+        self.mapViewController?.showBusStop(with: identifier, animated: true)
+    }
+    
     func tflStationDetailTableViewController(_ controller: TFLStationDetailTableViewController, didShowSection section: Int) {
         self.mapViewController?.showRouteForModel(at: section, animated: true)
     }
+    
     func tflStationDetailTableViewController(_ controller: TFLStationDetailTableViewController,with header: UITableViewHeaderFooterView, didPanBy distance: CGFloat) {
         let newHeightOffset = self.heightConstraint.constant + distance
         let maxHeightOffset = self.view.frame.size.height - header.frame.size.height
@@ -242,6 +250,8 @@ extension TFLStationDetailController : TFLStationDetailTableViewControllerDelega
         self.view.layoutIfNeeded()
     }
 }
+
+// MARK: - TFLUpdateStatusViewDelegate
 
 extension TFLStationDetailController : TFLUpdateStatusViewDelegate {
     func didExpireTimerInStatusView(_ tflStatusView : TFLUpdateStatusView) {

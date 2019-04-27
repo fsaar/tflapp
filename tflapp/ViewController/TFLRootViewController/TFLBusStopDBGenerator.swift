@@ -9,16 +9,18 @@
 import Foundation
 import CoreData
 
+#if DATABASEGENERATION
+
 class TFLBusStopDBGenerator {
     // MARK: DataBase Generation
     fileprivate let tflClient = TFLClient()
-    
     func loadLineStations() {
         self.linesFromBusStops { [weak self] lines in
             self?.load(lines: Array(lines), index: 0) {
                 let context = TFLCoreDataStack.sharedDataStack.privateQueueManagedObjectContext
                 context.performAndWait {
                     try? context.save()
+                    print("Done !!")
                 }
             }
         }
@@ -41,20 +43,21 @@ class TFLBusStopDBGenerator {
             }
         }
     }
+    
     func load(lines : [String],index : Int = 0,using completionBlock: (()->())? = nil) {
         guard index < lines.count else {
             completionBlock?()
             return
         }
         let line = lines[index]
-        print("\(index). \(line)")
+        print("[\(index+1) / \(lines.count)]. Line:\(line)")
         self.tflClient.lineStationInfo(for: line,context: TFLCoreDataStack.sharedDataStack.privateQueueManagedObjectContext) { [weak self] _,_ in
             self?.load(lines: lines, index: index+1,using:completionBlock)
         }
     }
     
     // MARK: DataBase Generation (BusStops)
-    
+
     func loadBusStops(of page: UInt = 0,using completionBlock: (()->())?) {
         self.tflClient.busStops(with: page) { [weak self] busStops,_ in
             guard let busStops = busStops, !busStops.isEmpty else {
@@ -69,4 +72,6 @@ class TFLBusStopDBGenerator {
             }
         }
     }
+
 }
+#endif

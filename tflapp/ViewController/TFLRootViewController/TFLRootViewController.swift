@@ -18,7 +18,9 @@ class TFLRootViewController: UIViewController {
     fileprivate static let searchParameter  : (min:Double,initial:Double) = (100,500)
     fileprivate let networkBackgroundQueue = OperationQueue()
     fileprivate let tflClient = TFLClient()
+    #if DATABASEGENERATION
     fileprivate let busStopDBGenerator = TFLBusStopDBGenerator()
+    #endif
     fileprivate static let loggingHandle  = OSLog(subsystem: TFLLogger.subsystem, category: TFLLogger.category.rootViewController.rawValue)
     fileprivate lazy var busInfoAggregator = TFLBusArrivalInfoAggregator()
   
@@ -45,7 +47,6 @@ class TFLRootViewController: UIViewController {
                 return true
             default:
                 return false
-
             }
         }
         var isDeterminingCurrentLocation : Bool {
@@ -141,7 +142,7 @@ class TFLRootViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.networkMonitor.start(queue: .main)
-
+        self.mapViewController?.delegate = nearbyBusStationController
         self.slideContainerController?.rightCustomView = self.updateStatusView
         
         TFLLocationManager.sharedManager.delegate = self
@@ -174,11 +175,14 @@ class TFLRootViewController: UIViewController {
         self.backgroundNotificationHandler = TFLNotificationObserver(notification:UIApplication.didEnterBackgroundNotification) { [weak self]  _ in
             self?.updateStatusView.state = .paused
         }
-        self.loadNearbyBusstops()
-        
-//        self.busStopDBGenerator.loadBusStops { [weak self] in
-//            self?.busStopDBGenerator.loadLineStations()
-//        }
+        #if DATABASEGENERATION
+        self.busStopDBGenerator.loadBusStops { [weak self] in
+            self?.busStopDBGenerator.loadLineStations()
+        }
+        #else
+            self.loadNearbyBusstops()
+        #endif
+
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -307,15 +311,13 @@ fileprivate extension TFLRootViewController {
         }
     }
     
-    
-    
-    fileprivate func currentCoordinates(using completionBlock : @escaping (_ coord : CLLocationCoordinate2D?) -> Void) {
+     func currentCoordinates(using completionBlock : @escaping (_ coord : CLLocationCoordinate2D?) -> Void) {
         TFLLocationManager.sharedManager.updateLocation { coord in
             completionBlock(coord)
         }
     }
     
-    fileprivate func updateUI(with coord : CLLocationCoordinate2D, using completionBlock:@escaping (_ updated : Bool) -> ()) {
+     func updateUI(with coord : CLLocationCoordinate2D, using completionBlock:@escaping (_ updated : Bool) -> ()) {
         
         _ = self.updateContentViewController(with: [],isUpdatePending: false, and: coord)
         self.retrieveBusstops(for: coord) { [weak self] busStopPredictionTuples,isComplete  in
@@ -327,8 +329,6 @@ fileprivate extension TFLRootViewController {
             completionBlock(updated)
         }
     }
-    
-
     
     func retrieveBusstops(for location:CLLocationCoordinate2D, using completionBlock:@escaping ([TFLBusStopArrivalsInfo],_ completed: Bool)->()) {
         self.state = .retrievingNearbyStations
@@ -351,7 +351,7 @@ fileprivate extension TFLRootViewController {
     }
 }
 
-// MARK: TFLErrorContainerViewDelegate
+// MARK: - TFLErrorContainerViewDelegate
 
 extension TFLRootViewController : TFLErrorContainerViewDelegate {
     func didTap(noStationsButton: UIButton,in view : TFLNoStationsView) {
@@ -367,6 +367,8 @@ extension TFLRootViewController : TFLErrorContainerViewDelegate {
 }
 
 
+// MARK: - TFLLocationManagerDelegate
+
 extension TFLRootViewController : TFLLocationManagerDelegate {
     func locationManager(_ locationManager : TFLLocationManager, didChangeEnabledStatus enabled : Bool) {
         guard enabled else {
@@ -376,9 +378,13 @@ extension TFLRootViewController : TFLLocationManagerDelegate {
     }
 }
 
-// MARK: TFLContentControllerDelegate
+// MARK: - TFLNearbyBusStationsControllerDelegate
 
 extension TFLRootViewController : TFLNearbyBusStationsControllerDelegate  {
+    func nearbyBusStationsController(_ controller: TFLNearbyBusStationsController, didSelectBusstopWith identifier: String) {
+       self.mapViewController?.showBusStop(with: identifier, animated: true)
+    }
+    
     func lastRefresh(of controller: TFLNearbyBusStationsController) -> Date? {
         return busInfoAggregator.lastUpdate
     }
@@ -389,7 +395,7 @@ extension TFLRootViewController : TFLNearbyBusStationsControllerDelegate  {
 }
 
 
-// MARK: TFLStatusViewDelegate
+// MARK: - TFLUpdateStatusViewDelegate
 
 extension TFLRootViewController : TFLUpdateStatusViewDelegate {
     func didExpireTimerInStatusView(_ tflStatusView : TFLUpdateStatusView) {

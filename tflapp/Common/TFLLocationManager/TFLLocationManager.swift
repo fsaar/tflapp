@@ -61,6 +61,7 @@ class TFLLocationManager : NSObject {
         return handle
     }()
     private var state = State.not_authorised
+
     static let sharedManager = TFLLocationManager()
     var enabled : Bool {
         guard case .authorised = state else {
@@ -78,7 +79,7 @@ class TFLLocationManager : NSObject {
     }()
     fileprivate var isFirstStartup : Bool = false
    
-    override init() {
+    fileprivate override init() {
         super.init()
         let authorisationStatus = CLLocationManager.authorizationStatus()
         switch authorisationStatus {
@@ -90,6 +91,8 @@ class TFLLocationManager : NSObject {
         case .authorizedAlways,.authorizedWhenInUse:
             // need to wait for didChangeAuthorization callback even when authorised
             self.state = .authorisation_pending(completionBlocks: [])
+        @unknown default:
+            break
         }
     
     }
@@ -186,6 +189,8 @@ extension TFLLocationManager : CLLocationManagerDelegate {
             self.state.completionBlocks.forEach { $0(kCLLocationCoordinate2DInvalid) }
             self.state = .not_authorised
             self.delegate?.locationManager(self, didChangeEnabledStatus: false)
+        @unknown default:
+            break
         }
     }
 }

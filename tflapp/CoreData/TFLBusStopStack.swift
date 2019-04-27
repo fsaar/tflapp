@@ -34,7 +34,7 @@ private let groupID =  "group.tflwidgetSharingData"
 
     fileprivate var storeCoordinator : NSPersistentStoreCoordinator
 
-    override init() {
+    fileprivate override init() {
 
         func cleanUpCoreData(_ coordinator : NSPersistentStoreCoordinator) -> Bool{
             guard let dbFullFileName = dbFileName?.path,let destinationURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: groupID)?.appendingPathComponent(dbFullFileName) else {

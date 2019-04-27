@@ -10,7 +10,7 @@ class TFLMapViewAnnotation: NSObject, MKAnnotation {
     }
     let arrivalsInfo: TFLBusStopArrivalsInfo
     var identifier : String {
-        return arrivalsInfo.identifier
+        return arrivalsInfo.busStop.identifier
     }
     override public var debugDescription: String {
         return "\(String(describing: title)) [\(identifier)]"

@@ -12,6 +12,7 @@ import CoreData
 protocol TFLStationDetailTableViewControllerDelegate : class {
     func tflStationDetailTableViewController(_ controller: TFLStationDetailTableViewController,didShowSection section: Int)
     func tflStationDetailTableViewController(_ controller: TFLStationDetailTableViewController,with header: UITableViewHeaderFooterView, didPanBy distance: CGFloat)
+    func tflStationDetailTableViewController(_ controller: TFLStationDetailTableViewController,didSelectBusstopWith identifier: String)
 }
 
 class TFLStationDetailTableViewController: UITableViewController {
@@ -119,6 +120,12 @@ extension TFLStationDetailTableViewController {
     override func tableView(_ tableView: UITableView, didEndDisplayingHeaderView view: UIView, forSection section: Int) {
         visibleSections = visibleSections.subtracting([section])
     }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let model = viewModels[indexPath.section]
+        let identifier = model.stations[indexPath.row].naptanId
+        delegate?.tflStationDetailTableViewController(self, didSelectBusstopWith: identifier)
+    }
 }
 
 extension TFLStationDetailTableViewController : TFLStationDetailSectionHeaderViewDelegate {
@@ -192,4 +199,18 @@ fileprivate extension TFLStationDetailTableViewController {
         }
     }
 
+}
+
+extension TFLStationDetailTableViewController : TFLStationDetailMapViewControllerDelegate {
+    func stationDetailMapViewController(_ stationDetailMapViewController : TFLStationDetailMapViewController,didSelectStationWith identifier : String) {
+        guard currentSection < viewModels.count else {
+            return
+        }
+        let model = viewModels[currentSection]
+        guard let row = model.stations.firstIndex (where:{ $0.naptanId == identifier }) else {
+            return
+        }
+        let indexPath = IndexPath(row: row, section: currentSection)
+        self.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+    }
 }

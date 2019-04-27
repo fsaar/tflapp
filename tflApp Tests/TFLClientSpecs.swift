@@ -245,7 +245,7 @@ class TFLClientSpecs: QuickSpec {
             it("should issue request with the right URL") {
                 var busStopsBlockCalled = false
      
-                client.busStops(with: 1) { models,_ in
+                client.busStops(with: 1,with: .main) { models,_ in
                     busStopsBlockCalled = true
                     expect(models).notTo(beNil())
                 }

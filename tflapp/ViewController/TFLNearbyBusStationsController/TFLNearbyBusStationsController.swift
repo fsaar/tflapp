@@ -6,6 +6,7 @@ import os.signpost
 protocol TFLNearbyBusStationsControllerDelegate : class {
     func refresh(controller: TFLNearbyBusStationsController, using completionBlock:@escaping ()->())
     func lastRefresh(of controller : TFLNearbyBusStationsController) -> Date?
+    func nearbyBusStationsController(_ controller: TFLNearbyBusStationsController,didSelectBusstopWith identifier: String)
 }
 
 extension MutableCollection where Index == Int, Iterator.Element == TFLBusStopArrivalsViewModel {
@@ -171,12 +172,32 @@ extension TFLNearbyBusStationsController : UITableViewDataSource {
     
 }
 
+extension TFLNearbyBusStationsController : UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let model = busStopArrivalViewModels[indexPath]
+        self.delegate?.nearbyBusStationsController(self, didSelectBusstopWith: model.identifier)
+    }
+}
+
 extension TFLNearbyBusStationsController : TFLBusStationArrivalCellDelegate {
     
     func busStationArrivalCell(_ busStationArrivalCell: TFLBusStationArrivalsCell,didSelectLine line: String,with vehicleID: String,at station : String) {
         updateAndShowLineInfo(line: line,with: vehicleID,at: station)
     }
 }
+
+/// MARK: TFLMapViewControllerDelegate
+
+extension TFLNearbyBusStationsController : TFLMapViewControllerDelegate {
+   
+    func mapViewController(_ mapViewController: TFLMapViewController, didSelectStationWith identifier: String) {
+        guard let index = self.busStopArrivalViewModels.firstIndex (where:{ $0.identifier == identifier }) else {
+            return
+        }
+        self.tableView.scrollToRow(at: IndexPath(row: index, section: 0), at: .top, animated: true)
+    }
+}
+
 
 // MARK: Private
 

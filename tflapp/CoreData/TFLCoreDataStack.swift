@@ -1,11 +1,11 @@
 import Foundation
 import CoreData
 import UIKit
-
+#if DATABASEGENERATION
 @objc public final class TFLCoreDataStack : NSObject {
 
     static let sharedDataStack = TFLCoreDataStack()
-
+    
     lazy public fileprivate(set) var privateQueueManagedObjectContext : NSManagedObjectContext =  {
         let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         context.persistentStoreCoordinator = self.storeCoordinator
@@ -17,7 +17,7 @@ import UIKit
 
     fileprivate var backgroundNotificationObserver : TFLNotificationObserver?
 
-    override init() {
+    fileprivate override init() {
         func initCoreData(_ coordinator : NSPersistentStoreCoordinator) -> Bool {
             let storeURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last!.appendingPathComponent("TFLBusStops.sqlite")
             print(storeURL)
@@ -43,3 +43,4 @@ import UIKit
         }
     }
 }
+#endif

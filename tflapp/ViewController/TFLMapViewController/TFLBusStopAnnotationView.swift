@@ -26,6 +26,7 @@ class TFLBusStopAnnotationView: MKMarkerAnnotationView {
         titleVisibility = .hidden
         displayPriority = MKFeatureDisplayPriority(rawValue: 1000)
         self.layer.anchorPoint = CGPoint(x:0.5,y:1)
+        self.centerOffset = CGPoint(x:0.5,y:-0.5)
     }
 
     @available(iOS,unavailable)

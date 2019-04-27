@@ -29,6 +29,7 @@ class TFLStationDetailBusStopAnnotationView: MKMarkerAnnotationView {
         titleVisibility = .hidden
         displayPriority = annotation?.priority ?? MKFeatureDisplayPriority(rawValue: 750)
         self.layer.anchorPoint = CGPoint(x:0.5,y:1)
+        self.centerOffset = CGPoint(x:0.5,y:-0.5)
     }
 
     @available(iOS,unavailable)

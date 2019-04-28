@@ -19,6 +19,7 @@ class TFLLogger {
         case location = "location"
         case rootViewController = "rootViewController"
         case arrivalInfoAggregator = "arrivalInfoAggregator"
+        case busStop = "TFLCDBusStop"
     }
     fileprivate init() { }
     

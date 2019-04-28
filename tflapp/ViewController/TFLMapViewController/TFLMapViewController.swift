@@ -147,6 +147,7 @@ extension TFLMapViewController : MKMapViewDelegate {
         guard let mapViewAnnotation = annotation as? TFLMapViewAnnotation else {
             return nil
         }
+        self.state = .userInteracted
         return TFLBusStopAnnotationView(annotation: mapViewAnnotation,
                                         reuseIdentifier: String(describing: TFLBusStopAnnotationView.self)) { [weak self] mapViewAnnotation in
             guard let self = self else {

@@ -715,6 +715,7 @@
 				56A81B271DD862DC001DF7F1 /* Sources */,
 				56A81B281DD862DC001DF7F1 /* Frameworks */,
 				56A81B291DD862DC001DF7F1 /* Resources */,
+				56D008BE22765E11005E1344 /* Remove PolylineDict If NeedBe */,
 				564EC6F21DDFE205008CFD11 /* Remove API Keys */,
 				567CE45B20E412F100DADE45 /* Swift Lint */,
 			);
@@ -857,6 +858,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
+		};
+		56D008BE22765E11005E1344 /* Remove PolylineDict If NeedBe */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Remove PolylineDict If NeedBe";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ \"${CONFIGURATION}\" != \"DataBaseGeneration\" ]; then\n  find \"${BUILT_PRODUCTS_DIR}\" -name rawPolyLineDict.plist -exec rm {} \\;\nfi\n";
 		};
 		CA12D93F7484B0C6E06F9920 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

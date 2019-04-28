@@ -14,11 +14,11 @@ class TFLLogger {
         case network = "network"
         case api = "api"
         case refresh = "refresh"
-        case coredata = "coredata"
         case timer = "timer"
         case location = "location"
         case rootViewController = "rootViewController"
         case arrivalInfoAggregator = "arrivalInfoAggregator"
+        case busStop = "TFLCDBusStop"
     }
     fileprivate init() { }
     

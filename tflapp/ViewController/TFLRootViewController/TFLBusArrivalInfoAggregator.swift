@@ -38,7 +38,7 @@ class TFLBusArrivalInfoAggregator {
             let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
             TFLLogger.shared.signPostStart(osLog: TFLBusArrivalInfoAggregator.loggingHandle, name: "retrieve nearby Busstops")
 
-            TFLBusStopStack.sharedDataStack.nearbyBusStops(with: coord,with: distance,and: context) { [weak self] busStops in
+            TFLCDBusStop.nearbyBusStops(with: coord,with: distance,and: context) { [weak self] busStops in
                 TFLLogger.shared.signPostEnd(osLog: TFLBusArrivalInfoAggregator.loggingHandle, name: "retrieve nearby Busstops")
                 let threshold = 20
                 if busStops.count >= threshold {

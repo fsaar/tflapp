@@ -109,13 +109,13 @@
 		56C6A3471DF44F6A00067D06 /* TFLStationDetailMapViewAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C6A3461DF44F6A00067D06 /* TFLStationDetailMapViewAnnotation.swift */; };
 		56C828901DE8E9FA00E52086 /* TFLChangeSetProtocolSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C8288F1DE8E9FA00E52086 /* TFLChangeSetProtocolSpecs.swift */; };
 		56C828961DEA396400E52086 /* TFLCollectionFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C828951DEA396400E52086 /* TFLCollectionFlowLayout.swift */; };
+		56D008C02278D199005E1344 /* polyLineDict.plist in Resources */ = {isa = PBXBuildFile; fileRef = 56D008BF2278D199005E1344 /* polyLineDict.plist */; };
 		56D0AF331E141D2C00F466C4 /* TFLAnimatedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D0AF321E141D2C00F466C4 /* TFLAnimatedLabel.swift */; };
 		56D6E37A2259547D00A2FAE9 /* PolylineDict.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D6E3792259547D00A2FAE9 /* PolylineDict.swift */; };
 		56D70D141DD9A25F004CA293 /* TFLLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D70D131DD9A25F004CA293 /* TFLLocationManager.swift */; };
 		56D70D341DD9A7A6004CA293 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 56D70D301DD9A7A6004CA293 /* InfoPlist.strings */; };
 		56D70D351DD9A7A6004CA293 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 56D70D321DD9A7A6004CA293 /* Localizable.strings */; };
 		56DA42EC21051E8A00ED9C54 /* TFLBusStopArrivalsInfoSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DA42EB21051E8A00ED9C54 /* TFLBusStopArrivalsInfoSpecs.swift */; };
-		56DB35D72265201100B164CB /* rawPolyLineDict.plist in Resources */ = {isa = PBXBuildFile; fileRef = 56DB35D62265201100B164CB /* rawPolyLineDict.plist */; };
 		56DD18FD20A0B078003335D1 /* TFLTimerSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DD18FC20A0B078003335D1 /* TFLTimerSpecs.swift */; };
 		56DD190020A0B0C1003335D1 /* TFLTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DD18FF20A0B0C1003335D1 /* TFLTimer.swift */; };
 		56E7217D221234C600733B9F /* TFLOfflineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E7217C221234C600733B9F /* TFLOfflineView.swift */; };
@@ -247,6 +247,7 @@
 		56C6A3461DF44F6A00067D06 /* TFLStationDetailMapViewAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLStationDetailMapViewAnnotation.swift; sourceTree = "<group>"; };
 		56C8288F1DE8E9FA00E52086 /* TFLChangeSetProtocolSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLChangeSetProtocolSpecs.swift; sourceTree = "<group>"; };
 		56C828951DEA396400E52086 /* TFLCollectionFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLCollectionFlowLayout.swift; sourceTree = "<group>"; };
+		56D008BF2278D199005E1344 /* polyLineDict.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = polyLineDict.plist; sourceTree = "<group>"; };
 		56D0AF321E141D2C00F466C4 /* TFLAnimatedLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLAnimatedLabel.swift; sourceTree = "<group>"; };
 		56D6E3792259547D00A2FAE9 /* PolylineDict.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolylineDict.swift; sourceTree = "<group>"; };
 		56D70D131DD9A25F004CA293 /* TFLLocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLLocationManager.swift; sourceTree = "<group>"; };
@@ -597,6 +598,7 @@
 				56A4907921977FF6004024D9 /* abbreviations.plist */,
 				56D70D2F1DD9A7A6004CA293 /* Localization */,
 				566EF7D01DDB5679006162D7 /* TFLBusStops.sqlite */,
+				56D008BF2278D199005E1344 /* polyLineDict.plist */,
 				56DB35D62265201100B164CB /* rawPolyLineDict.plist */,
 				565A1FD01DD8FB2A003CE960 /* Model.xcdatamodeld */,
 				5642EF0720ED63AD00A7914F /* mapstogpx20180704_193755.gpx */,
@@ -712,12 +714,13 @@
 			buildPhases = (
 				E665C226CB022DA33D91ED39 /* [CP] Check Pods Manifest.lock */,
 				564EC6F11DDFE180008CFD11 /* Inject API Keys */,
+				56D008BE22765E11005E1344 /* init PolylineDict If need be */,
 				56A81B271DD862DC001DF7F1 /* Sources */,
 				56A81B281DD862DC001DF7F1 /* Frameworks */,
 				56A81B291DD862DC001DF7F1 /* Resources */,
-				56D008BE22765E11005E1344 /* Remove PolylineDict If NeedBe */,
 				564EC6F21DDFE205008CFD11 /* Remove API Keys */,
 				567CE45B20E412F100DADE45 /* Swift Lint */,
+				56D008C12278D24A005E1344 /* Restore PolylineDict if need be */,
 			);
 			buildRules = (
 			);
@@ -803,9 +806,9 @@
 				56C0944C20D9AE0C00581995 /* Settings.bundle in Resources */,
 				566EF7D11DDB5685006162D7 /* TFLBusStops.sqlite in Resources */,
 				56A81B3C1DD862DC001DF7F1 /* LaunchScreen.storyboard in Resources */,
-				56DB35D72265201100B164CB /* rawPolyLineDict.plist in Resources */,
 				5689612720C08AFC00335DEB /* TFLStationDetailSectionHeaderView.xib in Resources */,
 				56D70D351DD9A7A6004CA293 /* Localizable.strings in Resources */,
+				56D008C02278D199005E1344 /* polyLineDict.plist in Resources */,
 				56A81B391DD862DC001DF7F1 /* Assets.xcassets in Resources */,
 				56A4907721977FF6004024D9 /* abbreviations.plist in Resources */,
 				56A81B341DD862DC001DF7F1 /* Main.storyboard in Resources */,
@@ -828,7 +831,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\nif [ -e \".env\" ]\nthen\nsource .env\nif [ \"${CONFIGURATION}\" = \"DataBaseGeneration\" ]; then\n    find . -name CLLocationCoordinate2D+Helper.swift -exec sed -i \"\" \"s/PASTE_YOUR_GOOGLE_ROUTES_API_KEY_HERE/$TFLGoogleRoutesAPIKey/g\" {} \\;\nfi\nfind . -name TLFRequestManager.swift -exec sed -i \"\" \"s/PASTE_YOUR_APPLICATION_ID_HERE/$TFLApplicationID/g\" {} \\;\nfind . -name TLFRequestManager.swift -exec sed -i \"\" \"s/PASTE_YOUR_APPLICATION_KEY_HERE/$TFLApplicationKey/g\" {} \\;\nfind . -name Info.plist -exec sed -i \"\" \"s/PASTE_YOUR_FABRIC_API_KEY_HERE/$TFLFABBRICSAPIKEY/g\" {} \\;\nfi\n";
+			shellScript = "\nif [ -e \".env\" ]\nthen\nsource .env\nif [ \"${CONFIGURATION}\" = \"DataBaseGeneration\" ]; then\n    find . -name CLLocationCoordinate2D+Helper.swift -exec sed -i \"\" \"s/PASTE_YOUR_GOOGLE_ROUTES_API_KEY_HERE/$TFLGoogleRoutesAPIKey/g\" {} \\;\nfi\nfind . -name TLFRequestManager.swift -exec sed -i \"\" \"s/PASTE_YOUR_APPLICATION_ID_HERE/$TFLApplicationID/g\" {} \\;\nfind . -name TLFRequestManager.swift -exec sed -i \"\" \"s/PASTE_YOUR_APPLICATION_KEY_HERE/$TFLApplicationKey/g\" {} \\;\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		564EC6F21DDFE205008CFD11 /* Remove API Keys */ = {
@@ -843,7 +846,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -e \".env\" ]\nthen\nsource .env\nfind . -name CLLocationCoordinate2D+Helper.swift -exec sed -i \"\" \"s/$TFLGoogleRoutesAPIKey/PASTE_YOUR_GOOGLE_ROUTES_API_KEY_HERE/g\" {} \\;\nfind . -name TLFRequestManager.swift -exec sed -i \"\" \"s/$TFLApplicationID/PASTE_YOUR_APPLICATION_ID_HERE/g\" {} \\;\nfind . -name TLFRequestManager.swift -exec sed -i \"\" \"s/$TFLApplicationKey/PASTE_YOUR_APPLICATION_KEY_HERE/g\" {} \\;\nfind . -name Info.plist -exec sed -i \"\" \"s/$TFLFABBRICSAPIKEY/PASTE_YOUR_FABRIC_API_KEY_HERE/g\" {} \\;\nfi\n";
+			shellScript = "if [ -e \".env\" ]\nthen\nsource .env\nfind . -name CLLocationCoordinate2D+Helper.swift -exec sed -i \"\" \"s/$TFLGoogleRoutesAPIKey/PASTE_YOUR_GOOGLE_ROUTES_API_KEY_HERE/g\" {} \\;\nfind . -name TLFRequestManager.swift -exec sed -i \"\" \"s/$TFLApplicationID/PASTE_YOUR_APPLICATION_ID_HERE/g\" {} \\;\nfind . -name TLFRequestManager.swift -exec sed -i \"\" \"s/$TFLApplicationKey/PASTE_YOUR_APPLICATION_KEY_HERE/g\" {} \\;\nfi\n";
 		};
 		567CE45B20E412F100DADE45 /* Swift Lint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -859,7 +862,7 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
 		};
-		56D008BE22765E11005E1344 /* Remove PolylineDict If NeedBe */ = {
+		56D008BE22765E11005E1344 /* init PolylineDict If need be */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -868,14 +871,32 @@
 			);
 			inputPaths = (
 			);
-			name = "Remove PolylineDict If NeedBe";
+			name = "init PolylineDict If need be";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"${CONFIGURATION}\" != \"DataBaseGeneration\" ]; then\n  find \"${BUILT_PRODUCTS_DIR}\" -name rawPolyLineDict.plist -exec rm {} \\;\nfi\n";
+			shellScript = "if [ \"${CONFIGURATION}\" == \"DataBaseGeneration\" ]; then\n    rm \"${PROJECT_DIR}/tflapp/polyLineDict.plist\"\n    cp \"${PROJECT_DIR}/tflapp/rawPolyLineDict.plist\" \"${PROJECT_DIR}/tflapp/polyLineDict.plist\"\nfi\n";
+		};
+		56D008C12278D24A005E1344 /* Restore PolylineDict if need be */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Restore PolylineDict if need be";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ \"${CONFIGURATION}\" == \"DataBaseGeneration\" ]; then\n    rm \"${PROJECT_DIR}/tflapp/polyLineDict.plist\"\n    echo \"\" > \"${PROJECT_DIR}/tflapp/polyLineDict.plist\"\nfi\n";
 		};
 		CA12D93F7484B0C6E06F9920 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

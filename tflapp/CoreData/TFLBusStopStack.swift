@@ -103,14 +103,12 @@ fileprivate extension TFLBusStopStack {
                                           NSInferMappingModelAutomaticallyOption : true]
             
             let models = NSManagedObjectModel.mergedModel(from: nil)!
-            let coordinator = NSPersistentStoreCoordinator(managedObjectModel: models)
-            try coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: toURL, options: dict)
-            try coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: fromURL, options: dict)
-            guard coordinator.persistentStores.count == 2 else {
-                return
-            }
-            let version1 = try storeUUID(of: coordinator.persistentStores[0])
-            let version2 = try storeUUID(of: coordinator.persistentStores[1])
+            let coordinator1 = NSPersistentStoreCoordinator(managedObjectModel: models)
+            let coordinator2 = NSPersistentStoreCoordinator(managedObjectModel: models)
+            try coordinator1.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: toURL, options: dict)
+            try coordinator2.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: fromURL, options: dict)
+            let version1 = try storeUUID(of: coordinator1.persistentStores[0])
+            let version2 = try storeUUID(of: coordinator2.persistentStores[0])
             guard version1 != version2 else {
                 return
             }

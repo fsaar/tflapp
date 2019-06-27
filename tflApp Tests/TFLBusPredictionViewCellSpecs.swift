@@ -170,7 +170,7 @@ class TFLBusPredictionViewCellSpecs: QuickSpec {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let controller = storyboard.instantiateViewController(withIdentifier: "TFLNearbyBusStationsController") as! TFLNearbyBusStationsController
             _ = controller.view
-            let busStationArrivalCell = controller.tableView.dequeueReusableCell(withIdentifier: String(describing: TFLBusStationArrivalsCell.self), for: IndexPath(row: 0, section: 0)) as!  TFLBusStationArrivalsCell
+            let busStationArrivalCell = controller.collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: TFLBusStationArrivalsCell.self), for: IndexPath(row: 0, section: 0)) as!  TFLBusStationArrivalsCell
             let collectionView = busStationArrivalCell.predictionView
             let dataSource = CollectionViewDataSource()
             collectionView?.dataSource = dataSource

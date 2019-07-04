@@ -49,8 +49,9 @@ extension BidirectionalCollection where Element : Hashable {
                                                                                                 }
                                                                                                 return (element,oldIndex,newIndex)
         }
-        let inserted = translatedDiff.filter { $0.offset2 == nil }.filter { $0.action == .inserted }.map { (element:$0.element,index:$0.offset1) }
-        let deleted = translatedDiff.filter { $0.offset2 == nil }.filter { $0.action == .removed }.map { (element:$0.element,index:$0.offset1) }
+        let insertedAndDeletedElements = translatedDiff.filter { $0.offset2 == nil }
+        let inserted = insertedAndDeletedElements.filter { $0.action == .inserted }.map { (element:$0.element,index:$0.offset1) }
+        let deleted = insertedAndDeletedElements.filter { $0.action == .removed }.map { (element:$0.element,index:$0.offset1) }
         let changedElements = Set(translatedDiff.map { $0.element })
         let updated : [(Element,Int)] = newList.enumerated().filter { !changedElements.contains($0.1) }.map { ($0.1,$0.0) }
         

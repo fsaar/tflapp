@@ -20,78 +20,46 @@ class TFLBusPredictionView: UICollectionView {
     weak var busPredictionViewDelegate : TFLBusPredictionViewDelegate?
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.dataSource = self
         self.delegate = self
+        
+        diffableDataSource = UICollectionViewDiffableDataSource(collectionView: self) { collectionView,indexPath,prediction in
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: TFLBusPredictionViewCell.self), for: indexPath) as? TFLBusPredictionViewCell
+            cell?.configure(with: prediction,as : false)
+            return cell
+        }
     }
 
     fileprivate let synchroniser = TFLSynchroniser(tag: "com.samedialabs.queue.collectionView")
-
+    fileprivate var diffableDataSource : UICollectionViewDiffableDataSource<String,TFLBusStopArrivalsViewModel.LinePredictionViewModel>?
+    fileprivate let sectionIdentifier = "TFLBusPredictionViewSectionIdentifier"
     func setPredictions( predictions : [TFLBusStopArrivalsViewModel.LinePredictionViewModel], animated: Bool = false) {
-        if  !animated || self.predictions.isEmpty {
-            self.predictions = predictions
-            self.reloadData()
-        }
-        else {
-            synchroniser.synchronise { synchroniseEnd in
-                let (inserted ,deleted ,updated, moved) = self.predictions.transformTo(newList:predictions, sortedBy:TFLBusStopArrivalsViewModel.LinePredictionViewModel.compare)
-                
-                DispatchQueue.main.async {
-                    self.performBatchUpdates({ [weak self] in
-                        self?.predictions = predictions
-                        let deletedIndexPaths = deleted.map { IndexPath(item: $0.index,section:0) }.sorted(by:>)
-                        self?.deleteItems(at: deletedIndexPaths)
-                        let insertedIndexPaths = inserted.map { IndexPath(item: $0.index,section:0) }.sorted(by:<)
-                        self?.insertItems(at: insertedIndexPaths )
-                        moved.forEach { self?.moveItem(at: IndexPath(item: $0.oldIndex,section:0), to:  IndexPath(item: $0.newIndex,section:0)) }
-                        } ,completion: { [weak self]  _ in
-                            
-                            let updatedIndexPaths = updated.map { IndexPath(item: $0.index,section:0) }
-                            let movedIndexPaths = moved.map { IndexPath(item: $0.newIndex,section:0) }
-                            (updatedIndexPaths+movedIndexPaths).forEach { indexPath in
-                                let cell = self?.cellForItem(at: indexPath)
-                                self?.configure(cell, at: indexPath, as : true)
-                            }
-                            synchroniseEnd()
-                    })
-                }
+        
+        let animatingDifference = animated && !self.predictions.isEmpty
+        let (_ ,_ ,updated, moved) = self.predictions.transformTo(newList:predictions, sortedBy:TFLBusStopArrivalsViewModel.LinePredictionViewModel.compare)
+        self.predictions = predictions
+        
+        let snapshot = NSDiffableDataSourceSnapshot<String, TFLBusStopArrivalsViewModel.LinePredictionViewModel>()
+        snapshot.appendSections([sectionIdentifier])
+        snapshot.appendItems(predictions)
+        diffableDataSource?.apply(snapshot,animatingDifferences: animatingDifference)
+        
+        let updatedIndexPaths = updated.map { IndexPath(item: $0.index,section:0) }
+        let movedIndexPaths = moved.map { IndexPath(item: $0.newIndex,section:0) }
+        (updatedIndexPaths+movedIndexPaths).forEach { indexPath in
+            if let busPredictionCell = self.cellForItem(at: indexPath) as? TFLBusPredictionViewCell {
+                let prediction = predictions[indexPath]
+                busPredictionCell.configure(with: prediction,as : true)
             }
         }
     }
     public var predictions : [TFLBusStopArrivalsViewModel.LinePredictionViewModel] = []
 }
 
-// MARK: UICollectionViewDataSource
-
-extension TFLBusPredictionView : UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let count = self.predictions.count
-        return count
-    }
-
-    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: TFLBusPredictionViewCell.self), for: indexPath)
-        configure(cell, at: indexPath)
-        return cell
-    }
-
-}
-
-// MARK: UICollectionViewDelegate
+// MARK: - UICollectionViewDelegate
 
 extension TFLBusPredictionView : UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let prediction = predictions[indexPath]
         self.busPredictionViewDelegate?.busPredictionView(self, didSelectLine: prediction.line,with:prediction.vehicleID,at:prediction.busStopIdentifier)
-    }
-}
-
-// MARK: Helper
-
-fileprivate extension TFLBusPredictionView {
-    func configure(_ cell: UICollectionViewCell?,at indexPath : IndexPath,as update: Bool = false) {
-        if let busPredictionCell = cell as? TFLBusPredictionViewCell {
-            let prediction = predictions[indexPath]
-            busPredictionCell.configure(with: prediction,as : update)
-        }
     }
 }

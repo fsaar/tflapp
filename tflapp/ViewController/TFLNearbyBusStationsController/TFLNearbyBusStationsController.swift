@@ -69,37 +69,27 @@ class TFLNearbyBusStationsController : UIViewController {
         }
     }
     
-    var busStopArrivalViewModels :  [TFLBusStopArrivalsViewModel] = []
-    
+    fileprivate var busStopArrivalViewModels :  [TFLBusStopArrivalsViewModel] = []
+    fileprivate let sectionIdentifier = "TFLNearbyBusStationsControllerSectionIdentifier"
     @IBOutlet weak var tableView : UITableView!
-    
+    fileprivate var dataSource : UITableViewDiffableDataSource<String,TFLBusStopArrivalsViewModel>?
     fileprivate let synchroniser = TFLSynchroniser(tag:"com.samedialabs.queue.tableview")
     var currentUserCoordinate = kCLLocationCoordinate2DInvalid
     var busStopPredicationTuple :  [TFLBusStopArrivalsInfo] = [] {
         didSet {
-            synchroniser.synchronise { synchroniseEnd in
-                let models = self.busStopPredicationTuple.sortedByBusStopDistance().map { TFLBusStopArrivalsViewModel(with: $0) }
-                TFLLogger.shared.signPostStart(osLog: TFLNearbyBusStationsController.loggingHandle, name: "Collectiontransform")
-                let (inserted ,deleted ,updated, moved) = self.busStopArrivalViewModels.transformTo(newList: models, sortedBy : TFLBusStopArrivalsViewModel.compare)
-                TFLLogger.shared.signPostEnd(osLog: TFLNearbyBusStationsController.loggingHandle, name: "Collectiontransform")
-                DispatchQueue.main.async {
-                    self.tableView.performBatchUpdates({
-                        self.busStopArrivalViewModels = models
-                        let deletedIndexPaths = deleted.map { $0.index }.indexPaths().sorted(by:>)
-                        self.tableView.deleteRows(at: deletedIndexPaths , with: .automatic)
-                        let insertedIndexPaths = inserted.map { $0.index }.indexPaths().sorted(by:<)
-                        self.tableView.insertRows(at: insertedIndexPaths , with: .automatic)
-                        moved.forEach { self.tableView.moveRow(at: IndexPath(row: $0.oldIndex,section:0), to:  IndexPath(row: $0.newIndex,section:0)) }
-                    }, completion: {  _ in
-                        let updatedIndexPaths = updated.map { $0.index}.indexPaths()
-                        let movedIndexPaths = moved.map { $0.newIndex }.indexPaths()
-                        (updatedIndexPaths+movedIndexPaths).forEach { [weak self] indexPath in
-                            if let cell = self?.tableView.cellForRow(at: indexPath) as? TFLBusStationArrivalsCell {
-                                self?.configure(cell, at: indexPath)
-                            }
-                        }
-                        synchroniseEnd()
-                    })
+            let models = self.busStopPredicationTuple.sortedByBusStopDistance().map { TFLBusStopArrivalsViewModel(with: $0) }
+            let (_ ,_ ,updated, moved) = self.busStopArrivalViewModels.transformTo(newList: models, sortedBy : TFLBusStopArrivalsViewModel.compare)
+            busStopArrivalViewModels = models
+            let snapshot = NSDiffableDataSourceSnapshot<String, TFLBusStopArrivalsViewModel>()
+            snapshot.appendSections([sectionIdentifier])
+            snapshot.appendItems(models)
+            dataSource?.apply(snapshot,animatingDifferences: true)
+            
+            let updatedIndexPaths = updated.map { $0.index}.indexPaths()
+            let movedIndexPaths = moved.map { $0.newIndex }.indexPaths()
+            (updatedIndexPaths+movedIndexPaths).forEach { [weak self] indexPath in
+                if let cell = self?.tableView.cellForRow(at: indexPath) as? TFLBusStationArrivalsCell {
+                    cell.configure(with: busStopArrivalViewModels[indexPath],animated:true)
                 }
             }
         }
@@ -118,6 +108,15 @@ class TFLNearbyBusStationsController : UIViewController {
         self.tableView.estimatedRowHeight = TFLNearbyBusStationsController.defaultTableViewRowHeight
         NotificationCenter.default.addObserver(self, selector: #selector(self.spotlightLookupNotificationHandler(_:)), name: NSNotification.Name.spotLightLineLookupNotification, object: nil)
         
+        dataSource = UITableViewDiffableDataSource(tableView: tableView) { [weak self] tableView,indexPath,model in
+            let cell = tableView.dequeueReusableCell(withIdentifier: String(describing:TFLBusStationArrivalsCell.self), for: indexPath)
+            
+            if let arrivalsCell = cell as? TFLBusStationArrivalsCell {
+                arrivalsCell.configure(with: model)
+                arrivalsCell.delegate = self
+            }
+            return cell
+        }
     }
     
 
@@ -145,32 +144,7 @@ class TFLNearbyBusStationsController : UIViewController {
     }
 }
 
-extension TFLNearbyBusStationsController : UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.busStopArrivalViewModels.count
-    }
-    
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing:TFLBusStationArrivalsCell.self), for: indexPath)
-        
-        if let arrivalsCell = cell as? TFLBusStationArrivalsCell {
-            configure(arrivalsCell, at: indexPath)
-            arrivalsCell.delegate = self
-        }
-        return cell
-    }
-    
-    @objc
-    func spotlightLookupNotificationHandler(_ notification : Notification) {
-        guard let line = notification.userInfo?[CSSearchableItemActivityIdentifier] as? String else {
-            return
-        }
-        self.navigationController?.popToRootViewController(animated: false)
-        self.updateAndShowLineInfo(line: line,with: nil,at:nil)
-    }
-    
-}
+// MARK: - UITableViewDelegate
 
 extension TFLNearbyBusStationsController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -179,6 +153,8 @@ extension TFLNearbyBusStationsController : UITableViewDelegate {
     }
 }
 
+// MARK: - TFLBusStationArrivalCellDelegate
+
 extension TFLNearbyBusStationsController : TFLBusStationArrivalCellDelegate {
     
     func busStationArrivalCell(_ busStationArrivalCell: TFLBusStationArrivalsCell,didSelectLine line: String,with vehicleID: String,at station : String) {
@@ -186,7 +162,7 @@ extension TFLNearbyBusStationsController : TFLBusStationArrivalCellDelegate {
     }
 }
 
-/// MARK: TFLMapViewControllerDelegate
+// MARK: - TFLMapViewControllerDelegate
 
 extension TFLNearbyBusStationsController : TFLMapViewControllerDelegate {
    
@@ -199,10 +175,18 @@ extension TFLNearbyBusStationsController : TFLMapViewControllerDelegate {
 }
 
 
-// MARK: Private
+// MARK: - TFLMapViewControllerDelegate
 
 fileprivate extension TFLNearbyBusStationsController {
-   
+    @objc
+    func spotlightLookupNotificationHandler(_ notification : Notification) {
+        guard let line = notification.userInfo?[CSSearchableItemActivityIdentifier] as? String else {
+            return
+        }
+        self.navigationController?.popToRootViewController(animated: false)
+        self.updateAndShowLineInfo(line: line,with: nil,at:nil)
+    }
+    
     func updateAndShowLineInfo(line : String,with vehicleID: String?,at station : String?) {
  
         TFLHUD.show()

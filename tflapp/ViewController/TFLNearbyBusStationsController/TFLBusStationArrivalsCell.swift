@@ -60,12 +60,12 @@ class TFLBusStationArrivalsCell: UITableViewCell {
         self.predictionView.setPredictions(predictions: [],animated: false)
     }
 
-    func configure(with busStopArrivalViewModel: TFLBusStopArrivalsViewModel) {
+    func configure(with busStopArrivalViewModel: TFLBusStopArrivalsViewModel,animated: Bool = false) {
         self.busStopLabel.text = busStopArrivalViewModel.stopLetter
         self.stationName.text = busStopArrivalViewModel.stationName
         self.stationDetails.text  = busStopArrivalViewModel.stationDetails
         self.distanceLabel.text = busStopArrivalViewModel.distance
-        self.predictionView.setPredictions(predictions: busStopArrivalViewModel.arrivalTimes,animated: true)
+        self.predictionView.setPredictions(predictions: busStopArrivalViewModel.arrivalTimes,animated: animated)
         self.noDataErrorLabel.isHidden = !busStopArrivalViewModel.arrivalTimes.isEmpty
     }
 

@@ -85,7 +85,6 @@
 		568E068521E6B14D00E92AF7 /* TFLArrivalInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 568E068421E6B14D00E92AF7 /* TFLArrivalInfoView.swift */; };
 		5692B5001DF2E26300C56A3C /* TFLSlideContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5692B4FF1DF2E26300C56A3C /* TFLSlideContainerController.swift */; };
 		5692B5031DF2E4EB00C56A3C /* TFLMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5692B5021DF2E4EB00C56A3C /* TFLMapViewController.swift */; };
-		5699A687218E2E3C00CD1427 /* UIImage+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5699A686218E2E3C00CD1427 /* UIImage+Helper.swift */; };
 		5699A68C218EE77200CD1427 /* CLLocationCoordinate2D+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5699A68B218EE77100CD1427 /* CLLocationCoordinate2D+Helper.swift */; };
 		56A4907721977FF6004024D9 /* abbreviations.plist in Resources */ = {isa = PBXBuildFile; fileRef = 56A4907921977FF6004024D9 /* abbreviations.plist */; };
 		56A4907C219781C0004024D9 /* TFLRouteFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A4907B219781C0004024D9 /* TFLRouteFormatter.swift */; };
@@ -220,7 +219,6 @@
 		568E068421E6B14D00E92AF7 /* TFLArrivalInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLArrivalInfoView.swift; sourceTree = "<group>"; };
 		5692B4FF1DF2E26300C56A3C /* TFLSlideContainerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLSlideContainerController.swift; sourceTree = "<group>"; };
 		5692B5021DF2E4EB00C56A3C /* TFLMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLMapViewController.swift; sourceTree = "<group>"; };
-		5699A686218E2E3C00CD1427 /* UIImage+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Helper.swift"; sourceTree = "<group>"; };
 		5699A68B218EE77100CD1427 /* CLLocationCoordinate2D+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CLLocationCoordinate2D+Helper.swift"; sourceTree = "<group>"; };
 		56A4907021977B40004024D9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = en; path = en.lproj/tflapp.entitlements; sourceTree = "<group>"; };
 		56A4907821977FF6004024D9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = en.lproj/abbreviations.plist; sourceTree = "<group>"; };
@@ -500,7 +498,6 @@
 				561CA507210A607E0008B656 /* Collection+IndexPath.swift */,
 				566EF7E11DDC59ED006162D7 /* UIFont.swift */,
 				560CF3042173569600ED0BA5 /* Date+String.swift */,
-				5699A686218E2E3C00CD1427 /* UIImage+Helper.swift */,
 				56E721812214CF6D00733B9F /* UIViewController+Helper.swift */,
 				564CA5A7222356B200E69A1C /* Array+Helper.swift */,
 				561C1831226FC1D7008016B7 /* String+Helper.swift */,
@@ -1038,7 +1035,6 @@
 				564EC70A1DE1917D008CFD11 /* TFLNearbyBusStationsController.swift in Sources */,
 				5656717A219A244700F3B7EE /* TFLLineInfoRouteDirectory.swift in Sources */,
 				56A4907C219781C0004024D9 /* TFLRouteFormatter.swift in Sources */,
-				5699A687218E2E3C00CD1427 /* UIImage+Helper.swift in Sources */,
 				5692B5001DF2E26300C56A3C /* TFLSlideContainerController.swift in Sources */,
 				566EF7D71DDC4D14006162D7 /* TFLRootViewController.swift in Sources */,
 				56439A2021B861690076A906 /* TFLTimerButton.swift in Sources */,
@@ -1209,7 +1205,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_SWIFT_FLAGS = "";
@@ -1272,7 +1267,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_SWIFT_FLAGS = "";
 				SDKROOT = iphoneos;
@@ -1380,7 +1374,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_SWIFT_FLAGS = "-DDATABASEGENERATION";

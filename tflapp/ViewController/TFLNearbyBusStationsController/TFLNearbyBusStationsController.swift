@@ -73,7 +73,7 @@ class TFLNearbyBusStationsController : UIViewController {
     fileprivate let sectionIdentifier = "TFLNearbyBusStationsControllerSectionIdentifier"
     @IBOutlet weak var tableView : UITableView!
     fileprivate var dataSource : UITableViewDiffableDataSource<String,TFLBusStopArrivalsViewModel>?
-    fileprivate let synchroniser = TFLSynchroniser(tag:"com.samedialabs.queue.tableview")
+   
     var currentUserCoordinate = kCLLocationCoordinate2DInvalid
     var busStopPredicationTuple :  [TFLBusStopArrivalsInfo] = [] {
         didSet {
@@ -97,7 +97,6 @@ class TFLNearbyBusStationsController : UIViewController {
 
     var contentOffsetObserver : NSKeyValueObservation?
     var updateTimeStamp = true
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -293,5 +292,4 @@ fileprivate extension TFLNearbyBusStationsController {
             }
         }
     }
-    
 }

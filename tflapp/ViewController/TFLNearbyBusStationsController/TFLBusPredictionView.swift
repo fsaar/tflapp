@@ -29,7 +29,6 @@ class TFLBusPredictionView: UICollectionView {
         }
     }
 
-    fileprivate let synchroniser = TFLSynchroniser(tag: "com.samedialabs.queue.collectionView")
     fileprivate var diffableDataSource : UICollectionViewDiffableDataSource<String,TFLBusStopArrivalsViewModel.LinePredictionViewModel>?
     fileprivate let sectionIdentifier = "TFLBusPredictionViewSectionIdentifier"
     func setPredictions( predictions : [TFLBusStopArrivalsViewModel.LinePredictionViewModel], animated: Bool = false) {

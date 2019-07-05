@@ -118,11 +118,10 @@ public struct TFLBusStopArrivalsInfo : Hashable,CustomStringConvertible {
 
     public func hash(into hasher: inout Hasher) {
         hasher.combine(self.identifier)
-        hasher.combine(self.busStopDistance)
     }
 
     public static func ==(lhs: TFLBusStopArrivalsInfo, rhs: TFLBusStopArrivalsInfo) -> Bool {
-        return lhs.identifier == rhs.identifier && lhs.busStopDistance == rhs.busStopDistance
+        return lhs.identifier == rhs.identifier
 
     }
 

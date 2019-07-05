@@ -101,7 +101,7 @@ class TFLUpdateStatusView : UIView {
         return label
     }()
     lazy var updatingStateIndicatorView : UIActivityIndicatorView = {
-        let indicatorView = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.white)
+        let indicatorView = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
         indicatorView.translatesAutoresizingMaskIntoConstraints = false
         indicatorView.startAnimating()
         return indicatorView

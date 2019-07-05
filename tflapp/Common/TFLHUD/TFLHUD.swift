@@ -57,7 +57,7 @@ class TFLHUD {
     
     private let indicator : UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView(frame: .zero)
-        indicator.style = UIActivityIndicatorView.Style.gray
+        indicator.style = UIActivityIndicatorView.Style.medium
         indicator.translatesAutoresizingMaskIntoConstraints = false
         indicator.startAnimating()
         return indicator

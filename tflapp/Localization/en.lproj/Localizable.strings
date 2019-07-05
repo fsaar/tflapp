@@ -1,6 +1,5 @@
 "TFLBusStopArrivalsViewModel.towards" = "towards ";
 "TFLBusStopArrivalsViewModel.due" = "due";
-"TFLBusStationArrivalsCell.noDataError" = "No data available.";
 "TFLLoadLocationView.title" = "Retrieving current location ...";
 "TFLLoadNearbyStationsView.title" = "Loading nearby stations ...";
 "TFLNoStationsView.title" = "No stations found for your current location. You can increase the search distance in settings.";

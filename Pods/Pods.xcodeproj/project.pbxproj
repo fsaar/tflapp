@@ -994,7 +994,7 @@
 			};
 			name = DataBaseGeneration;
 		};
-		2FF34FEAC932B5296E7EE95EB048DD57 /* DataBaseGeneration */ = {
+		284ED9E36D403E08B8DFBEE45885F257 /* DataBaseGeneration */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CE2C5C0FDA56D63E7B63A29559B953AE /* Nimble.xcconfig */;
 			buildSettings = {
@@ -1015,7 +1015,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1071,7 +1071,7 @@
 			};
 			name = Release;
 		};
-		75D8BADFD461520F7CD4F218CD6D85C1 /* Release */ = {
+		5E023B872BF7BD7BBC13FC57329B1FA6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CE2C5C0FDA56D63E7B63A29559B953AE /* Nimble.xcconfig */;
 			buildSettings = {
@@ -1092,7 +1092,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1124,6 +1124,32 @@
 				VALIDATE_PRODUCT = YES;
 			};
 			name = DataBaseGeneration;
+		};
+		8C5D24D033BC6EF43F8A9CA143147EDF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CE2C5C0FDA56D63E7B63A29559B953AE /* Nimble.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				GCC_PREFIX_HEADER = "Target Support Files/Nimble/Nimble-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MODULEMAP_FILE = Headers/Public/Nimble/Nimble.modulemap;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = Nimble;
+				PRODUCT_NAME = Nimble;
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
 		};
 		A548A4D00A04D4F8E69A129D74BFF1DA /* DataBaseGeneration */ = {
 			isa = XCBuildConfiguration;
@@ -1329,41 +1355,15 @@
 			};
 			name = Debug;
 		};
-		F785302464382FDABE53CCBA6F068367 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = CE2C5C0FDA56D63E7B63A29559B953AE /* Nimble.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				GCC_PREFIX_HEADER = "Target Support Files/Nimble/Nimble-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				MODULEMAP_FILE = Headers/Public/Nimble/Nimble.modulemap;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_MODULE_NAME = Nimble;
-				PRODUCT_NAME = Nimble;
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
 		036BB1FEF0DA365F00A59DFD9EEDFBE7 /* Build configuration list for PBXNativeTarget "Nimble" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				2FF34FEAC932B5296E7EE95EB048DD57 /* DataBaseGeneration */,
-				F785302464382FDABE53CCBA6F068367 /* Debug */,
-				75D8BADFD461520F7CD4F218CD6D85C1 /* Release */,
+				284ED9E36D403E08B8DFBEE45885F257 /* DataBaseGeneration */,
+				8C5D24D033BC6EF43F8A9CA143147EDF /* Debug */,
+				5E023B872BF7BD7BBC13FC57329B1FA6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-protocol TFLUpdateStatusViewDelegate : class {
+protocol TFLUpdateStatusViewDelegate : AnyObject {
     func didExpireTimerInStatusView(_ tflStatusView : TFLUpdateStatusView)
 }
 

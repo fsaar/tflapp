@@ -1,6 +1,6 @@
 import UIKit
 
-protocol TFLNoGPSEnabledViewDelegate : class {
+protocol TFLNoGPSEnabledViewDelegate : AnyObject {
     func didTap(noGPSEnabledButton: UIButton,in view : TFLNoGPSEnabledView)
 }
 

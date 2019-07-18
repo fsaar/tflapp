@@ -26,12 +26,21 @@
       buildConfiguration = "DataBaseGeneration"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      shouldUseLaunchSchemeArgsEnv = "YES"
       enableAddressSanitizer = "YES"
       enableASanStackUseAfterReturn = "YES"
       systemAttachmentLifetime = "keepNever"
       userAttachmentLifetime = "keepAlways"
-      codeCoverageEnabled = "YES"
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      codeCoverageEnabled = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "56A81B2A1DD862DC001DF7F1"
+            BuildableName = "London Bus.app"
+            BlueprintName = "tflapp"
+            ReferencedContainer = "container:tflapp.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <Testables>
          <TestableReference
             skipped = "NO"
@@ -45,17 +54,6 @@
             </BuildableReference>
          </TestableReference>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "56A81B2A1DD862DC001DF7F1"
-            BuildableName = "London Bus.app"
-            BlueprintName = "tflapp"
-            ReferencedContainer = "container:tflapp.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
@@ -67,6 +65,7 @@
       debugDocumentVersioning = "YES"
       stopOnEveryThreadSanitizerIssue = "YES"
       stopOnEveryMainThreadCheckerIssue = "YES"
+      migratedStopOnEveryIssue = "YES"
       debugServiceExtension = "internal"
       enableGPUFrameCaptureMode = "3"
       allowLocationSimulation = "YES">
@@ -110,8 +109,6 @@
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>
-      <AdditionalOptions>
-      </AdditionalOptions>
       <LocationScenarioReference
          identifier = "London, England"
          referenceType = "1">

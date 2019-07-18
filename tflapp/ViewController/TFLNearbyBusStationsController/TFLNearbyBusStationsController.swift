@@ -3,7 +3,7 @@ import MapKit
 import CoreSpotlight
 import os.signpost
 
-protocol TFLNearbyBusStationsControllerDelegate : class {
+protocol TFLNearbyBusStationsControllerDelegate : AnyObject {
     func refresh(controller: TFLNearbyBusStationsController, using completionBlock:@escaping ()->())
     func lastRefresh(of controller : TFLNearbyBusStationsController) -> Date?
     func nearbyBusStationsController(_ controller: TFLNearbyBusStationsController,didSelectBusstopWith identifier: String)

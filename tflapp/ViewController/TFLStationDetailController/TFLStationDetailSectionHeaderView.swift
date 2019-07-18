@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-protocol TFLStationDetailSectionHeaderViewDelegate : class {
+protocol TFLStationDetailSectionHeaderViewDelegate : AnyObject {
     func panEnabledForHeaderView(_ headerView : TFLStationDetailSectionHeaderView) -> Bool
     func didPanForHeaderView(_ headerView : TFLStationDetailSectionHeaderView,with distance : CGFloat)
 }

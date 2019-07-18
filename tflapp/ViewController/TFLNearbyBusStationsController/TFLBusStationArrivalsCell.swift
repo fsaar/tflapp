@@ -1,7 +1,7 @@
 import UIKit
 import MapKit
 
-protocol TFLBusStationArrivalCellDelegate : class {
+protocol TFLBusStationArrivalCellDelegate : AnyObject {
     func busStationArrivalCell(_ busStationArrivalCell: TFLBusStationArrivalsCell,didSelectLine line: String,with vehicleID: String,at station : String)
 }
 

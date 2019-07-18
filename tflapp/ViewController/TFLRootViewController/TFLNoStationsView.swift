@@ -1,6 +1,6 @@
 import UIKit
 
-protocol TFLNoStationsViewDelegate : class {
+protocol TFLNoStationsViewDelegate : AnyObject {
     func didTap(noStationsButton: UIButton,in view : TFLNoStationsView)
 }
 

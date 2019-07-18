@@ -10,7 +10,7 @@ import UIKit
 import Foundation
 import MapKit
 
-protocol TFLStationDetailMapViewControllerDelegate : class {
+protocol TFLStationDetailMapViewControllerDelegate : AnyObject {
     func stationDetailMapViewController(_ stationDetailMapViewController : TFLStationDetailMapViewController,didSelectStationWith identifier : String)
 }
 

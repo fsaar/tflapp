@@ -44,6 +44,7 @@ class TFLMapViewController: UIViewController {
             mapView.showsCompass = false
             mapView.register(TFLBusStopAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
             mapView.showsUserLocation = true
+            mapView.pointOfInterestFilter = MKPointOfInterestFilter(including: [.publicTransport,.park,.nationalPark,.beach,.amusementPark])
         }
     }
 

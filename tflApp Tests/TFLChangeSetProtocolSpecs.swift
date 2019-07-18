@@ -85,9 +85,7 @@ class TFLChangeSetProtocolSpecs : QuickSpec {
     
     override func spec() {
       
-        beforeEach {
-        
-        }
+       
         context("when testing trasnformTo") {
             it("should return the correct tuple when nothing's been inserted : [] -> []") {
                 let newList : [M] = []
@@ -199,8 +197,8 @@ class TFLChangeSetProtocolSpecs : QuickSpec {
                 let (inserted ,deleted ,updated, moved)  = oldList.transformTo(newList: newList, sortedBy : M.compare)
                 expect(Set(inserted.map { Pos($0) })) == Set([Pos(M("2",2),2)])
                 expect(Set(deleted.map { Pos($0) })) == Set([])
-                expect(Set(updated.map { Pos($0) })) == Set([Pos(M("1",1),1),Pos(M("5",5),3)])
-                expect(Set(moved.map { MovedPos($0) })) == Set([MovedPos(M("3",0),1,0)])
+                expect(Set(updated.map { Pos($0) })) == Set([Pos(M("3",0),0),Pos(M("5",5),3)])
+                expect(Set(moved.map { MovedPos($0) })) == Set([MovedPos(M("1",1),0,1)])
             }
             it("should return the correct tuple when deleting 1  and inserting 2: ([1,3,5] -> [3,2,5]") {
                 let oldList = [1,3,5].map { M("\($0)",$0) }
@@ -226,8 +224,8 @@ class TFLChangeSetProtocolSpecs : QuickSpec {
                 let (inserted ,deleted ,updated, moved)  = oldList.transformTo(newList: newList, sortedBy : M.compare)
                 expect(Set(inserted.map { Pos($0) })) == Set([])
                 expect(Set(deleted.map { Pos($0) })) == Set([Pos(M("1",1),0)])
-                expect(Set(updated.map { Pos($0) })) == Set([Pos(M("3",1),1)])
-                expect(Set(moved.map { MovedPos($0) })) == Set([MovedPos(M("5",0),2,0)])
+                expect(Set(updated.map { Pos($0) })) == Set([Pos(M("5",0),0)])
+                expect(Set(moved.map { MovedPos($0) })) == Set([MovedPos(M("3",1),1,1)])
             }
             
             it("should return the correct tuple when deleting 5 and moving 1 to last pos: ([1,3,5] -> [3,1]") {
@@ -236,8 +234,8 @@ class TFLChangeSetProtocolSpecs : QuickSpec {
                 let (inserted ,deleted ,updated, moved)  = oldList.transformTo(newList: newList, sortedBy : M.compare)
                 expect(Set(inserted.map { Pos($0) })) == Set([])
                 expect(Set(deleted.map { Pos($0) })) == Set([Pos(M("5",5),2)])
-                expect(Set(updated.map { Pos($0) })) == Set([Pos(M("1",2),1)])
-                expect(Set(moved.map { MovedPos($0) })) == Set([MovedPos(M("3",0),1,0)])
+                expect(Set(updated.map { Pos($0) })) == Set([Pos(M("3",0),0)])
+                expect(Set(moved.map { MovedPos($0) })) == Set([MovedPos(M("1",2),0,1)])
             }
             it("should return the correct tuple when deleting 3 and moving 5 to first pos: ([1,3,5] -> [5,1]") {
                 let oldList = [1,3,5].map { M("\($0)",$0) }
@@ -245,8 +243,8 @@ class TFLChangeSetProtocolSpecs : QuickSpec {
                 let (inserted ,deleted ,updated, moved)  = oldList.transformTo(newList: newList, sortedBy : M.compare)
                 expect(Set(inserted.map { Pos($0) })) == Set([])
                 expect(Set(deleted.map { Pos($0) })) == Set([Pos(M("3",3),1)])
-                expect(Set(updated.map { Pos($0) })) == Set([Pos(M("1",2),1)])
-                expect(Set(moved.map { MovedPos($0) })) == Set([MovedPos(M("5",0),2,0)])
+                expect(Set(updated.map { Pos($0) })) == Set([Pos(M("5",0),0)])
+                expect(Set(moved.map { MovedPos($0) })) == Set([MovedPos(M("1",2),0,1)])
             }
             
             it("should handle invalid / non unique lists gracefully") {
@@ -259,54 +257,5 @@ class TFLChangeSetProtocolSpecs : QuickSpec {
                 expect(Set(moved.map { MovedPos($0) })) == Set([])
             }
         }
-        
-        context("when testing mergeELements") {
-            it ("sould merge correctly when inserting items at the end") {
-                let list = ["1","2","3"]
-                let indexedList = [("4",3)]
-                let newList = try! list.mergeELements(with: indexedList)
-                expect(newList) == ["1","2","3","4"]
-
-            }
-            
-            it ("sould merge correctly when inserting items at the beginning") {
-                let list = ["1","2","3"]
-                let indexedList = [("0",0)]
-                let newList = try! list.mergeELements(with: indexedList)
-                expect(newList) == ["0","1","2","3"]
-                
-            }
-            
-            it ("sould merge correctly when inserting items in the middle") {
-                let list = ["10","20","30"]
-                let indexedList = [("15",1)]
-                let newList = try! list.mergeELements(with: indexedList)
-                expect(newList) == ["10","15","20","30"]
-                
-            }
-            
-            it ("sould merge correctly when inserting multiple items") {
-                let list = ["10","20","30"]
-                let indexedList = [("9",0),("12",2),("21",4),("35",6)]
-                let newList = try! list.mergeELements(with: indexedList)
-                expect(newList) == ["9","10","12","20","21","30","35"]
-                
-            }
-            
-            it ("sould merge correctly when inserting 0 items") {
-                let list = ["10","20","30"]
-                let newList = try! list.mergeELements(with: [])
-                expect(newList) == list
-                
-            }
-            
-            it ("should throw if index out of range") {
-                let list = ["10","20","30"]
-                expect { try list.mergeELements(with: [("40",10)]) }.to(throwError(CollectionError.mergeIndexOutOfRange))
-                
-            }
-        }
-        
-
     }
 }

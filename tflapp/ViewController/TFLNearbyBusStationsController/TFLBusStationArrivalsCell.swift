@@ -26,13 +26,6 @@ class TFLBusStationArrivalsCell: UITableViewCell {
     }
     @IBOutlet weak var predictionView : TFLBusPredictionView!
 
-    @IBOutlet weak var noDataErrorLabel : UILabel! = nil {
-        didSet {
-            self.noDataErrorLabel.text = NSLocalizedString("TFLBusStationArrivalsCell.noDataError", comment: "")
-            self.noDataErrorLabel.font = UIFont.tflFont(size: 14)
-            self.noDataErrorLabel.textColor = UIColor.black
-        }
-    }
     @IBOutlet weak var busStopLabel : UILabel! = nil {
         didSet {
             self.busStopLabel.font = UIFont.tflFontStationIdentifier()
@@ -55,18 +48,16 @@ class TFLBusStationArrivalsCell: UITableViewCell {
         self.stationName.text = nil
         self.stationDetails.text = nil
         self.distanceLabel.text = nil
-        self.noDataErrorLabel.isHidden = true
         self.predictionView.contentOffset = .zero
         self.predictionView.setPredictions(predictions: [],animated: false)
     }
 
-    func configure(with busStopArrivalViewModel: TFLBusStopArrivalsViewModel) {
+    func configure(with busStopArrivalViewModel: TFLBusStopArrivalsViewModel,animated: Bool = false) {
         self.busStopLabel.text = busStopArrivalViewModel.stopLetter
         self.stationName.text = busStopArrivalViewModel.stationName
         self.stationDetails.text  = busStopArrivalViewModel.stationDetails
         self.distanceLabel.text = busStopArrivalViewModel.distance
-        self.predictionView.setPredictions(predictions: busStopArrivalViewModel.arrivalTimes,animated: true)
-        self.noDataErrorLabel.isHidden = !busStopArrivalViewModel.arrivalTimes.isEmpty
+        self.predictionView.setPredictions(predictions: busStopArrivalViewModel.arrivalTimes,animated: animated)
     }
 
 

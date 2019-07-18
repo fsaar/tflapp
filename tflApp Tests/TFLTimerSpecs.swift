@@ -43,7 +43,7 @@ class TFLTimerSpec: QuickSpec {
                     called = true
                 }
                 timer?.start()
-                expect(called).toEventually(beTrue())
+                expect(called).toEventually(beTrue(),timeout:5)
                 
             }
             it ("should NOT call timerhandler if timer stopped before timing out") {

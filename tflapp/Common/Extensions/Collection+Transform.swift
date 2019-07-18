@@ -2,18 +2,18 @@ import UIKit
 
 typealias TFLTransformCollectionCompare<T> = (_ lhs : T,_ rhs: T) -> (Bool)
 
-enum SetIndexListError : Error {
-    case elementNotInTargetList
+fileprivate typealias Offset = Int
+
+fileprivate enum Action {
+    case inserted
+    case removed
+    case moved
+    
 }
 
-enum CollectionError : Error {
-    case mergeIndexOutOfRange
-    case findMovedElementsIndexOutOfRange
-}
-
-//enum Collection
-
-extension Collection where Element : Hashable {
+extension BidirectionalCollection where Element : Hashable {
+  
+    
     func transformTo(newList : [Element],sortedBy compare: @escaping TFLTransformCollectionCompare<Element>)  -> (inserted : [(element:Element,index:Int)],deleted : [(element:Element,index:Int)], updated : [(element:Element,index:Int)],moved : [(element:Element,oldIndex:Int,newIndex:Int)])
     {
         let sortedOldList = self.sorted(by: compare)
@@ -23,6 +23,7 @@ extension Collection where Element : Hashable {
     
     func transformTo(newList : [Element])  -> (inserted : [(element:Element,index:Int)],deleted : [(element:Element,index:Int)], updated : [(element:Element,index:Int)],moved : [(element:Element,oldIndex:Int,newIndex:Int)])
     {
+        
         guard newList.count == Set(newList).count else {
             return ([],[],[],[])
         }
@@ -32,110 +33,29 @@ extension Collection where Element : Hashable {
         guard !newList.isEmpty else {
             return ([],self.enumerated().map { ($0.1,$0.0) },[],[])
         }
-        let oldList = Array(self)
-        let oldSet = Set(self)
-        let newSet = Set(newList)
-
-
-        let insertedSet = newSet.subtracting(oldSet)
-        let unchangedSet = newSet.intersection(oldSet)
-        let deletedSet = oldSet.subtracting(newSet)
-
-        do {
-            let inserted = try insertedSet.indexedList(basedOn: newList)
-            
-            let deleted = try deletedSet.indexedList(basedOn: oldList)
-            
-            let moved = try findMovedElements(in: newList,inserted: inserted ,deleted: deleted)
-            let movedTypes = moved.map { $0.0 }
-            
-            let updatedTypes = unchangedSet.subtracting(Set(movedTypes))
-            let updated = try updatedTypes.indexedList(basedOn: newList)
-            return (inserted,deleted,updated,moved)
-        }
-        catch {
-            return (newList.enumerated().map { ($0.1,$0.0) },self.enumerated().map { ($0.1,$0.0) },[],[])
-        }
-    }
-
-    func mergeELements(with indexedList : [(element:Element,index:Int)]) throws  -> [Element] {
-        let sortedIndexListByIndex = indexedList.sorted { $0.1 < $1.1 }
-        var copy = Array(self)
-        try sortedIndexListByIndex.forEach { arg in
-            let (element, index) = arg
-            guard index <= copy.count else {
-                throw CollectionError.mergeIndexOutOfRange
-            }
-            copy.insert(element, at: index)
-        }
-        return copy
         
-    }
-}
-
-
-fileprivate extension Set {
-    func indexedList(basedOn list:[Element]) throws -> [(Element,Int)] {
-        let indexList : [(Element,Int)] = try self.compactMap { el in
-            guard let index = list.firstIndex(of:el) else {
-                throw SetIndexListError.elementNotInTargetList
+        let diff = newList.difference(from:self).inferringMoves()
+        let translatedDiff : [(action:Action,element:Element,offset1:Offset,offset2:Offset?)] = diff.map { d in
+            switch d {
+            case let .insert(offset: offset, element: element, associatedWith: association):
+                return (.inserted,element,offset,association)
+            case let .remove(offset: offset, element: element, associatedWith: association):
+                return (.removed,element,offset,association)
             }
-            return (el,index)
         }
-        return indexList
-    }
-}
-
-fileprivate extension Array where Element : Equatable {
-    func moveElement(_ element : Element, to : Int) -> Array {
-        var currentList = self
-        if let from = firstIndex(of:element),0 ..< currentList.count ~= to {
-            currentList.insert(currentList.remove(at: from), at: to)
+        let moved : [(element:Element,oldIndex:Int,newIndex:Int)] = translatedDiff.compactMap { action,element,newIndex,oldIndex in
+                                                                                                guard action == .inserted,let oldIndex = oldIndex else {
+                                                                                                    return nil
+                                                                                                }
+                                                                                                return (element,oldIndex,newIndex)
         }
-        return currentList
-    }
-}
-
-
-
-fileprivate extension Collection where Element : Hashable{
-    
-    func findMovedElements(in newList : [Element],
-                                     inserted : [(element:Element,index:Int)],
-                                     deleted : [(element:Element,index:Int)]) throws -> [(Element,Int,Int)]  {
-
-        // Reconstruct the unordered newList
-        // 1. delete items from old list
-        // 2. insert new items
-        // 3. identify all moved elements
-        // 4. reduce moved element list by transforming list from (2) into new list by applying moves from (3)
+        let insertedAndDeletedElements = translatedDiff.filter { $0.offset2 == nil }
+        let inserted = insertedAndDeletedElements.filter { $0.action == .inserted }.map { (element:$0.element,index:$0.offset1) }
+        let deleted = insertedAndDeletedElements.filter { $0.action == .removed }.map { (element:$0.element,index:$0.offset1) }
+        let changedElements = Set(translatedDiff.map { $0.element })
+        let updated : [(Element,Int)] = newList.enumerated().filter { !changedElements.contains($0.1) }.map { ($0.1,$0.0) }
         
-        let deletedTypes = deleted.map { $0.element }
-        let reducedOldList = self.filter { !deletedTypes.contains($0) }
-        let updatedList : [Element] = try reducedOldList.compactMap { el in
-            guard let index = newList.firstIndex(of: el) else {
-                throw CollectionError.findMovedElementsIndexOutOfRange
-            }
-            return newList[index]
-        }
-        let unsortedNewList = try updatedList.mergeELements(with: inserted)
-        let oldList = Array(self)
-        let movedTypes : [(Element,Int,Int)] = updatedList.compactMap { element in
-            guard let index = oldList.firstIndex(of:element),let index2 = newList.firstIndex(of:element),index != index2 else {
-                return nil
-            }
-            return (element,index,index2)
-        }.sorted { $0.2 < $1.2 }
+        return (inserted,deleted,updated,moved)
         
-        let reducedMovedTypes : [(Element,Int,Int)]  = movedTypes.reduce(([],unsortedNewList)) { tuple,move in
-            let (sum,currentList) = tuple
-            guard currentList != newList else {
-                return (sum,newList)
-            }
-            let (element,_,to) = move
-            let list = currentList.moveElement(element, to: to)
-            return (sum + [move],list)
-        }.0
-        return reducedMovedTypes
     }
 }

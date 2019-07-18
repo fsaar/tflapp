@@ -1,14 +1,12 @@
 disabled_rules: # rule identifiers to exclude from running
     - identifier                               
     - attributes                               
-    - closing_brace                            
     - closure_parameter_position               
     - colon                                    
     - comma                                    
     - compiler_protocol_init                   
     - conditional_returns_on_newline           
     - convenience_type                         
-    - custom_rules                             
     - discouraged_object_literal               
     - discouraged_optional_boolean             
     - discouraged_optional_collection          
@@ -74,12 +72,14 @@ disabled_rules: # rule identifiers to exclude from running
     - multiple_closures_with_trailing_closure  
     - nesting                                  
     - large_tuple                              
-    - closure_spacing                          
     - strong_iboutlet
-opt_in_rules: 
+opt_in_rules:
+    - closing_brace                             
+    - custom_rules                             
+    - closure_spacing                          
+    - collection_alignment
     - switch_case_on_newline                   
     - discouraged_direct_init                  
-    - legacy_nsgeometry_functions
     - reduce_boolean
     - unowned_variable_capture
     - unused_capture_list

@@ -9,7 +9,6 @@ disabled_rules: # rule identifiers to exclude from running
     - conditional_returns_on_newline           
     - convenience_type                         
     - custom_rules                             
-    - discouraged_direct_init                  
     - discouraged_object_literal               
     - discouraged_optional_boolean             
     - discouraged_optional_collection          
@@ -60,7 +59,6 @@ disabled_rules: # rule identifiers to exclude from running
     - sorted_imports                           
     - statement_position                       
     - strict_fileprivate                       
-    - switch_case_on_newline                   
     - trailing_comma                           
     - type_name                                
     - unavailable_function                     
@@ -77,9 +75,17 @@ disabled_rules: # rule identifiers to exclude from running
     - nesting                                  
     - large_tuple                              
     - closure_spacing                          
-    - unused_optional_binding  
     - strong_iboutlet
 opt_in_rules: 
+    - switch_case_on_newline                   
+    - discouraged_direct_init                  
+    - legacy_nsgeometry_functions
+    - reduce_boolean
+    - unowned_variable_capture
+    - unused_capture_list
+    - redundant_type_annotation
+    - unused_optional_binding  
+    - anyobject_protocol
     - deployment_target
     - weak_computed_property
     - duplicate_imports

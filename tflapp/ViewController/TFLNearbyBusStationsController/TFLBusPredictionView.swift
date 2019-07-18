@@ -12,7 +12,7 @@ extension MutableCollection where Index == Int, Iterator.Element == TFLBusStopAr
     }
 }
 
-protocol TFLBusPredictionViewDelegate : class {
+protocol TFLBusPredictionViewDelegate : AnyObject {
     func busPredictionView(_ busPredictionView: TFLBusPredictionView,didSelectLine line: String,with vehicleID: String,at station : String)
 }
 

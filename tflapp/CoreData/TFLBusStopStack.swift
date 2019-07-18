@@ -100,7 +100,7 @@ fileprivate extension TFLBusStopStack {
         
         do {
             let dict1 : [String : Any] = [ NSMigratePersistentStoresAutomaticallyOption : true,
-                                          NSInferMappingModelAutomaticallyOption : true]
+                                           NSInferMappingModelAutomaticallyOption : true]
             let dict2 : [String : Any] = [ NSMigratePersistentStoresAutomaticallyOption : true,
                                            NSInferMappingModelAutomaticallyOption : true,
                                            NSReadOnlyPersistentStoreOption : true]

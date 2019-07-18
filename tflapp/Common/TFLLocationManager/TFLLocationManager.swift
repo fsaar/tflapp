@@ -6,7 +6,7 @@ import os.signpost
 typealias TFLLocationManagerCompletionBlock  = (CLLocationCoordinate2D)->(Void)
 
 
-protocol TFLLocationManagerDelegate : class {
+protocol TFLLocationManagerDelegate : AnyObject {
     func locationManager(_ locationManager : TFLLocationManager, didChangeEnabledStatus enabled : Bool)
 }
 

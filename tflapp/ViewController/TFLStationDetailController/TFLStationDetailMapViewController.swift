@@ -10,7 +10,7 @@ import UIKit
 import Foundation
 import MapKit
 
-protocol TFLStationDetailMapViewControllerDelegate : class {
+protocol TFLStationDetailMapViewControllerDelegate : AnyObject {
     func stationDetailMapViewController(_ stationDetailMapViewController : TFLStationDetailMapViewController,didSelectStationWith identifier : String)
 }
 
@@ -95,7 +95,7 @@ extension TFLStationDetailMapViewController : MKMapViewDelegate {
         }
         selectableIdentifer = nil
         let annnotations = self.mapView.annotations.compactMap { $0 as? TFLStationDetailMapViewAnnotation }
-        guard let annotation = annnotations.first (where : {$0.identifier == identifier }),
+        guard let annotation = annnotations.first (where : { $0.identifier == identifier }),
             let annotationView = self.mapView.view(for: annotation) else {
                 return
         }

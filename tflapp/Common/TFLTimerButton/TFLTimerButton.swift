@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-protocol TFLTimerButtonDelegate : class {
+protocol TFLTimerButtonDelegate : AnyObject {
     func tflTimerViewDidExpire(_ timerView : TFLTimerButton)
 }
 

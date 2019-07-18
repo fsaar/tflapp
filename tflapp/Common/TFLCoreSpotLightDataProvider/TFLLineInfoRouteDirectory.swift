@@ -27,7 +27,7 @@ class TFLLineInfoRouteDirectory : TFLCoreSpotLightDataProviderDataSource {
             if let lineInfos = try? context.fetch(fetchRequest) {
                 lineInfos.forEach { lineInfo in
                     if let identifier = lineInfo.identifier,
-                        let routes : [String] =  lineInfo.routes?.compactMap ({ ($0 as? TFLCDLineRoute)?.name  }) {
+                        let routes : [String] =  lineInfo.routes?.compactMap ({ ($0 as? TFLCDLineRoute)?.name }) {
                         dict[identifier] = routes
                     }
                 }

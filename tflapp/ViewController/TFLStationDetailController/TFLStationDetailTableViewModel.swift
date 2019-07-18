@@ -52,7 +52,7 @@ struct TFLStationDetailTableViewModel {
         }
         let routeStations = route.stations ?? []
         let busStops = TFLCDBusStop.busStops(with: routeStations, and: managedObjectContext)
-        let stationDistanceTuple = busStops.map { ($0,$0.distance(to:location) )}.min  { $0.1 < $1.1}
+        let stationDistanceTuple = busStops.map { ($0,$0.distance(to:location)) }.min  { $0.1 < $1.1 }
         if let stationDistanceTuple = stationDistanceTuple, stationDistanceTuple.1 < minClostedStationDistance {
             closestStationIdentifer = stationDistanceTuple.0.stationIdentifier
         }

@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-protocol TFLStationDetailTableViewControllerDelegate : class {
+protocol TFLStationDetailTableViewControllerDelegate : AnyObject {
     func tflStationDetailTableViewController(_ controller: TFLStationDetailTableViewController,didShowSection section: Int)
     func tflStationDetailTableViewController(_ controller: TFLStationDetailTableViewController,with header: UITableViewHeaderFooterView, didPanBy distance: CGFloat)
     func tflStationDetailTableViewController(_ controller: TFLStationDetailTableViewController,didSelectBusstopWith identifier: String)

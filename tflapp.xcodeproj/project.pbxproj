@@ -11,7 +11,6 @@
 		5600FC8E217C8E4400B7EC7E /* TFLHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5600FC8D217C8E4400B7EC7E /* TFLHUD.swift */; };
 		560CF3052173569600ED0BA5 /* Date+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560CF3042173569600ED0BA5 /* Date+String.swift */; };
 		560CF30721735C4900ED0BA5 /* TFLDateSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560CF30621735C4900ED0BA5 /* TFLDateSpecs.swift */; };
-		56113B29223BA68200C8EDA4 /* CLLocationCoordinate2DSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56113B28223BA68200C8EDA4 /* CLLocationCoordinate2DSpecs.swift */; };
 		56113B2B223BA70000C8EDA4 /* LoopRoute.json in Resources */ = {isa = PBXBuildFile; fileRef = 56113B2A223BA70000C8EDA4 /* LoopRoute.json */; };
 		56113B2E223F7DC900C8EDA4 /* GoogleRouteInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56113B2D223F7DC900C8EDA4 /* GoogleRouteInfo.swift */; };
 		56113B30224021BA00C8EDA4 /* LoopRoute2.json in Resources */ = {isa = PBXBuildFile; fileRef = 56113B2F224021BA00C8EDA4 /* LoopRoute2.json */; };
@@ -140,7 +139,6 @@
 		5609F8930F0C211B9D2D3B3D /* Pods-tflapp.databasegeneration.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tflapp.databasegeneration.xcconfig"; path = "Pods/Target Support Files/Pods-tflapp/Pods-tflapp.databasegeneration.xcconfig"; sourceTree = "<group>"; };
 		560CF3042173569600ED0BA5 /* Date+String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+String.swift"; sourceTree = "<group>"; };
 		560CF30621735C4900ED0BA5 /* TFLDateSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLDateSpecs.swift; sourceTree = "<group>"; };
-		56113B28223BA68200C8EDA4 /* CLLocationCoordinate2DSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CLLocationCoordinate2DSpecs.swift; sourceTree = "<group>"; };
 		56113B2A223BA70000C8EDA4 /* LoopRoute.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LoopRoute.json; sourceTree = "<group>"; };
 		56113B2D223F7DC900C8EDA4 /* GoogleRouteInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleRouteInfo.swift; sourceTree = "<group>"; };
 		56113B2F224021BA00C8EDA4 /* LoopRoute2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LoopRoute2.json; sourceTree = "<group>"; };
@@ -365,7 +363,6 @@
 				56DA42EB21051E8A00ED9C54 /* TFLBusStopArrivalsInfoSpecs.swift */,
 				560CF30621735C4900ED0BA5 /* TFLDateSpecs.swift */,
 				56DD18FC20A0B078003335D1 /* TFLTimerSpecs.swift */,
-				56113B28223BA68200C8EDA4 /* CLLocationCoordinate2DSpecs.swift */,
 				561FD9011F1FADD30012466A /* TFLClientSpecs.swift */,
 				5641F6ED1F19F68100A3A9D2 /* TFLRequestManagerSpecs.swift */,
 				5657D3701DE38ADF004E4CD0 /* TFLBusPredictionSpecs.swift */,
@@ -953,7 +950,6 @@
 				56B86EAD1DE4FED000A89D16 /* TFLBusStopArrivalsViewModelSpecs.swift in Sources */,
 				561C1834226FC20C008016B7 /* StringSpecs.swift in Sources */,
 				5657D3731DE3A00A004E4CD0 /* TFLCDBusStopSpecs.swift in Sources */,
-				56113B29223BA68200C8EDA4 /* CLLocationCoordinate2DSpecs.swift in Sources */,
 				56BA8F9120FBE7550031A3E4 /* TestUrlProtocol.swift in Sources */,
 				5657D3751DE3B480004E4CD0 /* TFLNotificationObserverSpec.swift in Sources */,
 				5646C4031DE62389006EA956 /* TFLBusStationArrivalsCellSpecs.swift in Sources */,

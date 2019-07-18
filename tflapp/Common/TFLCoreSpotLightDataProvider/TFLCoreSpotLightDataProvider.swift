@@ -22,7 +22,7 @@ extension TFLRouteFormatter {
     }
 }
 
-protocol TFLCoreSpotLightDataProviderDataSource : class {
+protocol TFLCoreSpotLightDataProviderDataSource : AnyObject {
     func numberOfLinesForCoreSpotLightDataProvider(_ provider : TFLCoreSpotLightDataProvider) -> Int
     func lineForCoreSpotLightDataProvider(_ provider : TFLCoreSpotLightDataProvider,at index : Int) -> String
     func routesForCoreSpotLightDataProvider(_ provider : TFLCoreSpotLightDataProvider,for line : String) -> [String]

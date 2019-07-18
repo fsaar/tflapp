@@ -3,7 +3,7 @@ import MapKit
 import CoreSpotlight
 import os.signpost
 
-protocol TFLNearbyBusStationsControllerDelegate : class {
+protocol TFLNearbyBusStationsControllerDelegate : AnyObject {
     func refresh(controller: TFLNearbyBusStationsController, using completionBlock:@escaping ()->())
     func lastRefresh(of controller : TFLNearbyBusStationsController) -> Date?
     func nearbyBusStationsController(_ controller: TFLNearbyBusStationsController,didSelectBusstopWith identifier: String)
@@ -85,7 +85,7 @@ class TFLNearbyBusStationsController : UIViewController {
             snapshot.appendItems(models)
             dataSource?.apply(snapshot,animatingDifferences: true)
             
-            let updatedIndexPaths = updated.map { $0.index}.indexPaths()
+            let updatedIndexPaths = updated.map { $0.index }.indexPaths()
             let movedIndexPaths = moved.map { $0.newIndex }.indexPaths()
             (updatedIndexPaths+movedIndexPaths).forEach { [weak self] indexPath in
                 if let cell = self?.tableView.cellForRow(at: indexPath) as? TFLBusStationArrivalsCell {
@@ -278,7 +278,7 @@ fileprivate extension TFLNearbyBusStationsController {
     func updateSpotlightWithLineInfo(_ lineInfo : TFLCDLineInfo?) {
         lineInfo?.managedObjectContext?.perform {
             if let identifier = lineInfo?.identifier,
-                let routes : [String] =  lineInfo?.routes?.compactMap ({ ($0 as? TFLCDLineRoute)?.name  }) {
+                let routes : [String] =  lineInfo?.routes?.compactMap ({ ($0 as? TFLCDLineRoute)?.name }) {
                 let dict = [ identifier : routes]
                 let lineRouteList = TFLLineInfoRouteDirectory(with: dict)
                 let provider = TFLCoreSpotLightDataProvider(with: lineRouteList)

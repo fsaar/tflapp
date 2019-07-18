@@ -41,8 +41,10 @@ struct TFLRouteFormatter {
         
         var symbol : String {
             switch self {
-            case .oneWay: return "→"
-            case .includingReturn: return "↔"
+            case .oneWay:
+                return "→"
+            case .includingReturn:
+                return "↔"
             }
         }
     }

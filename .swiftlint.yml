@@ -73,6 +73,7 @@ disabled_rules: # rule identifiers to exclude from running
     - nesting                                  
     - large_tuple                              
     - strong_iboutlet
+    - unused_optional_binding  
 opt_in_rules:
     - closing_brace                             
     - custom_rules                             
@@ -84,7 +85,6 @@ opt_in_rules:
     - unowned_variable_capture
     - unused_capture_list
     - redundant_type_annotation
-    - unused_optional_binding  
     - anyobject_protocol
     - deployment_target
     - weak_computed_property

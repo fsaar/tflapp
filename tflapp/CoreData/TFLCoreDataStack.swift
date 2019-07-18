@@ -21,9 +21,9 @@ import UIKit
         func initCoreData(_ coordinator : NSPersistentStoreCoordinator) -> Bool {
             let storeURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last!.appendingPathComponent("TFLBusStops.sqlite")
             print(storeURL)
-            let dict : [String : Any] = [ NSPersistentStoreFileProtectionKey : FileProtectionType.complete as Any , NSSQLitePragmasOption : ["journal_mode" : "DELETE"],
-                                                NSMigratePersistentStoresAutomaticallyOption : true,
-                                                NSInferMappingModelAutomaticallyOption : true]
+            let dict : [String : Any] = [ NSPersistentStoreFileProtectionKey : FileProtectionType.complete as Any ,                             NSSQLitePragmasOption : ["journal_mode" : "DELETE"],
+                                          NSMigratePersistentStoresAutomaticallyOption : true,
+                                          NSInferMappingModelAutomaticallyOption : true]
             guard let _ = try? coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: storeURL, options: dict) else {
                 return false
             }

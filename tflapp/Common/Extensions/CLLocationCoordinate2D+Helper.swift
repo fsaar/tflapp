@@ -11,52 +11,7 @@ extension String {
 extension Array where Element == CLLocationCoordinate2D {
     
     #if DATABASEGENERATION
-    var hasLoop : Bool {
-        return !loopRanges.isEmpty
-    }
-    var loopRanges :  [ClosedRange<Int>] {
-        let threshold = Double(3)
-        var ranges : [ClosedRange<Int>] = []
-        for tuple in self.enumerated() {
-            let isInRange = ranges.reduce(false) { $0 || $1 ~= tuple.0 }
-            let startIndex = tuple.0 + 1
-            guard !isInRange,startIndex < self.endIndex else {
-                continue
-            }
-
-            let location = tuple.1.location
-            let subList = (self[startIndex..<self.endIndex]).enumerated().map { ($0.0 + startIndex,$0.1) }
-            let distances : [(index:Int,distance:Double)] = subList.map { tuple2 in
-                let location2 = tuple2.1.location
-                let distance = location.distance(from: location2)
-                return (tuple2.0,distance)
-            }
-            // is there a node j that has a distance of less than threshold meters to node i with i<j and j - i > 2
-            // if so remember nodes in range i+1...j-1 fro removal. // Restrict length of removed loops to 5
-            let filtered : ClosedRange<Int>?  = distances.compactMap { tuple2 in
-                guard (tuple2.distance < threshold),3... ~= (tuple2.index - tuple.0)  else {
-                    return nil
-                }
-                let startIndex = self.index(after: tuple.0)
-                let endIndex = self.index(before: tuple2.index)
-                return startIndex...endIndex
-            }.last
-            if let lastFilteredRaneg = filtered {
-                ranges += [lastFilteredRaneg]
-            }
-           
-        }
-        return ranges
-    }
     
-    func removeLoops() -> [CLLocationCoordinate2D] {
-        var coordinates = Array(self)
-        let ranges = coordinates.loopRanges
-        for range in ranges.reversed() {
-            coordinates.removeSubrange(range)
-        }
-        return coordinates
-    }
     
     func routeSections(n: Int) -> [CountableClosedRange<Int>] {
         let limits = stride(from:0,to:n-1,by:1).map { ($0,Swift.min($0 + 1, n-1)) }
@@ -117,7 +72,7 @@ extension Array where Element == CLLocationCoordinate2D {
                 return
             }
             let sortedList = list.sorted { $0.0 < $1.0 }.map { $0.1 }
-            let coords = sortedList.reduce([]) { $0 + $1  }
+            let coords = sortedList.reduce([]) { $0 + $1 }
             completionBlock(coords)
         }
     }

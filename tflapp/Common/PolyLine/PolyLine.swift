@@ -84,7 +84,7 @@ class PolyLine {
             let result = shiftedList.reduce(0) { $0 | $1 }
             return results + [result]
         }
-        let decodedList = aggregatedList.map { (result:$0 >> 1,isNegative:($0 & 1) == 1) }.map {  $0.isNegative ? -$0.result - 1 :  $0.result  }
+        let decodedList = aggregatedList.map { (result:$0 >> 1,isNegative:($0 & 1) == 1) }.map { $0.isNegative ? -$0.result - 1 :  $0.result }
         guard decodedList.count % 2 == 0 else {
             return []
         }
@@ -144,8 +144,8 @@ fileprivate extension PolyLine {
     
     func undiffToCoordinates(_ values : [Int32]) -> [CLLocationCoordinate2D] {
         let decodedLats = values.evenElements.reduce([]) { combine($0,$1) }.map { Double($0) / self.precisionMultiplicator }
-        let decodedLongs = values.oddElements.reduce([]) { combine($0,$1) }.map { Double($0) / self.precisionMultiplicator  }
-        let coords = zip(decodedLats,decodedLongs).map { CLLocationCoordinate2DMake($0.0, $0.1)}
+        let decodedLongs = values.oddElements.reduce([]) { combine($0,$1) }.map { Double($0) / self.precisionMultiplicator }
+        let coords = zip(decodedLats,decodedLongs).map { CLLocationCoordinate2DMake($0.0, $0.1) }
         return coords
     }
 }

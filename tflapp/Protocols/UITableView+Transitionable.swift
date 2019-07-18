@@ -23,7 +23,7 @@ extension UITableView : Transitionable {
                     self.insertRows(at: insertedIndexPaths , with: .automatic)
                     moved.forEach { self.moveRow(at: IndexPath(row: $0.oldIndex,section:0), to:  IndexPath(row: $0.newIndex,section:0)) }
                 }, completion: { _ in
-                    let updatedIndexPaths = updated.map { $0.index}.indexPaths()
+                    let updatedIndexPaths = updated.map { $0.index }.indexPaths()
                     let movedIndexPaths = moved.map { $0.newIndex }.indexPaths()
                     updateBlock(updatedIndexPaths+movedIndexPaths)
                 })

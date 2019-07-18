@@ -7,7 +7,7 @@ enum TFLRequestManagerErrorType : Error {
     case InvalidURL(urlString : String)
 }
 
-protocol TFLRequestManagerDelegate : class {
+protocol TFLRequestManagerDelegate : AnyObject {
     func didStartURLTask(with requestManager: TFLRequestManager,session : URLSession)
     func didFinishURLTask(with requestManager: TFLRequestManager,session : URLSession)
 }

@@ -5,6 +5,7 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
     public struct LinePredictionViewModel :CustomDebugStringConvertible,Hashable {
         let line : String
         let eta : String
+        let accessibilityTimeToStation : String
         let identifier : String
         let busStopIdentifier : String
         let vehicleID : String
@@ -12,26 +13,32 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
         let towards : String
         static let minTitle = "1 \(NSLocalizedString("Common.min", comment: ""))"
         static let minsTitle = NSLocalizedString("Common.mins", comment: "")
+        static let minuteTitle = "1 \(NSLocalizedString("Common.minute", comment: ""))"
+        static let minutesTitle = NSLocalizedString("Common.minutes", comment: "")
 
         init(with busPrediction: TFLBusPrediction,using referenceTime : TimeInterval) {
-            func arrivalTime(in secs : Int) -> String {
+            func arrivalTime(in secs : Int) -> (displayTime:String,accessibilityTime : String) {
                 var timeString = ""
-
+                var accessibilityTimeString = ""
                 switch secs {
                 case ..<30:
                     timeString = NSLocalizedString("TFLBusStopArrivalsViewModel.due", comment: "")
+                    accessibilityTimeString = NSLocalizedString("TFLBusStopArrivalsViewModel.due", comment: "")
                 case 30..<60:
                     timeString = LinePredictionViewModel.minTitle
+                    accessibilityTimeString = "in \(TFLBusStopArrivalsViewModel.LinePredictionViewModel.minuteTitle)"
                 case 60..<(99*60):
                     let mins = secs/60
                     timeString = "\(mins) \(LinePredictionViewModel.minsTitle)"
+                    accessibilityTimeString = "in \(mins) \(TFLBusStopArrivalsViewModel.LinePredictionViewModel.minutesTitle)"
                     if mins == 1 {
                         timeString = LinePredictionViewModel.minTitle
+                        accessibilityTimeString = "in \(TFLBusStopArrivalsViewModel.LinePredictionViewModel.minuteTitle)"
                     }
                 default:
-                    timeString = ""
+                    break
                 }
-                return timeString
+                return (timeString,accessibilityTimeString)
             }
             let timeStampSinceReferenceDate = busPrediction.timeStamp.timeIntervalSinceReferenceDate
             let timeOffset = Int(referenceTime - timeStampSinceReferenceDate)
@@ -40,7 +47,7 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
             self.vehicleID = busPrediction.vehicleId
             self.line = busPrediction.lineName
             self.timeToStation = Int(busPrediction.timeToStation)
-            self.eta =  arrivalTime(in: Int(timeToStation) - timeOffset )
+            (self.eta,self.accessibilityTimeToStation) =  arrivalTime(in: Int(timeToStation) - timeOffset )
             self.towards = busPrediction.towards
         }
         public static func ==(lhs: LinePredictionViewModel,rhs :LinePredictionViewModel) -> (Bool) {

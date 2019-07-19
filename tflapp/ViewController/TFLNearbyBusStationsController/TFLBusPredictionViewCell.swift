@@ -8,6 +8,7 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
             self.line.textAlignment = .center
             self.line.isOpaque = true
             self.line.backgroundColor = UIColor.red
+            self.line.isAccessibilityElement = false
         }
     }
     @IBOutlet weak var arrivalTime : TFLAnimatedLabel! = nil {
@@ -17,6 +18,7 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
             self.arrivalTime.isOpaque = true
             self.arrivalTime.backgroundColor = bgColor
             self.arrivalTime.textAlignment = .center
+            self.arrivalTime.isAccessibilityElement = false
         }
     }
 
@@ -26,6 +28,8 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
         self.contentView.layer.contentsGravity = .resizeAspectFill
         self.contentView.isOpaque = true
         self.selectedBackgroundView = nil
+        self.isAccessibilityElement = true
+        self.accessibilityTraits = .staticText
         prepareForReuse()
 
     }
@@ -57,6 +61,7 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
         super.prepareForReuse()
         self.line.text = nil
         self.arrivalTime.setText("-",animated: false)
+        self.accessibilityLabel = nil
     }
 
     func configure(with predictionViewModel: TFLBusStopArrivalsViewModel.LinePredictionViewModel,as update : Bool = false) {
@@ -65,6 +70,7 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
         if !update || arrivalTime != predictionViewModel.eta {
             self.arrivalTime.setText(predictionViewModel.eta, animated: update)
         }
+        self.accessibilityLabel = "\(predictionViewModel.line) - \(predictionViewModel.accessibilityTimeToStation)"
     }
 
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {

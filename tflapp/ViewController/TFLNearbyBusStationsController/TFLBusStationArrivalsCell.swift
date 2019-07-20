@@ -44,7 +44,7 @@ class TFLBusStationArrivalsCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         isAccessibilityElement = false
-        accessibilityTraits = .staticText
+        accessibilityTraits = [.staticText , .summaryElement]
         self.contentView.isAccessibilityElement = true
         self.accessibilityElements = [self.contentView,predictionView].compactMap { $0 }
         predictionView.busPredictionViewDelegate = self

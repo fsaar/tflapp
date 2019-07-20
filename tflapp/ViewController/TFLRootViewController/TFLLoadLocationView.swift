@@ -5,6 +5,7 @@ class TFLLoadLocationView : UIView {
         super.awakeFromNib()
         self.isAccessibilityElement = true
         self.accessibilityLabel = NSLocalizedString("TFLLoadLocationView.accessibilityTitle",comment:"")
+        self.accessibilityTraits = .staticText
     }
     
     @IBOutlet weak var infoLabel : UILabel! = nil {

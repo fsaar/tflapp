@@ -5,6 +5,7 @@ class TFLLoadNearbyStationsView : UIView {
         super.awakeFromNib()
         self.isAccessibilityElement = true
         self.accessibilityLabel = NSLocalizedString("TFLLoadNearbyStationsView.accessibilityTitle",comment:"")
+        self.accessibilityTraits = .staticText
     }
     
     @IBOutlet weak var infoLabel : UILabel! = nil {

@@ -141,6 +141,8 @@ class TFLStationDetailTableViewCell: UITableViewCell {
             self.animationContainer.startAnimation()
         }
         self.accessibilityLabel = "\(tuple.stopCode) - \(tuple.name)"
+        self.accessibilityTraits = .staticText
+
         if let arrivalInfo = arrivalInfo {
             let animated = arrivalInfoView.isHidden ? false : true
             self.droppingBallView.startAnimation()

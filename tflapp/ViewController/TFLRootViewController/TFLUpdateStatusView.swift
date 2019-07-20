@@ -98,6 +98,7 @@ class TFLUpdateStatusView : UIView {
         label.backgroundColor = .clear
         label.textColor = .white
         label.font = UIFont.tflUpdateStatusPendingTitle()
+        label.accessibilityLabel = NSLocalizedString("TFLUpdateStatusView.pending.accessibilityTitle", comment: "")
         return label
     }()
     lazy var updatingStateIndicatorView : UIActivityIndicatorView = {

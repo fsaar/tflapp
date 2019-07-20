@@ -22,8 +22,8 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
                 var accessibilityTimeString = ""
                 switch secs {
                 case ..<30:
-                    timeString = NSLocalizedString("TFLBusStopArrivalsViewModel.due", comment: "")
-                    accessibilityTimeString = NSLocalizedString("TFLBusStopArrivalsViewModel.due", comment: "")
+                    timeString = NSLocalizedString("Common.due", comment: "")
+                    accessibilityTimeString = NSLocalizedString("Common.due", comment: "")
                 case 30..<60:
                     timeString = LinePredictionViewModel.minTitle
                     accessibilityTimeString = "in \(TFLBusStopArrivalsViewModel.LinePredictionViewModel.minuteTitle)"

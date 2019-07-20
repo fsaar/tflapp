@@ -143,7 +143,7 @@ fileprivate extension TFLStationDetailController {
             self?.stationDetailErrorView?.isHidden = !models.isEmpty
             let normalizedInfos = self?.normalizeArrivalsInfo(arrivalInfos,station:self?.lineInfo.station ?? "",tableViewModels:models)
             
-            self?.tableViewController?.updateData(with: models,newArrivalInfos: normalizedInfos)
+            self?.tableViewController?.updateData(with: models,newArrivalInfos: normalizedInfos,for:line)
             self?.mapViewController?.viewModels = mapModels
             
             self?.tableViewviewModels = models

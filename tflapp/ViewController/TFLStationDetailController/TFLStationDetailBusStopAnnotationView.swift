@@ -30,6 +30,8 @@ class TFLStationDetailBusStopAnnotationView: MKMarkerAnnotationView {
         displayPriority = annotation?.priority ?? MKFeatureDisplayPriority(rawValue: 750)
         self.layer.anchorPoint = CGPoint(x:0.5,y:1)
         self.centerOffset = CGPoint(x:0.5,y:-0.5)
+        self.isAccessibilityElement = true
+        self.accessibilityLabel = annotation?.accessibilityString
     }
 
     @available(iOS,unavailable)

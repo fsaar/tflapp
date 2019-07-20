@@ -24,6 +24,8 @@ class TFLArrivalInfoView : UIView {
         vehicleIDLabel.textAlignment = .center
         vehicleIDLabel.widthAnchor.constraint(equalToConstant: 44).isActive = true
         vehicleIDLabel.font = .tflStationDetailArrivalInfoVehicleTitle()
+        vehicleIDLabel.isAccessibilityElement = false
+
         return vehicleIDLabel
     }()
     
@@ -35,6 +37,8 @@ class TFLArrivalInfoView : UIView {
         timeLabel.textAlignment = .center
         timeLabel.font = .tflStationDetailArrivalInfoTimeTitle()
         timeLabel.widthAnchor.constraint(equalToConstant: TFLArrivalInfoView.size.width - 4).isActive = true
+        timeLabel.isAccessibilityElement = false
+
         return timeLabel
     }()
     
@@ -95,7 +99,7 @@ fileprivate extension TFLArrivalInfoView  {
         
         switch secs {
         case ...60:
-            timeString = NSLocalizedString("TFLArrivalInfoView.due", comment: "")
+            timeString = NSLocalizedString("Common.due", comment: "")
         default:
             let mins = secs/60
             timeString = "\(mins) \(TFLArrivalInfoView.minsTitle)"

@@ -117,6 +117,7 @@ class TFLTimerButton : UIButton {
     }
     
     func stop(animated : Bool = true) {
+        self.accessibilityLabel = NSLocalizedString("TFLTimerButton.refresh_stopped.accessibilityTitle", comment: "")
         guard case let .running(_,_,timeInSecs) = displayLinkState else {
             return
         }
@@ -142,6 +143,7 @@ class TFLTimerButton : UIButton {
         self.setTitle("\(expiryTime)", for: .normal)
         self.borderLayer.strokeEnd = 1
         self.innerLayer.strokeEnd = 1
+        self.accessibilityLabel = NSLocalizedString("TFLTimerButton.refresh_stopped.accessibilityTitle", comment: "")
     }
     
     override var intrinsicContentSize: CGSize {
@@ -173,6 +175,8 @@ fileprivate extension TFLTimerButton {
         self.titleLabel?.textAlignment = .center
         self.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         self.addTarget(self, action: #selector(self.tapHandler(_:)), for: .touchUpInside)
+        self.isAccessibilityElement = true
+        self.accessibilityLabel = NSLocalizedString("TFLTimerButton.refresh_stopped.accessibilityTitle", comment: "")
     }
     
     
@@ -215,5 +219,9 @@ fileprivate extension TFLTimerButton {
 
         self.borderLayer.strokeEnd = CGFloat(percent)
         self.innerLayer.strokeEnd = CGFloat(percent)
+        let prefixTitle = NSLocalizedString("TFLTimerButton.refresh_pending.accessibitliyTitle",comment:"")
+        let localisationCopy = timeLeft == 1 ? "Common.second" : "Common.seconds"
+        let suffixTitle = "\(timeLeft) \(NSLocalizedString(localisationCopy,comment:""))"
+        self.accessibilityLabel = "\(prefixTitle) \(suffixTitle)"
     }
 }

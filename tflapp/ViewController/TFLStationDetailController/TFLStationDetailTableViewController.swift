@@ -52,8 +52,10 @@ class TFLStationDetailTableViewController: UITableViewController {
     var station : String?
     fileprivate var arrivalInfos : [TFLVehicleArrivalInfo] = []
     fileprivate var viewModels : [TFLStationDetailTableViewModel] = []
-
-    func updateData(with newModels: [TFLStationDetailTableViewModel]? = nil,newArrivalInfos : [TFLVehicleArrivalInfo]? = nil) {
+    fileprivate var line : String?
+    func updateData(with newModels: [TFLStationDetailTableViewModel]? = nil,newArrivalInfos : [TFLVehicleArrivalInfo]? = nil,
+                    for line: String? = nil) {
+        self.line = line
         guard (newModels != nil) || (newArrivalInfos != nil) else {
             return
         }
@@ -175,7 +177,7 @@ fileprivate extension TFLStationDetailTableViewController {
         let stationNaptanId = model.stations[indexPath.row].naptanId
         let highlight = stationNaptanId == self.station
         let arrivalInfo = arrivalInfos.info(with:stationNaptanId)
-        cell.configure(with: model,and:arrivalInfo,at:indexPath.row,highlight: highlight)
+        cell.configure(with: model,and:arrivalInfo,for :line, at:indexPath.row,highlight: highlight)
     }
     
     func scrollToStationIfNeedBe(_ station : String?) {

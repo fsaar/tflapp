@@ -100,6 +100,7 @@ class TFLStationDetailTableViewCell: UITableViewCell {
             self.droppingBallView.topAnchor.constraint(equalTo: arrivalInfoView.bottomAnchor,constant:-10),
             self.droppingBallView.bottomAnchor.constraint(equalTo: middleContainer.centerYAnchor)
         ])
+        self.isAccessibilityElement = true
         prepareForReuse()
     }
 
@@ -120,7 +121,7 @@ class TFLStationDetailTableViewCell: UITableViewCell {
         self.droppingBallView.isHidden = true
     }
 
-    func configure(with model: TFLStationDetailTableViewModel,and arrivalInfo : TFLVehicleArrivalInfo?, at index: Int,highlight : Bool) {
+    func configure(with model: TFLStationDetailTableViewModel,and arrivalInfo : TFLVehicleArrivalInfo?,for line : String?, at index: Int,highlight : Bool) {
         let tuple = model.stations[index]
         if highlight {
             self.stationName.font =  .tflStationDetailHighlightedTitle()
@@ -139,18 +140,33 @@ class TFLStationDetailTableViewCell: UITableViewCell {
             self.nearbyContainer.isHidden = false
             self.animationContainer.startAnimation()
         }
-        
+        self.accessibilityLabel = "\(tuple.stopCode) - \(tuple.name)"
         if let arrivalInfo = arrivalInfo {
             let animated = arrivalInfoView.isHidden ? false : true
             self.droppingBallView.startAnimation()
             self.droppingBallView.isHidden = false
             arrivalInfoView.isHidden = false
             arrivalInfoView.configure(with:  arrivalInfo.vehicleId, and: arrivalInfo.timeToStation,animated: animated)
+            if let line = line {
+                let accessbilityTime = accessibilityArrivalTime(in: arrivalInfo.timeToStation)
+                accessibilityLabel = "\(tuple.stopCode) - \(tuple.name) - bus number \(line) arriving in \(accessbilityTime)"
+            }
         }
     }
 }
 
 fileprivate extension TFLStationDetailTableViewCell {
+    func accessibilityArrivalTime(in secs : UInt) -> String {
+            switch secs {
+            case ...60:
+                return NSLocalizedString("Common.due", comment: "")
+            default:
+                let mins = secs/60
+                let minutesLabel = mins == 1 ? "Common.minute" : "Common.minutes"
+                return "\(mins) \(NSLocalizedString(minutesLabel, comment: ""))"
+            }
+        }
+    
     func setComponentHeight(for position : Position, hasAnimation : Bool, hasArrivalInfo : Bool) {
         switch position {
         case .top:

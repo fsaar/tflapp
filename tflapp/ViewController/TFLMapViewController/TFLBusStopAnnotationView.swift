@@ -27,6 +27,8 @@ class TFLBusStopAnnotationView: MKMarkerAnnotationView {
         displayPriority = MKFeatureDisplayPriority(rawValue: 1000)
         self.layer.anchorPoint = CGPoint(x:0.5,y:1)
         self.centerOffset = CGPoint(x:0.5,y:-0.5)
+        self.accessibilityLabel = accessiblityLabel(with: annotation?.arrivalsInfo) ?? annotation?.title
+        self.isAccessibilityElement = true
     }
 
     @available(iOS,unavailable)
@@ -42,3 +44,18 @@ class TFLBusStopAnnotationView: MKMarkerAnnotationView {
         tapActionHandler?(mapViewAnnotation)
     }
  }
+
+// MARK: - Private
+
+extension TFLBusStopAnnotationView {
+    func accessiblityLabel(with arrivalsInfo : TFLBusStopArrivalsInfo?) -> String? {
+        guard let busStop = arrivalsInfo?.busStop else  {
+            return nil
+        }
+        let towards = busStop.towards != nil ? "towards \(busStop.towards ?? "")" : ""
+        guard let stopLetter = busStop.stopLetter else {
+            return "\(busStop.name) \(busStop.name) \(towards)"
+        }
+        return "\(stopLetter) - \(busStop.name) \(towards)"
+    }
+}

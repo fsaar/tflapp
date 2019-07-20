@@ -1,11 +1,15 @@
 "TFLBusStopArrivalsViewModel.towards" = "towards ";
 "TFLLoadLocationView.title" = "Retrieving current location ...";
+"TFLLoadLocationView.accessibilityTitle" = "Retrieving current location - Please wait";
 "TFLLoadNearbyStationsView.title" = "Loading nearby stations ...";
+"TFLLoadNearbyStationsView.accessibilityTitle" = "Loading nearby stations  - Please wait";
 "TFLNoStationsView.title" = "No stations found for your current location. You can increase the search distance in settings.";
+"TFLNoStationsView.accessibilityTitle" = "No stations found for your current location. You can increase the search distance in settings.";
 "TFLNoStationsView.retryButtonTitle" = "Try again";
 "TFLStationDetailTableViewModel.towards" = "towards";
 "TFLStationDetailNearby.title" = "Nearby";
 "TFLLoadArrivalTimesView.title" = "Loading bus schedules ...";
+"TFLLoadArrivalTimesView.accessiblityTitle" = "Loading bus schedules - Please wait";
 "TFLNoGPSEnabledView.title" = "For this app to function properly location services need to be enabled in settings.";
 "TFLNoGPSEnabledView.settingsButtonTitle" = "Go to Settings";
 "TFLNoGPSEnabledView.headerTitle" = "No Location Services";
@@ -23,6 +27,7 @@
 "DateStringConversion.weeks_ago" = "weeks ago";
 "TFLNearbyBusStationsController.last_updated" = "last updated: ";
 "TFLHUD.title" = "Loading ...";
+"TFLHUD.accessiblityTitle" = "Loading - Please wait";
 "TFLStationDetailErrorView.title" = "Oops, something went wrong. No route information available.";
 "TFLUpdateStatusView.pending.title" = "Updating ...";
 "TFLUpdateStatusView.pending.accessibilityTitle" = "Updating - Please wait";

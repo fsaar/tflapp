@@ -11,6 +11,7 @@ class TFLNoStationsView : UIView {
             self.infoLabel.font = UIFont.tflFont(size: 18)
             self.infoLabel.textColor = .white
             self.infoLabel.text = NSLocalizedString("TFLNoStationsView.title", comment: "")
+            self.infoLabel.isAccessibilityElement = false
         }
     }
     @IBOutlet weak var retryButton : TFLButton! = nil {
@@ -27,6 +28,8 @@ class TFLNoStationsView : UIView {
         self.layer.cornerRadius = 5
         self.layer.borderWidth = 0.5
         self.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
+        self.isAccessibilityElement = true
+        self.accessibilityLabel = NSLocalizedString("TFLNoStationsView.accessibilityTitle", comment:"")
     }
 
     @IBAction func buttonHandler(button : UIButton) {

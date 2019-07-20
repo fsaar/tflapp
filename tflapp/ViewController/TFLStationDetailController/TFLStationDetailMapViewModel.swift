@@ -7,7 +7,9 @@ struct TFLStationDetailMapViewModel {
     let coords : [CLLocationCoordinate2D]
     init?(with route: TFLCDLineRoute) {
         func stopDescription(with busStop : TFLCDBusStop) -> String? {
-            let towards = busStop.towards != nil ? "towards \(busStop.towards ?? "")" : ""
+            let towardsCopy = NSLocalizedString("Common.towards", comment: "")
+
+            let towards = busStop.towards?.isEmpty == false ? "\(towardsCopy) \(busStop.towards ?? "")" : ""
             guard let stopLetter = busStop.stopLetter else {
                 return "\(busStop.name) \(busStop.name) \(towards)"
             }

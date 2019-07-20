@@ -1,4 +1,3 @@
-"TFLBusStopArrivalsViewModel.towards" = "towards ";
 "TFLLoadLocationView.title" = "Retrieving current location ...";
 "TFLLoadLocationView.accessibilityTitle" = "Retrieving current location - Please wait";
 "TFLLoadNearbyStationsView.title" = "Loading nearby stations ...";
@@ -6,7 +5,6 @@
 "TFLNoStationsView.title" = "No stations found for your current location. You can increase the search distance in settings.";
 "TFLNoStationsView.accessibilityTitle" = "No stations found for your current location. You can increase the search distance in settings.";
 "TFLNoStationsView.retryButtonTitle" = "Try again";
-"TFLStationDetailTableViewModel.towards" = "towards";
 "TFLStationDetailNearby.title" = "Nearby";
 "TFLLoadArrivalTimesView.title" = "Loading bus schedules ...";
 "TFLLoadArrivalTimesView.accessiblityTitle" = "Loading bus schedules - Please wait";
@@ -33,6 +31,7 @@
 "TFLUpdateStatusView.pending.accessibilityTitle" = "Updating - Please wait";
 "TFLOfflineView.offline.title" = "Offline";
 
+"Common.towards" = "towards";
 "Common.due" = "due";
 "Common.min" = "min";
 "Common.minute" = "minute";

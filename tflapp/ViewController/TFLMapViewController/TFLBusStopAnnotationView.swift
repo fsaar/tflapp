@@ -52,7 +52,9 @@ extension TFLBusStopAnnotationView {
         guard let busStop = arrivalsInfo?.busStop else  {
             return nil
         }
-        let towards = busStop.towards != nil ? "towards \(busStop.towards ?? "")" : ""
+        let towardsCopy = NSLocalizedString("Common.towards", comment: "")
+
+        let towards = busStop.towards?.isEmpty == false ? "\(towardsCopy) \(busStop.towards ?? "")" : ""
         guard let stopLetter = busStop.stopLetter else {
             return "\(busStop.name) \(busStop.name) \(towards)"
         }

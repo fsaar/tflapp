@@ -17,6 +17,7 @@ class TFLHUD {
         label.backgroundColor = .white
         label.textColor = .black
         label.font = UIFont.tflHUDTitle()
+        label.isAccessibilityElement = false
         return label
     }()
     
@@ -29,6 +30,8 @@ class TFLHUD {
         view.layer.borderColor = UIColor.red.cgColor
         view.layer.borderWidth = 2
         view.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        view.isAccessibilityElement = true
+        view.accessibilityLabel = NSLocalizedString("TFLHUD.accessiblityTitle", comment: "")
         return view
     }()
     

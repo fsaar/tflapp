@@ -10,18 +10,21 @@ class TFLBusStationArrivalsCell: UITableViewCell {
         didSet {
             self.stationName.font = UIFont.tflFontStationHeader()
             self.stationName.textColor = UIColor.black
+            self.stationName.isAccessibilityElement = false
         }
     }
     @IBOutlet weak var stationDetails : UILabel! = nil {
         didSet {
             self.stationDetails.font = UIFont.tflFontStationDetails()
             self.stationDetails.textColor = UIColor.darkGray
+            self.stationDetails.isAccessibilityElement = false
         }
     }
     @IBOutlet weak var distanceLabel : UILabel! = nil {
         didSet {
             self.distanceLabel.font = UIFont.tflFontStationDistance()
             self.distanceLabel.textColor = UIColor.black
+            self.distanceLabel.isAccessibilityElement = false
         }
     }
     @IBOutlet weak var predictionView : TFLBusPredictionView!
@@ -33,12 +36,17 @@ class TFLBusStationArrivalsCell: UITableViewCell {
             self.busStopLabel.backgroundColor = UIColor.red
             self.busStopLabel.clipsToBounds = true
             self.busStopLabel.layer.cornerRadius = 5
+            self.busStopLabel.isAccessibilityElement = false
         }
     }
     weak var delegate : TFLBusStationArrivalCellDelegate?
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        isAccessibilityElement = false
+        accessibilityTraits = [.staticText , .summaryElement]
+        self.contentView.isAccessibilityElement = true
+        self.accessibilityElements = [self.contentView,predictionView].compactMap { $0 }
         predictionView.busPredictionViewDelegate = self
         prepareForReuse()
     }
@@ -50,6 +58,7 @@ class TFLBusStationArrivalsCell: UITableViewCell {
         self.distanceLabel.text = nil
         self.predictionView.contentOffset = .zero
         self.predictionView.setPredictions(predictions: [],animated: false)
+        self.accessibilityLabel = nil
     }
 
     func configure(with busStopArrivalViewModel: TFLBusStopArrivalsViewModel,animated: Bool = false) {
@@ -58,8 +67,22 @@ class TFLBusStationArrivalsCell: UITableViewCell {
         self.stationDetails.text  = busStopArrivalViewModel.stationDetails
         self.distanceLabel.text = busStopArrivalViewModel.distance
         self.predictionView.setPredictions(predictions: busStopArrivalViewModel.arrivalTimes,animated: animated)
+        self.contentView.accessibilityLabel = accessibilityLabel(with: busStopArrivalViewModel)
     }
 
+
+}
+
+// MARK: - Helper
+
+fileprivate extension TFLBusStationArrivalsCell {
+    func accessibilityLabel(with busStopArrivalViewModel: TFLBusStopArrivalsViewModel) -> String {
+        let distance = Int(busStopArrivalViewModel.busStopDistance)
+        let meterCopy = NSLocalizedString("Common.meter", comment: "")
+        let metersCopy = NSLocalizedString("Common.meters", comment: "")
+        let metersCopyToUse = distance == 1 ? meterCopy : metersCopy
+        return "\(busStopArrivalViewModel.stationName) -- \(busStopArrivalViewModel.stationDetails) - \(distance) \(metersCopyToUse) away"
+    }
 
 }
 

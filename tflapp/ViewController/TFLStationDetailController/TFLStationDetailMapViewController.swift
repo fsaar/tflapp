@@ -37,7 +37,8 @@ class TFLStationDetailMapViewController: UIViewController {
                                                                                                     TFLStationDetailMapViewAnnotation(with: tuple.1.identifier,
                                                                                                                                       stopCode: tuple.1.stopCode,
                                                                                                                                       coordinate: tuple.1.coords,
-                                                                                                                                      and: tuple.0)
+                                                                                                                                      index: tuple.0,
+                                                                                                                                      and:tuple.1.stopDescription)
                 }
               
                 self.mapView.addAnnotations(annotations)

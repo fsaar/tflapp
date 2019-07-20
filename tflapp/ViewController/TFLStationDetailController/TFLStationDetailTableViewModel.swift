@@ -61,7 +61,7 @@ struct TFLStationDetailTableViewModel {
         }
         let tuples = busStops.map { ($0.stopLetter ?? "",$0.name,$0.stationIdentifier,$0.identifier) }
         
-        let towards = NSLocalizedString("TFLStationDetailTableViewModel.towards", comment: "")
+        let towards = NSLocalizedString("Common.towards", comment: "")
         let tempName = route.name.replacingOccurrences(of: HtmlEncodings.towards.rawValue, with: towards)
         let tempNameComponents = tempName.split(separator: " ").map { $0.trimmingCharacters(in: .whitespaces ) }.filter { !$0.isEmpty }
         routeName = tempNameComponents.joined(separator: " ")

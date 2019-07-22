@@ -200,7 +200,7 @@ fileprivate extension TFLStationDetailTableViewController {
             self.lightImpactFeedbackGenerator = oldValue
         }
     }
-
+    
 }
 
 extension TFLStationDetailTableViewController : TFLStationDetailMapViewControllerDelegate {

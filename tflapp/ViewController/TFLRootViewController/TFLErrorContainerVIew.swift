@@ -34,6 +34,15 @@ class TFLErrorContainerView : UIView {
         super.awakeFromNib()
         errorViews = [noGPSEnabledView,loadArrivalTimesView,noStationsView,loadLocationsView,loadNearbyStationsView]
         hideErrorViews()
+        updateColors()
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else {
+            return
+        }
+        updateColors()
     }
     
     func hideErrorViews() {
@@ -81,5 +90,11 @@ extension TFLErrorContainerView : TFLNoStationsViewDelegate {
 extension TFLErrorContainerView : TFLNoGPSEnabledViewDelegate {
     func didTap(noGPSEnabledButton: UIButton,in view : TFLNoGPSEnabledView) {
         self.delegate?.didTap(noGPSEnabledButton: noGPSEnabledButton, in: view)
+    }
+}
+
+fileprivate extension TFLErrorContainerView {
+    func updateColors() {
+        self.backgroundColor = UIColor(named: "tflBackgroundColor")
     }
 }

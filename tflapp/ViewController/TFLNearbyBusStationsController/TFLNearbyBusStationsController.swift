@@ -116,8 +116,16 @@ class TFLNearbyBusStationsController : UIViewController {
             }
             return cell
         }
+        updateColors()
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else {
+            return
+        }
+        updateColors()
+    }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let identifier = segue.identifier, let segueIdentifier = TFLNearbyBusStationsController.SegueIdentifier(rawValue:identifier) else {
@@ -291,5 +299,15 @@ fileprivate extension TFLNearbyBusStationsController {
                 }
             }
         }
+    }
+    
+    func updateColors() {
+        self.ackLabel.backgroundColor = UIColor(named: "tflBackgroundColor")
+        self.lastUpdatedLabel.backgroundColor = UIColor(named: "tflBackgroundColor")
+        self.ackLabel.textColor = UIColor(named: "tflPrimaryTextColor")
+        self.lastUpdatedLabel.textColor = UIColor(named: "tflPrimaryTextColor")
+        self.view.backgroundColor = UIColor(named: "tflBackgroundColor")
+        self.tableView.reloadData()
+        
     }
 }

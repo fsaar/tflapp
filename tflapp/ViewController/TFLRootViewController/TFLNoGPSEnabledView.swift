@@ -8,14 +8,12 @@ class TFLNoGPSEnabledView : UIView {
     @IBOutlet weak var infoLabel : UILabel! = nil {
         didSet {
             self.infoLabel.font = UIFont.tflFont(size: 16)
-            self.infoLabel.textColor = .white
             self.infoLabel.text = NSLocalizedString("TFLNoGPSEnabledView.title", comment: "")
         }
     }
     @IBOutlet weak var titleLabel : UILabel! = nil {
         didSet {
             self.titleLabel.font = UIFont.tflFont(size: 18)
-            self.titleLabel.textColor = .white
             self.titleLabel.text = NSLocalizedString("TFLNoGPSEnabledView.headerTitle", comment: "")
         }
     }
@@ -32,10 +30,27 @@ class TFLNoGPSEnabledView : UIView {
         self.layer.borderColor = UIColor.red.cgColor
         self.layer.cornerRadius = 5
         self.layer.borderWidth = 0.5
-        self.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
+        updateColors()
     }
 
     @IBAction func buttonHandler(button : UIButton) {
         self.delegate?.didTap(noGPSEnabledButton: button, in: self)
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else {
+            return
+        }
+        updateColors()
+    }
+}
+
+
+fileprivate extension TFLNoGPSEnabledView {
+    func updateColors() {
+        self.backgroundColor = UIColor(named: "tflErrorViewBackgroundColor")
+        self.titleLabel.textColor = UIColor(named: "tflSecondaryTextColor")
+        self.infoLabel.textColor = UIColor(named: "tflSecondaryTextColor")
     }
 }

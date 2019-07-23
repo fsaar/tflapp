@@ -10,6 +10,11 @@ import Foundation
 import UIKit
 
 class TFLOfflineView : UIView {
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        updateColors()
+    }
+    
     @IBOutlet weak var titleLabel : UILabel! {
         didSet {
             self.titleLabel.font = UIFont.tflOfflineTitle()
@@ -21,5 +26,25 @@ class TFLOfflineView : UIView {
             self.imageView.tintColor = UIColor.white
             
         }
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else {
+            return
+        }
+        updateColors()
+    }
+}
+
+
+fileprivate extension TFLOfflineView {
+    
+    func updateColors() {
+        self.titleLabel.textColor = UIColor(named: "tflSecondaryTextColor")
+        self.titleLabel.backgroundColor = UIColor(named: "tflOfflineViewBackgroundColor")
+        self.imageView.tintColor =  UIColor(named: "tflSecondaryTextColor")
+        self.backgroundColor =  UIColor(named: "tflOfflineViewBackgroundColor")
+        
     }
 }

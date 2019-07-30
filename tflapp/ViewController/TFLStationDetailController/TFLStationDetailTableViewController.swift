@@ -78,6 +78,15 @@ class TFLStationDetailTableViewController: UITableViewController {
         self.tableView.rowHeight = UITableView.automaticDimension
         let sectionNib = UINib(nibName: String(describing: TFLStationDetailSectionHeaderView.self), bundle: nil)
         self.tableView.register(sectionNib, forHeaderFooterViewReuseIdentifier: String(describing: TFLStationDetailSectionHeaderView.self))
+        updateColors()
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else {
+            return
+        }
+        updateColors()
     }
 }
 
@@ -141,6 +150,10 @@ extension TFLStationDetailTableViewController : TFLStationDetailSectionHeaderVie
 }
 
 fileprivate extension TFLStationDetailTableViewController {
+    func updateColors() {
+        self.view.backgroundColor = UIColor(named: "tflBackgroundColor")
+    }
+    
     func reloadAnimated(_ animated : Bool,oldArrivalInfos : [TFLVehicleArrivalInfo]) {
         guard animated else {
             self.tableView.reloadData()

@@ -48,6 +48,7 @@ class TFLBusStationArrivalsCell: UITableViewCell {
         isAccessibilityElement = false
         accessibilityTraits = [.staticText , .summaryElement]
         self.contentView.isAccessibilityElement = true
+        self.contentView.accessibilityTraits = [.staticText,.summaryElement,.button]
         self.accessibilityElements = [self.contentView,predictionView].compactMap { $0 }
         predictionView.busPredictionViewDelegate = self
         updateColors()

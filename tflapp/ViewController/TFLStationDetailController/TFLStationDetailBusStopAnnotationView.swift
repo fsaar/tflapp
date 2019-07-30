@@ -30,6 +30,7 @@ class TFLStationDetailBusStopAnnotationView: MKMarkerAnnotationView {
         self.centerOffset = CGPoint(x:0.5,y:-0.5)
         self.isAccessibilityElement = true
         self.accessibilityLabel = annotation?.accessibilityString
+        self.accessibilityTraits = [.staticText,.button]
         updateColors()
     }
 

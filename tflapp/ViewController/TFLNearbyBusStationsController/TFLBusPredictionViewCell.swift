@@ -24,12 +24,11 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.contentView.layer.contents = TFLBusPredictionViewCell.busPredictionViewBackgroundImage.cgImage
         self.contentView.layer.contentsGravity = .resizeAspectFill
         self.contentView.isOpaque = true
         self.selectedBackgroundView = nil
         self.isAccessibilityElement = true
-        self.accessibilityTraits = .staticText
+        self.accessibilityTraits = [.staticText,.button]
         updateColors()
         prepareForReuse()
     }
@@ -75,6 +74,7 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
         self.line.backgroundColor = UIColor(named: "tflLineBackgroundColor")
         self.arrivalTime.backgroundColor = UIColor(named: "tflBusInfoBackgroundColor")
         self.arrivalTime.textColor = UIColor(named: "tflPrimaryTextColor") ?? UIColor.purple
+        TFLBusPredictionViewCell.busPredictionViewBackgroundImage = TFLBusPredictionViewCell.defaultBackgroundImage()
         self.contentView.layer.contents = TFLBusPredictionViewCell.busPredictionViewBackgroundImage.cgImage
     }
     

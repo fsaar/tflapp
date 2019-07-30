@@ -939,8 +939,8 @@
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pIb-dt-aAa" customClass="TFLStationDetailErrorView" customModule="London_Bus" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="56" width="375" height="591"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Oops, something went wrong, no route information available" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FOW-Wl-CmM">
-                                        <rect key="frame" x="20" y="275" width="335" height="41"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Oops, something went wrong, no route information available" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FOW-Wl-CmM">
+                                        <rect key="frame" x="21" y="275" width="335" height="41"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -979,8 +979,10 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="heightConstraint" destination="3uR-td-tmi" id="EDI-Qd-p0b"/>
+                        <outlet property="mapContainerView" destination="J9I-GQ-b8b" id="NyB-Ph-OvR"/>
                         <outlet property="offlineView" destination="Dsa-vu-HIV" id="SKV-0H-mbG"/>
                         <outlet property="stationDetailErrorView" destination="pIb-dt-aAa" id="ZMv-h6-7GN"/>
+                        <outlet property="tableContainerView" destination="IX6-SD-LEi" id="Szk-nm-5XZ"/>
                         <outlet property="tableViewContainerViewBottomConstraint" destination="Trt-1S-a2F" id="GC1-RO-SiR"/>
                         <outlet property="titleHeaderView" destination="H3D-7y-WZd" id="cap-5E-p3H"/>
                     </connections>

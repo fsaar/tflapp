@@ -35,7 +35,7 @@ class TFLStationDetailController: UIViewController {
     fileprivate let defaultRefreshInterval : Int = 30
     
     fileprivate lazy var containerView : UIView = {
-        let view = UIView(frame: .zero)
+        let view = UIView()
         let width : CGFloat = 32
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isHidden = true
@@ -62,19 +62,23 @@ class TFLStationDetailController: UIViewController {
             ])
         return view
     }()
+    @IBOutlet weak var tableContainerView : UIView!
+    @IBOutlet weak var mapContainerView : UIView!
     @IBOutlet weak var heightConstraint : NSLayoutConstraint!
     @IBOutlet weak var titleHeaderView : TFLStationDetailHeaderView!
     fileprivate let tflClient = TFLClient()
     fileprivate var mapViewController : TFLStationDetailMapViewController?
     fileprivate var tableViewController : TFLStationDetailTableViewController?
     var currentUserCoordinate = kCLLocationCoordinate2DInvalid
-    lazy var backBarButtonItem : UIBarButtonItem = {
-        let image = #imageLiteral(resourceName: "back")
-        let button = UIButton(frame: CGRect(origin:.zero,size:image.size))
-        button.addTarget(self, action: #selector(self.backBarButtonHandler), for: .touchUpInside)
-        button.setImage(image, for: .normal)
-        return UIBarButtonItem(customView: button)
-    }()
+    lazy var backBarButtonItem : UIBarButtonItem = UIBarButtonItem(customView: self.backButton)
+    
+    lazy var backButton : UIButton = {
+            let image = #imageLiteral(resourceName: "back")
+            let button = UIButton(frame: CGRect(origin:.zero,size:image.size))
+            button.addTarget(self, action: #selector(self.backBarButtonHandler), for: .touchUpInside)
+            button.setImage(image, for: .normal)
+            return button
+        }()
     
     private var mapViewModels : [TFLStationDetailMapViewModel] = []
     private var tableViewviewModels : [TFLStationDetailTableViewModel] = []
@@ -113,13 +117,28 @@ class TFLStationDetailController: UIViewController {
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
-   
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else {
+            return
+        }
+        updateColors()
+    }
 }
 
 //
 // MARK: - Private
 //
 fileprivate extension TFLStationDetailController {
+    func updateColors() {
+        self.backButton.tintColor = UIColor(named:"tflButtonColor")
+        self.containerView.backgroundColor = UIColor(named:"tflNavigationItemBackgroundColor")
+        self.view.backgroundColor = UIColor(named: "tflBackgroundColor")
+        self.mapContainerView.backgroundColor =  UIColor(named: "tflBackgroundColor")
+        self.tableContainerView.backgroundColor = UIColor(named: "tflBackgroundColor")
+        self.stationDetailErrorView.backgroundColor = UIColor(named: "tflBackgroundColor")
+    }
+    
     func showOfflineView(_ show : Bool = true) {
         self.tableViewContainerViewBottomConstraint.constant = show ? self.offlineView.frame.size.height : 0
         UIView.animate(withDuration: 0.25) {
@@ -154,6 +173,7 @@ fileprivate extension TFLStationDetailController {
                 self?.updateStatusView.state = .updatePending
             }
         }
+        updateColors()
     }
     
     func controllerModels(for line : String,on queue : OperationQueue = .main,using completionBlock : @escaping (_ tableViewModels:[TFLStationDetailTableViewModel],_ mapViewModels: [TFLStationDetailMapViewModel]) -> Void) {

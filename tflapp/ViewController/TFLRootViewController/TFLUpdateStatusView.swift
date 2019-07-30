@@ -104,6 +104,7 @@ class TFLUpdateStatusView : UIView {
     lazy var updatingStateIndicatorView : UIActivityIndicatorView = {
         let indicatorView = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
         indicatorView.translatesAutoresizingMaskIntoConstraints = false
+        indicatorView.color = UIColor(named: "tflRefreshTextColor")
         indicatorView.startAnimating()
         return indicatorView
     }()

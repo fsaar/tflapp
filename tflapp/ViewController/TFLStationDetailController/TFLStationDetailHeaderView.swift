@@ -17,7 +17,6 @@ class TFLStationDetailHeaderView: UIView {
     
     @IBOutlet weak var backgroundImageView : UIImageView! = nil {
         didSet {
-            self.backgroundImageView.image = self.titleBackgroundImage
             self.backgroundImageView.backgroundColor = .clear
         }
     }
@@ -36,8 +35,6 @@ class TFLStationDetailHeaderView: UIView {
         }
     }
 
-    lazy var titleBackgroundImage = backgroundImage()
-        
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else {
@@ -54,7 +51,6 @@ fileprivate extension TFLStationDetailHeaderView {
         format.opaque = false
         let renderer = UIGraphicsImageRenderer(bounds: bounds,format: format)
         return renderer.image { context in
-          //  UIColor(named: "tflBackgroundColor")?.setFill()
             UIColor.clear.setFill()
             context.fill(bounds)
             
@@ -74,7 +70,6 @@ fileprivate extension TFLStationDetailHeaderView {
     
     func updateColors() {
         self.titleLabel.textColor = UIColor(named:"tflSecondaryTextColor")
-        self.titleBackgroundImage = backgroundImage()
-        self.backgroundImageView.image = self.titleBackgroundImage
+        self.backgroundImageView.image =  backgroundImage()
     }
 }

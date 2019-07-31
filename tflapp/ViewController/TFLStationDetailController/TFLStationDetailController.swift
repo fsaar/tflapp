@@ -73,8 +73,9 @@ class TFLStationDetailController: UIViewController {
     lazy var backBarButtonItem : UIBarButtonItem = UIBarButtonItem(customView: self.backButton)
     
     lazy var backButton : UIButton = {
-            let image = #imageLiteral(resourceName: "back")
-            let button = UIButton(frame: CGRect(origin:.zero,size:image.size))
+        let config = UIImage.SymbolConfiguration(pointSize: 30,weight:.light,scale:.medium)
+        let image = UIImage(systemName: "chevron.left",withConfiguration:config)
+        let button = UIButton(frame: CGRect(origin:.zero,size:image?.size ?? .zero))
             button.addTarget(self, action: #selector(self.backBarButtonHandler), for: .touchUpInside)
             button.setImage(image, for: .normal)
             return button
@@ -131,7 +132,7 @@ class TFLStationDetailController: UIViewController {
 //
 fileprivate extension TFLStationDetailController {
     func updateColors() {
-        self.backButton.tintColor = UIColor(named:"tflButtonColor")
+        self.backButton.tintColor = UIColor(named:"tflStationDetailControllerBackButtonColor")
         self.containerView.backgroundColor = UIColor(named:"tflNavigationItemBackgroundColor")
         self.view.backgroundColor = UIColor(named: "tflBackgroundColor")
         self.mapContainerView.backgroundColor =  UIColor(named: "tflBackgroundColor")

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14845" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14854.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14799.2"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14806.4"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -40,13 +40,13 @@
                                 <constraint firstAttribute="height" constant="0.5" id="HC2-mx-1EW"/>
                             </constraints>
                         </view>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bars" translatesAutoresizingMaskIntoConstraints="NO" id="Fs6-Xb-t1d">
-                            <rect key="frame" x="330" y="5" width="40" height="40"/>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="line.horizontal.3" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Fs6-Xb-t1d">
+                            <rect key="frame" x="334" y="13.5" width="36" height="24"/>
                             <color key="tintColor" name="tflStationDetailHeaderBarColor"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="40" id="4YK-sX-cyb"/>
-                                <constraint firstAttribute="height" constant="40" id="Mrt-Ay-Yso"/>
+                                <constraint firstAttribute="height" constant="40" id="gyT-9F-Dr6"/>
                             </constraints>
+                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="29" scale="medium" weight="thin"/>
                         </imageView>
                     </subviews>
                     <color key="backgroundColor" name="tflStationDetailHeaderBackgroundColor"/>
@@ -85,12 +85,12 @@
         </view>
     </objects>
     <resources>
-        <image name="bars" width="85" height="85"/>
+        <image name="line.horizontal.3" catalog="system" width="64" height="32"/>
         <namedColor name="tflStationDetailHeaderBackgroundColor">
-            <color red="0.80000001192092896" green="0.80000001192092896" blue="0.80000001192092896" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.20000000298023224" green="0.20000000298023224" blue="0.20000000298023224" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="tflStationDetailHeaderBarColor">
-            <color red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.80000001192092896" green="0.80000001192092896" blue="0.80000001192092896" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

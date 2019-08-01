@@ -78,7 +78,7 @@ class TFLDroppingBallView : UIView {
 
 fileprivate extension TFLDroppingBallView {
     func updateColors() {
-        self.ball.backgroundColor =  UIColor(named: "tflStopCodeBackgroundColor")
+        self.ball.backgroundColor =  UIColor(named: "tflDropBallBackgroundColor")
     }
     
     func setup() {

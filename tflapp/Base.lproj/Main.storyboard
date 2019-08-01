@@ -1062,22 +1062,22 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jzW-fO-l5j" userLabel="containerVIew">
-                                <rect key="frame" x="16.5" y="213" width="342" height="241"/>
+                                <rect key="frame" x="58.5" y="238" width="258" height="191"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stops" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CKr-qU-GQT">
-                                        <rect key="frame" x="40" y="147" width="302" height="94"/>
+                                        <rect key="frame" x="40" y="97" width="218" height="94"/>
                                         <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="77"/>
                                         <color key="textColor" name="tflSplashScreenTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Bus" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nox-49-dvi">
-                                        <rect key="frame" x="190" y="53" width="142" height="94"/>
+                                        <rect key="frame" x="106" y="3" width="142" height="94"/>
                                         <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="77"/>
                                         <color key="textColor" name="tflSplashScreenTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="busTemplate" translatesAutoresizingMaskIntoConstraints="NO" id="LBz-VH-nOP">
-                                        <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="116" height="100"/>
                                         <color key="tintColor" name="tflSplashScreenTextColor"/>
                                     </imageView>
                                 </subviews>

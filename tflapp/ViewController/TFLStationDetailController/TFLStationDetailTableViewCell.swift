@@ -176,6 +176,8 @@ fileprivate extension TFLStationDetailTableViewCell {
         self.lowerStationPath.backgroundColor = UIColor(named: "tflStopCodeBackgroundColor")
         self.upperStationPath.backgroundColor = UIColor(named: "tflStopCodeBackgroundColor")
         self.middleStationPath.backgroundColor = UIColor(named: "tflStopCodeBackgroundColor")
+        self.middleStationPath.layer.borderColor = UIColor(named: "tflMiddleStationPathBorderColor")?.cgColor
+        self.middleStationPath.layer.borderWidth = 1
         self.stationName.backgroundColor = UIColor(named: "tflBackgroundColor")
         self.stopCodeLabel.textColor =  UIColor(named: "tflStopCodeTextColor")
         self.stopCodeLabel.backgroundColor = UIColor(named: "tflStopCodeBackgroundColor")

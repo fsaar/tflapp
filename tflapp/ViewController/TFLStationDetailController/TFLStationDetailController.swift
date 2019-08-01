@@ -78,6 +78,7 @@ class TFLStationDetailController: UIViewController {
         let button = UIButton(frame: CGRect(origin:.zero,size:image?.size ?? .zero))
             button.addTarget(self, action: #selector(self.backBarButtonHandler), for: .touchUpInside)
             button.setImage(image, for: .normal)
+        button.accessibilityLabel = NSLocalizedString("TFLStationDetailController.backbutton.accessibitliyTitle",comment:"")
             return button
         }()
     

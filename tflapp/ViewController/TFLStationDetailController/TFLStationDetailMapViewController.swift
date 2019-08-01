@@ -112,7 +112,7 @@ extension TFLStationDetailMapViewController : MKMapViewDelegate {
         let polyline = MKPolyline(coordinates: coords, count: coords.count)
         let renderer = MKPolylineRenderer(polyline: polyline)
         renderer.lineWidth = 2
-        renderer.strokeColor = .red
+        renderer.strokeColor = UIColor(named: "tflAnnotationViewBackgroundColor")
         return renderer
     }
 

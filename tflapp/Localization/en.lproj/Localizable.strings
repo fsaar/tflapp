@@ -43,3 +43,4 @@
 "Common.meters" = "meters";
 "TFLTimerButton.refresh_stopped.accessibilityTitle" = "Refresh counter stopped";
 "TFLTimerButton.refresh_pending.accessibitliyTitle" = "Refreshing in";
+"TFLStationDetailController.backbutton.accessibitliyTitle" = "Back button";

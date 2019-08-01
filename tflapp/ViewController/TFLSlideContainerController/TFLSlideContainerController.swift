@@ -77,8 +77,16 @@ class TFLSlideContainerController: UIViewController {
         }
         let initPositionY = (self.snapPositions.first ?? 0) * self.view.frame.size.height
         self.updateSliderContainerView(with: CGPoint(x:self.sliderContainerView.frame.origin.x,y:initPositionY), animationTime: 0, velocity:0,final : true)
+        updateColors()
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else {
+            return
+        }
+        updateColors()
+    }
 
     func setContentControllers(with backgroundController : UIViewController,and sliderController : UIViewController) {
         add(backgroundController,to: backgroundContainerView )
@@ -87,7 +95,12 @@ class TFLSlideContainerController: UIViewController {
 }
 
 fileprivate extension TFLSlideContainerController {
-
+    func updateColors() {
+        sliderHandleBackgroundView.backgroundColor = UIColor(named: "tflSlideBlackgroundViewColor")
+        leftCustomViewContainer.backgroundColor = UIColor(named: "tflSlideBlackgroundViewColor")
+        rightCustomViewContainer.backgroundColor = UIColor(named: "tflSlideBlackgroundViewColor")
+    }
+    
     func add(_ controller: UIViewController,to containerView: UIView) {
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         addChild(controller)

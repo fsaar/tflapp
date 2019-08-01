@@ -96,7 +96,7 @@ class TFLUpdateStatusView : UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = NSLocalizedString("TFLUpdateStatusView.pending.title", comment: "")
         label.backgroundColor = .clear
-        label.textColor = .white
+        label.textColor = UIColor(named: "tflRefreshTextColor")
         label.font = UIFont.tflUpdateStatusPendingTitle()
         label.accessibilityLabel = NSLocalizedString("TFLUpdateStatusView.pending.accessibilityTitle", comment: "")
         return label
@@ -104,6 +104,7 @@ class TFLUpdateStatusView : UIView {
     lazy var updatingStateIndicatorView : UIActivityIndicatorView = {
         let indicatorView = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
         indicatorView.translatesAutoresizingMaskIntoConstraints = false
+        indicatorView.color = UIColor(named: "tflRefreshTextColor")
         indicatorView.startAnimating()
         return indicatorView
     }()
@@ -162,6 +163,14 @@ class TFLUpdateStatusView : UIView {
         super.init(coder: aDecoder)
         setup()
     }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else {
+            return
+        }
+        updateColors()
+    }
 }
 
 fileprivate extension TFLUpdateStatusView {
@@ -179,8 +188,13 @@ fileprivate extension TFLUpdateStatusView {
             updatingStateContainerView.bottomAnchor.constraint(equalTo:self.bottomAnchor)
             ])
         self.state = .paused
+        updateColors()
     }
     
+    func updateColors() {
+        self.updatingStateLabel.textColor = UIColor(named: "tflRefreshTextColor")
+        self.updatingStateIndicatorView.color = UIColor(named: "tflRefreshTextColor")
+    }
 }
 
 

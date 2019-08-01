@@ -69,7 +69,7 @@ class TFLStationDetailTableViewCell: UITableViewCell {
         }
     }
     lazy var arrivalInfoView : TFLArrivalInfoView = {
-       let infoView = TFLArrivalInfoView()
+        let infoView = TFLArrivalInfoView()
         return infoView
     }()
     
@@ -102,6 +102,7 @@ class TFLStationDetailTableViewCell: UITableViewCell {
         ])
         self.isAccessibilityElement = true
         prepareForReuse()
+        updateColors()
     }
 
     override func prepareForReuse() {
@@ -155,9 +156,34 @@ class TFLStationDetailTableViewCell: UITableViewCell {
             }
         }
     }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else {
+            return
+        }
+        updateColors()
+    }
 }
 
 fileprivate extension TFLStationDetailTableViewCell {
+    
+    func updateColors() {
+        self.contentView.backgroundColor = UIColor(named: "tflBackgroundColor")
+        self.upperContainer.backgroundColor = UIColor(named: "tflBackgroundColor")
+        self.middleContainer.backgroundColor = UIColor(named: "tflBackgroundColor")
+        self.lowerContainer.backgroundColor = UIColor(named: "tflBackgroundColor")
+        self.lowerStationPath.backgroundColor = UIColor(named: "tflStopCodeBackgroundColor")
+        self.upperStationPath.backgroundColor = UIColor(named: "tflStopCodeBackgroundColor")
+        self.middleStationPath.backgroundColor = UIColor(named: "tflStopCodeBackgroundColor")
+        self.middleStationPath.layer.borderColor = UIColor(named: "tflMiddleStationPathBorderColor")?.cgColor
+        self.middleStationPath.layer.borderWidth = 1
+        self.stationName.backgroundColor = UIColor(named: "tflBackgroundColor")
+        self.stopCodeLabel.textColor =  UIColor(named: "tflStopCodeTextColor")
+        self.stopCodeLabel.backgroundColor = UIColor(named: "tflStopCodeBackgroundColor")
+        self.stationName.textColor = UIColor(named: "tflPrimaryTextColor")
+    }
+    
     func accessibilityArrivalTime(in secs : UInt) -> String {
             switch secs {
             case ...60:

@@ -100,7 +100,7 @@ class TFLMapViewController: UIViewController {
     fileprivate lazy var userTrackingButton : MKUserTrackingButton = {
         let button = MKUserTrackingButton(mapView: self.mapView)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.tintColor = UIColor.red
+        button.tintColor = UIColor(named: "tflMapUserTrackingColor")
         return button
     }()
     
@@ -116,6 +116,15 @@ class TFLMapViewController: UIViewController {
         
     }
     fileprivate var selectableIdentifer : String?
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else {
+            return
+        }
+        updateColors()
+    }
+    
     
     func showBusStop(with identifier : String, animated : Bool) {
         guard let busStopArrivalsInfos = busStopPredicationCoordinateTuple?.0,
@@ -163,6 +172,10 @@ extension TFLMapViewController : MKMapViewDelegate {
 // MARK: Private
 
 fileprivate extension TFLMapViewController {
+    func updateColors() {
+        self.userTrackingButton.tintColor = UIColor(named: "tflMapUserTrackingColor")
+    }
+    
     func resetStateIfMapViewHidden(_ hidden : Bool) {
         state = hidden ? .inited : self.state
     }

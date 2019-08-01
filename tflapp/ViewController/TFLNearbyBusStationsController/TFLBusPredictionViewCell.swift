@@ -24,44 +24,34 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.contentView.layer.contents = TFLBusPredictionViewCell.busPredictionViewBackgroundImage.cgImage
         self.contentView.layer.contentsGravity = .resizeAspectFill
         self.contentView.isOpaque = true
         self.selectedBackgroundView = nil
         self.isAccessibilityElement = true
-        self.accessibilityTraits = .staticText
+        self.accessibilityTraits = [.staticText,.button]
+        updateColors()
         prepareForReuse()
-
     }
+    
+    
     private let bgColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
-    static var busPredictionViewBackgroundImage: UIImage = {
-        let bounds = CGRect(origin:.zero, size: CGSize(width: 54, height: 46))
-        let busNumberRect = CGRect(x: 5, y: 4, width: 44, height: 20)
-        let format = UIGraphicsImageRendererFormat()
-        format.opaque = true
-        let renderer = UIGraphicsImageRenderer(bounds: bounds,format: format)
-        return renderer.image { context in
-            UIColor.white.setFill()
-            context.fill(bounds)
-
-            let path = UIBezierPath(roundedRect: bounds, cornerRadius: 5)
-            let bgColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
-            bgColor.setFill()
-            path.fill()
-
-            let busNumberRectPath = UIBezierPath(roundedRect: busNumberRect , cornerRadius: busNumberRect.size.height/2)
-            UIColor.red.setFill()
-            UIColor.white.setStroke()
-            busNumberRectPath.fill()
-            busNumberRectPath.stroke()
-        }
-    }()
+    static var busPredictionViewBackgroundImage = defaultBackgroundImage()
+       
 
     override func prepareForReuse() {
         super.prepareForReuse()
         self.line.text = nil
         self.arrivalTime.setText("-",animated: false)
         self.accessibilityLabel = nil
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        TFLBusPredictionViewCell.busPredictionViewBackgroundImage = TFLBusPredictionViewCell.defaultBackgroundImage()
+        guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else {
+            return
+        }
+        updateColors()
     }
 
     func configure(with predictionViewModel: TFLBusStopArrivalsViewModel.LinePredictionViewModel,as update : Bool = false) {
@@ -75,6 +65,40 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
 
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
         return layoutAttributes
+    }
+    
+    func updateColors() {
+        self.backgroundColor = UIColor(named: "tflBackgroundColor")
+        self.contentView.backgroundColor = UIColor(named: "tflBackgroundColor")
+        self.line.textColor = UIColor(named: "tflSecondaryTextColor")
+        self.line.backgroundColor = UIColor(named: "tflLineBackgroundColor")
+        self.arrivalTime.backgroundColor = UIColor(named: "tflBusInfoBackgroundColor")
+        self.arrivalTime.textColor = UIColor(named: "tflPrimaryTextColor") ?? UIColor.purple
+        TFLBusPredictionViewCell.busPredictionViewBackgroundImage = TFLBusPredictionViewCell.defaultBackgroundImage()
+        self.contentView.layer.contents = TFLBusPredictionViewCell.busPredictionViewBackgroundImage.cgImage
+    }
+    
+    class func defaultBackgroundImage() -> UIImage {
+            let bounds = CGRect(origin:.zero, size: CGSize(width: 54, height: 46))
+            let busNumberRect = CGRect(x: 5, y: 4, width: 44, height: 20)
+            let format = UIGraphicsImageRendererFormat()
+            format.opaque = true
+            let renderer = UIGraphicsImageRenderer(bounds: bounds,format: format)
+            return renderer.image { context in
+                UIColor(named: "tflBackgroundColor")?.setFill()
+                context.fill(bounds)
+
+                let path = UIBezierPath(roundedRect: bounds, cornerRadius: 5)
+                let bgColor = UIColor(named: "tflBusInfoBackgroundColor")
+                bgColor?.setFill()
+                path.fill()
+
+                let busNumberRectPath = UIBezierPath(roundedRect: busNumberRect , cornerRadius: busNumberRect.size.height/2)
+                UIColor(named: "tflLineBackgroundColor")?.setFill()
+                UIColor(named: "tflLineBackgroundBorderColor")?.setStroke()
+                busNumberRectPath.fill()
+                busNumberRectPath.stroke()
+            }
     }
 
 }

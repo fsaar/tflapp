@@ -16,8 +16,8 @@ class TFLArrivalInfoView : UIView {
     fileprivate lazy var vehicleIDLabel : UILabel = {
         let vehicleIDLabel = UILabel(frame: .zero)
         vehicleIDLabel.translatesAutoresizingMaskIntoConstraints = false
-        vehicleIDLabel.backgroundColor = UIColor.white
-        vehicleIDLabel.textColor = .black
+        vehicleIDLabel.backgroundColor = UIColor(named: "tflArrivalInfoViewNumberBackgroundColor")
+        vehicleIDLabel.textColor = UIColor(named: "tflPrimaryTextColor") ?? .white
         vehicleIDLabel.minimumScaleFactor = 0.5
         vehicleIDLabel.adjustsFontSizeToFitWidth = true
         vehicleIDLabel.numberOfLines = 1
@@ -32,8 +32,8 @@ class TFLArrivalInfoView : UIView {
     fileprivate lazy var timeLabel : TFLAnimatedLabel = {
         let timeLabel = TFLAnimatedLabel(frame: .zero)
         timeLabel.translatesAutoresizingMaskIntoConstraints = false
-        timeLabel.textColor = .black
-        timeLabel.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
+        timeLabel.textColor = UIColor(named: "tflPrimaryTextColor") ?? .white
+        timeLabel.backgroundColor = UIColor(named: "tflArrivalInfoViewBackgroundColor")
         timeLabel.textAlignment = .center
         timeLabel.font = .tflStationDetailArrivalInfoTimeTitle()
         timeLabel.widthAnchor.constraint(equalToConstant: TFLArrivalInfoView.size.width - 4).isActive = true
@@ -45,34 +45,9 @@ class TFLArrivalInfoView : UIView {
     var timeInSecs : UInt = 0
     var vehicleID : String = ""
     
-    static fileprivate var busArrivalInfoViewBackgroundImage: UIImage = {
-        let bounds = CGRect(origin:.zero, size: CGSize(width: TFLArrivalInfoView.size.width, height: TFLArrivalInfoView.size.height))
-        let numberPlateRect = CGRect(x: 5, y: 4, width: TFLArrivalInfoView.size.width - 10, height: 16)
-        let format = UIGraphicsImageRendererFormat()
-        format.opaque = true
-        let renderer = UIGraphicsImageRenderer(bounds: bounds,format: format)
-        return renderer.image { context in
-            UIColor.white.setFill()
-            context.fill(bounds)
-            
-            let path = UIBezierPath(roundedRect: bounds, cornerRadius: 5)
-            UIColor.red.setFill()
-            path.fill()
-            
-            let innerPath = UIBezierPath(roundedRect: bounds.insetBy(dx: 1, dy: 1) , cornerRadius: 5)
-            let bgColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
-            bgColor.setFill()
-            innerPath.fill()
-            
-            let numberPlateRectPath = UIBezierPath(roundedRect: numberPlateRect , cornerRadius: 0)
-            UIColor.white.setFill()
-            UIColor.black.setStroke()
-            numberPlateRectPath.lineWidth = 0.5
-            numberPlateRectPath.fill()
-            numberPlateRectPath.stroke()
-            
-        }
-    }()
+    
+    
+    static fileprivate var busArrivalInfoViewBackgroundImage = TFLArrivalInfoView.backgroundImage()
     
     override init(frame : CGRect) {
         super.init(frame: frame)
@@ -91,9 +66,55 @@ class TFLArrivalInfoView : UIView {
         self.vehicleIDLabel.text = numberPlate
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else {
+            return
+        }
+        updateColors()
+    }
+       
+    
 }
 
 fileprivate extension TFLArrivalInfoView  {
+    static func backgroundImage() -> UIImage {
+        let bounds = CGRect(origin:.zero, size: CGSize(width: TFLArrivalInfoView.size.width, height: TFLArrivalInfoView.size.height))
+        let numberPlateRect = CGRect(x: 5, y: 4, width: TFLArrivalInfoView.size.width - 10, height: 16)
+        let format = UIGraphicsImageRendererFormat()
+        format.opaque = true
+        let renderer = UIGraphicsImageRenderer(bounds: bounds,format: format)
+        return renderer.image { context in
+            UIColor(named: "tflBackgroundColor")?.setFill()
+            context.fill(bounds)
+
+            let path = UIBezierPath(roundedRect: bounds, cornerRadius: 5)
+            UIColor(named: "tflArrivalInfoViewBorderColor")?.setFill()
+            path.fill()
+
+            let innerPath = UIBezierPath(roundedRect: bounds.insetBy(dx: 1, dy: 1) , cornerRadius: 5)
+            let bgColor = UIColor(named: "tflArrivalInfoViewBackgroundColor")
+            bgColor?.setFill()
+            innerPath.fill()
+
+            let numberPlateRectPath = UIBezierPath(roundedRect: numberPlateRect , cornerRadius: 0)
+            UIColor(named: "tflArrivalInfoViewNumberBackgroundColor")?.setFill()
+            UIColor(named: "tflArrivalInfoVIewNumberFieldBorderColor")?.setStroke()
+            numberPlateRectPath.lineWidth = 0.5
+            numberPlateRectPath.fill()
+            numberPlateRectPath.stroke()
+        }
+    }
+    
+    func updateColors() {
+        vehicleIDLabel.backgroundColor = UIColor(named: "tflArrivalInfoViewNumberBackgroundColor")
+        vehicleIDLabel.textColor = UIColor(named: "tflPrimaryTextColor") ?? .white
+        timeLabel.textColor = UIColor(named: "tflPrimaryTextColor") ?? .white
+        timeLabel.backgroundColor = UIColor(named: "tflArrivalInfoViewBackgroundColor")
+        TFLArrivalInfoView.busArrivalInfoViewBackgroundImage = TFLArrivalInfoView.backgroundImage()
+        self.layer.contents = TFLArrivalInfoView.busArrivalInfoViewBackgroundImage.cgImage
+    }
+    
     func arrivalTime(in secs : UInt) -> String {
         var timeString = ""
         
@@ -113,7 +134,6 @@ fileprivate extension TFLArrivalInfoView  {
     func setup() {
         self.addSubview(vehicleIDLabel)
         self.addSubview(timeLabel)
-        self.layer.contents = TFLArrivalInfoView.busArrivalInfoViewBackgroundImage.cgImage
         NSLayoutConstraint.activate([
             self.widthAnchor.constraint(equalToConstant: TFLArrivalInfoView.size.width),
             self.heightAnchor.constraint(equalToConstant: TFLArrivalInfoView.size.height),
@@ -123,6 +143,6 @@ fileprivate extension TFLArrivalInfoView  {
             self.timeLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor,constant:-5),
  
         ])
-        
+        updateColors()
     }
 }

@@ -21,5 +21,7 @@ class TFLStationDetailMapViewAnnotation: NSObject, MKAnnotation {
         self.identifier = identifier
         self.accessibilityString = description ?? stopCode
         super.init()
+        self.isAccessibilityElement = true
+        self.accessibilityTraits = [.button,.staticText]
     }
 }

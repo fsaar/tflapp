@@ -10,16 +10,19 @@ import UIKit
 
 class TFLStationDetailHeaderView: UIView {
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        updateColors()
+    }
+    
     @IBOutlet weak var backgroundImageView : UIImageView! = nil {
         didSet {
-            self.backgroundImageView.image = self.titleBackgroundImage
             self.backgroundImageView.backgroundColor = .clear
         }
     }
     @IBOutlet weak var titleLabel : UILabel! = nil {
         didSet {
             self.titleLabel.font = .tflStationDetailHeader()
-            self.titleLabel.textColor = .white
         }
     }
 
@@ -32,8 +35,17 @@ class TFLStationDetailHeaderView: UIView {
         }
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else {
+            return
+        }
+        updateColors()
+    }
+}
 
-    var titleBackgroundImage: UIImage {
+fileprivate extension TFLStationDetailHeaderView {
+    func backgroundImage() -> UIImage {
         let bounds = self.backgroundImageView.bounds
         let format = UIGraphicsImageRendererFormat()
         format.opaque = false
@@ -41,18 +53,23 @@ class TFLStationDetailHeaderView: UIView {
         return renderer.image { context in
             UIColor.clear.setFill()
             context.fill(bounds)
-
+            
             let borderPath = UIBezierPath(roundedRect: bounds , cornerRadius: bounds.size.height/2)
-            UIColor.white.setFill()
+            let bgColor = UIColor(named: "tflBusInfoBackgroundColor")
+            bgColor?.setFill()
             borderPath.fill()
-
+            
             let innerRect = bounds.insetBy(dx: 1, dy: 1)
             let busNumberRectPath = UIBezierPath(roundedRect: innerRect , cornerRadius: innerRect.size.height/2)
-            UIColor.red.setFill()
-            UIColor.white.setStroke()
+            UIColor(named: "tflLineBackgroundColor")?.setFill()
+            UIColor(named: "tflLineBackgroundBorderColor")?.setStroke()
             busNumberRectPath.fill()
             busNumberRectPath.stroke()
         }
     }
-
+    
+    func updateColors() {
+        self.titleLabel.textColor = UIColor(named:"tflSecondaryTextColor")
+        self.backgroundImageView.image =  backgroundImage()
+    }
 }

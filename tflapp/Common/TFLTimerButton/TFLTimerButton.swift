@@ -51,9 +51,10 @@ class TFLTimerButton : UIButton {
         let shapeLayer = self.shapeLayer(radius: radius,endAngle: CGFloat(2 * Double.pi * 0.92))
         shapeLayer.lineWidth = lineWidth
         shapeLayer.fillColor = UIColor.clear.cgColor
-        shapeLayer.strokeColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.8).cgColor
+        shapeLayer.strokeColor = UIColor(named: "tflRefreshRemainingTimeColor")?.cgColor
         return shapeLayer
     }()
+     
     
     fileprivate lazy var borderLayer : CAShapeLayer = {
         let lineWidth : CGFloat = outerWidth
@@ -64,27 +65,8 @@ class TFLTimerButton : UIButton {
         return shapeLayer
     }()
     
-    fileprivate lazy var circleBackgroundImage : UIImage = {
-        let bounds = CGRect(origin:.zero, size: CGSize(width: length, height: length))
-        let format = UIGraphicsImageRendererFormat()
-        format.opaque = false
-        let renderer = UIGraphicsImageRenderer(bounds: bounds,format: format)
-        return renderer.image { context in
-            UIColor.clear.setFill()
-            context.fill(bounds)
-            
-            let center = CGPoint(x: length / 2.0, y: length / 2.0)
-            let bezierPath = UIBezierPath(arcCenter: center, radius: radius , startAngle: 0, endAngle: CGFloat(2 * Double.pi), clockwise: true)
-            UIColor.white.setStroke()
-            bezierPath.lineWidth = outerWidth
-            bezierPath.stroke()
-            
-            let bezierPath2 = UIBezierPath(arcCenter: center, radius: radius , startAngle: 0, endAngle: CGFloat(2 * Double.pi), clockwise: true)
-            UIColor.lightGray.setStroke()
-            bezierPath2.lineWidth = innerWidth
-            bezierPath2.stroke()
-        }
-    }()
+    fileprivate lazy var circleBackgroundImage  = self.backgroundImage()
+        
 
     init(expiryTimeInSecods : Int) {
         self.expiryTime = expiryTimeInSecods
@@ -99,6 +81,14 @@ class TFLTimerButton : UIButton {
     
     deinit {
         self.displayLink?.invalidate()
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else {
+            return
+        }
+        updateColors()
     }
     
     func start() {
@@ -160,7 +150,15 @@ class TFLTimerButton : UIButton {
 // MARK: Private
 
 fileprivate extension TFLTimerButton {
-
+    func updateColors() {
+        let defaultTextColor = UIColor(named: "tflRefreshTextColor")
+        let highlightedTextColor = UIColor(named: "tflRefreshHighlightedTextColor")
+        self.setTitleColor(defaultTextColor, for: .normal)
+        self.setTitleColor(highlightedTextColor, for: .highlighted)
+        self.innerLayer.strokeColor = UIColor(named: "tflRefreshRemainingTimeColor")?.cgColor
+        self.circleBackgroundImage  = self.backgroundImage()
+    }
+    
     func setup() {
         self.layer.contents = self.circleBackgroundImage.cgImage
         self.layer.addSublayer(self.borderLayer)
@@ -169,14 +167,13 @@ fileprivate extension TFLTimerButton {
         self.clipsToBounds = true
 
         self.setTitle("\(expiryTime)", for: .normal)
-        self.setTitleColor(.white, for: .normal)
-        self.setTitleColor(.gray, for: .highlighted)
         self.titleLabel?.font = UIFont.tflTimerButtonTitle()
         self.titleLabel?.textAlignment = .center
         self.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         self.addTarget(self, action: #selector(self.tapHandler(_:)), for: .touchUpInside)
         self.isAccessibilityElement = true
         self.accessibilityLabel = NSLocalizedString("TFLTimerButton.refresh_stopped.accessibilityTitle", comment: "")
+        updateColors()
     }
     
     
@@ -224,4 +221,26 @@ fileprivate extension TFLTimerButton {
         let suffixTitle = "\(timeLeft) \(NSLocalizedString(localisationCopy,comment:""))"
         self.accessibilityLabel = "\(prefixTitle) \(suffixTitle)"
     }
+    
+    func backgroundImage() -> UIImage {
+            let bounds = CGRect(origin:.zero, size: CGSize(width: length, height: length))
+                    let format = UIGraphicsImageRendererFormat()
+                    format.opaque = false
+                    let renderer = UIGraphicsImageRenderer(bounds: bounds,format: format)
+                    return renderer.image { context in
+                        UIColor.clear.setFill()
+                        context.fill(bounds)
+                        
+                        let center = CGPoint(x: length / 2.0, y: length / 2.0)
+                        let bezierPath = UIBezierPath(arcCenter: center, radius: radius , startAngle: 0, endAngle: CGFloat(2 * Double.pi), clockwise: true)
+                        UIColor.white.setStroke()
+                        bezierPath.lineWidth = outerWidth
+                        bezierPath.stroke()
+                        
+                        let bezierPath2 = UIBezierPath(arcCenter: center, radius: radius , startAngle: 0, endAngle: CGFloat(2 * Double.pi), clockwise: true)
+                        UIColor(named: "tflRefreshBackgroundColor")?.setStroke()
+                        bezierPath2.lineWidth = innerWidth
+                        bezierPath2.stroke()
+                    }
+        }
 }

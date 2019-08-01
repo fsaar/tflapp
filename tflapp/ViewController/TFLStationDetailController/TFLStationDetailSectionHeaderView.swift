@@ -18,20 +18,25 @@ class TFLStationDetailSectionHeaderView: UITableViewHeaderFooterView {
     var section : Int = 0
     var startPanY : CGFloat = 0
     @IBOutlet weak var barView : UIImageView!
-
+    @IBOutlet weak var upperSeparator : UIView!
+    @IBOutlet weak var lowerSeparator : UIView!
     @IBOutlet weak var titleLabel : UILabel! = nil {
         didSet {
             self.titleLabel.font = UIFont.tflStationDetailSectionHeaderTitle()
-            self.titleLabel.textColor = UIColor.black
+            self.titleLabel.textColor = .black
         }
     }
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.isOpaque = true
+        self.contentView.isOpaque = true
         self.barView.alpha = 0
         let recognizer = UIPanGestureRecognizer(target: self, action: #selector(panGestureHandler(_:)))
         recognizer.delegate = self
         self.addGestureRecognizer(recognizer)
+        updateColors()
+        prepareForReuse()
     }
 
     override func prepareForReuse() {
@@ -66,9 +71,27 @@ class TFLStationDetailSectionHeaderView: UITableViewHeaderFooterView {
             self.barView.alpha = show ? 1.0 : 0.0
         }
     }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else {
+            return
+        }
+        updateColors()
+    }
+       
 }
 
 extension TFLStationDetailSectionHeaderView : UIGestureRecognizerDelegate {
+    func updateColors() {
+        self.titleLabel.textColor = UIColor(named: "tflStationDetailHeaderBarColor")
+        self.barView.tintColor = UIColor(named: "tflStationDetailHeaderBarColor")
+        self.backgroundColor = UIColor(named: "tflStationDetailHeaderBackgroundColor")
+        self.contentView.backgroundColor = UIColor(named: "tflStationDetailHeaderBackgroundColor")
+        self.upperSeparator.backgroundColor = UIColor(named: "tflStationDetailHeaderBarColor")
+        self.lowerSeparator.backgroundColor = UIColor(named: "tflStationDetailHeaderBarColor")
+    }
+    
     override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         let panEnabled = self.delegate?.panEnabledForHeaderView(self) ?? false
         return panEnabled

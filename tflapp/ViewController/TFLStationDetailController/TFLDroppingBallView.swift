@@ -16,7 +16,6 @@ class TFLDroppingBallView : UIView {
             ball.widthAnchor.constraint(equalToConstant: 10),
             ball.heightAnchor.constraint(equalToConstant: 10)
             ])
-        ball.backgroundColor = UIColor.red
         ball.isHidden = true
         ball.clipsToBounds = true
         ball.layer.cornerRadius = 5
@@ -66,9 +65,22 @@ class TFLDroppingBallView : UIView {
         self.layoutIfNeeded()
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else {
+            return
+        }
+        updateColors()
+    }
+    
+    
 }
 
 fileprivate extension TFLDroppingBallView {
+    func updateColors() {
+        self.ball.backgroundColor =  UIColor(named: "tflDropBallBackgroundColor")
+    }
+    
     func setup() {
         self.addSubview(ball)
         self.backgroundColor = .clear
@@ -76,5 +88,6 @@ fileprivate extension TFLDroppingBallView {
             ball.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             heightConstraint
             ])
+        updateColors()
     }
 }

@@ -8,10 +8,23 @@
 
 import UIKit
 
+class TFLHUDContainerView : UIView {
+    var traitCollectionDidChangeBlock : ((_ previousTraitCollection: UITraitCollection?) -> Void)?
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else {
+            return
+        }
+        traitCollectionDidChangeBlock?(previousTraitCollection)
+    }
+}
+
+
 class TFLHUD {
     private static var tflhud : TFLHUD? = nil
     private let label : UILabel = {
-        let label =  UILabel(frame: .zero)
+        let label =  UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = NSLocalizedString("TFLHUD.title", comment: "")
         label.backgroundColor = .white
@@ -22,13 +35,16 @@ class TFLHUD {
     }()
     
     private lazy var containerView : UIView = {
-        let view = UIView(frame:.zero)
+        let view = TFLHUDContainerView()
+        view.traitCollectionDidChangeBlock = { [updateColors] _ in
+            updateColors()
+        }
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .white
         view.clipsToBounds = true
         view.layer.cornerRadius = 20
-        view.layer.borderColor = UIColor.red.cgColor
         view.layer.borderWidth = 2
+        let color = UIColor(named:"tflHUDBorderColor")
+        view.layer.borderColor = color?.resolvedColor(with:view.traitCollection).cgColor
         view.heightAnchor.constraint(equalToConstant: 40).isActive = true
         view.isAccessibilityElement = true
         view.accessibilityLabel = NSLocalizedString("TFLHUD.accessiblityTitle", comment: "")
@@ -59,7 +75,7 @@ class TFLHUD {
     }
     
     private let indicator : UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView(frame: .zero)
+        let indicator = UIActivityIndicatorView()
         indicator.style = UIActivityIndicatorView.Style.medium
         indicator.translatesAutoresizingMaskIntoConstraints = false
         indicator.startAnimating()
@@ -80,6 +96,14 @@ class TFLHUD {
 }
 
 fileprivate extension TFLHUD {
+    func updateColors() {
+        self.containerView.backgroundColor = UIColor(named:"tflBackgroundColor")
+        self.containerView.layer.borderColor = UIColor(named:"tflHUDBorderColor")?.cgColor ?? UIColor.white.cgColor
+        self.label.backgroundColor = UIColor(named:"tflBackgroundColor")
+        self.label.textColor =  UIColor(named:"tflPrimaryTextColor")
+        self.indicator.color = UIColor(named:"tflPrimaryTextColor")
+    }
+    
     
     func show()  {
         guard let delegate  = UIApplication.shared.delegate as? AppDelegate,let window  = delegate.window else {
@@ -120,5 +144,6 @@ fileprivate extension TFLHUD {
             label.centerYAnchor.constraint(equalTo: containerView.centerYAnchor, constant: 0),
             indicator.centerYAnchor.constraint(equalTo: containerView.centerYAnchor, constant: 0)
         ])
+        updateColors()
     }
 }

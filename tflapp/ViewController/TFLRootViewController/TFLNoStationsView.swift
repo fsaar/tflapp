@@ -9,7 +9,6 @@ class TFLNoStationsView : UIView {
     @IBOutlet weak var infoLabel : UILabel! = nil {
         didSet {
             self.infoLabel.font = UIFont.tflFont(size: 18)
-            self.infoLabel.textColor = .white
             self.infoLabel.text = NSLocalizedString("TFLNoStationsView.title", comment: "")
             self.infoLabel.isAccessibilityElement = false
         }
@@ -27,14 +26,30 @@ class TFLNoStationsView : UIView {
         self.layer.borderColor = UIColor.red.cgColor
         self.layer.cornerRadius = 5
         self.layer.borderWidth = 0.5
-        self.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
         self.isAccessibilityElement = true
         self.accessibilityLabel = NSLocalizedString("TFLNoStationsView.accessibilityTitle", comment:"")
         self.accessibilityTraits = .staticText
+        self.updateColors()
     }
 
     @IBAction func buttonHandler(button : UIButton) {
         self.delegate?.didTap(noStationsButton: button, in: self)
     }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else {
+            return
+        }
+        updateColors()
+    }
 
+}
+
+
+fileprivate extension TFLNoStationsView {
+    func updateColors() {
+        self.backgroundColor = UIColor(named: "tflErrorViewBackgroundColor")
+        self.infoLabel.textColor = UIColor(named: "tflSecondaryTextColor")
+    }
 }

@@ -6,6 +6,8 @@ protocol TFLBusStationArrivalCellDelegate : AnyObject {
 }
 
 class TFLBusStationArrivalsCell: UITableViewCell {
+    @IBOutlet weak var separator : UIView!
+    
     @IBOutlet weak var stationName : UILabel! = nil {
         didSet {
             self.stationName.font = UIFont.tflFontStationHeader()
@@ -46,8 +48,10 @@ class TFLBusStationArrivalsCell: UITableViewCell {
         isAccessibilityElement = false
         accessibilityTraits = [.staticText , .summaryElement]
         self.contentView.isAccessibilityElement = true
+        self.contentView.accessibilityTraits = [.staticText,.summaryElement,.button]
         self.accessibilityElements = [self.contentView,predictionView].compactMap { $0 }
         predictionView.busPredictionViewDelegate = self
+        updateColors()
         prepareForReuse()
     }
 
@@ -59,6 +63,14 @@ class TFLBusStationArrivalsCell: UITableViewCell {
         self.predictionView.contentOffset = .zero
         self.predictionView.setPredictions(predictions: [],animated: false)
         self.accessibilityLabel = nil
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else {
+            return
+        }
+        updateColors()
     }
 
     func configure(with busStopArrivalViewModel: TFLBusStopArrivalsViewModel,animated: Bool = false) {
@@ -84,6 +96,19 @@ fileprivate extension TFLBusStationArrivalsCell {
         return "\(busStopArrivalViewModel.stationName) -- \(busStopArrivalViewModel.stationDetails) - \(distance) \(metersCopyToUse) away"
     }
 
+    func updateColors() {
+        self.contentView.backgroundColor = UIColor(named: "tflBackgroundColor")
+        self.stationName.backgroundColor = UIColor(named: "tflBackgroundColor")
+        self.stationDetails.backgroundColor = UIColor(named: "tflBackgroundColor")
+        self.distanceLabel.backgroundColor = UIColor(named: "tflBackgroundColor")
+        self.predictionView.backgroundColor = UIColor(named: "tflBackgroundColor")
+        self.stationName.textColor = UIColor(named: "tflPrimaryTextColor")
+        self.stationDetails.textColor = UIColor(named: "tflPrimaryTextColor")
+        self.distanceLabel.textColor = UIColor(named: "tflPrimaryTextColor")
+        self.busStopLabel.textColor =  UIColor(named: "tflStopCodeTextColor")
+        self.busStopLabel.backgroundColor = UIColor(named: "tflStopCodeBackgroundColor")
+        self.separator.backgroundColor = UIColor(named:"tflSeparatorColor")
+    }
 }
 
 extension TFLBusStationArrivalsCell : TFLBusPredictionViewDelegate {

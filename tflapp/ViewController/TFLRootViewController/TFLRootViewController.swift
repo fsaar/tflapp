@@ -354,11 +354,11 @@ fileprivate extension TFLRootViewController {
 // MARK: - TFLErrorContainerViewDelegate
 
 extension TFLRootViewController : TFLErrorContainerViewDelegate {
-    func didTap(noStationsButton: UIButton,in view : TFLNoStationsView) {
+    func didTapNoStationsButton() {
         loadNearbyBusstops ()
     }
     
-    func didTap(noGPSEnabledButton: UIButton,in view : TFLNoGPSEnabledView) {
+    func didTapNoGPSEnabledButton() {
         guard let url = URL(string: UIApplication.openSettingsURLString) else {
             return
         }

@@ -8,31 +8,24 @@
 
 import Foundation
 import UIKit
+// TODO: 1. definte proper delegate
+// TODO: 2. definite accessiblity label for nogps error
+// TODO: 3. check if switch statement in rootviewcontroller can be moved over via evaluation of error here
 
-protocol TFLErrorContainerViewDelegate : TFLNoStationsViewDelegate,TFLNoGPSEnabledViewDelegate {
-    
+protocol TFLErrorContainerViewDelegate : AnyObject {
+    func didTapNoGPSEnabledButton()
+    func didTapNoStationsButton()
 }
 
 class TFLErrorContainerView : UIView {
     weak var delegate : TFLErrorContainerViewDelegate?
     var errorViews : [UIView] = []
-    @IBOutlet weak var noGPSEnabledView : TFLNoGPSEnabledView! = nil {
-        didSet {
-            self.noGPSEnabledView.delegate = self
-        }
-    }
-    @IBOutlet weak var loadArrivalTimesView : TFLLoadArrivalTimesView!
-    @IBOutlet weak var noStationsView : TFLNoStationsView! = nil {
-        didSet {
-            self.noStationsView.delegate = self
-        }
-    }
-    @IBOutlet weak var loadLocationsView : TFLLoadLocationView!
-    @IBOutlet weak var loadNearbyStationsView : TFLLoadNearbyStationsView!
+    @IBOutlet weak var errorView : TFLErrorView!
+    @IBOutlet weak var progressInformationView : TFLProgressInformationView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        errorViews = [noGPSEnabledView,loadArrivalTimesView,noStationsView,loadLocationsView,loadNearbyStationsView]
+        errorViews = [errorView,progressInformationView]
         hideErrorViews()
         updateColors()
     }
@@ -52,46 +45,58 @@ class TFLErrorContainerView : UIView {
     
     func showNoGPSEnabledError() {
         hideErrorViews()
-        noGPSEnabledView.isHidden = false
+        let description = NSLocalizedString("TFLNoGPSEnabledView.title", comment: "")
+        let title = NSLocalizedString("TFLNoGPSEnabledView.headerTitle", comment: "")
+        let buttonCaption = NSLocalizedString("TFLNoGPSEnabledView.settingsButtonTitle", comment: "")
+        errorView.setTitle(title, description: description, buttonCaption: buttonCaption, accessibilityLabel: "") { [weak self] _ in
+            self?.delegate?.didTapNoGPSEnabledButton()
+        }
+        errorView.isHidden = false
         self.isHidden = false
     }
     
     func showNoStationsFoundError() {
         hideErrorViews()
-        noStationsView.isHidden = false
+        
+        let title = NSLocalizedString("TFLNoStationsView.title", comment: "")
+        let description  = NSLocalizedString("TFLNoStationsView.description", comment: "")
+        let buttonCaption = NSLocalizedString("TFLNoStationsView.retryButtonTitle", comment: "")
+        let accessibilityTitle = NSLocalizedString("TFLNoStationsView.accessibilityTitle",comment:"")
+        errorView.setTitle(title, description: description, buttonCaption: buttonCaption, accessibilityLabel: accessibilityTitle) { [weak self] _ in
+            self?.delegate?.didTapNoStationsButton()
+        }
+        errorView.isHidden = false
         self.isHidden = false
     }
     
     func showLoadingArrivalTimesIfNeedBe(isContentAvailable : Bool) {
         hideErrorViews()
-        loadArrivalTimesView.isHidden = isContentAvailable
+        let accessiblityTitle = NSLocalizedString("TFLLoadArrivalTimesView.accessiblityTitle",comment:"")
+        let title = NSLocalizedString("TFLLoadArrivalTimesView.title", comment: "")
+        progressInformationView.setInformation(title, accessibilityLabel: accessiblityTitle)
+        progressInformationView.isHidden = isContentAvailable
         self.isHidden = isContentAvailable
     }
     
     func showLoadingCurrentLocationIfNeedBe(isContentAvailable : Bool) {
         hideErrorViews()
-        loadLocationsView.isHidden = isContentAvailable
+        let accessiblityTitle = NSLocalizedString("TFLLoadLocationView.accessibilityTitle",comment:"")
+        let title = NSLocalizedString("TFLLoadLocationView.title", comment: "")
+        progressInformationView.setInformation(title, accessibilityLabel: accessiblityTitle)
+        progressInformationView.isHidden = isContentAvailable
         self.isHidden = isContentAvailable
     }
     
     func showLoadingNearbyStationsIfNeedBe(isContentAvailable : Bool) {
         hideErrorViews()
-        loadNearbyStationsView.isHidden = isContentAvailable
+        let accessiblityTitle = NSLocalizedString("TFLLoadNearbyStationsView.accessibilityTitle",comment:"")
+        let title = NSLocalizedString("TFLLoadNearbyStationsView.title", comment: "")
+        progressInformationView.setInformation(title, accessibilityLabel: accessiblityTitle)
+        progressInformationView.isHidden = isContentAvailable
         self.isHidden = isContentAvailable
     }
 }
 
-extension TFLErrorContainerView : TFLNoStationsViewDelegate {
-    func didTap(noStationsButton: UIButton,in view : TFLNoStationsView) {
-        self.delegate?.didTap(noStationsButton: noStationsButton, in: view)
-    }
-}
-
-extension TFLErrorContainerView : TFLNoGPSEnabledViewDelegate {
-    func didTap(noGPSEnabledButton: UIButton,in view : TFLNoGPSEnabledView) {
-        self.delegate?.didTap(noGPSEnabledButton: noGPSEnabledButton, in: view)
-    }
-}
 
 fileprivate extension TFLErrorContainerView {
     func updateColors() {

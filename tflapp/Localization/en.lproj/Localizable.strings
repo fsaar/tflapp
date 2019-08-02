@@ -10,6 +10,7 @@
 "TFLLoadArrivalTimesView.title" = "Loading bus schedules ...";
 "TFLLoadArrivalTimesView.accessiblityTitle" = "Loading bus schedules - Please wait";
 "TFLNoGPSEnabledView.title" = "For this app to function properly location services need to be enabled in settings.";
+"TFLNoGPSEnabledView.accessibilityTitle" = "For this app to function properly location services need to be enabled in settings.";
 "TFLNoGPSEnabledView.settingsButtonTitle" = "Go to Settings";
 "TFLNoGPSEnabledView.headerTitle" = "No Location Services";
 "TFLRootViewController.ackTitle" = "Powered by TfL Open Data";

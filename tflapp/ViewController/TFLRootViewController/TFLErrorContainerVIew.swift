@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-// TODO: 2. define accessiblity label for nogps error
 // TODO: 3. check if switch statement in rootviewcontroller can be moved over via evaluation of error here
 
 protocol TFLErrorContainerViewDelegate : AnyObject {
@@ -47,7 +46,9 @@ class TFLErrorContainerView : UIView {
         let description = NSLocalizedString("TFLNoGPSEnabledView.title", comment: "")
         let title = NSLocalizedString("TFLNoGPSEnabledView.headerTitle", comment: "")
         let buttonCaption = NSLocalizedString("TFLNoGPSEnabledView.settingsButtonTitle", comment: "")
-        errorView.setTitle(title, description: description, buttonCaption: buttonCaption, accessibilityLabel: "") { [weak self] button in
+        let accessibilityTitle = NSLocalizedString("TFLNoGPSEnabledView.accessibilityTitle",comment:"")
+        
+        errorView.setTitle(title, description: description, buttonCaption: buttonCaption, accessibilityLabel: accessibilityTitle) { [weak self] button in
             guard let self = self else {
                 return
             }

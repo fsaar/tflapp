@@ -76,35 +76,33 @@ class TFLErrorContainerView : UIView {
     }
     
     func showLoadingArrivalTimesIfNeedBe(isContentAvailable : Bool) {
-        hideErrorViews()
         let accessiblityTitle = NSLocalizedString("TFLLoadArrivalTimesView.accessiblityTitle",comment:"")
         let title = NSLocalizedString("TFLLoadArrivalTimesView.title", comment: "")
-        progressInformationView.setInformation(title, accessibilityLabel: accessiblityTitle)
-        progressInformationView.isHidden = isContentAvailable
-        self.isHidden = isContentAvailable
+        configureProgressInformationView(title: title, accessibilityTitle: accessiblityTitle, isContentAvailable: isContentAvailable)
     }
     
     func showLoadingCurrentLocationIfNeedBe(isContentAvailable : Bool) {
-        hideErrorViews()
         let accessiblityTitle = NSLocalizedString("TFLLoadLocationView.accessibilityTitle",comment:"")
         let title = NSLocalizedString("TFLLoadLocationView.title", comment: "")
-        progressInformationView.setInformation(title, accessibilityLabel: accessiblityTitle)
-        progressInformationView.isHidden = isContentAvailable
-        self.isHidden = isContentAvailable
+        configureProgressInformationView(title: title, accessibilityTitle: accessiblityTitle, isContentAvailable: isContentAvailable)
     }
     
     func showLoadingNearbyStationsIfNeedBe(isContentAvailable : Bool) {
-        hideErrorViews()
         let accessiblityTitle = NSLocalizedString("TFLLoadNearbyStationsView.accessibilityTitle",comment:"")
         let title = NSLocalizedString("TFLLoadNearbyStationsView.title", comment: "")
-        progressInformationView.setInformation(title, accessibilityLabel: accessiblityTitle)
-        progressInformationView.isHidden = isContentAvailable
-        self.isHidden = isContentAvailable
+        configureProgressInformationView(title: title, accessibilityTitle: accessiblityTitle, isContentAvailable: isContentAvailable)
     }
 }
 
 
 fileprivate extension TFLErrorContainerView {
+    func configureProgressInformationView(title : String,accessibilityTitle: String, isContentAvailable : Bool) {
+        hideErrorViews()
+        progressInformationView.setInformation(title, accessibilityLabel: accessibilityTitle)
+        progressInformationView.isHidden = isContentAvailable
+        self.isHidden = isContentAvailable
+    }
+    
     func updateColors() {
         self.backgroundColor = UIColor(named: "tflBackgroundColor")
     }

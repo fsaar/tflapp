@@ -8,13 +8,12 @@
 
 import Foundation
 import UIKit
-// TODO: 1. definte proper delegate
-// TODO: 2. definite accessiblity label for nogps error
+// TODO: 2. define accessiblity label for nogps error
 // TODO: 3. check if switch statement in rootviewcontroller can be moved over via evaluation of error here
 
 protocol TFLErrorContainerViewDelegate : AnyObject {
-    func didTapNoGPSEnabledButton()
-    func didTapNoStationsButton()
+    func errorContainerViewDidTapNoGPSEnabledButton(_ containerView : UIView,button : UIButton)
+    func errorContainerViewDidTapNoStationsButton(_ containerView : UIView,button : UIButton)
 }
 
 class TFLErrorContainerView : UIView {
@@ -48,8 +47,11 @@ class TFLErrorContainerView : UIView {
         let description = NSLocalizedString("TFLNoGPSEnabledView.title", comment: "")
         let title = NSLocalizedString("TFLNoGPSEnabledView.headerTitle", comment: "")
         let buttonCaption = NSLocalizedString("TFLNoGPSEnabledView.settingsButtonTitle", comment: "")
-        errorView.setTitle(title, description: description, buttonCaption: buttonCaption, accessibilityLabel: "") { [weak self] _ in
-            self?.delegate?.didTapNoGPSEnabledButton()
+        errorView.setTitle(title, description: description, buttonCaption: buttonCaption, accessibilityLabel: "") { [weak self] button in
+            guard let self = self else {
+                return
+            }
+            self.delegate?.errorContainerViewDidTapNoGPSEnabledButton(self.errorView, button: button)
         }
         errorView.isHidden = false
         self.isHidden = false
@@ -62,8 +64,11 @@ class TFLErrorContainerView : UIView {
         let description  = NSLocalizedString("TFLNoStationsView.description", comment: "")
         let buttonCaption = NSLocalizedString("TFLNoStationsView.retryButtonTitle", comment: "")
         let accessibilityTitle = NSLocalizedString("TFLNoStationsView.accessibilityTitle",comment:"")
-        errorView.setTitle(title, description: description, buttonCaption: buttonCaption, accessibilityLabel: accessibilityTitle) { [weak self] _ in
-            self?.delegate?.didTapNoStationsButton()
+        errorView.setTitle(title, description: description, buttonCaption: buttonCaption, accessibilityLabel: accessibilityTitle) { [weak self] button in
+            guard let self = self else {
+                return
+            }
+            self.delegate?.errorContainerViewDidTapNoStationsButton(self.errorView,button:button)
         }
         errorView.isHidden = false
         self.isHidden = false

@@ -169,7 +169,7 @@ cyclomatic_complexity:
   - 15
 # they can set both implicitly with an array
 type_body_length:
-  - 155 # warning
+  - 160 # warning
   - 200 # error
 # or they can set both explicitly
 file_length:

@@ -48,7 +48,7 @@ class TFLTimerSpec: QuickSpec {
             }
             it ("should NOT call timerhandler if timer stopped before timing out") {
                 var called  = false
-                let timer = TFLTimer(timerInterVal: 0.01, timerHandler: { _ in
+                let timer = TFLTimer(timerInterVal: 0.5, timerHandler: { _ in
                     called = true
                 })
                 timer?.start()

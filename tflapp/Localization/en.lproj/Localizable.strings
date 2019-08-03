@@ -2,13 +2,15 @@
 "TFLLoadLocationView.accessibilityTitle" = "Retrieving current location - Please wait";
 "TFLLoadNearbyStationsView.title" = "Loading nearby stations ...";
 "TFLLoadNearbyStationsView.accessibilityTitle" = "Loading nearby stations  - Please wait";
-"TFLNoStationsView.title" = "No stations found for your current location. You can increase the search distance in settings.";
+"TFLNoStationsView.title" = "No stations found";
+"TFLNoStationsView.description" = "No stations found for your current location. You can increase the search distance in settings.";
 "TFLNoStationsView.accessibilityTitle" = "No stations found for your current location. You can increase the search distance in settings.";
 "TFLNoStationsView.retryButtonTitle" = "Try again";
 "TFLStationDetailNearby.title" = "Nearby";
 "TFLLoadArrivalTimesView.title" = "Loading bus schedules ...";
 "TFLLoadArrivalTimesView.accessiblityTitle" = "Loading bus schedules - Please wait";
 "TFLNoGPSEnabledView.title" = "For this app to function properly location services need to be enabled in settings.";
+"TFLNoGPSEnabledView.accessibilityTitle" = "For this app to function properly location services need to be enabled in settings.";
 "TFLNoGPSEnabledView.settingsButtonTitle" = "Go to Settings";
 "TFLNoGPSEnabledView.headerTitle" = "No Location Services";
 "TFLRootViewController.ackTitle" = "Powered by TfL Open Data";

@@ -1,20 +1,40 @@
 import UIKit
 
-class TFLLoadNearbyStationsView : UIView {
+class TFLProgressInformationView : UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.isAccessibilityElement = true
-        self.accessibilityLabel = NSLocalizedString("TFLLoadNearbyStationsView.accessibilityTitle",comment:"")
+        self.accessibilityLabel = nil
         self.accessibilityTraits = .staticText
-        self.updateColors()
+        updateColors()
     }
     
     @IBOutlet weak var infoLabel : UILabel! = nil {
         didSet {
             self.infoLabel.font = UIFont.tflFont(size: 17)
-            self.infoLabel.text = NSLocalizedString("TFLLoadNearbyStationsView.title", comment: "")
+            self.infoLabel.text = nil
             self.infoLabel.isAccessibilityElement = false
         }
+    }
+    @IBOutlet weak var indicator : UIActivityIndicatorView!
+
+    override var isHidden: Bool  {
+        didSet {
+            if let indicator = self.indicator {
+                if isHidden {
+                    indicator.stopAnimating()
+                }
+                else
+                {
+                    indicator.startAnimating()
+                }
+            }
+        }
+    }
+    
+    func setInformation(_ information : String,accessibilityLabel : String) {
+        self.accessibilityLabel = accessibilityLabel
+        self.infoLabel.text =  information
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -27,9 +47,10 @@ class TFLLoadNearbyStationsView : UIView {
 }
 
 
-fileprivate extension TFLLoadNearbyStationsView {
+fileprivate extension TFLProgressInformationView {
     func updateColors() {
         self.backgroundColor = UIColor(named: "tflLoadLocationViewBackgroundColor")
         self.infoLabel.textColor = UIColor(named: "tflPrimaryTextColor")
+        self.indicator.style = UIActivityIndicatorView.Style.medium
     }
 }

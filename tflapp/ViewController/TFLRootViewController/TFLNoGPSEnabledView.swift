@@ -1,29 +1,25 @@
 import UIKit
 
-protocol TFLNoGPSEnabledViewDelegate : AnyObject {
-    func didTap(noGPSEnabledButton: UIButton,in view : TFLNoGPSEnabledView)
-}
-
-class TFLNoGPSEnabledView : UIView {
+class TFLErrorView : UIView {
+    typealias ButtonHandler = (_ button : UIButton) -> Void
+    fileprivate var buttonHandler : ButtonHandler?
     @IBOutlet weak var infoLabel : UILabel! = nil {
         didSet {
             self.infoLabel.font = UIFont.tflFont(size: 16)
-            self.infoLabel.text = NSLocalizedString("TFLNoGPSEnabledView.title", comment: "")
+            self.infoLabel.text = nil
         }
     }
     @IBOutlet weak var titleLabel : UILabel! = nil {
         didSet {
             self.titleLabel.font = UIFont.tflFont(size: 18)
-            self.titleLabel.text = NSLocalizedString("TFLNoGPSEnabledView.headerTitle", comment: "")
+            self.titleLabel.text = nil
         }
     }
     @IBOutlet weak  var settingsButton : TFLButton! = nil {
         didSet {
-            self.settingsButton.setTitle(NSLocalizedString("TFLNoGPSEnabledView.settingsButtonTitle", comment: ""), for: UIControl.State.normal)
             self.settingsButton.titleLabel?.font = UIFont.tflFont(size: 17)
         }
     }
-    weak var delegate : TFLNoGPSEnabledViewDelegate?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -33,8 +29,16 @@ class TFLNoGPSEnabledView : UIView {
         updateColors()
     }
 
+    func setTitle(_ title : String,description : String?,buttonCaption : String?,accessibilityLabel: String, using buttonHandler:@escaping  ButtonHandler) {
+        self.accessibilityLabel = accessibilityLabel
+        self.titleLabel.text =  title
+        self.settingsButton.setTitle(buttonCaption,for: .normal)
+        self.infoLabel.text = description
+        self.buttonHandler = buttonHandler
+    }
+    
     @IBAction func buttonHandler(button : UIButton) {
-        self.delegate?.didTap(noGPSEnabledButton: button, in: self)
+        buttonHandler?(button)
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -47,7 +51,7 @@ class TFLNoGPSEnabledView : UIView {
 }
 
 
-fileprivate extension TFLNoGPSEnabledView {
+fileprivate extension TFLErrorView {
     func updateColors() {
         self.backgroundColor = UIColor(named: "tflErrorViewBackgroundColor")
         self.titleLabel.textColor = UIColor(named: "tflSecondaryTextColor")

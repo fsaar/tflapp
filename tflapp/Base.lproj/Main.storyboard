@@ -75,94 +75,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qt7-yO-udw" customClass="TFLErrorContainerView" customModule="London_Bus" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
-                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Me4-JI-EcW" customClass="TFLLoadNearbyStationsView" customModule="London_Bus" customModuleProvider="target">
-                                        <rect key="frame" x="20" y="303" width="335" height="61"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading nearby stations ..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tE7-yS-WSM">
-                                                <rect key="frame" x="20" y="20" width="295" height="21"/>
-                                                <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstItem="tE7-yS-WSM" firstAttribute="top" secondItem="Me4-JI-EcW" secondAttribute="top" constant="20" id="1K7-ef-6BE"/>
-                                            <constraint firstAttribute="trailingMargin" secondItem="tE7-yS-WSM" secondAttribute="trailingMargin" constant="20" id="7c1-GA-Yvr"/>
-                                            <constraint firstItem="tE7-yS-WSM" firstAttribute="centerY" secondItem="Me4-JI-EcW" secondAttribute="centerY" id="KNW-RN-PVs"/>
-                                            <constraint firstItem="tE7-yS-WSM" firstAttribute="leading" secondItem="Me4-JI-EcW" secondAttribute="leading" constant="20" id="M8N-fX-UTH"/>
-                                            <constraint firstAttribute="bottom" secondItem="tE7-yS-WSM" secondAttribute="bottom" constant="20" id="dvk-ag-WsX"/>
-                                        </constraints>
-                                        <connections>
-                                            <outlet property="infoLabel" destination="tE7-yS-WSM" id="hsC-1f-7n4"/>
-                                        </connections>
-                                    </view>
-                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TaB-mf-qpy" customClass="TFLLoadLocationView" customModule="London_Bus" customModuleProvider="target">
-                                        <rect key="frame" x="20" y="283" width="335" height="101"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading current location ..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VCb-Jf-LQY">
-                                                <rect key="frame" x="20" y="20" width="295" height="21"/>
-                                                <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Z8O-CJ-1Ps">
-                                                <rect key="frame" x="157.5" y="61" width="20" height="20"/>
-                                            </activityIndicatorView>
-                                        </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstItem="VCb-Jf-LQY" firstAttribute="top" secondItem="TaB-mf-qpy" secondAttribute="top" constant="20" id="CkM-vc-tvm"/>
-                                            <constraint firstItem="Z8O-CJ-1Ps" firstAttribute="centerX" secondItem="TaB-mf-qpy" secondAttribute="centerX" id="Dt3-jk-X1h"/>
-                                            <constraint firstAttribute="bottom" secondItem="Z8O-CJ-1Ps" secondAttribute="bottom" constant="20" id="FvC-uB-DbO"/>
-                                            <constraint firstAttribute="trailing" secondItem="VCb-Jf-LQY" secondAttribute="trailing" constant="20" id="Hfs-MO-Ihb"/>
-                                            <constraint firstItem="VCb-Jf-LQY" firstAttribute="bottom" secondItem="Z8O-CJ-1Ps" secondAttribute="top" constant="-20" id="OI8-Kf-uNO"/>
-                                            <constraint firstItem="VCb-Jf-LQY" firstAttribute="leading" secondItem="TaB-mf-qpy" secondAttribute="leading" constant="20" id="UTa-1S-tY1"/>
-                                        </constraints>
-                                        <connections>
-                                            <outlet property="indicator" destination="Z8O-CJ-1Ps" id="YqI-qJ-o5I"/>
-                                            <outlet property="infoLabel" destination="VCb-Jf-LQY" id="4y0-SR-KKG"/>
-                                        </connections>
-                                    </view>
-                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c3D-1X-v5e" customClass="TFLNoStationsView" customModule="London_Bus" customModuleProvider="target">
-                                        <rect key="frame" x="20" y="270" width="335" height="127"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No stations found." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Waf-N0-yqX">
-                                                <rect key="frame" x="20" y="20" width="295" height="21"/>
-                                                <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0ll-za-ZOY" userLabel="retryButton" customClass="TFLButton" customModule="London_Bus" customModuleProvider="target">
-                                                <rect key="frame" x="112.5" y="66" width="110" height="41"/>
-                                                <accessibility key="accessibilityConfiguration">
-                                                    <accessibilityTraits key="traits" none="YES"/>
-                                                </accessibility>
-                                                <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="17"/>
-                                                <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
-                                                <state key="normal" title="Try again">
-                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="buttonHandlerWithButton:" destination="c3D-1X-v5e" eventType="touchUpInside" id="3CR-nk-VBY"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstItem="0ll-za-ZOY" firstAttribute="top" secondItem="Waf-N0-yqX" secondAttribute="bottom" constant="25" id="5J0-zl-QzT"/>
-                                            <constraint firstItem="0ll-za-ZOY" firstAttribute="bottom" secondItem="c3D-1X-v5e" secondAttribute="bottom" constant="-20" id="5SM-Bl-uLo"/>
-                                            <constraint firstItem="Waf-N0-yqX" firstAttribute="top" secondItem="c3D-1X-v5e" secondAttribute="top" constant="20" id="9x8-xs-PqH"/>
-                                            <constraint firstAttribute="trailing" secondItem="Waf-N0-yqX" secondAttribute="trailing" constant="20" id="Ff4-79-2GP"/>
-                                            <constraint firstItem="0ll-za-ZOY" firstAttribute="centerX" secondItem="c3D-1X-v5e" secondAttribute="centerX" id="c7M-uR-EWZ"/>
-                                            <constraint firstItem="Waf-N0-yqX" firstAttribute="leading" secondItem="c3D-1X-v5e" secondAttribute="leading" constant="20" id="enR-Oo-DHE"/>
-                                        </constraints>
-                                        <connections>
-                                            <outlet property="infoLabel" destination="Waf-N0-yqX" id="ltp-Bz-q3D"/>
-                                            <outlet property="retryButton" destination="0ll-za-ZOY" id="Z58-kB-GkI"/>
-                                        </connections>
-                                    </view>
-                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JwJ-Sf-Dwm" customClass="TFLLoadArrivalTimesView" customModule="London_Bus" customModuleProvider="target">
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JwJ-Sf-Dwm" userLabel="ProgressInformationView" customClass="TFLProgressInformationView" customModule="London_Bus" customModuleProvider="target">
                                         <rect key="frame" x="20" y="283" width="335" height="101"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading arrival times ..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I0q-qz-SWa">
@@ -185,11 +98,11 @@
                                             <constraint firstItem="I0q-qz-SWa" firstAttribute="bottom" secondItem="aaN-yJ-tcS" secondAttribute="top" constant="-20" id="mvO-Yu-XK4"/>
                                         </constraints>
                                         <connections>
-                                            <outlet property="indicator" destination="aaN-yJ-tcS" id="6aD-3V-BfW"/>
-                                            <outlet property="infoLabel" destination="I0q-qz-SWa" id="4wv-Wr-Rqo"/>
+                                            <outlet property="indicator" destination="aaN-yJ-tcS" id="kJn-7Y-2uO"/>
+                                            <outlet property="infoLabel" destination="I0q-qz-SWa" id="cD0-dX-yEw"/>
                                         </connections>
                                     </view>
-                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uf8-Ej-oRB" customClass="TFLNoGPSEnabledView" customModule="London_Bus" customModuleProvider="target">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uf8-Ej-oRB" userLabel="errorView" customClass="TFLErrorView" customModule="London_Bus" customModuleProvider="target">
                                         <rect key="frame" x="20" y="239" width="335" height="189"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Location Services" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KQr-ak-Jig" userLabel="titleLabel">
@@ -242,31 +155,16 @@
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="uf8-Ej-oRB" secondAttribute="trailing" constant="20" id="5AM-3G-SEC"/>
                                     <constraint firstItem="JwJ-Sf-Dwm" firstAttribute="leading" secondItem="qt7-yO-udw" secondAttribute="leading" constant="20" id="5PL-iF-ArW"/>
-                                    <constraint firstItem="c3D-1X-v5e" firstAttribute="leading" secondItem="qt7-yO-udw" secondAttribute="leading" constant="20" id="5dg-XA-UqV"/>
-                                    <constraint firstAttribute="trailing" secondItem="c3D-1X-v5e" secondAttribute="trailing" constant="20" id="6wf-pM-wkC"/>
                                     <constraint firstItem="uf8-Ej-oRB" firstAttribute="leading" secondItem="qt7-yO-udw" secondAttribute="leading" constant="20" id="ARo-6t-xbH"/>
-                                    <constraint firstAttribute="trailing" secondItem="TaB-mf-qpy" secondAttribute="trailing" constant="20" id="DrU-s4-Tcc"/>
                                     <constraint firstItem="JwJ-Sf-Dwm" firstAttribute="centerX" secondItem="qt7-yO-udw" secondAttribute="centerX" id="G4R-H7-nzQ"/>
-                                    <constraint firstItem="c3D-1X-v5e" firstAttribute="centerX" secondItem="qt7-yO-udw" secondAttribute="centerX" id="JAC-RG-lb9"/>
-                                    <constraint firstItem="TaB-mf-qpy" firstAttribute="centerX" secondItem="qt7-yO-udw" secondAttribute="centerX" id="Knf-0A-fIa"/>
                                     <constraint firstAttribute="trailing" secondItem="JwJ-Sf-Dwm" secondAttribute="trailing" constant="20" id="THI-kV-UxO"/>
                                     <constraint firstItem="JwJ-Sf-Dwm" firstAttribute="centerY" secondItem="qt7-yO-udw" secondAttribute="centerY" id="TY0-80-QsE"/>
-                                    <constraint firstItem="Me4-JI-EcW" firstAttribute="leading" secondItem="qt7-yO-udw" secondAttribute="leading" constant="20" id="VB6-Zi-rj3"/>
-                                    <constraint firstItem="c3D-1X-v5e" firstAttribute="centerY" secondItem="qt7-yO-udw" secondAttribute="centerY" id="WT9-xV-n8b"/>
-                                    <constraint firstAttribute="trailing" secondItem="Me4-JI-EcW" secondAttribute="trailing" constant="20" id="YKy-nv-8Ih"/>
-                                    <constraint firstItem="TaB-mf-qpy" firstAttribute="leading" secondItem="qt7-yO-udw" secondAttribute="leading" constant="20" id="YLQ-aM-WhG"/>
                                     <constraint firstItem="uf8-Ej-oRB" firstAttribute="centerY" secondItem="qt7-yO-udw" secondAttribute="centerY" id="a3V-Ew-8y0"/>
-                                    <constraint firstItem="Me4-JI-EcW" firstAttribute="centerX" secondItem="qt7-yO-udw" secondAttribute="centerX" id="aSB-z4-ko6"/>
-                                    <constraint firstItem="TaB-mf-qpy" firstAttribute="centerY" secondItem="qt7-yO-udw" secondAttribute="centerY" id="gcj-n2-xUk"/>
                                     <constraint firstItem="uf8-Ej-oRB" firstAttribute="centerX" secondItem="qt7-yO-udw" secondAttribute="centerX" id="thQ-Cl-9Iu"/>
-                                    <constraint firstItem="Me4-JI-EcW" firstAttribute="centerY" secondItem="qt7-yO-udw" secondAttribute="centerY" id="uVw-wI-wiW"/>
                                 </constraints>
                                 <connections>
-                                    <outlet property="loadArrivalTimesView" destination="JwJ-Sf-Dwm" id="0pT-jm-hPP"/>
-                                    <outlet property="loadLocationsView" destination="TaB-mf-qpy" id="kJu-XK-JOP"/>
-                                    <outlet property="loadNearbyStationsView" destination="Me4-JI-EcW" id="QAB-sM-gAU"/>
-                                    <outlet property="noGPSEnabledView" destination="uf8-Ej-oRB" id="H8v-xL-gnq"/>
-                                    <outlet property="noStationsView" destination="c3D-1X-v5e" id="oyd-AZ-dY8"/>
+                                    <outlet property="errorView" destination="uf8-Ej-oRB" id="QWw-Z6-Myj"/>
+                                    <outlet property="progressInformationView" destination="JwJ-Sf-Dwm" id="l0M-gC-o5d"/>
                                 </connections>
                             </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TCM-1v-KS5">

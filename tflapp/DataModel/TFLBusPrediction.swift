@@ -36,7 +36,7 @@ import Foundation
      }
  
  */
-public struct TFLBusPrediction : Equatable,Codable,CustomStringConvertible {
+public struct TFLBusPrediction : Equatable,Hashable,Codable,CustomStringConvertible {
 
     enum TFLBusPredictionError : Error {
         case decodingError
@@ -72,6 +72,9 @@ public struct TFLBusPrediction : Equatable,Codable,CustomStringConvertible {
         return lhs.identifier == rhs.identifier
     }
     
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(identifier)
+    }
 
     public var description: String {
         let secondsPerMinute : UInt = 60

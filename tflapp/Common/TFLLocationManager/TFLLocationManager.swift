@@ -117,6 +117,11 @@ fileprivate extension TFLLocationManager {
             state = state.stateWithCompletionBlock(completionBlock)
             locationManager.startUpdatingLocation()
         case .authorised:
+            guard CLLocationManager.authorizationStatus() == .authorizedWhenInUse else {
+                self.state = .not_authorised
+                completionBlock?(kCLLocationCoordinate2DInvalid)
+                return
+            }
             TFLLogger.shared.signPostStart(osLog: TFLLocationManager.locationLoggingHandle, name: "updateLocation")
             self.state = State.authorised_requestPending(completionBlocks:[{ coord  in
                 TFLLogger.shared.signPostEnd(osLog: TFLLocationManager.locationLoggingHandle, name: "updateLocation")

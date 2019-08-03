@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-// TODO: 3. check if switch statement in rootviewcontroller can be moved over via evaluation of error here
 
 protocol TFLErrorContainerViewDelegate : AnyObject {
     func errorContainerViewDidTapNoGPSEnabledButton(_ containerView : UIView,button : UIButton)
@@ -16,8 +15,55 @@ protocol TFLErrorContainerViewDelegate : AnyObject {
 }
 
 class TFLErrorContainerView : UIView {
+    enum ErrorView {
+        case noGPSAvailable
+        case noStationsNearby
+        case determineCurrentLocation
+        case loadingNearbyStations
+        case loadingArrivals
+        
+        var errorTuple : (title : String,descripion : String?, buttonCaption : String?,accessibilityTitle : String) {
+            switch self {
+            case .noGPSAvailable:
+                let description = NSLocalizedString("TFLNoGPSEnabledView.title", comment: "")
+                let title = NSLocalizedString("TFLNoGPSEnabledView.headerTitle", comment: "")
+                let buttonCaption = NSLocalizedString("TFLNoGPSEnabledView.settingsButtonTitle", comment: "")
+                let accessibilityTitle = NSLocalizedString("TFLNoGPSEnabledView.accessibilityTitle",comment:"")
+                return (title,description,buttonCaption,accessibilityTitle)
+            case .noStationsNearby:
+                let title = NSLocalizedString("TFLNoStationsView.title", comment: "")
+                let description  = NSLocalizedString("TFLNoStationsView.description", comment: "")
+                let buttonCaption = NSLocalizedString("TFLNoStationsView.retryButtonTitle", comment: "")
+                let accessibilityTitle = NSLocalizedString("TFLNoStationsView.accessibilityTitle",comment:"")
+                return (title,description,buttonCaption,accessibilityTitle)
+            case .determineCurrentLocation:
+                let accessibilityTitle = NSLocalizedString("TFLLoadNearbyStationsView.accessibilityTitle",comment:"")
+                let title = NSLocalizedString("TFLLoadNearbyStationsView.title", comment: "")
+                return (title,nil,nil,accessibilityTitle)
+            case .loadingNearbyStations:
+                let accessibilityTitle = NSLocalizedString("TFLLoadLocationView.accessibilityTitle",comment:"")
+                let title = NSLocalizedString("TFLLoadLocationView.title", comment: "")
+                return (title,nil,nil,accessibilityTitle)
+            case .loadingArrivals:
+                let accessibilityTitle = NSLocalizedString("TFLLoadArrivalTimesView.accessiblityTitle",comment:"")
+                let title = NSLocalizedString("TFLLoadArrivalTimesView.title", comment: "")
+                return (title,nil,nil,accessibilityTitle)
+            }
+        }
+        func delegateMethod(_ delegate : TFLErrorContainerViewDelegate?) -> ((UIView,UIButton) -> Void)? {
+            switch self {
+            case .noGPSAvailable:
+                return delegate?.errorContainerViewDidTapNoGPSEnabledButton(_:button:)
+            case .noStationsNearby:
+                return delegate?.errorContainerViewDidTapNoStationsButton(_:button:)
+            default:
+                return nil
+            }
+        }
+    }
+      
     weak var delegate : TFLErrorContainerViewDelegate?
-    var errorViews : [UIView] = []
+    fileprivate var errorViews : [UIView] = []
     @IBOutlet weak var errorView : TFLErrorView!
     @IBOutlet weak var progressInformationView : TFLProgressInformationView!
     
@@ -36,71 +82,43 @@ class TFLErrorContainerView : UIView {
         updateColors()
     }
     
+    func showErrorView(_ errorView : ErrorView) {
+        hideErrorViews()
+        self.isHidden = false
+        switch errorView {
+        case .noGPSAvailable,.noStationsNearby:
+            showErrorView(view: errorView)
+        case .loadingArrivals,.loadingNearbyStations,.determineCurrentLocation:
+            configureProgressInformationView(view: errorView)
+        }
+    }
+    
     func hideErrorViews() {
         self.isHidden = true
         self.errorViews.forEach { $0.isHidden = true }
     }
-    
-    func showNoGPSEnabledError() {
-        hideErrorViews()
-        let description = NSLocalizedString("TFLNoGPSEnabledView.title", comment: "")
-        let title = NSLocalizedString("TFLNoGPSEnabledView.headerTitle", comment: "")
-        let buttonCaption = NSLocalizedString("TFLNoGPSEnabledView.settingsButtonTitle", comment: "")
-        let accessibilityTitle = NSLocalizedString("TFLNoGPSEnabledView.accessibilityTitle",comment:"")
-        
-        errorView.setTitle(title, description: description, buttonCaption: buttonCaption, accessibilityLabel: accessibilityTitle) { [weak self] button in
-            guard let self = self else {
-                return
-            }
-            self.delegate?.errorContainerViewDidTapNoGPSEnabledButton(self.errorView, button: button)
-        }
-        errorView.isHidden = false
-        self.isHidden = false
-    }
-    
-    func showNoStationsFoundError() {
-        hideErrorViews()
-        
-        let title = NSLocalizedString("TFLNoStationsView.title", comment: "")
-        let description  = NSLocalizedString("TFLNoStationsView.description", comment: "")
-        let buttonCaption = NSLocalizedString("TFLNoStationsView.retryButtonTitle", comment: "")
-        let accessibilityTitle = NSLocalizedString("TFLNoStationsView.accessibilityTitle",comment:"")
-        errorView.setTitle(title, description: description, buttonCaption: buttonCaption, accessibilityLabel: accessibilityTitle) { [weak self] button in
-            guard let self = self else {
-                return
-            }
-            self.delegate?.errorContainerViewDidTapNoStationsButton(self.errorView,button:button)
-        }
-        errorView.isHidden = false
-        self.isHidden = false
-    }
-    
-    func showLoadingArrivalTimesIfNeedBe(isContentAvailable : Bool) {
-        let accessiblityTitle = NSLocalizedString("TFLLoadArrivalTimesView.accessiblityTitle",comment:"")
-        let title = NSLocalizedString("TFLLoadArrivalTimesView.title", comment: "")
-        configureProgressInformationView(title: title, accessibilityTitle: accessiblityTitle, isContentAvailable: isContentAvailable)
-    }
-    
-    func showLoadingCurrentLocationIfNeedBe(isContentAvailable : Bool) {
-        let accessiblityTitle = NSLocalizedString("TFLLoadLocationView.accessibilityTitle",comment:"")
-        let title = NSLocalizedString("TFLLoadLocationView.title", comment: "")
-        configureProgressInformationView(title: title, accessibilityTitle: accessiblityTitle, isContentAvailable: isContentAvailable)
-    }
-    
-    func showLoadingNearbyStationsIfNeedBe(isContentAvailable : Bool) {
-        let accessiblityTitle = NSLocalizedString("TFLLoadNearbyStationsView.accessibilityTitle",comment:"")
-        let title = NSLocalizedString("TFLLoadNearbyStationsView.title", comment: "")
-        configureProgressInformationView(title: title, accessibilityTitle: accessiblityTitle, isContentAvailable: isContentAvailable)
-    }
 }
 
+// MARK: - Private
 
 fileprivate extension TFLErrorContainerView {
-    func configureProgressInformationView(title : String,accessibilityTitle: String, isContentAvailable : Bool) {
-        hideErrorViews()
+    func showErrorView(view : ErrorView) {
+        let (title,desc, caption,accessibilityTitle) = view.errorTuple
+        
+        errorView.setTitle(title, description: desc, buttonCaption: caption, accessibilityLabel: accessibilityTitle) { [weak self] button in
+            guard let self = self else {
+                return
+            }
+            let delegateCall = view.delegateMethod(self.delegate)
+            delegateCall?(self.errorView, button)
+        }
+        errorView.isHidden = false
+    }
+    
+    func configureProgressInformationView(view : ErrorView) {
+        let (title,_, _,accessibilityTitle) = view.errorTuple
         progressInformationView.setInformation(title, accessibilityLabel: accessibilityTitle)
-        progressInformationView.isHidden = isContentAvailable
-        self.isHidden = isContentAvailable
+        progressInformationView.isHidden = false
     }
     
     func updateColors() {

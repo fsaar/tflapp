@@ -81,8 +81,6 @@ class TFLBusStationArrivalsCell: UITableViewCell {
         self.predictionView.setPredictions(predictions: busStopArrivalViewModel.arrivalTimes,animated: animated)
         self.contentView.accessibilityLabel = accessibilityLabel(with: busStopArrivalViewModel)
     }
-
-
 }
 
 // MARK: - Helper

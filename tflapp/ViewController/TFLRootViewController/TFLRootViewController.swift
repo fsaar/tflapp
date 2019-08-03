@@ -63,44 +63,45 @@ class TFLRootViewController: UIViewController {
                 return true
             default:
                 return false
-
+            }
+        }
+        
+        var errorView : TFLErrorContainerView.ErrorView? {
+            switch self {
+            case .errorNoGPSAvailable:
+                return .noGPSAvailable
+            case .errorNoStationsNearby:
+                return .noStationsNearby
+            case .errorCouldntDetermineCurrentLocation:
+                return .noStationsNearby
+            case .determineCurrentLocation:
+                return .determineCurrentLocation
+            case .retrievingNearbyStations:
+                return .loadingNearbyStations
+            case .loadingArrivals:
+                return .loadingArrivals
+            case .noError:
+                return nil
             }
         }
     }
     fileprivate let defaultRefreshInterval : Int = 30
     
-    fileprivate var isContentAvailable : Bool {
-        return !(self.nearbyBusStationController?.busStopPredicationTuple.isEmpty ?? true)
-    }
-    
     fileprivate var state : State = .noError {
         didSet {
             let shouldHide = self.nearbyBusStationController?.busStopPredicationTuple.isEmpty ?? true
-
-            switch self.state {
-            case .errorNoGPSAvailable:
+            switch self.state.errorView {
+            case .noGPSAvailable:
                 self.contentView.isHidden = true
-                self.errorContainerView.showNoGPSEnabledError()
-            case .errorNoStationsNearby:
-                self.contentView.isHidden = true
-                self.errorContainerView.showNoStationsFoundError()
-            case .errorCouldntDetermineCurrentLocation:
+                self.errorContainerView.showErrorView(.noGPSAvailable)
+            case let errorView?:
                 self.contentView.isHidden = shouldHide
                 if shouldHide {
-                    self.errorContainerView.showNoStationsFoundError()
+                    self.errorContainerView.showErrorView(errorView)
                 }
-            case .determineCurrentLocation:
-                self.contentView.isHidden = shouldHide
-                self.errorContainerView.showLoadingCurrentLocationIfNeedBe(isContentAvailable: isContentAvailable)
-            case .retrievingNearbyStations:
-                self.contentView.isHidden = shouldHide
-                self.errorContainerView.showLoadingNearbyStationsIfNeedBe(isContentAvailable: isContentAvailable)
-            case .loadingArrivals:
-                self.contentView.isHidden = shouldHide
-                self.errorContainerView.showLoadingArrivalTimesIfNeedBe(isContentAvailable: isContentAvailable)
-            case .noError:
-                self.errorContainerView.hideErrorViews()
+            case .none:
                 self.contentView.isHidden = false
+                self.errorContainerView.hideErrorViews()
             }
         }
     }
@@ -271,7 +272,7 @@ fileprivate extension TFLRootViewController {
         }
     }
     
-
+    
     func loadNearbyBusstops(using completionBlock:CompletionBlock? = nil) {
         objc_sync_enter(self)
         defer {
@@ -284,7 +285,7 @@ fileprivate extension TFLRootViewController {
         }
         self.updateStatusView.state = .updating
         self.state = .determineCurrentLocation
-    
+        
         self.currentCoordinates { [weak self] coord in
             let completionBlock : (_ state : State) -> () = { [weak self] state in
                 if let self = self {
@@ -303,7 +304,7 @@ fileprivate extension TFLRootViewController {
                 completionBlock(state)
                 return
             }
-
+            
             self?.updateUI(with: coord) { updated in
                 let state : State = updated ? .noError : .errorNoStationsNearby(coordinate: coord)
                 completionBlock(state)
@@ -311,13 +312,13 @@ fileprivate extension TFLRootViewController {
         }
     }
     
-     func currentCoordinates(using completionBlock : @escaping (_ coord : CLLocationCoordinate2D?) -> Void) {
+    func currentCoordinates(using completionBlock : @escaping (_ coord : CLLocationCoordinate2D?) -> Void) {
         TFLLocationManager.sharedManager.updateLocation { coord in
             completionBlock(coord)
         }
     }
     
-     func updateUI(with coord : CLLocationCoordinate2D, using completionBlock:@escaping (_ updated : Bool) -> ()) {
+    func updateUI(with coord : CLLocationCoordinate2D, using completionBlock:@escaping (_ updated : Bool) -> ()) {
         
         _ = self.updateContentViewController(with: [],isUpdatePending: false, and: coord)
         self.retrieveBusstops(for: coord) { [weak self] busStopPredictionTuples,isComplete  in
@@ -366,7 +367,6 @@ extension TFLRootViewController : TFLErrorContainerViewDelegate {
     }
 }
 
-
 // MARK: - TFLLocationManagerDelegate
 
 extension TFLRootViewController : TFLLocationManagerDelegate {
@@ -393,7 +393,6 @@ extension TFLRootViewController : TFLNearbyBusStationsControllerDelegate  {
         loadNearbyBusstops (using: completionBlock)
     }
 }
-
 
 // MARK: - TFLUpdateStatusViewDelegate
 

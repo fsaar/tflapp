@@ -29,7 +29,7 @@ class TFLErrorView : UIView {
         updateColors()
     }
 
-    func setTitle(_ title : String,description : String,buttonCaption : String,accessibilityLabel: String, using buttonHandler:@escaping  ButtonHandler) {
+    func setTitle(_ title : String,description : String?,buttonCaption : String?,accessibilityLabel: String, using buttonHandler:@escaping  ButtonHandler) {
         self.accessibilityLabel = accessibilityLabel
         self.titleLabel.text =  title
         self.settingsButton.setTitle(buttonCaption,for: .normal)

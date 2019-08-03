@@ -133,7 +133,7 @@ public struct TFLBusStopArrivalsInfo : Hashable,CustomStringConvertible {
         let distance = location.distance(from: busStop.coord.location)
         self.busStopDistance = distance
         self.busStop = busStop
-        self.arrivals = arrivals.sorted { $0.timeToStation  < $1.timeToStation }
+        self.arrivals = Set(arrivals).sorted { $0.timeToStation  < $1.timeToStation }
     }
 
      init(busStop: TFLCDBusStop, location: CLLocation, arrivals: [TFLBusPrediction]) {

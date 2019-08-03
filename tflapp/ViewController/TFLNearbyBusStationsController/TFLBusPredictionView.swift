@@ -39,6 +39,7 @@ class TFLBusPredictionView: UICollectionView {
         
         let snapshot = NSDiffableDataSourceSnapshot<String, TFLBusStopArrivalsViewModel.LinePredictionViewModel>()
         snapshot.appendSections([sectionIdentifier])
+  
         snapshot.appendItems(predictions)
         diffableDataSource?.apply(snapshot,animatingDifferences: animatingDifference)
         

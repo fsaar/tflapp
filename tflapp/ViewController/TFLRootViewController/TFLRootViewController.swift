@@ -6,10 +6,10 @@ import Network
 
 class TFLRootViewController: UIViewController {
     typealias CompletionBlock = ()->()
-    @Settings(key: "Distance",defaultValue: 1) fileprivate var settingDistance : Double
+    @Settings(key: "Distance",defaultValue: TFLRootViewController.searchParameter.max) fileprivate var settingDistance : Double
     fileprivate  var defaultRadius : Double {
         let searchParam = TFLRootViewController.searchParameter
-        let radius = max((settingDistance * searchParam.max),searchParam.min)
+        let radius = settingDistance < searchParam.min ? TFLRootViewController.searchParameter.max : settingDistance
         return radius
     }
     @IBOutlet weak var containerViewBottomConstraint : NSLayoutConstraint!

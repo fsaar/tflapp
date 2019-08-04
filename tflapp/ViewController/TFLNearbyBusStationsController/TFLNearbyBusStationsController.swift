@@ -75,9 +75,9 @@ class TFLNearbyBusStationsController : UIViewController {
     fileprivate var dataSource : UITableViewDiffableDataSource<String,TFLBusStopArrivalsViewModel>?
    
     var currentUserCoordinate = kCLLocationCoordinate2DInvalid
-    var busStopPredicationTuple :  [TFLBusStopArrivalsInfo] = [] {
+    var arrivalsInfo :  [TFLBusStopArrivalsInfo] = [] {
         didSet {
-            let models = self.busStopPredicationTuple.sortedByBusStopDistance().map { TFLBusStopArrivalsViewModel(with: $0) }
+            let models = Set(arrivalsInfo).sortedByBusStopDistance().map { TFLBusStopArrivalsViewModel(with: $0) }
             let (_ ,_ ,updated, moved) = self.busStopArrivalViewModels.transformTo(newList: models, sortedBy : TFLBusStopArrivalsViewModel.compare)
             busStopArrivalViewModels = models
             let snapshot = NSDiffableDataSourceSnapshot<String, TFLBusStopArrivalsViewModel>()

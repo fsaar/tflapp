@@ -6,16 +6,16 @@ import Network
 
 class TFLRootViewController: UIViewController {
     typealias CompletionBlock = ()->()
-    fileprivate var defaultRadius : Double {
-        let userDefaultRadius = UserDefaults.standard.double(forKey: "Distance")
+    @Settings(key: "Distance",defaultValue: 1) fileprivate var settingDistance : Double
+    fileprivate  var defaultRadius : Double {
         let searchParam = TFLRootViewController.searchParameter
-        let radius = userDefaultRadius < searchParam.min ? searchParam.initial : userDefaultRadius
+        let radius = max((settingDistance * searchParam.max),searchParam.min)
         return radius
     }
     @IBOutlet weak var containerViewBottomConstraint : NSLayoutConstraint!
     @IBOutlet weak var splashScreenContainerView : UIView!
     @IBOutlet weak var offlineView : UIView!
-    fileprivate static let searchParameter  : (min:Double,initial:Double) = (100,500)
+    fileprivate static let searchParameter  : (min:Double,max:Double) = (100,500)
     fileprivate let networkBackgroundQueue = OperationQueue()
     fileprivate let tflClient = TFLClient()
     #if DATABASEGENERATION
@@ -89,7 +89,7 @@ class TFLRootViewController: UIViewController {
     
     fileprivate var state : State = .noError {
         didSet {
-            let shouldHide = self.nearbyBusStationController?.busStopPredicationTuple.isEmpty ?? true
+            let shouldHide = self.nearbyBusStationController?.arrivalsInfo.isEmpty ?? true
             switch self.state.errorView {
             case .noGPSAvailable:
                 self.contentView.isHidden = true
@@ -241,7 +241,7 @@ fileprivate extension TFLRootViewController {
     func updateContentViewController(with arrivalsInfo: [TFLBusStopArrivalsInfo],isUpdatePending updatePending : Bool, and  coordinate: CLLocationCoordinate2D) -> Bool {
         let radius = self.defaultRadius
 
-        let oldTuples = self.nearbyBusStationController?.busStopPredicationTuple ?? []
+        let oldTuples = self.nearbyBusStationController?.arrivalsInfo ?? []
         var mergedInfo : [TFLBusStopArrivalsInfo] = []
     
         switch (oldTuples.isEmpty,arrivalsInfo.isEmpty) {
@@ -255,7 +255,7 @@ fileprivate extension TFLRootViewController {
         }
         
         let filteredArrivalsInfo = mergedInfo.filter { !$0.liveArrivals().isEmpty }.filter { $0.busStopDistance <= radius }
-        self.nearbyBusStationController?.busStopPredicationTuple = filteredArrivalsInfo
+        self.nearbyBusStationController?.arrivalsInfo = filteredArrivalsInfo
         self.nearbyBusStationController?.currentUserCoordinate = coordinate
         switch (updatePending,filteredArrivalsInfo.isEmpty) {
         case (true,false):

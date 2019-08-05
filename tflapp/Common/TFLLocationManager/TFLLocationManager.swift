@@ -138,6 +138,7 @@ fileprivate extension TFLLocationManager {
 
 extension TFLLocationManager : CLLocationManagerDelegate {
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        manager.stopUpdatingLocation()
         let coordinate = locations.first?.coordinate ?? kCLLocationCoordinate2DInvalid
         DispatchQueue.main.async {
             objc_sync_enter(self)

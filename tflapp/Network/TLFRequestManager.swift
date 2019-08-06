@@ -13,7 +13,6 @@ protocol TFLRequestManagerDelegate : AnyObject {
 }
 
 class TFLRequestManager : NSObject {
-    
     let tfl_pupkey = "uyOeNu35g/rCrOt2wlgXgISGx9Xw48B4Z8SiTrdEwhQ="
     weak var delegate : TFLRequestManagerDelegate?
     fileprivate let TFLRequestManagerBaseURL = "https://api.tfl.gov.uk"
@@ -83,9 +82,7 @@ extension TFLRequestManager : URLSessionDelegate {
                 return
         }
         
-        var result = SecTrustResultType.invalid
-        SecTrustEvaluate(serverTrust, &result)
-        let isServerTrusted = result == .unspecified || result == .proceed
+        let isServerTrusted =  SecTrustEvaluateWithError(serverTrust, nil)
         
         guard isServerTrusted,let certificate = SecTrustGetCertificateAtIndex(serverTrust, 0),
             let serverPublicKey = SecCertificateCopyKey(certificate),

@@ -83,9 +83,7 @@ extension TFLRequestManager : URLSessionDelegate {
                 return
         }
         
-        var result = SecTrustResultType.invalid
-        SecTrustEvaluate(serverTrust, &result)
-        let isServerTrusted = result == .unspecified || result == .proceed
+        let isServerTrusted  = SecTrustEvaluateWithError(serverTrust,nil)
         
         guard isServerTrusted,let certificate = SecTrustGetCertificateAtIndex(serverTrust, 0),
             let serverPublicKey = SecCertificateCopyKey(certificate),

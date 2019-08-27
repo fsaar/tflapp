@@ -37,7 +37,7 @@ class TFLBusPredictionView: UICollectionView {
         let (_ ,_ ,updated, moved) = self.predictions.transformTo(newList:predictions, sortedBy:TFLBusStopArrivalsViewModel.LinePredictionViewModel.compare)
         self.predictions = predictions
         
-        let snapshot = NSDiffableDataSourceSnapshot<String, TFLBusStopArrivalsViewModel.LinePredictionViewModel>()
+        var snapshot = NSDiffableDataSourceSnapshot<String, TFLBusStopArrivalsViewModel.LinePredictionViewModel>()
         snapshot.appendSections([sectionIdentifier])
   
         snapshot.appendItems(predictions)

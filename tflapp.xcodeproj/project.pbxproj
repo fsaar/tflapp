@@ -218,7 +218,7 @@
 		56A4907821977FF6004024D9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = en.lproj/abbreviations.plist; sourceTree = "<group>"; };
 		56A4907B219781C0004024D9 /* TFLRouteFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLRouteFormatter.swift; sourceTree = "<group>"; };
 		56A4907E219799EA004024D9 /* TFLCoreSpotLightDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLCoreSpotLightDataProvider.swift; sourceTree = "<group>"; };
-		56A81B2B1DD862DC001DF7F1 /* London Bus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "London Bus.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		56A81B2B1DD862DC001DF7F1 /* BusStops.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BusStops.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		56A81B2E1DD862DC001DF7F1 /* TFLAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLAppDelegate.swift; sourceTree = "<group>"; };
 		56A81B331DD862DC001DF7F1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		56A81B381DD862DC001DF7F1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -570,7 +570,7 @@
 		56A81B2C1DD862DC001DF7F1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				56A81B2B1DD862DC001DF7F1 /* London Bus.app */,
+				56A81B2B1DD862DC001DF7F1 /* BusStops.app */,
 				5657D3661DE387E6004E4CD0 /* tflApp Tests.xctest */,
 			);
 			name = Products;
@@ -724,7 +724,7 @@
 			);
 			name = tflapp;
 			productName = tflapp;
-			productReference = 56A81B2B1DD862DC001DF7F1 /* London Bus.app */;
+			productReference = 56A81B2B1DD862DC001DF7F1 /* BusStops.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1288,7 +1288,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.samedialabs.tflapp;
-				PRODUCT_NAME = "London Bus";
+				PRODUCT_NAME = BusStops;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRIP_SWIFT_SYMBOLS = NO;
@@ -1308,7 +1308,7 @@
 				LLVM_LTO = YES;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.samedialabs.tflapp;
-				PRODUCT_NAME = "London Bus";
+				PRODUCT_NAME = BusStops;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
@@ -1396,7 +1396,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = " -DDATABASEGENERATION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.samedialabs.tflapp;
-				PRODUCT_NAME = "London Bus";
+				PRODUCT_NAME = BusStops;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRIP_SWIFT_SYMBOLS = NO;

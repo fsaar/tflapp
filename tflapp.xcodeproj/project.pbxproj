@@ -1121,7 +1121,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/London Bus.app/London Bus";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BusStops.app/BusStops";
 			};
 			name = Debug;
 		};
@@ -1141,7 +1141,7 @@
 				RUN_CLANG_STATIC_ANALYZER = NO;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/London Bus.app/London Bus";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BusStops.app/BusStops";
 			};
 			name = Release;
 		};
@@ -1420,7 +1420,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/London Bus.app/London Bus";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BusStops.app/BusStops";
 			};
 			name = DataBaseGeneration;
 		};

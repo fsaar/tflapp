@@ -2,7 +2,7 @@ import Quick
 import Nimble
 import UIKit
 
-@testable import London_Bus
+@testable import BusStops
 class StringSpecs: QuickSpec {
     
     override func spec() {

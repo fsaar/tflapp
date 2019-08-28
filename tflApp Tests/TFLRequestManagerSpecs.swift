@@ -3,7 +3,7 @@ import Quick
 import Nimble
 import UIKit
 
-@testable import London_Bus
+@testable import BusStops
 
 
 typealias TestSessionTaskHandlerBlock = ((_ url : URL) -> (URLSessionDataTask))

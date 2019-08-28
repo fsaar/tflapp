@@ -4,7 +4,7 @@ import UIKit
 import Quick
 import CoreData
 import MapKit
-@testable import London_Bus
+@testable import BusStops
 
 
 extension DateFormatter {

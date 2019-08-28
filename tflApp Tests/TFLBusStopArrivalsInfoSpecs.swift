@@ -5,7 +5,7 @@ import Quick
 import CoreData
 import MapKit
 
-@testable import London_Bus
+@testable import BusStops
 
 
 class TFLBusStopArrivalsInfoSpecs: QuickSpec {

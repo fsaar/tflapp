@@ -12,7 +12,7 @@ import UIKit
 import Quick
 import MapKit
 
-@testable import London_Bus
+@testable import BusStops
 
 extension CLLocationCoordinate2D {
     public static func ==(lhs : CLLocationCoordinate2D,rhs : CLLocationCoordinate2D) -> Bool {

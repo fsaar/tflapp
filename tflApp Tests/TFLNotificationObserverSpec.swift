@@ -3,7 +3,7 @@ import Nimble
 import UIKit
 import Quick
 
-@testable import London_Bus
+@testable import BusStops
 
 class TFLNotificationObserverSpec: QuickSpec {
     

@@ -4,7 +4,7 @@ import UIKit
 import Quick
 import CoreData
 
-@testable import London_Bus
+@testable import BusStops
 
 
 fileprivate struct Pos : Hashable {

@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "56A81B2A1DD862DC001DF7F1"
-               BuildableName = "London Bus.app"
+               BuildableName = "BusStops.app"
                BlueprintName = "tflapp"
                ReferencedContainer = "container:tflapp.xcodeproj">
             </BuildableReference>
@@ -36,7 +36,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "56A81B2A1DD862DC001DF7F1"
-            BuildableName = "London Bus.app"
+            BuildableName = "BusStops.app"
             BlueprintName = "tflapp"
             ReferencedContainer = "container:tflapp.xcodeproj">
          </BuildableReference>
@@ -72,7 +72,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "56A81B2A1DD862DC001DF7F1"
-            BuildableName = "London Bus.app"
+            BuildableName = "BusStops.app"
             BlueprintName = "tflapp"
             ReferencedContainer = "container:tflapp.xcodeproj">
          </BuildableReference>
@@ -123,14 +123,14 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "56A81B2A1DD862DC001DF7F1"
-            BuildableName = "London Bus.app"
+            BuildableName = "BusStops.app"
             BlueprintName = "tflapp"
             ReferencedContainer = "container:tflapp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
-      buildConfiguration = "Debug">
+      buildConfiguration = "Release">
    </AnalyzeAction>
    <ArchiveAction
       buildConfiguration = "Release"

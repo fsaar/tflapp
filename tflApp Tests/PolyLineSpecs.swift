@@ -12,7 +12,7 @@ import UIKit
 import Quick
 import MapKit
 
-@testable import London_Bus
+@testable import BusStops
 
 extension CLLocationCoordinate2D {
     public static func ==(lhs : CLLocationCoordinate2D,rhs : CLLocationCoordinate2D) -> Bool {
@@ -124,7 +124,7 @@ class PolyLineSpecs: QuickSpec {
                             let timeNeeded = Date().timeIntervalSince(start)
                             return sum + timeNeeded
                         }
-                        expect(total / 100) <= 0.04
+                        expect(total / 100) <= 0.1
                     }
                     
                     it ("should decode polyline correctly") {

@@ -4,7 +4,7 @@ import Nimble
 import CoreLocation
 import UIKit
 
-@testable import London_Bus
+@testable import BusStops
 
     
 private class TestQueue : OperationQueue {

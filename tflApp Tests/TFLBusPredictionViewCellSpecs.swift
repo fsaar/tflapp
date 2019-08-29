@@ -5,7 +5,7 @@ import Quick
 import CoreData
 import MapKit
 
-@testable import London_Bus
+@testable import BusStops
 
 fileprivate class CollectionViewDataSource : NSObject,UICollectionViewDataSource {
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

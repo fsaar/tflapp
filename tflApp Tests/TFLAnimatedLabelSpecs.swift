@@ -3,7 +3,7 @@ import Nimble
 import CoreLocation
 import UIKit
 
-@testable import London_Bus
+@testable import BusStops
 class TFLAnimatedLabelSpecs: QuickSpec {
     
     override func spec() {

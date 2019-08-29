@@ -3,7 +3,7 @@ import Quick
 import Nimble
 import CoreData
 
-@testable import London_Bus
+@testable import BusStops
 
 class TFLCDBusStopSpecs: QuickSpec {
     

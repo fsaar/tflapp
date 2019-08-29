@@ -80,7 +80,7 @@ class TFLNearbyBusStationsController : UIViewController {
             let models = Set(arrivalsInfo).sortedByBusStopDistance().map { TFLBusStopArrivalsViewModel(with: $0) }
             let (_ ,_ ,updated, moved) = self.busStopArrivalViewModels.transformTo(newList: models, sortedBy : TFLBusStopArrivalsViewModel.compare)
             busStopArrivalViewModels = models
-            let snapshot = NSDiffableDataSourceSnapshot<String, TFLBusStopArrivalsViewModel>()
+            var snapshot = NSDiffableDataSourceSnapshot<String, TFLBusStopArrivalsViewModel>()
             snapshot.appendSections([sectionIdentifier])
             snapshot.appendItems(models)
             dataSource?.apply(snapshot,animatingDifferences: true)

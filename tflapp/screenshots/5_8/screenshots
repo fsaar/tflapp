@@ -1,7 +1,10 @@
+#Generate Background
+magick -size  1125x2436 gradient:red-'rgb(50,0,0)' background_5_8.png
 
-
+#Iterate over files
 for file in *.png ; do
-	
+
+#Determine title
 	if [[ "$file" =~ "0.png" ]]; then
  		title="Nearby arrivals at a glance"
  	elif [[ "$file" =~ "1.png" ]]; then
@@ -13,6 +16,7 @@ for file in *.png ; do
 	fi;
 	name=`echo "$file" | cut -d'.' -f1`
 	echo "Processing $file ..."
+ 
 	magick composite -gravity center "$file" empty_5_8.png temp.png   
 	magick composite -gravity center gold.png temp.png temp.png
 	magick composite gold.png temp.png temp.png
@@ -23,5 +27,6 @@ for file in *.png ; do
     echo "Generated "$name"_framed.png"
 
 done
+rm background_5_8.png
 
 

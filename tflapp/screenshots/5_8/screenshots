@@ -1,6 +1,6 @@
 #Generate Background
 magick -size  1125x2436 gradient:red-'rgb(50,0,0)' background_5_8.png
-
+magick -size 1385x2676 xc:none empty_5_8.png
 #Iterate over files
 for file in *.png ; do
 
@@ -28,5 +28,5 @@ for file in *.png ; do
 
 done
 rm background_5_8.png
-
+rm empty_5_8.png
 

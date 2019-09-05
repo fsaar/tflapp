@@ -214,6 +214,19 @@
 		5692B4FF1DF2E26300C56A3C /* TFLSlideContainerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLSlideContainerController.swift; sourceTree = "<group>"; };
 		5692B5021DF2E4EB00C56A3C /* TFLMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLMapViewController.swift; sourceTree = "<group>"; };
 		5699A68B218EE77100CD1427 /* CLLocationCoordinate2D+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CLLocationCoordinate2D+Helper.swift"; sourceTree = "<group>"; };
+		569EB2982321BCD700122E31 /* screenshots */ = {isa = PBXFileReference; lastKnownFileType = text; path = screenshots; sourceTree = "<group>"; };
+		569EB2992321BCD700122E31 /* iphone_5_8_dark2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iphone_5_8_dark2.png; sourceTree = "<group>"; };
+		569EB29A2321BCD700122E31 /* iphone_5_8_dark0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iphone_5_8_dark0.png; sourceTree = "<group>"; };
+		569EB29B2321BCD700122E31 /* background_5_8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_5_8.png; sourceTree = "<group>"; };
+		569EB29C2321BCD700122E31 /* iphone_5_8_dark1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iphone_5_8_dark1.png; sourceTree = "<group>"; };
+		569EB29D2321BCD700122E31 /* empty_5_8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = empty_5_8.png; sourceTree = "<group>"; };
+		569EB2A02321BCD700122E31 /* silver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = silver.png; sourceTree = "<group>"; };
+		569EB2A12321BCD700122E31 /* grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grey.png; sourceTree = "<group>"; };
+		569EB2A32321BCD700122E31 /* iphone_5_8_light1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iphone_5_8_light1.png; sourceTree = "<group>"; };
+		569EB2A42321BCD700122E31 /* iphone_5_8_light0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iphone_5_8_light0.png; sourceTree = "<group>"; };
+		569EB2A52321BCD700122E31 /* iphone_5_8_light2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iphone_5_8_light2.png; sourceTree = "<group>"; };
+		569EB2A72321BCD700122E31 /* linear_gradient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = linear_gradient.png; sourceTree = "<group>"; };
+		569EB2A92321BCD700122E31 /* gold.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gold.png; sourceTree = "<group>"; };
 		56A4907021977B40004024D9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = en; path = en.lproj/tflapp.entitlements; sourceTree = "<group>"; };
 		56A4907821977FF6004024D9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = en.lproj/abbreviations.plist; sourceTree = "<group>"; };
 		56A4907B219781C0004024D9 /* TFLRouteFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLRouteFormatter.swift; sourceTree = "<group>"; };
@@ -546,6 +559,34 @@
 			path = TFLMapViewController;
 			sourceTree = "<group>";
 		};
+		569EB2952321BCD700122E31 /* screenshots */ = {
+			isa = PBXGroup;
+			children = (
+				569EB2962321BCD700122E31 /* 5_8 */,
+			);
+			path = screenshots;
+			sourceTree = "<group>";
+		};
+		569EB2962321BCD700122E31 /* 5_8 */ = {
+			isa = PBXGroup;
+			children = (
+				569EB2982321BCD700122E31 /* screenshots */,
+				569EB2992321BCD700122E31 /* iphone_5_8_dark2.png */,
+				569EB29A2321BCD700122E31 /* iphone_5_8_dark0.png */,
+				569EB29B2321BCD700122E31 /* background_5_8.png */,
+				569EB29C2321BCD700122E31 /* iphone_5_8_dark1.png */,
+				569EB29D2321BCD700122E31 /* empty_5_8.png */,
+				569EB2A02321BCD700122E31 /* silver.png */,
+				569EB2A12321BCD700122E31 /* grey.png */,
+				569EB2A32321BCD700122E31 /* iphone_5_8_light1.png */,
+				569EB2A42321BCD700122E31 /* iphone_5_8_light0.png */,
+				569EB2A52321BCD700122E31 /* iphone_5_8_light2.png */,
+				569EB2A72321BCD700122E31 /* linear_gradient.png */,
+				569EB2A92321BCD700122E31 /* gold.png */,
+			);
+			path = 5_8;
+			sourceTree = "<group>";
+		};
 		56A4907D219799DF004024D9 /* TFLCoreSpotLightDataProvider */ = {
 			isa = PBXGroup;
 			children = (
@@ -579,6 +620,7 @@
 		56A81B2D1DD862DC001DF7F1 /* tflapp */ = {
 			isa = PBXGroup;
 			children = (
+				569EB2952321BCD700122E31 /* screenshots */,
 				566EF7C31DDA2D31006162D7 /* DataModel */,
 				565A1FC91DD8F8D1003CE960 /* Common */,
 				565A1FC11DD8F317003CE960 /* Network */,

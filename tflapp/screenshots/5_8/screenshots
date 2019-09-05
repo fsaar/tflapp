@@ -1,0 +1,27 @@
+
+
+for file in *.png ; do
+	
+	if [[ "$file" =~ "0.png" ]]; then
+ 		title="Nearby arrivals at a glance"
+ 	elif [[ "$file" =~ "1.png" ]]; then
+ 		title="Easy access to nearby bus stops"
+ 	elif [[ "$file" =~ "2.png" ]]; then
+ 		title="Detailed information a tap away"
+ 	else 
+ 		continue
+	fi;
+	name=`echo "$file" | cut -d'.' -f1`
+	echo "Processing $file ..."
+	magick composite -gravity center "$file" empty_5_8.png temp.png   
+	magick composite -gravity center gold.png temp.png temp.png
+	magick composite gold.png temp.png temp.png
+	magick temp.png -resize 80% temp.png
+	magick composite -gravity center -geometry +0+100 temp.png background_5_8.png temp.png
+	magick temp.png -font Arial -pointsize 70  -gravity north -fill white -annotate +0+100 "$title" ../"$name"_framed.png
+	rm temp.png
+    echo "Generated "$name"_framed.png"
+
+done
+
+

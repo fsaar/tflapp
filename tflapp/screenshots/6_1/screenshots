@@ -24,7 +24,7 @@ for file in *.png ; do
 	magick composite -gravity center "$file" empty.png "$newname"
 	magick composite -gravity center red.png "$newname" "$newname"
 	magick composite red.png "$newname" "$newname"
-	magick "$newname" -resize 75% "$newname"
+	magick "$newname" -resize 78% "$newname"
 	magick composite -gravity center -geometry +0+90 "$newname" background.png "$newname"
     convert -size 750x210 xc:none -font Arial -pointsize 50 -fill white -gravity center -annotate +0+0 "$title" caption.png
     magick composite -gravity north caption.png "$newname" "$newname"

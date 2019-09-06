@@ -15,15 +15,16 @@ for file in *.png ; do
  		continue
 	fi;
 	name=`echo "$file" | cut -d'.' -f1`
+    newname="$name"_framed.png
 	echo "Processing $file ..."
  
-	magick composite -gravity center "$file" empty_5_8.png temp.png   
-	magick composite -gravity center gold.png temp.png temp.png
-	magick composite gold.png temp.png temp.png
-	magick temp.png -resize 80% temp.png
-	magick composite -gravity center -geometry +0+100 temp.png background_5_8.png temp.png
-	magick temp.png -font Arial -pointsize 70  -gravity north -fill white -annotate +0+100 "$title" ../"$name"_framed.png
-	rm temp.png
+	magick composite -gravity center "$file" empty_5_8.png "$newname"
+	magick composite -gravity center gold.png "$newname" "$newname"
+	magick composite gold.png "$newname" "$newname"
+	magick "$newname" -resize 80% "$newname"
+	magick composite -gravity center -geometry +0+100 "$newname" background_5_8.png "$newname"
+	magick "$newname" -font Arial -pointsize 70  -gravity north -fill white -annotate +0+100 "$title" "$newname"
+    mv "$newname" ..
     echo "Generated "$name"_framed.png"
 
 done

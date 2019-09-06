@@ -6,13 +6,13 @@ for file in *.png ; do
 
 #Determine title
 	if [[ "$file" =~ "0.png" ]]; then
- 		title="Nearby arrivals at a glance by day ..."
+ 		title="Nearby arrivals at a glance\nby day ...      "
      elif [[ "$file" =~ "1.png" ]]; then
          title="... or by night"
  	elif [[ "$file" =~ "2.png" ]]; then
- 		title="Easy access to nearby bus stops"
+ 		title="Easy access to\nnearby bus stops"
  	elif [[ "$file" =~ "3.png" ]]; then
- 		title="Detailed information a tap away"
+ 		title="Detailed information\na tap away"
  	else 
  		continue
 	fi;
@@ -25,7 +25,9 @@ for file in *.png ; do
 	magick composite gold.png "$newname" "$newname"
 	magick "$newname" -resize 80% "$newname"
 	magick composite -gravity center -geometry +0+100 "$newname" background_5_8.png "$newname"
-	magick "$newname" -font Arial -pointsize 70  -gravity north -fill white -annotate +0+100 "$title" "$newname"
+    convert -size 900x300 xc:none -font Arial -pointsize 70 -fill white -gravity center -annotate +0+0 "$title" caption.png
+    magick composite -gravity north caption.png "$newname" "$newname"
+    rm caption.png
     mv "$newname" ..
     echo "Generated "$name"_framed.png"
 

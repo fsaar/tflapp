@@ -217,9 +217,7 @@
 		569EB2982321BCD700122E31 /* screenshots */ = {isa = PBXFileReference; lastKnownFileType = text; path = screenshots; sourceTree = "<group>"; };
 		569EB2992321BCD700122E31 /* iphone_5_8_dark2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iphone_5_8_dark2.png; sourceTree = "<group>"; };
 		569EB29A2321BCD700122E31 /* iphone_5_8_dark0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iphone_5_8_dark0.png; sourceTree = "<group>"; };
-		569EB29B2321BCD700122E31 /* background_5_8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_5_8.png; sourceTree = "<group>"; };
 		569EB29C2321BCD700122E31 /* iphone_5_8_dark1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iphone_5_8_dark1.png; sourceTree = "<group>"; };
-		569EB29D2321BCD700122E31 /* empty_5_8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = empty_5_8.png; sourceTree = "<group>"; };
 		569EB2A02321BCD700122E31 /* silver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = silver.png; sourceTree = "<group>"; };
 		569EB2A12321BCD700122E31 /* grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grey.png; sourceTree = "<group>"; };
 		569EB2A32321BCD700122E31 /* iphone_5_8_light1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iphone_5_8_light1.png; sourceTree = "<group>"; };
@@ -573,9 +571,7 @@
 				569EB2982321BCD700122E31 /* screenshots */,
 				569EB2992321BCD700122E31 /* iphone_5_8_dark2.png */,
 				569EB29A2321BCD700122E31 /* iphone_5_8_dark0.png */,
-				569EB29B2321BCD700122E31 /* background_5_8.png */,
 				569EB29C2321BCD700122E31 /* iphone_5_8_dark1.png */,
-				569EB29D2321BCD700122E31 /* empty_5_8.png */,
 				569EB2A02321BCD700122E31 /* silver.png */,
 				569EB2A12321BCD700122E31 /* grey.png */,
 				569EB2A32321BCD700122E31 /* iphone_5_8_light1.png */,

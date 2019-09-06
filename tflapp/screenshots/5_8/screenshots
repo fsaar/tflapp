@@ -6,10 +6,12 @@ for file in *.png ; do
 
 #Determine title
 	if [[ "$file" =~ "0.png" ]]; then
- 		title="Nearby arrivals at a glance"
- 	elif [[ "$file" =~ "1.png" ]]; then
- 		title="Easy access to nearby bus stops"
+ 		title="Nearby arrivals at a glance by day ..."
+     elif [[ "$file" =~ "1.png" ]]; then
+         title="... or by night"
  	elif [[ "$file" =~ "2.png" ]]; then
+ 		title="Easy access to nearby bus stops"
+ 	elif [[ "$file" =~ "3.png" ]]; then
  		title="Detailed information a tap away"
  	else 
  		continue

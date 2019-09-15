@@ -1,9 +1,9 @@
 ![](https://img.shields.io/badge/Swift-5.1-gray.svg)
-[![Travis Build Status](https://travis-ci.org/fsaar/tflapp.svg?branch=develop)](https://travis-ci.org/fsaar/tflapp)
-[![Bitrise Build Status](https://app.bitrise.io/app/57e558f6294006e4.svg?token=DDsEZOktnPuT6q5sZJrbwQ&branch=develop)](https://www.bitrise.io/app/57e558f6294006e4)
-[![Code Coverage](https://codecov.io/gh/fsaar/tflapp/coverage.svg?branch=develop)](https://codecov.io/gh/fsaar/tflapp/branch/develop)
+[![Travis Build Status](https://travis-ci.org/fsaar/tflapp.svg?branch=master)](https://travis-ci.org/fsaar/tflapp)
+[![Bitrise Build Status](https://app.bitrise.io/app/57e558f6294006e4.svg?token=DDsEZOktnPuT6q5sZJrbwQ&branch=master)](https://www.bitrise.io/app/57e558f6294006e4)
+[![Code Coverage](https://codecov.io/gh/fsaar/tflapp/coverage.svg?branch=master)](https://codecov.io/gh/fsaar/tflapp/branch/master)
 [![Code Climate](https://codeclimate.com/github/fsaar/tflapp/badges/gpa.svg)](https://codeclimate.com/github/fsaar/tflapp)
-[![codebeat badge](https://codebeat.co/badges/4acdc152-b4ee-4d50-a32a-ffd157d0a92d)](https://codebeat.co/projects/github-com-fsaar-tflapp-develop)
+[![codebeat badge](https://codebeat.co/badges/4acdc152-b4ee-4d50-a32a-ffd157d0a92d)](https://codebeat.co/projects/github-com-fsaar-tflapp-master)
 
 # London Bus Stops
 

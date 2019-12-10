@@ -26,6 +26,11 @@
 "DateStringConversion.last_week" = "last week";
 "DateStringConversion.weeks_ago" = "weeks ago";
 "TFLNearbyBusStationsController.last_updated" = "last updated: ";
+"TFLNearbyBusStationsController.reminder.title" = "Create Reminder";
+"TFLNearbyBusStationsController.reminder.message" = "Show reminder in minutes before %@'s arrival at %@";
+"TFLNearbyBusStationsController.notification.body" = "Your reminder for bus %@ at %@";
+"TFLNearbyBusStationsController.notification.generic_station" = "your bus stop";
+"TFLNearbyBusStationsController.notification.title" = "Scheduled reminder";
 "TFLHUD.title" = "Loading ...";
 "TFLHUD.accessiblityTitle" = "Loading - Please wait";
 "TFLStationDetailErrorView.title" = "Oops, something went wrong. No route information available.";
@@ -34,6 +39,7 @@
 "TFLOfflineView.offline.title" = "Offline";
 
 "Common.towards" = "towards";
+"Common.dismiss" = "dismiss";
 "Common.due" = "due";
 "Common.min" = "min";
 "Common.minute" = "minute";

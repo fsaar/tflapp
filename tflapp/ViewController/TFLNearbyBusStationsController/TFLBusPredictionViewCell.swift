@@ -47,6 +47,7 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
         self.line.text = nil
         self.arrivalTime.setText("-",animated: false)
         self.accessibilityLabel = nil
+        longTapClosure = nil
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -58,7 +59,7 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
         updateColors()
     }
 
-    func configure(with predictionViewModel: TFLBusStopArrivalsViewModel.LinePredictionViewModel,as update : Bool = false,using longTapClosure : (() -> Void)? = nil) {
+    func configure(with predictionViewModel: TFLBusStopArrivalsViewModel.LinePredictionViewModel,as update : Bool = false,using longTapClosure :@escaping () -> Void) {
         self.longTapClosure = longTapClosure
         self.line.text = predictionViewModel.line
         let arrivalTime = self.arrivalTime.text ?? ""

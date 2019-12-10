@@ -25,7 +25,9 @@ class TFLBusPredictionView: UICollectionView {
         
         diffableDataSource = UICollectionViewDiffableDataSource(collectionView: self) { collectionView,indexPath,prediction in
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: TFLBusPredictionViewCell.self), for: indexPath) as? TFLBusPredictionViewCell
-            cell?.configure(with: prediction,as : false)
+            cell?.configure(with: prediction,as : false) { [weak self] in
+                self?.showReminderHandlerForPrediction(prediction)
+            }
             return cell
         }
     }
@@ -51,10 +53,7 @@ class TFLBusPredictionView: UICollectionView {
             if let busPredictionCell = self.cellForItem(at: indexPath) as? TFLBusPredictionViewCell {
                 let prediction = predictions[indexPath]
                 busPredictionCell.configure(with: prediction,as : true) { [weak self] in
-                    guard let self = self else {
-                        return
-                    }
-                    self.busPredictionViewDelegate?.busPredictionView(self, showReminderFor: prediction.line, with: prediction.vehicleID, at: prediction.busStopIdentifier, arrivingIn: prediction.timeToStation)
+                    self?.showReminderHandlerForPrediction(prediction)
                 }
             }
         }
@@ -68,5 +67,11 @@ extension TFLBusPredictionView : UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let prediction = predictions[indexPath]
         self.busPredictionViewDelegate?.busPredictionView(self, didSelectLine: prediction.line,with:prediction.vehicleID,at:prediction.busStopIdentifier)
+    }
+}
+
+fileprivate extension TFLBusPredictionView {
+    func showReminderHandlerForPrediction(_ prediction : TFLBusStopArrivalsViewModel.LinePredictionViewModel) {
+        self.busPredictionViewDelegate?.busPredictionView(self, showReminderFor: prediction.line, with: prediction.vehicleID, at: prediction.busStopIdentifier, arrivingIn: prediction.timeToStation)
     }
 }

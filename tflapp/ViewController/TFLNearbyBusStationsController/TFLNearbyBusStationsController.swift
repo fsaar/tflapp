@@ -29,7 +29,8 @@ class TFLNearbyBusStationsController : UIViewController {
     enum SegueIdentifier : String {
         case stationDetailSegue =  "TFLStationDetailSegue"
     }
-    let client = TFLClient()
+    fileprivate lazy var busArrivalReminder = TFLBusArrivalReminder(with: self)
+    fileprivate let client = TFLClient()
     static let defaultTableViewRowHeight = CGFloat (120)
     
     fileprivate static let loggingHandle  = OSLog(subsystem: TFLLogger.subsystem, category: TFLLogger.category.refresh.rawValue)
@@ -150,27 +151,32 @@ class TFLNearbyBusStationsController : UIViewController {
         }
     }
 }
-
+//
 // MARK: - UITableViewDelegate
-
+//
 extension TFLNearbyBusStationsController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let model = busStopArrivalViewModels[indexPath]
         self.delegate?.nearbyBusStationsController(self, didSelectBusstopWith: model.identifier)
     }
 }
-
+//
 // MARK: - TFLBusStationArrivalCellDelegate
-
+//
 extension TFLNearbyBusStationsController : TFLBusStationArrivalCellDelegate {
+    func busStationArrivalCell(_ busStationArrivalCell: TFLBusStationArrivalsCell, showReminderFor line: String, with vehicleID: String, at station: String, arrivingIn seconds: Int) {
+        let genericStation = NSLocalizedString("TFLNearbyBusStationsController.notification.generic_station",comment:"")
+        let stationName = busStopArrivalViewModels.first { $0.identifier == station }?.stationName ?? genericStation
+        self.busArrivalReminder.showReminderForLine(line: line, arrivingIn: seconds, at: stationName)
+    }
     
     func busStationArrivalCell(_ busStationArrivalCell: TFLBusStationArrivalsCell,didSelectLine line: String,with vehicleID: String,at station : String) {
         updateAndShowLineInfo(line: line,with: vehicleID,at: station)
     }
 }
-
+//
 // MARK: - TFLMapViewControllerDelegate
-
+//
 extension TFLNearbyBusStationsController : TFLMapViewControllerDelegate {
    
     func mapViewController(_ mapViewController: TFLMapViewController, didSelectStationWith identifier: String) {
@@ -181,9 +187,9 @@ extension TFLNearbyBusStationsController : TFLMapViewControllerDelegate {
     }
 }
 
-
-// MARK: - TFLMapViewControllerDelegate
-
+//
+// MARK: - Helper
+//
 fileprivate extension TFLNearbyBusStationsController {
     @objc
     func spotlightLookupNotificationHandler(_ notification : Notification) {

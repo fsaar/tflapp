@@ -1,6 +1,7 @@
 import UIKit
 
 class TFLBusPredictionViewCell: UICollectionViewCell {
+    fileprivate var longTapClosure : (() -> Void)?
     @IBOutlet weak var line : UILabel! = nil {
         didSet {
             self.line.font = UIFont.tflFontBusLineIdentifier()
@@ -29,6 +30,9 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
         self.selectedBackgroundView = nil
         self.isAccessibilityElement = true
         self.accessibilityTraits = [.staticText,.button]
+   
+        let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longTapHandler(_:)))
+        self.contentView.addGestureRecognizer(gestureRecognizer)
         updateColors()
         prepareForReuse()
     }
@@ -43,6 +47,7 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
         self.line.text = nil
         self.arrivalTime.setText("-",animated: false)
         self.accessibilityLabel = nil
+        longTapClosure = nil
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -54,7 +59,8 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
         updateColors()
     }
 
-    func configure(with predictionViewModel: TFLBusStopArrivalsViewModel.LinePredictionViewModel,as update : Bool = false) {
+    func configure(with predictionViewModel: TFLBusStopArrivalsViewModel.LinePredictionViewModel,as update : Bool = false,using longTapClosure :@escaping () -> Void) {
+        self.longTapClosure = longTapClosure
         self.line.text = predictionViewModel.line
         let arrivalTime = self.arrivalTime.text ?? ""
         if !update || arrivalTime != predictionViewModel.eta {
@@ -100,5 +106,14 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
                 busNumberRectPath.stroke()
             }
     }
+}
 
+fileprivate extension TFLBusPredictionViewCell {
+    @objc
+    func longTapHandler(_ recognizer : UILongPressGestureRecognizer) {
+        guard recognizer.state == .began else {
+            return
+        }
+        longTapClosure?()
+    }
 }

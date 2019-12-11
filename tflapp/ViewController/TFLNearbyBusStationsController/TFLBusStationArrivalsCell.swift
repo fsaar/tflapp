@@ -3,6 +3,8 @@ import MapKit
 
 protocol TFLBusStationArrivalCellDelegate : AnyObject {
     func busStationArrivalCell(_ busStationArrivalCell: TFLBusStationArrivalsCell,didSelectLine line: String,with vehicleID: String,at station : String)
+    func busStationArrivalCell(_ busStationArrivalCell: TFLBusStationArrivalsCell,showReminderFor line: String,with vehicleID: String,at station : String,arrivingIn seconds : Int)
+
 }
 
 class TFLBusStationArrivalsCell: UITableViewCell {
@@ -110,6 +112,10 @@ fileprivate extension TFLBusStationArrivalsCell {
 }
 
 extension TFLBusStationArrivalsCell : TFLBusPredictionViewDelegate {
+    func busPredictionView(_ busPredictionView: TFLBusPredictionView, showReminderFor line: String, with vehicleID: String, at station: String, arrivingIn seconds: Int) {
+        self.delegate?.busStationArrivalCell(self, showReminderFor: line, with: vehicleID, at: station, arrivingIn: seconds)
+    }
+    
     func busPredictionView(_ busPredictionView: TFLBusPredictionView, didSelectLine line: String,with vehicleID: String,at station : String) {
         self.delegate?.busStationArrivalCell(self, didSelectLine: line,with: vehicleID,at:station)
     }

@@ -14,7 +14,7 @@ extension MutableCollection where Index == Int, Iterator.Element == TFLBusStopAr
 
 protocol TFLBusPredictionViewDelegate : AnyObject {
     func busPredictionView(_ busPredictionView: TFLBusPredictionView,didSelectLine line: String,with vehicleID: String,at station : String)
-    func busPredictionView(_ busPredictionView: TFLBusPredictionView,showReminderFor line: String,with vehicleID: String,at station : String,arrivingIn seconds : Int)
+    func busPredictionView(_ busPredictionView: TFLBusPredictionView,showReminderForPrediction prediction : TFLBusStopArrivalsViewModel.LinePredictionViewModel)
 }
 
 class TFLBusPredictionView: UICollectionView {
@@ -72,6 +72,6 @@ extension TFLBusPredictionView : UICollectionViewDelegate {
 
 fileprivate extension TFLBusPredictionView {
     func showReminderHandlerForPrediction(_ prediction : TFLBusStopArrivalsViewModel.LinePredictionViewModel) {
-        self.busPredictionViewDelegate?.busPredictionView(self, showReminderFor: prediction.line, with: prediction.vehicleID, at: prediction.busStopIdentifier, arrivingIn: prediction.timeToStation)
+        self.busPredictionViewDelegate?.busPredictionView(self, showReminderForPrediction: prediction)
     }
 }

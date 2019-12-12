@@ -8,12 +8,7 @@
 
 import UIKit
 
-protocol TFLBusArrivalReminderDelegate : AnyObject {
-    func tflBusArrivalReminderDidCreateNotification(_ reminder : TFLBusArrivalReminder)
-}
-
 class TFLBusArrivalReminder {
-    weak var delegate : TFLBusArrivalReminderDelegate?
     fileprivate weak var contentViewController : UIViewController?
     fileprivate let notificationCenter = UNUserNotificationCenter.current()
     fileprivate weak var alertController : UIAlertController?
@@ -29,11 +24,11 @@ class TFLBusArrivalReminder {
         }
     }
     
-    func showReminderForLine(line : String,arrivingIn seconds : Int,at station : String) {
+    func showReminderForLine(line : String,arrivingIn seconds : Int,at station : String,with identifier : String,using completionBlock: ((_ success : Bool,_ identifier : String) -> Void)? = nil) {
         guard seconds > 60 else {
             return
         }
-        let sheet = achtionSheet(for: line, arrivingIn: seconds, at: station)
+        let sheet = achtionSheet(for: line, arrivingIn: seconds, at: station, with: identifier,using: completionBlock)
         OperationQueue.main.addOperation {
             self.alertController = sheet
             self.contentViewController?.present(sheet, animated: true)
@@ -45,7 +40,7 @@ class TFLBusArrivalReminder {
 // MARK: - Helper
 //
 fileprivate extension TFLBusArrivalReminder {
-    func achtionSheet(for line : String,arrivingIn seconds : Int,at station : String) -> UIAlertController {
+    func achtionSheet(for line : String,arrivingIn seconds : Int,at station : String,with identifier : String,using completionBlock: ((_ success : Bool,_ identifier : String) -> Void)? = nil) -> UIAlertController {
         let isDarkMode = contentViewController?.view.traitCollection.userInterfaceStyle == .dark
         
         let reminderCopy = NSLocalizedString("TFLNearbyBusStationsController.notification.body",comment: "")
@@ -56,12 +51,14 @@ fileprivate extension TFLBusArrivalReminder {
         let message = String(format: messageCopy, line,station)
         let actionSheet = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
         actionSheet.view.tintColor = isDarkMode ? .white : .red
-        let dismissAction = UIAlertAction(title: NSLocalizedString("Common.dismiss",comment:""),style: .cancel,handler:nil)
+        let dismissAction = UIAlertAction(title: NSLocalizedString("Common.dismiss",comment:""),style: .cancel) {  _ in
+            completionBlock?(false,identifier)
+        }
         actionSheet.addAction(dismissAction)
         let options = reminderOptionsWithArrivalTime(seconds)
         let actions : [UIAlertAction]  = options.map { option in
             UIAlertAction(title: option.copy,style: .default) { [weak self] _ in
-                self?.createNotification(with: reminderMessage, in: option.timeInSeconds)
+                self?.createNotification(with: reminderMessage, in: option.timeInSeconds,with: identifier, using:completionBlock)
             }
         }
         actions.forEach { action in
@@ -97,7 +94,7 @@ fileprivate extension TFLBusArrivalReminder {
         return options
     }
     
-    func createNotification(with message : String,in seconds : Int) {
+    func createNotification(with message : String,in seconds : Int,with identifier : String,using completionBlock: ((_ success : Bool,_ identifier : String) -> Void)? = nil) {
         notificationCenter.requestAuthorization(options: [.badge,.sound,.alert]) { granted,_ in
             guard granted else {
                 return
@@ -107,14 +104,12 @@ fileprivate extension TFLBusArrivalReminder {
             content.title = NSLocalizedString("TFLNearbyBusStationsController.notification.title",comment: "")
             content.body = message
             content.sound = .default
-            
-            let request = UNNotificationRequest(identifier: "tflapp.reminder",
+                        
+            let request = UNNotificationRequest(identifier: identifier,
                                                 content: content, trigger: trigger)
-            self.notificationCenter.add(request) { [weak self] error  in
-                guard let self = self,case .none = error else {
-                    return
-                }
-                self.delegate?.tflBusArrivalReminderDidCreateNotification(self)
+            self.notificationCenter.add(request) { error  in
+                let success = error == nil ? true : false
+                completionBlock?(success,identifier)
             }
         }
     }

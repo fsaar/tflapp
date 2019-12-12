@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14854.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="zaI-Wd-PX9">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="zaI-Wd-PX9">
     <device id="retina4_7" orientation="portrait" appearance="dark"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14806.4"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -26,7 +26,7 @@
         <!--Root View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController storyboardIdentifier="TFLRootViewController" hidesBottomBarWhenPushed="YES" id="BYZ-38-t0r" customClass="TFLRootViewController" customModule="London_Bus" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TFLRootViewController" hidesBottomBarWhenPushed="YES" id="BYZ-38-t0r" customClass="TFLRootViewController" customModule="BusStops" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -42,7 +42,7 @@
                                     <segue destination="goP-9S-1cr" kind="embed" identifier="TFLSlideContainerControllerSegue" id="VIA-hh-WRJ"/>
                                 </connections>
                             </containerView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WRt-eL-EjG" customClass="TFLOfflineView" customModule="London_Bus" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WRt-eL-EjG" customClass="TFLOfflineView" customModule="BusStops" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="667" width="375" height="60"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="nosign" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="EJv-nn-aZu">
@@ -72,10 +72,10 @@
                                     <outlet property="titleLabel" destination="eKp-Xb-yvE" id="6Tm-v8-fQz"/>
                                 </connections>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qt7-yO-udw" customClass="TFLErrorContainerView" customModule="London_Bus" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qt7-yO-udw" customClass="TFLErrorContainerView" customModule="BusStops" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
-                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JwJ-Sf-Dwm" userLabel="ProgressInformationView" customClass="TFLProgressInformationView" customModule="London_Bus" customModuleProvider="target">
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JwJ-Sf-Dwm" userLabel="ProgressInformationView" customClass="TFLProgressInformationView" customModule="BusStops" customModuleProvider="target">
                                         <rect key="frame" x="20" y="283" width="335" height="101"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading arrival times ..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I0q-qz-SWa">
@@ -102,7 +102,7 @@
                                             <outlet property="infoLabel" destination="I0q-qz-SWa" id="cD0-dX-yEw"/>
                                         </connections>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uf8-Ej-oRB" userLabel="errorView" customClass="TFLErrorView" customModule="London_Bus" customModuleProvider="target">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uf8-Ej-oRB" userLabel="errorView" customClass="TFLErrorView" customModule="BusStops" customModuleProvider="target">
                                         <rect key="frame" x="20" y="239" width="335" height="189"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Location Services" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KQr-ak-Jig" userLabel="titleLabel">
@@ -117,7 +117,7 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fbd-zZ-kZD" customClass="TFLButton" customModule="London_Bus" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fbd-zZ-kZD" customClass="TFLButton" customModule="BusStops" customModuleProvider="target">
                                                 <rect key="frame" x="89.5" y="128" width="156" height="41"/>
                                                 <accessibility key="accessibilityConfiguration">
                                                     <accessibilityTraits key="traits" none="YES"/>
@@ -212,7 +212,7 @@
         <!--Slide Container Controller-->
         <scene sceneID="4Ri-Aq-HwN">
             <objects>
-                <viewController storyboardIdentifier="TFLSlideContainerController" automaticallyAdjustsScrollViewInsets="NO" id="goP-9S-1cr" customClass="TFLSlideContainerController" customModule="London_Bus" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TFLSlideContainerController" automaticallyAdjustsScrollViewInsets="NO" id="goP-9S-1cr" customClass="TFLSlideContainerController" customModule="BusStops" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="GQ4-vI-crG"/>
                         <viewControllerLayoutGuide type="bottom" id="F6n-Bv-y7S"/>
@@ -334,13 +334,13 @@
         <!--Station Detail Table View Controller-->
         <scene sceneID="0ot-SE-ydR">
             <objects>
-                <tableViewController storyboardIdentifier="TFLStationDetailTableViewController" id="LvP-II-7wb" customClass="TFLStationDetailTableViewController" customModule="London_Bus" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="TFLStationDetailTableViewController" id="LvP-II-7wb" customClass="TFLStationDetailTableViewController" customModule="BusStops" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="mUa-PF-orz">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="347"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="TFLStationDetailTableViewCell" rowHeight="42" id="jEU-He-LqK" customClass="TFLStationDetailTableViewCell" customModule="London_Bus" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="TFLStationDetailTableViewCell" rowHeight="42" id="jEU-He-LqK" customClass="TFLStationDetailTableViewCell" customModule="BusStops" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="42"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="jEU-He-LqK" id="Uly-2b-PIo">
@@ -492,7 +492,7 @@
         <!--Map View Controller-->
         <scene sceneID="wcZ-Uc-Vhc">
             <objects>
-                <viewController storyboardIdentifier="TFLMapViewController" id="ndp-jF-qH3" customClass="TFLMapViewController" customModule="London_Bus" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TFLMapViewController" id="ndp-jF-qH3" customClass="TFLMapViewController" customModule="BusStops" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Pg3-04-28K"/>
                         <viewControllerLayoutGuide type="bottom" id="Ity-ic-89B"/>
@@ -562,7 +562,7 @@
         <!--Nearby Bus Stations Controller-->
         <scene sceneID="cxn-Pe-6wD">
             <objects>
-                <viewController storyboardIdentifier="TFLNearbyBusStationsController" id="dt0-NZ-OrX" customClass="TFLNearbyBusStationsController" customModule="London_Bus" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TFLNearbyBusStationsController" id="dt0-NZ-OrX" customClass="TFLNearbyBusStationsController" customModule="BusStops" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="kpl-CW-MoJ"/>
                         <viewControllerLayoutGuide type="bottom" id="KiF-48-fWC"/>
@@ -572,14 +572,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Powered by TfL Open Data" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9fW-nN-Lr5">
-                                <rect key="frame" x="85" y="74" width="205.5" height="21"/>
+                                <rect key="frame" x="85" y="74" width="205.5" height="20.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Powered by TfL Open Data" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HDB-tf-sWO" userLabel="last updateLabel">
-                                <rect key="frame" x="85" y="40" width="205.5" height="21"/>
+                                <rect key="frame" x="85" y="40" width="205.5" height="20.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
@@ -589,7 +589,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="TFLBusStationArrivalsCell" rowHeight="120" id="32c-bD-0Gg" customClass="TFLBusStationArrivalsCell" customModule="London_Bus" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="TFLBusStationArrivalsCell" rowHeight="120" id="32c-bD-0Gg" customClass="TFLBusStationArrivalsCell" customModule="BusStops" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="32c-bD-0Gg" id="rhp-0I-pzd">
@@ -623,20 +623,20 @@
                                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <collectionView autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" bouncesZoom="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="JkC-Y4-Fea" customClass="TFLBusPredictionView" customModule="London_Bus" customModuleProvider="target">
+                                                <collectionView autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" bouncesZoom="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="JkC-Y4-Fea" customClass="TFLBusPredictionView" customModule="BusStops" customModuleProvider="target">
                                                     <rect key="frame" x="8" y="68" width="359" height="46"/>
                                                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="46" id="Ce5-JF-JFJ"/>
                                                     </constraints>
-                                                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="5" minimumInteritemSpacing="0.0" id="dxW-6p-dcc" customClass="TFLCollectionFlowLayout" customModule="London_Bus" customModuleProvider="target">
+                                                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="5" minimumInteritemSpacing="0.0" id="dxW-6p-dcc" customClass="TFLCollectionFlowLayout" customModule="BusStops" customModuleProvider="target">
                                                         <size key="itemSize" width="54" height="46"/>
                                                         <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                                         <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                                         <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                     </collectionViewFlowLayout>
                                                     <cells>
-                                                        <collectionViewCell contentMode="center" reuseIdentifier="TFLBusPredictionViewCell" id="sSL-d7-rLk" customClass="TFLBusPredictionViewCell" customModule="London_Bus" customModuleProvider="target">
+                                                        <collectionViewCell contentMode="center" reuseIdentifier="TFLBusPredictionViewCell" id="sSL-d7-rLk" customClass="TFLBusPredictionViewCell" customModule="BusStops" customModuleProvider="target">
                                                             <rect key="frame" x="0.0" y="0.0" width="54" height="46"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -644,13 +644,13 @@
                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                 <subviews>
                                                                     <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="207" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="89R-yJ-7Rc" userLabel="Line">
-                                                                        <rect key="frame" x="16.5" y="6" width="21" height="14"/>
+                                                                        <rect key="frame" x="16.5" y="6" width="21" height="13.5"/>
                                                                         <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="11"/>
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
-                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wtV-FH-gnO" customClass="TFLAnimatedLabel" customModule="London_Bus" customModuleProvider="target">
-                                                                        <rect key="frame" x="0.0" y="26" width="54" height="14"/>
+                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wtV-FH-gnO" customClass="TFLAnimatedLabel" customModule="BusStops" customModuleProvider="target">
+                                                                        <rect key="frame" x="0.0" y="25.5" width="54" height="14"/>
                                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="14" id="aT5-ps-AJo"/>
@@ -730,6 +730,53 @@
                                     <outlet property="delegate" destination="dt0-NZ-OrX" id="UdK-A3-UVo"/>
                                 </connections>
                             </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hCj-7k-Llg" customClass="TFLConfirmationView" customModule="BusStops" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="667" width="375" height="70"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s1D-M9-8Lr">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
+                                        <color key="backgroundColor" name="tflConfirmationViewBorderColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="mPs-EA-fkb"/>
+                                        </constraints>
+                                    </view>
+                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="k2S-QT-L8w">
+                                        <rect key="frame" x="20" y="15" width="335" height="40"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="8li-Wq-tDE">
+                                                <rect key="frame" x="0.0" y="0.5" width="40" height="39"/>
+                                                <color key="tintColor" name="tflConfirmationViewTextColor"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="40" id="BNp-q6-m8J"/>
+                                                    <constraint firstAttribute="height" constant="40" id="NmM-3J-dE8"/>
+                                                </constraints>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="900" verticalHuggingPriority="900" horizontalCompressionResistancePriority="900" text="Reminder notification" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ctj-Kj-edc">
+                                                <rect key="frame" x="50" y="10" width="285" height="20.5"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" name="tflConfirmationViewTextColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" name="tflConfirmationViewBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="k2S-QT-L8w" secondAttribute="trailing" constant="20" id="5EL-RE-EZ7"/>
+                                    <constraint firstAttribute="trailing" secondItem="s1D-M9-8Lr" secondAttribute="trailing" id="Gvn-fp-pcI"/>
+                                    <constraint firstItem="k2S-QT-L8w" firstAttribute="top" secondItem="hCj-7k-Llg" secondAttribute="top" constant="15" id="T4f-Cb-fww"/>
+                                    <constraint firstItem="k2S-QT-L8w" firstAttribute="leading" secondItem="hCj-7k-Llg" secondAttribute="leading" constant="20" id="XXL-zC-HCl"/>
+                                    <constraint firstItem="s1D-M9-8Lr" firstAttribute="top" secondItem="hCj-7k-Llg" secondAttribute="top" id="YDy-zk-2Sg"/>
+                                    <constraint firstItem="s1D-M9-8Lr" firstAttribute="leading" secondItem="hCj-7k-Llg" secondAttribute="leading" id="Z16-ld-E4F"/>
+                                    <constraint firstAttribute="bottom" secondItem="k2S-QT-L8w" secondAttribute="bottom" constant="15" id="v1q-gY-yz5"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="imageView" destination="8li-Wq-tDE" id="6bE-o4-dVz"/>
+                                    <outlet property="titleLabel" destination="Ctj-Kj-edc" id="Jlo-2T-Qps"/>
+                                    <outlet property="topBorderLine" destination="s1D-M9-8Lr" id="Sco-ig-uft"/>
+                                </connections>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -737,6 +784,9 @@
                             <constraint firstItem="9fW-nN-Lr5" firstAttribute="centerX" secondItem="Pbu-BY-CcN" secondAttribute="centerX" id="Sia-AO-d1s"/>
                             <constraint firstAttribute="bottom" secondItem="70N-s4-1TX" secondAttribute="bottom" id="TW4-i7-7Gg" userLabel="tableViewBottomConstraint"/>
                             <constraint firstItem="HDB-tf-sWO" firstAttribute="centerX" secondItem="Pbu-BY-CcN" secondAttribute="centerX" id="XcD-mb-9pH"/>
+                            <constraint firstItem="hCj-7k-Llg" firstAttribute="top" secondItem="Pbu-BY-CcN" secondAttribute="bottom" id="Y2k-Ou-SRX" userLabel="ConfirmationViewTopBorderConstraint"/>
+                            <constraint firstAttribute="trailing" secondItem="hCj-7k-Llg" secondAttribute="trailing" id="em9-sk-LsF"/>
+                            <constraint firstItem="hCj-7k-Llg" firstAttribute="leading" secondItem="Pbu-BY-CcN" secondAttribute="leading" id="li7-Ig-xXV"/>
                             <constraint firstItem="70N-s4-1TX" firstAttribute="leading" secondItem="Pbu-BY-CcN" secondAttribute="leading" id="lop-ya-FKp"/>
                             <constraint firstItem="9fW-nN-Lr5" firstAttribute="top" secondItem="kpl-CW-MoJ" secondAttribute="bottom" constant="74" id="ol8-Qx-oR2"/>
                             <constraint firstItem="HDB-tf-sWO" firstAttribute="top" secondItem="kpl-CW-MoJ" secondAttribute="bottom" constant="40" id="shP-2X-frC"/>
@@ -745,6 +795,8 @@
                     </view>
                     <connections>
                         <outlet property="ackLabel" destination="9fW-nN-Lr5" id="e5V-NY-lae"/>
+                        <outlet property="confirmationView" destination="hCj-7k-Llg" id="Mbl-c5-Bne"/>
+                        <outlet property="confirmationViewTopConstraint" destination="Y2k-Ou-SRX" id="aEe-3I-jwd"/>
                         <outlet property="lastUpdatedLabel" destination="HDB-tf-sWO" id="eli-b0-iD7"/>
                         <outlet property="tableView" destination="70N-s4-1TX" id="yje-DL-4cM"/>
                         <segue destination="Oga-ig-WMN" kind="show" identifier="TFLStationDetailSegue" id="TwU-Ay-g9J"/>
@@ -757,7 +809,7 @@
         <!--Nearby Bus Stations Controller-->
         <scene sceneID="ffn-81-5f0">
             <objects>
-                <tableViewController storyboardIdentifier="TFLNearbyBusStationsController2" automaticallyAdjustsScrollViewInsets="NO" id="Puk-QS-Zbe" customClass="TFLNearbyBusStationsController" customModule="London_Bus" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="TFLNearbyBusStationsController2" automaticallyAdjustsScrollViewInsets="NO" id="Puk-QS-Zbe" customClass="TFLNearbyBusStationsController" customModule="BusStops" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="115" sectionHeaderHeight="28" sectionFooterHeight="28" id="RUN-nl-nDM">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -777,7 +829,7 @@
         <!--Station Detail Controller-->
         <scene sceneID="NYI-60-RBx">
             <objects>
-                <viewController storyboardIdentifier="TFLStationDetailController" id="Oga-ig-WMN" customClass="TFLStationDetailController" customModule="London_Bus" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TFLStationDetailController" id="Oga-ig-WMN" customClass="TFLStationDetailController" customModule="BusStops" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="L8v-WY-C56"/>
                         <viewControllerLayoutGuide type="bottom" id="SUs-gL-kmw"/>
@@ -801,7 +853,7 @@
                                     <segue destination="LvP-II-7wb" kind="embed" identifier="TFLStationDetailTableViewControllerSegue" id="tvn-7A-mGa"/>
                                 </connections>
                             </containerView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dsa-vu-HIV" customClass="TFLOfflineView" customModule="London_Bus" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dsa-vu-HIV" customClass="TFLOfflineView" customModule="BusStops" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="647" width="375" height="60"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Offline" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="396-Ge-Kd1">
@@ -831,7 +883,7 @@
                                     <outlet property="titleLabel" destination="396-Ge-Kd1" id="br6-LM-n2i"/>
                                 </connections>
                             </view>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pIb-dt-aAa" customClass="TFLStationDetailErrorView" customModule="London_Bus" customModuleProvider="target">
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pIb-dt-aAa" customClass="TFLStationDetailErrorView" customModule="BusStops" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="56" width="375" height="591"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Oops, something went wrong, no route information available" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FOW-Wl-CmM">
@@ -883,7 +935,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="85U-xH-Xnv" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H3D-7y-WZd" customClass="TFLStationDetailHeaderView" customModule="London_Bus" customModuleProvider="target">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H3D-7y-WZd" customClass="TFLStationDetailHeaderView" customModule="BusStops" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rcT-4b-owK" userLabel="backgroundImage">
@@ -918,7 +970,7 @@
         <!--Station Detail Map View Controller-->
         <scene sceneID="LrV-LR-q1s">
             <objects>
-                <viewController storyboardIdentifier="TFLStationDetailMapViewController" id="P10-pz-4KX" customClass="TFLStationDetailMapViewController" customModule="London_Bus" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TFLStationDetailMapViewController" id="P10-pz-4KX" customClass="TFLStationDetailMapViewController" customModule="BusStops" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="gLt-Sz-RmL"/>
                         <viewControllerLayoutGuide type="bottom" id="oaF-o2-T1o"/>
@@ -950,7 +1002,7 @@
         <!--Splashscreen Controller-->
         <scene sceneID="ZRN-Mf-6w0">
             <objects>
-                <viewController storyboardIdentifier="TFLSplashscreenController" id="dfs-sd-OGe" customClass="TFLSplashscreenController" customModule="London_Bus" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TFLSplashscreenController" id="dfs-sd-OGe" customClass="TFLSplashscreenController" customModule="BusStops" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="UWI-pW-6aR"/>
                         <viewControllerLayoutGuide type="bottom" id="KWJ-iP-yon"/>
@@ -1012,12 +1064,22 @@
     </scenes>
     <resources>
         <image name="busTemplate" width="100" height="100"/>
-        <image name="nosign" catalog="system" width="64" height="62"/>
+        <image name="checkmark.circle" catalog="system" width="64" height="60"/>
+        <image name="nosign" catalog="system" width="64" height="60"/>
+        <namedColor name="tflConfirmationViewBackgroundColor">
+            <color red="0.80000001192092896" green="0.80000001192092896" blue="0.80000001192092896" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="tflConfirmationViewBorderColor">
+            <color red="1" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="tflConfirmationViewTextColor">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
         <namedColor name="tflSplashScreenBackgroundColor">
-            <color red="0.44999998807907104" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="tflSplashScreenTextColor">
-            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
     </resources>
 </document>

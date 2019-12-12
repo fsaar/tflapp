@@ -8,7 +8,12 @@
 
 import UIKit
 
+protocol TFLBusArrivalReminderDelegate : AnyObject {
+    func tflBusArrivalReminderDidCreateNotification(_ reminder : TFLBusArrivalReminder)
+}
+
 class TFLBusArrivalReminder {
+    weak var delegate : TFLBusArrivalReminderDelegate?
     fileprivate weak var contentViewController : UIViewController?
     fileprivate let notificationCenter = UNUserNotificationCenter.current()
     fileprivate weak var alertController : UIAlertController?
@@ -105,7 +110,12 @@ fileprivate extension TFLBusArrivalReminder {
             
             let request = UNNotificationRequest(identifier: "tflapp.reminder",
                                                 content: content, trigger: trigger)
-            self.notificationCenter.add(request)
+            self.notificationCenter.add(request) { [weak self] error  in
+                guard let self = self,case .none = error else {
+                    return
+                }
+                self.delegate?.tflBusArrivalReminderDidCreateNotification(self)
+            }
         }
     }
 }

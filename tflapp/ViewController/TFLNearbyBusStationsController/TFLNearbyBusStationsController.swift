@@ -29,7 +29,13 @@ class TFLNearbyBusStationsController : UIViewController {
     enum SegueIdentifier : String {
         case stationDetailSegue =  "TFLStationDetailSegue"
     }
-    fileprivate lazy var busArrivalReminder = TFLBusArrivalReminder(with: self)
+    @IBOutlet weak var confirmationViewTopConstraint : NSLayoutConstraint!
+    @IBOutlet weak var confirmationView : TFLConfirmationView!
+    fileprivate lazy var busArrivalReminder : TFLBusArrivalReminder = {
+        let reminder = TFLBusArrivalReminder(with: self)
+        reminder.delegate = self
+        return reminder
+    }()
     fileprivate let client = TFLClient()
     static let defaultTableViewRowHeight = CGFloat (120)
     
@@ -188,9 +194,31 @@ extension TFLNearbyBusStationsController : TFLMapViewControllerDelegate {
 }
 
 //
+// MARK: - TFLBusArrivalReminderDelegate
+//
+extension TFLNearbyBusStationsController : TFLBusArrivalReminderDelegate {
+    func tflBusArrivalReminderDidCreateNotification(_ reminder : TFLBusArrivalReminder) {
+        OperationQueue.main.addOperation {
+            self.showConfirmationView(true)
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
+                self.showConfirmationView(false)
+            }
+        }
+    }
+}
+
+//
 // MARK: - Helper
 //
 fileprivate extension TFLNearbyBusStationsController {
+    func showConfirmationView(_ show : Bool,animated : Bool = true) {
+        let duration = animated ? 0.5 : 0
+        UIView.animate(withDuration: duration) {
+            self.confirmationViewTopConstraint.constant = show ? -self.confirmationView.frame.size.height : 0
+            self.view.layoutIfNeeded()
+        }
+    }
+    
     @objc
     func spotlightLookupNotificationHandler(_ notification : Notification) {
         guard let line = notification.userInfo?[CSSearchableItemActivityIdentifier] as? String else {

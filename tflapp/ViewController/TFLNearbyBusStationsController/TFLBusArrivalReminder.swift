@@ -9,6 +9,10 @@
 import UIKit
 
 class TFLBusArrivalReminder {
+    enum NotificationUserInfoKey : String {
+        case minutesBeforeArrival = "NotificationUserInfoKeyMinutesBeforeArrival"
+        case predictionIdentifier = "NotificationUserInfoKeyPredictionIdentifier"
+    }
     fileprivate weak var contentViewController : UIViewController?
     fileprivate let notificationCenter = UNUserNotificationCenter.current()
     fileprivate weak var alertController : UIAlertController?
@@ -24,11 +28,11 @@ class TFLBusArrivalReminder {
         }
     }
     
-    func showReminderForLine(line : String,arrivingIn seconds : Int,at station : String,with identifier : String,using completionBlock: ((_ success : Bool,_ identifier : String) -> Void)? = nil) {
+    func showReminderForLine(line : String,arrivingIn seconds : Int,at station : String,with stationIdentifier : String,and predictionIdentifier : String, using completionBlock: ((_ success : Bool,_ identifier : String) -> Void)? = nil) {
         guard seconds > 60 else {
             return
         }
-        let sheet = achtionSheet(for: line, arrivingIn: seconds, at: station, with: identifier,using: completionBlock)
+        let sheet = achtionSheet(for: line, arrivingIn: seconds, at: station, with: stationIdentifier,and:predictionIdentifier,using: completionBlock)
         OperationQueue.main.addOperation {
             self.alertController = sheet
             self.contentViewController?.present(sheet, animated: true)
@@ -40,7 +44,7 @@ class TFLBusArrivalReminder {
 // MARK: - Helper
 //
 fileprivate extension TFLBusArrivalReminder {
-    func achtionSheet(for line : String,arrivingIn seconds : Int,at station : String,with identifier : String,using completionBlock: ((_ success : Bool,_ identifier : String) -> Void)? = nil) -> UIAlertController {
+    func achtionSheet(for line : String,arrivingIn seconds : Int,at station : String,with stationIdentifier : String,and predictionIdentifier : String,using completionBlock: ((_ success : Bool,_ identifier : String) -> Void)? = nil) -> UIAlertController {
         let isDarkMode = contentViewController?.view.traitCollection.userInterfaceStyle == .dark
         
         let reminderCopy = NSLocalizedString("TFLNearbyBusStationsController.notification.body",comment: "")
@@ -52,13 +56,14 @@ fileprivate extension TFLBusArrivalReminder {
         let actionSheet = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
         actionSheet.view.tintColor = isDarkMode ? .white : .red
         let dismissAction = UIAlertAction(title: NSLocalizedString("Common.dismiss",comment:""),style: .cancel) {  _ in
-            completionBlock?(false,identifier)
+            completionBlock?(false,stationIdentifier)
         }
         actionSheet.addAction(dismissAction)
         let options = reminderOptionsWithArrivalTime(seconds)
         let actions : [UIAlertAction]  = options.map { option in
             UIAlertAction(title: option.copy,style: .default) { [weak self] _ in
-                self?.createNotification(with: reminderMessage, in: option.timeInSeconds,with: identifier, using:completionBlock)
+                let userInfo : [String:Any] = [NotificationUserInfoKey.minutesBeforeArrival.rawValue : option.minutesBeforeArrival,NotificationUserInfoKey.predictionIdentifier.rawValue: predictionIdentifier]
+                self?.createNotification(with: reminderMessage,userInfo: userInfo, in: option.timeInSeconds,with: stationIdentifier, using:completionBlock)
             }
         }
         actions.forEach { action in
@@ -67,10 +72,10 @@ fileprivate extension TFLBusArrivalReminder {
         return actionSheet
     }
     
-    func reminderOptionsWithArrivalTime(_ arrivalTimeInSeconds : Int) -> [(copy:String,timeInSeconds:Int)] {
+    func reminderOptionsWithArrivalTime(_ arrivalTimeInSeconds : Int) -> [(copy:String,timeInSeconds:Int,minutesBeforeArrival:Int )] {
         let minuteCopy = NSLocalizedString("Common.minute",comment: "")
         let minutesCopy = NSLocalizedString("Common.minutes",comment: "")
-        let minuteTuple = ("1 \(minuteCopy)",60)
+        let minuteTuple = ("1 \(minuteCopy)",60,1)
         
         let arrivalTimeInMinutes = arrivalTimeInSeconds / 60
         
@@ -86,15 +91,15 @@ fileprivate extension TFLBusArrivalReminder {
         default:
             minutesBeforeDeparture = [2,3,5]
         }
-        let options : [(copy:String,timeInSeconds:Int)]  = minutesBeforeDeparture.map { minutes in
+        let options : [(copy:String,timeInSeconds:Int,minutesBeforeArrival:Int)]  = minutesBeforeDeparture.map { minutes in
             let expiryInMinutes = arrivalTimeInMinutes-minutes
             return
-                ("\(minutes) \(minutesCopy)",expiryInMinutes * 60)
+                ("\(minutes) \(minutesCopy)",expiryInMinutes * 60,minutes)
         }
         return options
     }
     
-    func createNotification(with message : String,in seconds : Int,with identifier : String,using completionBlock: ((_ success : Bool,_ identifier : String) -> Void)? = nil) {
+    func createNotification(with message : String,userInfo : [String:Any], in seconds : Int,with identifier : String,using completionBlock: ((_ success : Bool,_ identifier : String) -> Void)? = nil) {
         notificationCenter.requestAuthorization(options: [.badge,.sound,.alert]) { granted,_ in
             guard granted else {
                 return
@@ -104,6 +109,7 @@ fileprivate extension TFLBusArrivalReminder {
             content.title = NSLocalizedString("TFLNearbyBusStationsController.notification.title",comment: "")
             content.body = message
             content.sound = .default
+            content.userInfo = userInfo
                         
             let request = UNNotificationRequest(identifier: identifier,
                                                 content: content, trigger: trigger)

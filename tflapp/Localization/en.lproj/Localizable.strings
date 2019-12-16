@@ -25,7 +25,7 @@
 "DateStringConversion.days_ago" = "a few days ago";
 "DateStringConversion.last_week" = "last week";
 "DateStringConversion.weeks_ago" = "weeks ago";
-"TFLConfirmationView.title" = "Reminder has been created";
+"TFLConfirmationView.title" = "Reminder created";
 "TFLNearbyBusStationsController.last_updated" = "last updated: ";
 "TFLNearbyBusStationsController.reminder.title" = "Create Reminder";
 "TFLNearbyBusStationsController.reminder.message" = "Minutes to show reminder before %@'s arrival at %@";

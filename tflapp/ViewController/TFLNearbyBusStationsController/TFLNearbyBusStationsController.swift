@@ -32,7 +32,6 @@ class TFLNearbyBusStationsController : UIViewController {
     @IBOutlet weak var confirmationViewTopConstraint : NSLayoutConstraint!
     @IBOutlet weak var confirmationView : TFLConfirmationView!
     fileprivate lazy var busArrivalReminder = TFLBusArrivalReminder(with: self)
-       
     fileprivate let client = TFLClient()
     static let defaultTableViewRowHeight = CGFloat (120)
     
@@ -104,6 +103,7 @@ class TFLNearbyBusStationsController : UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        UNUserNotificationCenter.current().delegate = self
         addRefreshControl()
         updateLastUpdateTimeStamp()
         addContentOffsetObserver()
@@ -167,17 +167,41 @@ extension TFLNearbyBusStationsController : UITableViewDelegate {
 // MARK: - TFLBusStationArrivalCellDelegate
 //
 extension TFLNearbyBusStationsController : TFLBusStationArrivalCellDelegate {
+    fileprivate func showCreatedReminderConfirmation() {
+        self.showConfirmationView(true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
+            self.showConfirmationView(false)
+        }
+    }
+    
+    fileprivate func showConfirmationView(_ show : Bool,animated : Bool = true) {
+        let duration = animated ? 0.5 : 0
+        UIView.animate(withDuration: duration) {
+            self.confirmationViewTopConstraint.constant = show ? -self.confirmationView.frame.size.height : 0
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    fileprivate func updateNotificationBadge(arrivalViewModelIdentifier : String,linePredictionViewIdentifier : String) {
+        let arrivalCell = self.tableView.visibleCells.compactMap { $0 as? TFLBusStationArrivalsCell }.first { $0.identifier == arrivalViewModelIdentifier }
+        arrivalCell?.updateBadgeForCellWithIdentifier(linePredictionViewIdentifier)
+    }
+    
+    
     func busStationArrivalCell(_ busStationArrivalCell: TFLBusStationArrivalsCell, showReminderForPrediction prediction: TFLBusStopArrivalsViewModel.LinePredictionViewModel, inArrivalViewModelWithIdentifier identifier: String?) {
         
         let (predictionIdentifier,line,station,seconds) = (prediction.identifier,prediction.line,prediction.busStopIdentifier,prediction.timeToStation)
         let genericStation = NSLocalizedString("TFLNearbyBusStationsController.notification.generic_station",comment:"")
         let stationName = busStopArrivalViewModels.first { $0.identifier == station }?.stationName ?? genericStation
-        self.busArrivalReminder.showReminderForLine(line: line, arrivingIn: seconds, at: stationName, with: predictionIdentifier) { [weak self] success,_ in
+        self.busArrivalReminder.showReminderForLine(line: line, arrivingIn: seconds, at: stationName, with: identifier ?? "",and:predictionIdentifier) { [weak self] success,_ in
             guard success else {
                 return
             }
             OperationQueue.main.addOperation {
                 self?.showCreatedReminderConfirmation()
+                if let identifier = identifier {
+                    self?.updateNotificationBadge(arrivalViewModelIdentifier: identifier, linePredictionViewIdentifier: predictionIdentifier)
+                }
             }
         }
     }
@@ -200,24 +224,25 @@ extension TFLNearbyBusStationsController : TFLMapViewControllerDelegate {
 }
 
 //
+// MARK: - UNUserNotificationCenterDelegate
+//
+extension TFLNearbyBusStationsController : UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        let request = notification.request
+        guard let userInfo = request.content.userInfo as? [String:Any], let predictionIdentifier = userInfo[TFLBusArrivalReminder.NotificationUserInfoKey.predictionIdentifier.rawValue] as? String else {
+            return
+        }
+        OperationQueue.main.addOperation {
+            self.updateNotificationBadge(arrivalViewModelIdentifier: request.identifier, linePredictionViewIdentifier: predictionIdentifier)
+        }
+    }
+}
+
+
+//
 // MARK: - Helper
 //
 fileprivate extension TFLNearbyBusStationsController {
-    func showCreatedReminderConfirmation() {
-        self.showConfirmationView(true)
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
-            self.showConfirmationView(false)
-        }
-    }
-
-    func showConfirmationView(_ show : Bool,animated : Bool = true) {
-        let duration = animated ? 0.5 : 0
-        UIView.animate(withDuration: duration) {
-            self.confirmationViewTopConstraint.constant = show ? -self.confirmationView.frame.size.height : 0
-            self.view.layoutIfNeeded()
-        }
-    }
-    
     @objc
     func spotlightLookupNotificationHandler(_ notification : Notification) {
         guard let line = notification.userInfo?[CSSearchableItemActivityIdentifier] as? String else {

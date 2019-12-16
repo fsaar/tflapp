@@ -43,7 +43,7 @@ class TFLBusStationArrivalsCell: UITableViewCell {
         }
     }
     weak var delegate : TFLBusStationArrivalCellDelegate?
-    fileprivate var identifier : String?
+    fileprivate(set) var identifier : String?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -84,6 +84,11 @@ class TFLBusStationArrivalsCell: UITableViewCell {
         self.distanceLabel.text = busStopArrivalViewModel.distance
         self.predictionView.setPredictions(predictions: busStopArrivalViewModel.arrivalTimes,animated: animated)
         self.contentView.accessibilityLabel = accessibilityLabel(with: busStopArrivalViewModel)
+    }
+    
+
+    func updateBadgeForCellWithIdentifier(_ identifier : String) {
+        self.predictionView.updateBadgeForCellWithIdentifier(identifier)
     }
 }
 

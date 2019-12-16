@@ -58,6 +58,12 @@ class TFLBusPredictionView: UICollectionView {
             }
         }
     }
+    
+    func updateBadgeForCellWithIdentifier(_ identifier : String) {
+        let cell = self.visibleCells.compactMap { $0 as? TFLBusPredictionViewCell }.first { $0.identifier == identifier }
+        cell?.updateBadgeIfNeedBe(true)
+    }
+
     public var predictions : [TFLBusStopArrivalsViewModel.LinePredictionViewModel] = []
 }
 

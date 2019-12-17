@@ -12,6 +12,9 @@ class TFLBusArrivalReminder {
     enum NotificationUserInfoKey : String {
         case minutesBeforeArrival = "NotificationUserInfoKeyMinutesBeforeArrival"
         case predictionIdentifier = "NotificationUserInfoKeyPredictionIdentifier"
+        case stationIdentifier = "NotificationUserInfoKeyStationIdentifier"
+        case lineIdentifier = "NotificationUserInfoKeyLineIdentifier"
+        case stationName = "NotificationUserInfoKeyStationName"
     }
     fileprivate weak var contentViewController : UIViewController?
     fileprivate let notificationCenter = UNUserNotificationCenter.current()
@@ -28,7 +31,7 @@ class TFLBusArrivalReminder {
         }
     }
     
-    func showReminderForLine(line : String,arrivingIn seconds : Int,at station : String,with stationIdentifier : String,and predictionIdentifier : String, using completionBlock: ((_ success : Bool,_ identifier : String) -> Void)? = nil) {
+    func showReminderForLine(line : String,arrivingIn seconds : Int,at station : String,with stationIdentifier : String,and predictionIdentifier : String, using completionBlock: ((_ success : Bool) -> Void)? = nil) {
         guard seconds > 60 else {
             return
         }
@@ -44,7 +47,7 @@ class TFLBusArrivalReminder {
 // MARK: - Helper
 //
 fileprivate extension TFLBusArrivalReminder {
-    func achtionSheet(for line : String,arrivingIn seconds : Int,at station : String,with stationIdentifier : String,and predictionIdentifier : String,using completionBlock: ((_ success : Bool,_ identifier : String) -> Void)? = nil) -> UIAlertController {
+    func achtionSheet(for line : String,arrivingIn seconds : Int,at station : String,with stationIdentifier : String,and predictionIdentifier : String,using completionBlock: ((_ success : Bool) -> Void)? = nil) -> UIAlertController {
         let isDarkMode = contentViewController?.view.traitCollection.userInterfaceStyle == .dark
         
         let reminderCopy = NSLocalizedString("TFLNearbyBusStationsController.notification.body",comment: "")
@@ -56,14 +59,18 @@ fileprivate extension TFLBusArrivalReminder {
         let actionSheet = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
         actionSheet.view.tintColor = isDarkMode ? .white : .red
         let dismissAction = UIAlertAction(title: NSLocalizedString("Common.dismiss",comment:""),style: .cancel) {  _ in
-            completionBlock?(false,stationIdentifier)
+            completionBlock?(false)
         }
         actionSheet.addAction(dismissAction)
         let options = reminderOptionsWithArrivalTime(seconds)
         let actions : [UIAlertAction]  = options.map { option in
             UIAlertAction(title: option.copy,style: .default) { [weak self] _ in
-                let userInfo : [String:Any] = [NotificationUserInfoKey.minutesBeforeArrival.rawValue : option.minutesBeforeArrival,NotificationUserInfoKey.predictionIdentifier.rawValue: predictionIdentifier]
-                self?.createNotification(with: reminderMessage,userInfo: userInfo, in: option.timeInSeconds,with: stationIdentifier, using:completionBlock)
+                let userInfo : [String:Any] = [NotificationUserInfoKey.minutesBeforeArrival.rawValue : option.minutesBeforeArrival,
+                                               NotificationUserInfoKey.predictionIdentifier.rawValue: predictionIdentifier,
+                                               NotificationUserInfoKey.stationIdentifier.rawValue: stationIdentifier,
+                                               NotificationUserInfoKey.stationName.rawValue: station,
+                                               NotificationUserInfoKey.lineIdentifier.rawValue: line]
+                self?.createNotification(with: reminderMessage,userInfo: userInfo, in: option.timeInSeconds,with: predictionIdentifier, using:completionBlock)
             }
         }
         actions.forEach { action in
@@ -99,7 +106,7 @@ fileprivate extension TFLBusArrivalReminder {
         return options
     }
     
-    func createNotification(with message : String,userInfo : [String:Any], in seconds : Int,with identifier : String,using completionBlock: ((_ success : Bool,_ identifier : String) -> Void)? = nil) {
+    func createNotification(with message : String,userInfo : [String:Any], in seconds : Int,with identifier : String,using completionBlock: ((_ success : Bool) -> Void)? = nil) {
         notificationCenter.requestAuthorization(options: [.badge,.sound,.alert]) { granted,_ in
             guard granted else {
                 return
@@ -115,7 +122,7 @@ fileprivate extension TFLBusArrivalReminder {
                                                 content: content, trigger: trigger)
             self.notificationCenter.add(request) { error  in
                 let success = error == nil ? true : false
-                completionBlock?(success,identifier)
+                completionBlock?(success)
             }
         }
     }

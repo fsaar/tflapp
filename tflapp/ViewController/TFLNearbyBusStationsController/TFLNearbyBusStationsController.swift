@@ -30,7 +30,7 @@ class TFLNearbyBusStationsController : UIViewController {
         case stationDetailSegue =  "TFLStationDetailSegue"
     }
     @IBOutlet weak var confirmationViewTopConstraint : NSLayoutConstraint!
-    @IBOutlet weak var confirmationView : TFLConfirmationView!
+    @IBOutlet weak var confirmationView : TFLInformationView!
     fileprivate lazy var busArrivalReminder = TFLBusArrivalReminder(with: self)
     fileprivate let client = TFLClient()
     static let defaultTableViewRowHeight = CGFloat (120)
@@ -167,15 +167,16 @@ extension TFLNearbyBusStationsController : UITableViewDelegate {
 // MARK: - TFLBusStationArrivalCellDelegate
 //
 extension TFLNearbyBusStationsController : TFLBusStationArrivalCellDelegate {
-    fileprivate func showCreatedReminderConfirmation() {
-        self.showConfirmationView(true)
+    fileprivate func showInformationView(type : TFLInformationView.InformationType = .confirmation) {
+        self.showInformationView(type:type, true)
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
-            self.showConfirmationView(false)
+            self.showInformationView(type: type,false)
         }
     }
     
-    fileprivate func showConfirmationView(_ show : Bool,animated : Bool = true) {
+    fileprivate func showInformationView(type : TFLInformationView.InformationType, _ show : Bool,animated : Bool = true) {
         let duration = animated ? 0.5 : 0
+        self.confirmationView.type = type
         UIView.animate(withDuration: duration) {
             self.confirmationViewTopConstraint.constant = show ? -self.confirmationView.frame.size.height : 0
             self.view.layoutIfNeeded()
@@ -193,12 +194,12 @@ extension TFLNearbyBusStationsController : TFLBusStationArrivalCellDelegate {
         let (predictionIdentifier,line,station,seconds) = (prediction.identifier,prediction.line,prediction.busStopIdentifier,prediction.timeToStation)
         let genericStation = NSLocalizedString("TFLNearbyBusStationsController.notification.generic_station",comment:"")
         let stationName = busStopArrivalViewModels.first { $0.identifier == station }?.stationName ?? genericStation
-        self.busArrivalReminder.showReminderForLine(line: line, arrivingIn: seconds, at: stationName, with: identifier ?? "",and:predictionIdentifier) { [weak self] success,_ in
+        self.busArrivalReminder.showReminderForLine(line: line, arrivingIn: seconds, at: stationName, with: identifier ?? "",and:predictionIdentifier) { [weak self] success in
             guard success else {
                 return
             }
             OperationQueue.main.addOperation {
-                self?.showCreatedReminderConfirmation()
+                self?.showInformationView()
                 if let identifier = identifier {
                     self?.updateNotificationBadge(arrivalViewModelIdentifier: identifier, linePredictionViewIdentifier: predictionIdentifier)
                 }
@@ -229,11 +230,17 @@ extension TFLNearbyBusStationsController : TFLMapViewControllerDelegate {
 extension TFLNearbyBusStationsController : UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         let request = notification.request
-        guard let userInfo = request.content.userInfo as? [String:Any], let predictionIdentifier = userInfo[TFLBusArrivalReminder.NotificationUserInfoKey.predictionIdentifier.rawValue] as? String else {
+        guard let userInfo = request.content.userInfo as? [String:Any],
+            let predictionIdentifier = userInfo[TFLBusArrivalReminder.NotificationUserInfoKey.predictionIdentifier.rawValue] as? String,
+            let stationIdentifier = userInfo[TFLBusArrivalReminder.NotificationUserInfoKey.stationIdentifier.rawValue] as? String,
+            let lineIdentifier = userInfo[TFLBusArrivalReminder.NotificationUserInfoKey.lineIdentifier.rawValue] as? String,
+            let stationName = userInfo[TFLBusArrivalReminder.NotificationUserInfoKey.stationName.rawValue] as? String else {
             return
         }
+        let type = TFLInformationView.InformationType.notification(stationName: stationName,line: lineIdentifier)
         OperationQueue.main.addOperation {
-            self.updateNotificationBadge(arrivalViewModelIdentifier: request.identifier, linePredictionViewIdentifier: predictionIdentifier)
+            self.showInformationView(type: type)
+            self.updateNotificationBadge(arrivalViewModelIdentifier: stationIdentifier, linePredictionViewIdentifier: predictionIdentifier)
         }
     }
 }

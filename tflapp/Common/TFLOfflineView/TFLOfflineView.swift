@@ -41,9 +41,9 @@ class TFLOfflineView : UIView {
 fileprivate extension TFLOfflineView {
     
     func updateColors() {
-        self.titleLabel.textColor = UIColor(named: "tflSecondaryTextColor")
+        self.titleLabel.textColor = UIColor(named: "tflOfflineViewTextColor")
         self.titleLabel.backgroundColor = UIColor(named: "tflOfflineViewBackgroundColor")
-        self.imageView.tintColor =  UIColor(named: "tflSecondaryTextColor")
+        self.imageView.tintColor =  UIColor(named: "tflOfflineViewTextColor")
         self.backgroundColor =  UIColor(named: "tflOfflineViewBackgroundColor")
         
     }

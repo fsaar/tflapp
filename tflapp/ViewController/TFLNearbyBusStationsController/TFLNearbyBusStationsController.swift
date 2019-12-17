@@ -167,9 +167,9 @@ extension TFLNearbyBusStationsController : UITableViewDelegate {
 // MARK: - TFLBusStationArrivalCellDelegate
 //
 extension TFLNearbyBusStationsController : TFLBusStationArrivalCellDelegate {
-    fileprivate func showInformationView(type : TFLInformationView.InformationType = .confirmation) {
+    fileprivate func showInformationView(type : TFLInformationView.InformationType = .confirmation,onScreenTimeout : Int = 3) {
         self.showInformationView(type:type, true)
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(onScreenTimeout)) {
             self.showInformationView(type: type,false)
         }
     }
@@ -239,7 +239,7 @@ extension TFLNearbyBusStationsController : UNUserNotificationCenterDelegate {
         }
         let type = TFLInformationView.InformationType.notification(stationName: stationName,line: lineIdentifier)
         OperationQueue.main.addOperation {
-            self.showInformationView(type: type)
+            self.showInformationView(type: type,onScreenTimeout:5)
             self.updateNotificationBadge(arrivalViewModelIdentifier: stationIdentifier, linePredictionViewIdentifier: predictionIdentifier)
         }
     }

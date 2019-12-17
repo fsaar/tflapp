@@ -153,6 +153,4 @@ fileprivate extension TFLBusPredictionViewCell {
         }
         longTapClosure?()
     }
-    
-    
 }

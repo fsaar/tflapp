@@ -29,6 +29,7 @@ class TFLNearbyBusStationsController : UIViewController {
     enum SegueIdentifier : String {
         case stationDetailSegue =  "TFLStationDetailSegue"
     }
+    fileprivate var informationSynchroniser =  TFLSynchroniser(tag: "com.samedialabs.queue.informationView")
     @IBOutlet weak var confirmationViewTopConstraint : NSLayoutConstraint!
     @IBOutlet weak var confirmationView : TFLInformationView!
     fileprivate lazy var busArrivalReminder = TFLBusArrivalReminder(with: self)
@@ -167,20 +168,31 @@ extension TFLNearbyBusStationsController : UITableViewDelegate {
 // MARK: - TFLBusStationArrivalCellDelegate
 //
 extension TFLNearbyBusStationsController : TFLBusStationArrivalCellDelegate {
-    fileprivate func showInformationView(type : TFLInformationView.InformationType = .confirmation,onScreenTimeout : Int = 3) {
-        self.showInformationView(type:type, true)
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(onScreenTimeout)) {
-            self.showInformationView(type: type,false)
+    fileprivate func showInformationView(type : TFLInformationView.InformationType = .confirmation) {
+        self.informationSynchroniser.synchronise { syncEnd in
+            OperationQueue.main.addOperation {
+                self.showInformationView(type:type, true) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(type.onScreenTimeout)) {
+                        self.showInformationView(type: type,false) {
+                            syncEnd()
+                        }
+                    }
+                }
+            }
         }
+        
     }
     
-    fileprivate func showInformationView(type : TFLInformationView.InformationType, _ show : Bool,animated : Bool = true) {
+    fileprivate func showInformationView(type : TFLInformationView.InformationType, _ show : Bool,animated : Bool = true,completionBlock : (() -> Void)? = nil) {
         let duration = animated ? 0.5 : 0
         self.confirmationView.type = type
-        UIView.animate(withDuration: duration) {
+        self.view.layoutIfNeeded()
+        UIView.animate(withDuration: duration,animations:{
             self.confirmationViewTopConstraint.constant = show ? -self.confirmationView.frame.size.height : 0
             self.view.layoutIfNeeded()
-        }
+        },completion:{ _ in
+                completionBlock?()
+        })
     }
     
     fileprivate func updateNotificationBadge(arrivalViewModelIdentifier : String,linePredictionViewIdentifier : String) {
@@ -239,7 +251,7 @@ extension TFLNearbyBusStationsController : UNUserNotificationCenterDelegate {
         }
         let type = TFLInformationView.InformationType.notification(stationName: stationName,line: lineIdentifier)
         OperationQueue.main.addOperation {
-            self.showInformationView(type: type,onScreenTimeout:5)
+            self.showInformationView(type: type)
             self.updateNotificationBadge(arrivalViewModelIdentifier: stationIdentifier, linePredictionViewIdentifier: predictionIdentifier)
         }
     }

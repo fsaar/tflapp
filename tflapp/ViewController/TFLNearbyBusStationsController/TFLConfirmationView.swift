@@ -30,6 +30,15 @@ class TFLInformationView: UIView {
                 return UIImage(systemName: "info.circle")
             }
         }
+        var onScreenTimeout : Int {
+            switch self {
+            case .confirmation:
+                return 3
+            case .notification:
+                return 5
+                
+            }
+        }
     }
     @IBOutlet weak var imageView : UIImageView! {
         didSet {

@@ -47,6 +47,10 @@ class CountDownLabel: UIView {
         }
     }
     
+    deinit {
+        stop()
+    }
+    
     init() {
         super.init(frame: .zero)
         setup()

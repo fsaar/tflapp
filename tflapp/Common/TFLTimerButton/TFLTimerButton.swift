@@ -111,7 +111,7 @@ class TFLTimerButton : UIButton {
             animateCountDown()
         }
         displayLink = CADisplayLink(target: target, selector: #selector(target.ticker(_:)))
-        displayLink?.add(to: RunLoop.current, forMode: RunLoop.Mode.common)
+        displayLink?.add(to: .current, forMode: .common)
     }
     
     func stop(animated : Bool = true) {

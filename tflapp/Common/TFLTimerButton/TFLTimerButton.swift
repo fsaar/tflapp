@@ -14,6 +14,13 @@ protocol TFLTimerButtonDelegate : AnyObject {
 }
 
 class TFLTimerButton : UIButton {
+    fileprivate lazy var countDownLabel : CountDownLabel = {
+        let label = CountDownLabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.tflTimerButtonTitle()
+        label.textColor = UIColor.white
+        return label
+    }()
     fileprivate let lightImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
     fileprivate class DisplayLinkTarget {
         let block : () -> Void
@@ -96,6 +103,7 @@ class TFLTimerButton : UIButton {
         guard case .stopped = displayLinkState else {
             return
         }
+        self.countDownLabel.start()
         let now = Date()
         let expiryDate = now.addingTimeInterval(Double(expiryTime))
         self.displayLinkState = .running(startDate : now,expiryDate: expiryDate,timeInSecs: expiryTime)
@@ -107,6 +115,7 @@ class TFLTimerButton : UIButton {
     }
     
     func stop(animated : Bool = true) {
+        self.countDownLabel.stop()
         self.accessibilityLabel = NSLocalizedString("TFLTimerButton.refresh_stopped.accessibilityTitle", comment: "")
         guard case let .running(_,_,timeInSecs) = displayLinkState else {
             return
@@ -130,7 +139,7 @@ class TFLTimerButton : UIButton {
     
     func reset() {
         self.displayLinkState = .stopped
-        self.setTitle("\(expiryTime)", for: .normal)
+        self.countDownLabel.countDownValue = expiryTime
         self.borderLayer.strokeEnd = 1
         self.innerLayer.strokeEnd = 1
         self.accessibilityLabel = NSLocalizedString("TFLTimerButton.refresh_stopped.accessibilityTitle", comment: "")
@@ -160,15 +169,21 @@ fileprivate extension TFLTimerButton {
     }
     
     func setup() {
+        self.addSubview(self.countDownLabel)
+        NSLayoutConstraint.activate([
+            self.countDownLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor,constant: 15),
+            self.countDownLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor,constant:-15),
+            self.countDownLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor,constant: -15),
+            self.countDownLabel.topAnchor.constraint(equalTo: self.topAnchor,constant:15)
+        ])
+        
         self.layer.contents = self.circleBackgroundImage.cgImage
         self.layer.addSublayer(self.borderLayer)
         self.layer.addSublayer(self.innerLayer)
         self.layer.cornerRadius = length / 2
         self.clipsToBounds = true
 
-        self.setTitle("\(expiryTime)", for: .normal)
-        self.titleLabel?.font = UIFont.tflTimerButtonTitle()
-        self.titleLabel?.textAlignment = .center
+        self.setTitle(nil, for: .normal)
         self.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         self.addTarget(self, action: #selector(self.tapHandler(_:)), for: .touchUpInside)
         self.isAccessibilityElement = true
@@ -211,8 +226,6 @@ fileprivate extension TFLTimerButton {
             return
         }
         let timeLeft = Int(Double(timeInSecs) * percent) + 1
-        self.setTitle("\(timeLeft)", for: .normal)
-
 
         self.borderLayer.strokeEnd = CGFloat(percent)
         self.innerLayer.strokeEnd = CGFloat(percent)

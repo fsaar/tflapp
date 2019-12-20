@@ -39,6 +39,8 @@
 		564EC7071DE1917D008CFD11 /* TFLBusStationArrivalsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564EC7011DE1917D008CFD11 /* TFLBusStationArrivalsCell.swift */; };
 		564EC7081DE1917D008CFD11 /* TFLBusStopArrivalsInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564EC7021DE1917D008CFD11 /* TFLBusStopArrivalsInfo.swift */; };
 		564EC70A1DE1917D008CFD11 /* TFLNearbyBusStationsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564EC7041DE1917D008CFD11 /* TFLNearbyBusStationsController.swift */; };
+		564F7A6F23ACD42200FF3426 /* CountDownLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564F7A6D23ACD42200FF3426 /* CountDownLabel.swift */; };
+		564F7A7023ACD42200FF3426 /* CountDownElementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564F7A6E23ACD42200FF3426 /* CountDownElementView.swift */; };
 		5656717A219A244700F3B7EE /* TFLLineInfoRouteDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56567179219A244600F3B7EE /* TFLLineInfoRouteDirectory.swift */; };
 		56577D0120A0CF7700B40318 /* TFLRootViewControllerSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56577D0020A0CF7700B40318 /* TFLRootViewControllerSpecs.swift */; };
 		5657D3711DE38ADF004E4CD0 /* TFLBusPredictionSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5657D3701DE38ADF004E4CD0 /* TFLBusPredictionSpecs.swift */; };
@@ -170,6 +172,8 @@
 		564EC7021DE1917D008CFD11 /* TFLBusStopArrivalsInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusStopArrivalsInfo.swift; sourceTree = "<group>"; };
 		564EC7031DE1917D008CFD11 /* TFLBusStopArrivalsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusStopArrivalsViewModel.swift; sourceTree = "<group>"; };
 		564EC7041DE1917D008CFD11 /* TFLNearbyBusStationsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLNearbyBusStationsController.swift; sourceTree = "<group>"; };
+		564F7A6D23ACD42200FF3426 /* CountDownLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountDownLabel.swift; sourceTree = "<group>"; };
+		564F7A6E23ACD42200FF3426 /* CountDownElementView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountDownElementView.swift; sourceTree = "<group>"; };
 		56567179219A244600F3B7EE /* TFLLineInfoRouteDirectory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLLineInfoRouteDirectory.swift; sourceTree = "<group>"; };
 		56577D0020A0CF7700B40318 /* TFLRootViewControllerSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLRootViewControllerSpecs.swift; sourceTree = "<group>"; };
 		5657D3661DE387E6004E4CD0 /* tflApp Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "tflApp Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -363,6 +367,15 @@
 			path = TFLNearbyBusStationsController;
 			sourceTree = "<group>";
 		};
+		564F7A6C23ACD42200FF3426 /* CountDownView */ = {
+			isa = PBXGroup;
+			children = (
+				564F7A6D23ACD42200FF3426 /* CountDownLabel.swift */,
+				564F7A6E23ACD42200FF3426 /* CountDownElementView.swift */,
+			);
+			path = CountDownView;
+			sourceTree = "<group>";
+		};
 		5657D3671DE387E6004E4CD0 /* tflApp Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -421,6 +434,7 @@
 		565A1FC91DD8F8D1003CE960 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				564F7A6C23ACD42200FF3426 /* CountDownView */,
 				5629CC2522F784E400911C1E /* Settings */,
 				56D6E3782259546F00A2FAE9 /* PolyLineDict */,
 				56113B2C223F7DAE00C8EDA4 /* GoogleRouteInfo */,
@@ -989,10 +1003,12 @@
 				568E068521E6B14D00E92AF7 /* TFLArrivalInfoView.swift in Sources */,
 				567F533D20BDB34E0022FEFF /* TFLStationDetailController.swift in Sources */,
 				5629CC2722F785BC00911C1E /* Settings.swift in Sources */,
+				564F7A7023ACD42200FF3426 /* CountDownElementView.swift in Sources */,
 				564CA5A8222356B200E69A1C /* Array+Helper.swift in Sources */,
 				567F534920BF13040022FEFF /* TFLStationDetailTableViewController.swift in Sources */,
 				56C828961DEA396400E52086 /* TFLCollectionFlowLayout.swift in Sources */,
 				567224FD20D564BF007DA481 /* TFLMapViewAnnotation.swift in Sources */,
+				564F7A6F23ACD42200FF3426 /* CountDownLabel.swift in Sources */,
 				567224FF20D570A5007DA481 /* TFLBusStopAnnotationView.swift in Sources */,
 				56DD190020A0B0C1003335D1 /* TFLTimer.swift in Sources */,
 				560CF3052173569600ED0BA5 /* Date+String.swift in Sources */,

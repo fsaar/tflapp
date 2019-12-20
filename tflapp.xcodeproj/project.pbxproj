@@ -367,13 +367,13 @@
 			path = TFLNearbyBusStationsController;
 			sourceTree = "<group>";
 		};
-		564F7A6C23ACD42200FF3426 /* CountDownView */ = {
+		564F7A6C23ACD42200FF3426 /* CountDownLabel */ = {
 			isa = PBXGroup;
 			children = (
 				564F7A6D23ACD42200FF3426 /* CountDownLabel.swift */,
 				564F7A6E23ACD42200FF3426 /* CountDownElementView.swift */,
 			);
-			path = CountDownView;
+			path = CountDownLabel;
 			sourceTree = "<group>";
 		};
 		5657D3671DE387E6004E4CD0 /* tflApp Tests */ = {
@@ -434,7 +434,7 @@
 		565A1FC91DD8F8D1003CE960 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				564F7A6C23ACD42200FF3426 /* CountDownView */,
+				564F7A6C23ACD42200FF3426 /* CountDownLabel */,
 				5629CC2522F784E400911C1E /* Settings */,
 				56D6E3782259546F00A2FAE9 /* PolyLineDict */,
 				56113B2C223F7DAE00C8EDA4 /* GoogleRouteInfo */,

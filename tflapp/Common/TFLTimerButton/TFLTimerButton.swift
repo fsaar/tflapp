@@ -169,8 +169,8 @@ fileprivate extension TFLTimerButton {
     func setup() {
         self.addSubview(self.countDownLabel)
         NSLayoutConstraint.activate([
-            self.countDownLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor,constant: 15),
-            self.countDownLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor,constant:-15),
+            self.countDownLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor,constant: 14.5),
+            self.countDownLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor,constant:-15.5),
             self.countDownLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor,constant: -15),
             self.countDownLabel.topAnchor.constraint(equalTo: self.topAnchor,constant:15)
         ])

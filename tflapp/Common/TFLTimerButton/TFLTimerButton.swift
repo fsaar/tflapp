@@ -155,15 +155,13 @@ class TFLTimerButton : UIButton {
         self.lightImpactFeedbackGenerator.impactOccurred()
     }
 }
-
+//
 // MARK: Private
-
+//
 fileprivate extension TFLTimerButton {
     func updateColors() {
         let defaultTextColor = UIColor(named: "tflRefreshTextColor")
-        let highlightedTextColor = UIColor(named: "tflRefreshHighlightedTextColor")
-        self.setTitleColor(defaultTextColor, for: .normal)
-        self.setTitleColor(highlightedTextColor, for: .highlighted)
+        self.countDownLabel.textColor = defaultTextColor
         self.innerLayer.strokeColor = UIColor(named: "tflRefreshRemainingTimeColor")?.cgColor
         self.circleBackgroundImage  = self.backgroundImage()
     }

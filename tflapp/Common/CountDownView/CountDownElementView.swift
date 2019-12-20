@@ -42,7 +42,7 @@ class CountDownElementView : UIView {
         }
     }
     
-    var textColor : UIColor = .white {
+    var textColor : UIColor? = .white {
         didSet {
             self.lowerLabel.textColor = textColor
             self.upperLabel.textColor = textColor

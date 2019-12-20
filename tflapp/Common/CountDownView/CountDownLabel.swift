@@ -31,7 +31,7 @@ class CountDownLabel: UIView {
     }
     fileprivate var currentValue = 30
     
-    var textColor : UIColor = .white {
+    var textColor : UIColor? = .white {
         didSet {
             self.twoDigit10.textColor = textColor
             self.twoDigit1.textColor = textColor

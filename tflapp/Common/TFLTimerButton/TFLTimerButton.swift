@@ -53,6 +53,12 @@ class TFLTimerButton : UIButton {
     }
     fileprivate var displayLink : CADisplayLink?
     
+    
+    fileprivate lazy var backgroundLayer : CAShapeLayer = {
+        let layer = shapeLayer(width: outerWidth)
+        return layer
+    }()
+    
     fileprivate lazy var innerLayer : CAShapeLayer = {
         let lineWidth : CGFloat = innerWidth
         let shapeLayer = self.shapeLayer(radius: radius,endAngle: CGFloat(2 * Double.pi * 0.92))
@@ -72,9 +78,6 @@ class TFLTimerButton : UIButton {
         return shapeLayer
     }()
     
-    fileprivate lazy var circleBackgroundImage  = self.backgroundImage()
-        
-
     init(expiryTimeInSecods : Int) {
         self.expiryTime = expiryTimeInSecods
         super.init(frame: .zero)
@@ -163,7 +166,7 @@ fileprivate extension TFLTimerButton {
         let defaultTextColor = UIColor(named: "tflRefreshTextColor")
         self.countDownLabel.textColor = defaultTextColor
         self.innerLayer.strokeColor = UIColor(named: "tflRefreshRemainingTimeColor")?.cgColor
-        self.circleBackgroundImage  = self.backgroundImage()
+        self.backgroundLayer.strokeColor = UIColor(named: "tflRefreshBackgroundColor")?.cgColor
     }
     
     func setup() {
@@ -172,10 +175,10 @@ fileprivate extension TFLTimerButton {
             self.countDownLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor,constant: 14.5),
             self.countDownLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor,constant:-15.5),
             self.countDownLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor,constant: -15),
-            self.countDownLabel.topAnchor.constraint(equalTo: self.topAnchor,constant:15)
+            self.countDownLabel.topAnchor.constraint(equalTo: self.topAnchor,constant:14)
         ])
+        self.layer.addSublayer(self.backgroundLayer)
         
-        self.layer.contents = self.circleBackgroundImage.cgImage
         self.layer.addSublayer(self.borderLayer)
         self.layer.addSublayer(self.innerLayer)
         self.layer.cornerRadius = length / 2
@@ -199,6 +202,18 @@ fileprivate extension TFLTimerButton {
         shapeLayer.position = CGPoint(x:length / 2,y:length / 2)
         shapeLayer.transform = CATransform3DRotate(CATransform3DIdentity, CGFloat(-Double.pi / 2), 0, 0, 1.0)
         shapeLayer.lineCap = .round
+        return shapeLayer
+    }
+    
+    func shapeLayer(width : CGFloat) -> CAShapeLayer {
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.frame = self.bounds
+        let center = CGPoint(x: self.frame.size.width / 2.0, y: self.frame.size.height / 2.0)
+        let bezierPath = UIBezierPath(arcCenter: center, radius: radius , startAngle: 0, endAngle: CGFloat(2 * Double.pi) , clockwise: true)
+        shapeLayer.path = bezierPath.cgPath
+        shapeLayer.lineWidth = width
+        shapeLayer.fillColor = UIColor.clear.cgColor
+        shapeLayer.position = CGPoint(x:length / 2,y:length / 2)
         return shapeLayer
     }
     
@@ -232,26 +247,4 @@ fileprivate extension TFLTimerButton {
         let suffixTitle = "\(timeLeft) \(NSLocalizedString(localisationCopy,comment:""))"
         self.accessibilityLabel = "\(prefixTitle) \(suffixTitle)"
     }
-    
-    func backgroundImage() -> UIImage {
-            let bounds = CGRect(origin:.zero, size: CGSize(width: length, height: length))
-                    let format = UIGraphicsImageRendererFormat()
-                    format.opaque = false
-                    let renderer = UIGraphicsImageRenderer(bounds: bounds,format: format)
-                    return renderer.image { context in
-                        UIColor.clear.setFill()
-                        context.fill(bounds)
-                        
-                        let center = CGPoint(x: length / 2.0, y: length / 2.0)
-                        let bezierPath = UIBezierPath(arcCenter: center, radius: radius , startAngle: 0, endAngle: CGFloat(2 * Double.pi), clockwise: true)
-                        UIColor.white.setStroke()
-                        bezierPath.lineWidth = outerWidth
-                        bezierPath.stroke()
-                        
-                        let bezierPath2 = UIBezierPath(arcCenter: center, radius: radius , startAngle: 0, endAngle: CGFloat(2 * Double.pi), clockwise: true)
-                        UIColor(named: "tflRefreshBackgroundColor")?.setStroke()
-                        bezierPath2.lineWidth = innerWidth
-                        bezierPath2.stroke()
-                    }
-        }
 }

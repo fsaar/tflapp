@@ -26,6 +26,7 @@
 "DateStringConversion.last_week" = "last week";
 "DateStringConversion.weeks_ago" = "weeks ago";
 "TFLInformationView.title" = "Reminder created";
+"TFLInformationView.warning.title" = "Arrival pending. No reminder needed";
 "TFLInformationView.notification" = "Your reminder for bus %@ at %@";
 "TFLNearbyBusStationsController.last_updated" = "last updated: ";
 "TFLNearbyBusStationsController.reminder.title" = "Create Reminder";

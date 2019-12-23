@@ -206,8 +206,11 @@ extension TFLNearbyBusStationsController : TFLBusStationArrivalCellDelegate {
         let (predictionIdentifier,line,station,seconds) = (prediction.identifier,prediction.line,prediction.busStopIdentifier,prediction.timeToStation)
         let genericStation = NSLocalizedString("TFLNearbyBusStationsController.notification.generic_station",comment:"")
         let stationName = busStopArrivalViewModels.first { $0.identifier == station }?.stationName ?? genericStation
-        self.busArrivalReminder.showReminderForLine(line: line, arrivingIn: seconds, at: stationName, with: identifier ?? "",and:predictionIdentifier) { [weak self] success in
+        self.busArrivalReminder.showReminderForLine(line: line, arrivingIn: seconds, at: stationName, with: identifier ?? "",and:predictionIdentifier) { [weak self] success,error in
             guard success else {
+                if let error = error as? TFLBusArrivalReminder.ReminderError, error == .busArrivalPending {
+                    self?.showInformationView(type: .warning)
+                }
                 return
             }
             OperationQueue.main.addOperation {

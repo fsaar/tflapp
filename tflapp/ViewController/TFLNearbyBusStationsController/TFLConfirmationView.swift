@@ -10,11 +10,14 @@ import UIKit
 
 class TFLInformationView: UIView {
     enum InformationType {
+        case warning
         case confirmation
         case notification(stationName : String,line : String)
         
         var title : String {
             switch self {
+            case .warning:
+                return NSLocalizedString("TFLInformationView.warning.title", comment: "")
             case .confirmation:
                 return NSLocalizedString("TFLInformationView.title", comment: "")
             case .notification(let stationName,let line):
@@ -24,6 +27,8 @@ class TFLInformationView: UIView {
         }
         var image : UIImage? {
             switch self {
+            case .warning:
+                return UIImage(systemName: "info.circle")
             case .confirmation:
                 return UIImage(systemName: "checkmark.circle")
             case .notification:
@@ -34,7 +39,7 @@ class TFLInformationView: UIView {
             switch self {
             case .confirmation:
                 return 3
-            case .notification:
+            case .notification,.warning:
                 return 5
                 
             }

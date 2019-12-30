@@ -14,7 +14,7 @@ for file in *.png ; do
  	elif [[ "$file" =~ "3.png" ]]; then
  		title="Detailed information\na tap away"
  	elif [[ "$file" =~ "4.png" ]]; then
- 		title="Remind yourself when you need it"
+ 		title="Remind yourself\nwhen you need it"
  	else 
  		continue
 	fi;

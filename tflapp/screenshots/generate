@@ -1,0 +1,26 @@
+# iphone SE (4_))
+#	- images: 640 x 1136
+#	- frames: 840 x 1696
+# iphone6s (4_7)
+#	- images: 750 x 1334
+#	- frames: 990 x 1934
+# iphone7 Plus (5_5)
+#	- images: 1242 x 2208
+#	- frames: 1842 x 3408
+# iphoneXS (5_8)
+#	- images: 1125 x 2436
+#	- frames: 1385 x 2676
+# iphoneXr (6_1)
+#	- images: 828 x 1792
+#	- frames: 1048 x 2025
+# iPhoneXS max (6_5)
+#	- images: 1242 x 2688
+#	- frames: 1522 x 2968
+
+
+cd ./4_0 && ./screenshots && cd ..
+cd ./4_7 && ./screenshots && cd ..
+cd ./5_5 && ./screenshots && cd ..
+cd ./5_8 && ./screenshots && cd ..
+cd ./6_1 && ./screenshots && cd ..
+cd ./6_5 && ./screenshots && cd ..

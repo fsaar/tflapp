@@ -40,13 +40,12 @@ class TFLStationDetailController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isHidden = true
         view.layer.cornerRadius = width / 2
-        view.backgroundColor = UIColor(red: 0.7, green: 0.7, blue: 0.7, alpha: 1.0)
         view.addSubview(self.updateStatusView)
         NSLayoutConstraint.activate([
             view.widthAnchor.constraint(equalToConstant: width),
             view.heightAnchor.constraint(equalToConstant: width),
-            updateStatusView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            updateStatusView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            updateStatusView.centerXAnchor.constraint(equalTo: view.centerXAnchor,constant: 1),
+            updateStatusView.centerYAnchor.constraint(equalTo: view.centerYAnchor,constant: 0.5)
             ])
         return view
     }()

@@ -1,5 +1,4 @@
 disabled_rules: # rule identifiers to exclude from running
-    - identifier                               
     - attributes                               
     - closure_parameter_position               
     - colon                                    
@@ -75,6 +74,10 @@ disabled_rules: # rule identifiers to exclude from running
     - strong_iboutlet
     - unused_optional_binding  
 opt_in_rules:
+    - empty_collection_literal
+    - contains_over_filter_count
+    - contains_over_filter_is_empty
+    - unused_declaration
     - closing_brace                             
     - custom_rules                             
     - closure_spacing                          
@@ -87,7 +90,6 @@ opt_in_rules:
     - redundant_type_annotation
     - anyobject_protocol
     - deployment_target
-    - weak_computed_property
     - duplicate_imports
     - unused_setter_value
     - only_single_muted_parameter
@@ -99,7 +101,6 @@ opt_in_rules:
     - static_operator
     - identical_operands
     - unused_import
-    - unused_private_declaration	
     - explicit_init                            
     - block_based_kvo                          
     - contains_over_first_not_nil              

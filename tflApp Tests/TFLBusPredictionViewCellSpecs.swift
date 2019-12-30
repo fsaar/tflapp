@@ -189,7 +189,7 @@ class TFLBusPredictionViewCellSpecs: QuickSpec {
                 
                 let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo,using: referenceDate.addingTimeInterval(10))
                 
-                cell.configure(with: model.arrivalTimes.first!)
+                cell.configure(with: model.arrivalTimes.first!, using: { })
                 expect(cell.line.text) == "39"
                 expect(cell.arrivalTime.text) == "1 min"
                 completionBlockCalled = true
@@ -204,7 +204,7 @@ class TFLBusPredictionViewCellSpecs: QuickSpec {
                 
                 let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo,using: referenceDate.addingTimeInterval(120))
                 
-                cell.configure(with: model.arrivalTimes.last!)
+                cell.configure(with: model.arrivalTimes.last!, using: { })
                 expect(cell.line.text) == "40"
                 expect(cell.arrivalTime.text) == "29 mins"
                  completionBlockCalled = true
@@ -224,7 +224,7 @@ class TFLBusPredictionViewCellSpecs: QuickSpec {
                 
                 let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo,using: referenceDate.addingTimeInterval(120))
                 
-                cell.configure(with: model.arrivalTimes.last!,as: false)
+                cell.configure(with: model.arrivalTimes.last!,as: false, using: { })
                 expect(testLabel.textSet) == true
                  completionBlockCalled = true
             }
@@ -242,9 +242,9 @@ class TFLBusPredictionViewCellSpecs: QuickSpec {
                 
                 let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo,using: referenceDate.addingTimeInterval(120))
                 
-                cell.configure(with: model.arrivalTimes.last!,as: false)
+                cell.configure(with: model.arrivalTimes.last!,as: false, using: { })
                 testLabel.textSet = false
-                cell.configure(with: model.arrivalTimes.last!,as: true)
+                cell.configure(with: model.arrivalTimes.last!,as: true, using: { })
                 expect(testLabel.textSet) == false
                  completionBlockCalled = true
             }
@@ -261,10 +261,10 @@ class TFLBusPredictionViewCellSpecs: QuickSpec {
                 
                 let  model =   TFLBusStopArrivalsViewModel(with: busArrivalInfo,using: referenceDate.addingTimeInterval(120))
                 
-                cell.configure(with: model.arrivalTimes.last!,as: false)
+                cell.configure(with: model.arrivalTimes.last!,as: false, using: { })
                 testLabel.textSet = false
                 let  model2 =   TFLBusStopArrivalsViewModel(with: busArrivalInfo,using: referenceDate.addingTimeInterval(180))
-                cell.configure(with: model2.arrivalTimes.last!,as: true)
+                cell.configure(with: model2.arrivalTimes.last!,as: true, using: { })
                 expect(testLabel.textSet) == true
                 completionBlockCalled = true
             }

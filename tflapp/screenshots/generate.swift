@@ -176,10 +176,10 @@ func generateBackground(size : ScreenSize,for closure: @escaping (_ background :
 
 func generateScreenShots(size : ScreenSize, _ background : String,_ emptyFile : String) {
     let currentURL = URL(fileURLWithPath: ".")
-    guard let enumerator = FileManager.default.enumerator(at: currentURL, includingPropertiesForKeys: [URLResourceKey.isDirectoryKey], options: [.skipsPackageDescendants,.skipsHiddenFiles],errorHandler: { _,_ in return true }) else {
+    guard let enumerator = FileManager.default.enumerator(at: currentURL, includingPropertiesForKeys: [URLResourceKey.isDirectoryKey], options: [.skipsPackageDescendants,.skipsHiddenFiles],errorHandler: { _,_ in true }) else {
         return
     }
-    let imageURLS =  enumerator.compactMap({ $0 as? URL }).map { $0.lastPathComponent }.filter { $0.hasSuffix(".png") && $0.hasPrefix("iphone")  }.sorted()
+    let imageURLS =  enumerator.compactMap { $0 as? URL }.map { $0.lastPathComponent }.filter { $0.hasSuffix(".png") && $0.hasPrefix("iphone") }.sorted()
     
     for imageURL in imageURLS {
         let range = (imageURL as NSString).range(of: "\\d+\\.png", options: .regularExpression)
@@ -244,6 +244,3 @@ for size in ScreenSize.allCases {
     }
     _ = FileManager.default.changeCurrentDirectoryPath("..")
 }
-
-
-

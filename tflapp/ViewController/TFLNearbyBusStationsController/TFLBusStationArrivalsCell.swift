@@ -3,11 +3,12 @@ import MapKit
 
 protocol TFLBusStationArrivalCellDelegate : AnyObject {
     func busStationArrivalCell(_ busStationArrivalCell: TFLBusStationArrivalsCell,didSelectLine line: String,with vehicleID: String,at station : String)
+    func busStationArrivalCell(_ busStationArrivalCell: TFLBusStationArrivalsCell,showReminderForPrediction prediction: TFLBusStopArrivalsViewModel.LinePredictionViewModel,inArrivalViewModelWithIdentifier identifier : String?)
+
 }
 
 class TFLBusStationArrivalsCell: UITableViewCell {
     @IBOutlet weak var separator : UIView!
-    
     @IBOutlet weak var stationName : UILabel! = nil {
         didSet {
             self.stationName.font = UIFont.tflFontStationHeader()
@@ -42,6 +43,7 @@ class TFLBusStationArrivalsCell: UITableViewCell {
         }
     }
     weak var delegate : TFLBusStationArrivalCellDelegate?
+    fileprivate(set) var identifier : String?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -57,6 +59,7 @@ class TFLBusStationArrivalsCell: UITableViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
+        self.identifier = nil
         self.stationName.text = nil
         self.stationDetails.text = nil
         self.distanceLabel.text = nil
@@ -74,12 +77,18 @@ class TFLBusStationArrivalsCell: UITableViewCell {
     }
 
     func configure(with busStopArrivalViewModel: TFLBusStopArrivalsViewModel,animated: Bool = false) {
+        self.identifier = busStopArrivalViewModel.identifier
         self.busStopLabel.text = busStopArrivalViewModel.stopLetter
         self.stationName.text = busStopArrivalViewModel.stationName
         self.stationDetails.text  = busStopArrivalViewModel.stationDetails
         self.distanceLabel.text = busStopArrivalViewModel.distance
         self.predictionView.setPredictions(predictions: busStopArrivalViewModel.arrivalTimes,animated: animated)
         self.contentView.accessibilityLabel = accessibilityLabel(with: busStopArrivalViewModel)
+    }
+    
+
+    func updateBadgeForCellWithIdentifier(_ identifier : String) {
+        self.predictionView.updateBadgeForCellWithIdentifier(identifier)
     }
 }
 
@@ -110,6 +119,10 @@ fileprivate extension TFLBusStationArrivalsCell {
 }
 
 extension TFLBusStationArrivalsCell : TFLBusPredictionViewDelegate {
+    func busPredictionView(_ busPredictionView: TFLBusPredictionView, showReminderForPrediction prediction: TFLBusStopArrivalsViewModel.LinePredictionViewModel) {
+        self.delegate?.busStationArrivalCell(self, showReminderForPrediction: prediction, inArrivalViewModelWithIdentifier: identifier)
+    }
+    
     func busPredictionView(_ busPredictionView: TFLBusPredictionView, didSelectLine line: String,with vehicleID: String,at station : String) {
         self.delegate?.busStationArrivalCell(self, didSelectLine: line,with: vehicleID,at:station)
     }

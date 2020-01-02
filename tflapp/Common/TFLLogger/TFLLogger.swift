@@ -30,15 +30,21 @@ class TFLLogger {
     
     
     func signPostStart(osLog: OSLog, name: StaticString,identifier : String? = nil) {
+        #if DEBUG
         log(.begin,osLog: osLog,name: name,identifier: identifier)
+        #endif
     }
 
     func signPostEnd(osLog: OSLog, name: StaticString, identifier : String? = nil) {
+        #if DEBUG
         log(.end,osLog: osLog,name: name,identifier: identifier)
+        #endif
     }
     
     func event(osLog: OSLog, name: StaticString,identifier : String? = nil) {
+        #if DEBUG
         log(.event,osLog: osLog,name: name,identifier: identifier)
+        #endif
     }
 }
 

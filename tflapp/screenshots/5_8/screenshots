@@ -1,0 +1,39 @@
+#Generate Background
+magick -size  1125x2436 gradient:red-'rgb(50,0,0)' background_5_8.png
+magick -size 1385x2676 xc:none empty_5_8.png
+#Iterate over files
+for file in *.png ; do
+
+#Determine title
+	if [[ "$file" =~ "0.png" ]]; then
+ 		title="Nearby arrivals at a glance\nby day ...      "
+     elif [[ "$file" =~ "1.png" ]]; then
+         title="... or by night"
+ 	elif [[ "$file" =~ "2.png" ]]; then
+ 		title="Easy access to\nnearby bus stops"
+ 	elif [[ "$file" =~ "3.png" ]]; then
+ 		title="Detailed information\na tap away"
+ 	elif [[ "$file" =~ "4.png" ]]; then
+ 		title="Remind yourself\nwhen you need it"
+ 	else 
+ 		continue
+	fi;
+	name=`echo "$file" | cut -d'.' -f1`
+    newname="$name"_framed.png
+	echo "Processing $file ..."
+ 
+	magick composite -gravity center "$file" empty_5_8.png "$newname"
+	magick composite -gravity center gold.png "$newname" "$newname"
+	magick composite gold.png "$newname" "$newname"
+	magick "$newname" -resize 80% "$newname"
+	magick composite -gravity center -geometry +0+100 "$newname" background_5_8.png "$newname"
+    convert -size 900x300 xc:none -font Arial -pointsize 70 -fill white -gravity center -annotate +0+0 "$title" caption.png
+    magick composite -gravity north caption.png "$newname" "$newname"
+    rm caption.png
+    mv "$newname" ..
+    echo "Generated "$name"_framed.png"
+
+done
+rm background_5_8.png
+rm empty_5_8.png
+

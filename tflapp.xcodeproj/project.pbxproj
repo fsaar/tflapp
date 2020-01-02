@@ -28,6 +28,7 @@
 		563FF2F121A34524006DB5BB /* TFLCircleAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563FF2F021A34524006DB5BB /* TFLCircleAnimationView.swift */; };
 		5641F6EE1F19F68B00A3A9D2 /* TFLRequestManagerSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5641F6ED1F19F68100A3A9D2 /* TFLRequestManagerSpecs.swift */; };
 		56439A2021B861690076A906 /* TFLTimerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56439A1F21B861680076A906 /* TFLTimerButton.swift */; };
+		5646150823A236B30077108D /* TFLConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5646150723A236B30077108D /* TFLConfirmationView.swift */; };
 		5646C4031DE62389006EA956 /* TFLBusStationArrivalsCellSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5646C4021DE62389006EA956 /* TFLBusStationArrivalsCellSpecs.swift */; };
 		564CA5A4222355F400E69A1C /* PolyLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564CA5A3222355F400E69A1C /* PolyLine.swift */; };
 		564CA5A62223561600E69A1C /* PolyLineSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564CA5A52223561600E69A1C /* PolyLineSpecs.swift */; };
@@ -38,6 +39,8 @@
 		564EC7071DE1917D008CFD11 /* TFLBusStationArrivalsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564EC7011DE1917D008CFD11 /* TFLBusStationArrivalsCell.swift */; };
 		564EC7081DE1917D008CFD11 /* TFLBusStopArrivalsInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564EC7021DE1917D008CFD11 /* TFLBusStopArrivalsInfo.swift */; };
 		564EC70A1DE1917D008CFD11 /* TFLNearbyBusStationsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564EC7041DE1917D008CFD11 /* TFLNearbyBusStationsController.swift */; };
+		564F7A6F23ACD42200FF3426 /* CountDownLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564F7A6D23ACD42200FF3426 /* CountDownLabel.swift */; };
+		564F7A7023ACD42200FF3426 /* CountDownElementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564F7A6E23ACD42200FF3426 /* CountDownElementView.swift */; };
 		5656717A219A244700F3B7EE /* TFLLineInfoRouteDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56567179219A244600F3B7EE /* TFLLineInfoRouteDirectory.swift */; };
 		56577D0120A0CF7700B40318 /* TFLRootViewControllerSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56577D0020A0CF7700B40318 /* TFLRootViewControllerSpecs.swift */; };
 		5657D3711DE38ADF004E4CD0 /* TFLBusPredictionSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5657D3701DE38ADF004E4CD0 /* TFLBusPredictionSpecs.swift */; };
@@ -108,6 +111,7 @@
 		56D008C02278D199005E1344 /* polyLineDict.plist in Resources */ = {isa = PBXBuildFile; fileRef = 56D008BF2278D199005E1344 /* polyLineDict.plist */; };
 		56D0AF331E141D2C00F466C4 /* TFLAnimatedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D0AF321E141D2C00F466C4 /* TFLAnimatedLabel.swift */; };
 		56D6E37A2259547D00A2FAE9 /* PolylineDict.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D6E3792259547D00A2FAE9 /* PolylineDict.swift */; };
+		56D705D5239EFE2A0085B878 /* TFLBusArrivalReminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D705D4239EFE2A0085B878 /* TFLBusArrivalReminder.swift */; };
 		56D70D141DD9A25F004CA293 /* TFLLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D70D131DD9A25F004CA293 /* TFLLocationManager.swift */; };
 		56D70D341DD9A7A6004CA293 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 56D70D301DD9A7A6004CA293 /* InfoPlist.strings */; };
 		56D70D351DD9A7A6004CA293 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 56D70D321DD9A7A6004CA293 /* Localizable.strings */; };
@@ -155,6 +159,7 @@
 		5641F6ED1F19F68100A3A9D2 /* TFLRequestManagerSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLRequestManagerSpecs.swift; sourceTree = "<group>"; };
 		5642EF0720ED63AD00A7914F /* mapstogpx20180704_193755.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = mapstogpx20180704_193755.gpx; sourceTree = "<group>"; };
 		56439A1F21B861680076A906 /* TFLTimerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLTimerButton.swift; sourceTree = "<group>"; };
+		5646150723A236B30077108D /* TFLConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLConfirmationView.swift; sourceTree = "<group>"; };
 		5646C4021DE62389006EA956 /* TFLBusStationArrivalsCellSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusStationArrivalsCellSpecs.swift; sourceTree = "<group>"; };
 		564CA5A3222355F400E69A1C /* PolyLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolyLine.swift; sourceTree = "<group>"; };
 		564CA5A52223561600E69A1C /* PolyLineSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolyLineSpecs.swift; sourceTree = "<group>"; };
@@ -167,6 +172,8 @@
 		564EC7021DE1917D008CFD11 /* TFLBusStopArrivalsInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusStopArrivalsInfo.swift; sourceTree = "<group>"; };
 		564EC7031DE1917D008CFD11 /* TFLBusStopArrivalsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusStopArrivalsViewModel.swift; sourceTree = "<group>"; };
 		564EC7041DE1917D008CFD11 /* TFLNearbyBusStationsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLNearbyBusStationsController.swift; sourceTree = "<group>"; };
+		564F7A6D23ACD42200FF3426 /* CountDownLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountDownLabel.swift; sourceTree = "<group>"; };
+		564F7A6E23ACD42200FF3426 /* CountDownElementView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountDownElementView.swift; sourceTree = "<group>"; };
 		56567179219A244600F3B7EE /* TFLLineInfoRouteDirectory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLLineInfoRouteDirectory.swift; sourceTree = "<group>"; };
 		56577D0020A0CF7700B40318 /* TFLRootViewControllerSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLRootViewControllerSpecs.swift; sourceTree = "<group>"; };
 		5657D3661DE387E6004E4CD0 /* tflApp Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "tflApp Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -214,6 +221,39 @@
 		5692B4FF1DF2E26300C56A3C /* TFLSlideContainerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLSlideContainerController.swift; sourceTree = "<group>"; };
 		5692B5021DF2E4EB00C56A3C /* TFLMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLMapViewController.swift; sourceTree = "<group>"; };
 		5699A68B218EE77100CD1427 /* CLLocationCoordinate2D+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CLLocationCoordinate2D+Helper.swift"; sourceTree = "<group>"; };
+		5699D2AC2322E530009EB8DD /* iphone_4_7_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iphone_4_7_0.png; sourceTree = "<group>"; };
+		5699D2AD2322E530009EB8DD /* iphone_4_7_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iphone_4_7_1.png; sourceTree = "<group>"; };
+		5699D2AE2322E530009EB8DD /* iphone_4_7_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iphone_4_7_3.png; sourceTree = "<group>"; };
+		5699D2AF2322E530009EB8DD /* iphone_4_7_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iphone_4_7_2.png; sourceTree = "<group>"; };
+		5699D2B12322E530009EB8DD /* iiphone_6_5_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iiphone_6_5_2.png; sourceTree = "<group>"; };
+		5699D2B22322E530009EB8DD /* iiphone_6_5_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iiphone_6_5_3.png; sourceTree = "<group>"; };
+		5699D2B32322E530009EB8DD /* iiphone_6_5_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iiphone_6_5_1.png; sourceTree = "<group>"; };
+		5699D2B42322E530009EB8DD /* iiphone_6_5_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iiphone_6_5_0.png; sourceTree = "<group>"; };
+		5699D2B62322E530009EB8DD /* iiphone_5_5_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iiphone_5_5_1.png; sourceTree = "<group>"; };
+		5699D2B72322E530009EB8DD /* iiphone_5_5_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iiphone_5_5_0.png; sourceTree = "<group>"; };
+		5699D2B82322E530009EB8DD /* iiphone_5_5_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iiphone_5_5_2.png; sourceTree = "<group>"; };
+		5699D2B92322E530009EB8DD /* iiphone_5_5_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iiphone_5_5_3.png; sourceTree = "<group>"; };
+		5699D2BB2322E530009EB8DD /* iiphone_6_1_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iiphone_6_1_0.png; sourceTree = "<group>"; };
+		5699D2BC2322E530009EB8DD /* iiphone_6_1_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iiphone_6_1_1.png; sourceTree = "<group>"; };
+		5699D2BD2322E530009EB8DD /* iiphone_6_1_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iiphone_6_1_3.png; sourceTree = "<group>"; };
+		5699D2BE2322E530009EB8DD /* iiphone_6_1_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iiphone_6_1_2.png; sourceTree = "<group>"; };
+		5699D2D0232596AA009EB8DD /* rolsegold.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rolsegold.png; sourceTree = "<group>"; };
+		5699D2D1232596AA009EB8DD /* screenshots */ = {isa = PBXFileReference; lastKnownFileType = text; path = screenshots; sourceTree = "<group>"; };
+		5699D2D2232596AA009EB8DD /* iphone_4_0_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iphone_4_0_3.png; sourceTree = "<group>"; };
+		5699D2D3232596AA009EB8DD /* iphone_4_0_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iphone_4_0_2.png; sourceTree = "<group>"; };
+		5699D2D4232596AA009EB8DD /* iphone_4_0_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iphone_4_0_0.png; sourceTree = "<group>"; };
+		5699D2D5232596AA009EB8DD /* iphone_4_0_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iphone_4_0_1.png; sourceTree = "<group>"; };
+		5699D2D6232596AA009EB8DD /* silver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = silver.png; sourceTree = "<group>"; };
+		5699D2D7232596AA009EB8DD /* grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grey.png; sourceTree = "<group>"; };
+		5699D2D8232596AA009EB8DD /* gold.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gold.png; sourceTree = "<group>"; };
+		569EB2982321BCD700122E31 /* screenshots */ = {isa = PBXFileReference; lastKnownFileType = text; path = screenshots; sourceTree = "<group>"; };
+		569EB2A02321BCD700122E31 /* silver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = silver.png; sourceTree = "<group>"; };
+		569EB2A12321BCD700122E31 /* grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grey.png; sourceTree = "<group>"; };
+		569EB2A92321BCD700122E31 /* gold.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gold.png; sourceTree = "<group>"; };
+		569EB2AA232244FD00122E31 /* iphone_5_8_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iphone_5_8_2.png; sourceTree = "<group>"; };
+		569EB2AB232244FD00122E31 /* iphone_5_8_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iphone_5_8_0.png; sourceTree = "<group>"; };
+		569EB2AC232244FD00122E31 /* iphone_5_8_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iphone_5_8_3.png; sourceTree = "<group>"; };
+		569EB2AD232244FD00122E31 /* iphone_5_8_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iphone_5_8_1.png; sourceTree = "<group>"; };
 		56A4907021977B40004024D9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = en; path = en.lproj/tflapp.entitlements; sourceTree = "<group>"; };
 		56A4907821977FF6004024D9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = en.lproj/abbreviations.plist; sourceTree = "<group>"; };
 		56A4907B219781C0004024D9 /* TFLRouteFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLRouteFormatter.swift; sourceTree = "<group>"; };
@@ -242,6 +282,7 @@
 		56D008BF2278D199005E1344 /* polyLineDict.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = polyLineDict.plist; sourceTree = "<group>"; };
 		56D0AF321E141D2C00F466C4 /* TFLAnimatedLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLAnimatedLabel.swift; sourceTree = "<group>"; };
 		56D6E3792259547D00A2FAE9 /* PolylineDict.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolylineDict.swift; sourceTree = "<group>"; };
+		56D705D4239EFE2A0085B878 /* TFLBusArrivalReminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLBusArrivalReminder.swift; sourceTree = "<group>"; };
 		56D70D131DD9A25F004CA293 /* TFLLocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLLocationManager.swift; sourceTree = "<group>"; };
 		56D70D311DD9A7A6004CA293 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		56D70D331DD9A7A6004CA293 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -353,8 +394,19 @@
 				564EC7031DE1917D008CFD11 /* TFLBusStopArrivalsViewModel.swift */,
 				564EC7041DE1917D008CFD11 /* TFLNearbyBusStationsController.swift */,
 				56C828951DEA396400E52086 /* TFLCollectionFlowLayout.swift */,
+				56D705D4239EFE2A0085B878 /* TFLBusArrivalReminder.swift */,
+				5646150723A236B30077108D /* TFLConfirmationView.swift */,
 			);
 			path = TFLNearbyBusStationsController;
+			sourceTree = "<group>";
+		};
+		564F7A6C23ACD42200FF3426 /* CountDownLabel */ = {
+			isa = PBXGroup;
+			children = (
+				564F7A6D23ACD42200FF3426 /* CountDownLabel.swift */,
+				564F7A6E23ACD42200FF3426 /* CountDownElementView.swift */,
+			);
+			path = CountDownLabel;
 			sourceTree = "<group>";
 		};
 		5657D3671DE387E6004E4CD0 /* tflApp Tests */ = {
@@ -415,6 +467,7 @@
 		565A1FC91DD8F8D1003CE960 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				564F7A6C23ACD42200FF3426 /* CountDownLabel */,
 				5629CC2522F784E400911C1E /* Settings */,
 				56D6E3782259546F00A2FAE9 /* PolyLineDict */,
 				56113B2C223F7DAE00C8EDA4 /* GoogleRouteInfo */,
@@ -546,6 +599,94 @@
 			path = TFLMapViewController;
 			sourceTree = "<group>";
 		};
+		5699D2AB2322E530009EB8DD /* 4_7 */ = {
+			isa = PBXGroup;
+			children = (
+				5699D2AC2322E530009EB8DD /* iphone_4_7_0.png */,
+				5699D2AD2322E530009EB8DD /* iphone_4_7_1.png */,
+				5699D2AE2322E530009EB8DD /* iphone_4_7_3.png */,
+				5699D2AF2322E530009EB8DD /* iphone_4_7_2.png */,
+			);
+			path = 4_7;
+			sourceTree = "<group>";
+		};
+		5699D2B02322E530009EB8DD /* 6_5 */ = {
+			isa = PBXGroup;
+			children = (
+				5699D2B12322E530009EB8DD /* iiphone_6_5_2.png */,
+				5699D2B22322E530009EB8DD /* iiphone_6_5_3.png */,
+				5699D2B32322E530009EB8DD /* iiphone_6_5_1.png */,
+				5699D2B42322E530009EB8DD /* iiphone_6_5_0.png */,
+			);
+			path = 6_5;
+			sourceTree = "<group>";
+		};
+		5699D2B52322E530009EB8DD /* 5_5 */ = {
+			isa = PBXGroup;
+			children = (
+				5699D2B62322E530009EB8DD /* iiphone_5_5_1.png */,
+				5699D2B72322E530009EB8DD /* iiphone_5_5_0.png */,
+				5699D2B82322E530009EB8DD /* iiphone_5_5_2.png */,
+				5699D2B92322E530009EB8DD /* iiphone_5_5_3.png */,
+			);
+			path = 5_5;
+			sourceTree = "<group>";
+		};
+		5699D2BA2322E530009EB8DD /* 6_1 */ = {
+			isa = PBXGroup;
+			children = (
+				5699D2BB2322E530009EB8DD /* iiphone_6_1_0.png */,
+				5699D2BC2322E530009EB8DD /* iiphone_6_1_1.png */,
+				5699D2BD2322E530009EB8DD /* iiphone_6_1_3.png */,
+				5699D2BE2322E530009EB8DD /* iiphone_6_1_2.png */,
+			);
+			path = 6_1;
+			sourceTree = "<group>";
+		};
+		5699D2CF232596AA009EB8DD /* 4_0 */ = {
+			isa = PBXGroup;
+			children = (
+				5699D2D0232596AA009EB8DD /* rolsegold.png */,
+				5699D2D1232596AA009EB8DD /* screenshots */,
+				5699D2D2232596AA009EB8DD /* iphone_4_0_3.png */,
+				5699D2D3232596AA009EB8DD /* iphone_4_0_2.png */,
+				5699D2D4232596AA009EB8DD /* iphone_4_0_0.png */,
+				5699D2D5232596AA009EB8DD /* iphone_4_0_1.png */,
+				5699D2D6232596AA009EB8DD /* silver.png */,
+				5699D2D7232596AA009EB8DD /* grey.png */,
+				5699D2D8232596AA009EB8DD /* gold.png */,
+			);
+			path = 4_0;
+			sourceTree = "<group>";
+		};
+		569EB2952321BCD700122E31 /* screenshots */ = {
+			isa = PBXGroup;
+			children = (
+				5699D2CF232596AA009EB8DD /* 4_0 */,
+				5699D2AB2322E530009EB8DD /* 4_7 */,
+				5699D2B52322E530009EB8DD /* 5_5 */,
+				5699D2BA2322E530009EB8DD /* 6_1 */,
+				5699D2B02322E530009EB8DD /* 6_5 */,
+				569EB2962321BCD700122E31 /* 5_8 */,
+			);
+			path = screenshots;
+			sourceTree = "<group>";
+		};
+		569EB2962321BCD700122E31 /* 5_8 */ = {
+			isa = PBXGroup;
+			children = (
+				569EB2AB232244FD00122E31 /* iphone_5_8_0.png */,
+				569EB2AD232244FD00122E31 /* iphone_5_8_1.png */,
+				569EB2AA232244FD00122E31 /* iphone_5_8_2.png */,
+				569EB2AC232244FD00122E31 /* iphone_5_8_3.png */,
+				569EB2982321BCD700122E31 /* screenshots */,
+				569EB2A02321BCD700122E31 /* silver.png */,
+				569EB2A12321BCD700122E31 /* grey.png */,
+				569EB2A92321BCD700122E31 /* gold.png */,
+			);
+			path = 5_8;
+			sourceTree = "<group>";
+		};
 		56A4907D219799DF004024D9 /* TFLCoreSpotLightDataProvider */ = {
 			isa = PBXGroup;
 			children = (
@@ -579,6 +720,7 @@
 		56A81B2D1DD862DC001DF7F1 /* tflapp */ = {
 			isa = PBXGroup;
 			children = (
+				569EB2952321BCD700122E31 /* screenshots */,
 				566EF7C31DDA2D31006162D7 /* DataModel */,
 				565A1FC91DD8F8D1003CE960 /* Common */,
 				565A1FC11DD8F317003CE960 /* Network */,
@@ -965,6 +1107,7 @@
 			files = (
 				56D70D141DD9A25F004CA293 /* TFLLocationManager.swift in Sources */,
 				564CA5A4222355F400E69A1C /* PolyLine.swift in Sources */,
+				5646150823A236B30077108D /* TFLConfirmationView.swift in Sources */,
 				567F533F20BDB9C50022FEFF /* TFLStationDetailHeaderView.swift in Sources */,
 				56C6A3471DF44F6A00067D06 /* TFLStationDetailMapViewAnnotation.swift in Sources */,
 				5672250320D578C6007DA481 /* TFLStationDetailBusStopAnnotationView.swift in Sources */,
@@ -982,10 +1125,12 @@
 				568E068521E6B14D00E92AF7 /* TFLArrivalInfoView.swift in Sources */,
 				567F533D20BDB34E0022FEFF /* TFLStationDetailController.swift in Sources */,
 				5629CC2722F785BC00911C1E /* Settings.swift in Sources */,
+				564F7A7023ACD42200FF3426 /* CountDownElementView.swift in Sources */,
 				564CA5A8222356B200E69A1C /* Array+Helper.swift in Sources */,
 				567F534920BF13040022FEFF /* TFLStationDetailTableViewController.swift in Sources */,
 				56C828961DEA396400E52086 /* TFLCollectionFlowLayout.swift in Sources */,
 				567224FD20D564BF007DA481 /* TFLMapViewAnnotation.swift in Sources */,
+				564F7A6F23ACD42200FF3426 /* CountDownLabel.swift in Sources */,
 				567224FF20D570A5007DA481 /* TFLBusStopAnnotationView.swift in Sources */,
 				56DD190020A0B0C1003335D1 /* TFLTimer.swift in Sources */,
 				560CF3052173569600ED0BA5 /* Date+String.swift in Sources */,
@@ -1028,6 +1173,7 @@
 				56E721802213625C00733B9F /* TFLSplashscreenController.swift in Sources */,
 				56E7217D221234C600733B9F /* TFLOfflineView.swift in Sources */,
 				561C1836226FC6F1008016B7 /* Data+Helper.swift in Sources */,
+				56D705D5239EFE2A0085B878 /* TFLBusArrivalReminder.swift in Sources */,
 				564EC70A1DE1917D008CFD11 /* TFLNearbyBusStationsController.swift in Sources */,
 				5656717A219A244700F3B7EE /* TFLLineInfoRouteDirectory.swift in Sources */,
 				56A4907C219781C0004024D9 /* TFLRouteFormatter.swift in Sources */,
@@ -1201,6 +1347,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_SWIFT_FLAGS = "";
@@ -1263,6 +1410,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_SWIFT_FLAGS = "";
 				SDKROOT = iphoneos;
@@ -1370,6 +1518,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_SWIFT_FLAGS = "-DDATABASEGENERATION";

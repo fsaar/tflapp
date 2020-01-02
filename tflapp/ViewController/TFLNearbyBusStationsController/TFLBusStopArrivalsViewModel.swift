@@ -109,6 +109,4 @@ public struct TFLBusStopArrivalsViewModel :CustomDebugStringConvertible,Hashable
         let filteredPredictions = arrivalInfo.liveArrivals(with: referenceTime)
         self.arrivalTimes = filteredPredictions.map { LinePredictionViewModel(with: $0,using: referenceTime.timeIntervalSinceReferenceDate) }
     }
-
-
 }

@@ -8,8 +8,8 @@ target 'tflapp' do
 end
 
 target 'tflApp Tests' do
-    pod 'Quick', '2.1.0'
-    pod 'Nimble', '8.0.2'
+    pod 'Quick', '2.2.0'
+    pod 'Nimble', '8.0.5'
 end
 
 post_install do |lib|

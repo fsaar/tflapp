@@ -30,6 +30,7 @@
 		56439A2021B861690076A906 /* TFLTimerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56439A1F21B861680076A906 /* TFLTimerButton.swift */; };
 		5646150823A236B30077108D /* TFLConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5646150723A236B30077108D /* TFLConfirmationView.swift */; };
 		5646C4031DE62389006EA956 /* TFLBusStationArrivalsCellSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5646C4021DE62389006EA956 /* TFLBusStationArrivalsCellSpecs.swift */; };
+		56482BF923C48AB4001A165E /* TFLRatingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56482BF823C48AB4001A165E /* TFLRatingController.swift */; };
 		564CA5A4222355F400E69A1C /* PolyLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564CA5A3222355F400E69A1C /* PolyLine.swift */; };
 		564CA5A62223561600E69A1C /* PolyLineSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564CA5A52223561600E69A1C /* PolyLineSpecs.swift */; };
 		564CA5A8222356B200E69A1C /* Array+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564CA5A7222356B200E69A1C /* Array+Helper.swift */; };
@@ -161,6 +162,7 @@
 		56439A1F21B861680076A906 /* TFLTimerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLTimerButton.swift; sourceTree = "<group>"; };
 		5646150723A236B30077108D /* TFLConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLConfirmationView.swift; sourceTree = "<group>"; };
 		5646C4021DE62389006EA956 /* TFLBusStationArrivalsCellSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusStationArrivalsCellSpecs.swift; sourceTree = "<group>"; };
+		56482BF823C48AB4001A165E /* TFLRatingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLRatingController.swift; sourceTree = "<group>"; };
 		564CA5A3222355F400E69A1C /* PolyLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolyLine.swift; sourceTree = "<group>"; };
 		564CA5A52223561600E69A1C /* PolyLineSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolyLineSpecs.swift; sourceTree = "<group>"; };
 		564CA5A7222356B200E69A1C /* Array+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Helper.swift"; sourceTree = "<group>"; };
@@ -368,6 +370,14 @@
 			path = TFLTimerButton;
 			sourceTree = "<group>";
 		};
+		56482BF723C48A90001A165E /* TFLRatingController */ = {
+			isa = PBXGroup;
+			children = (
+				56482BF823C48AB4001A165E /* TFLRatingController.swift */,
+			);
+			path = TFLRatingController;
+			sourceTree = "<group>";
+		};
 		564CA5A2222355CB00E69A1C /* PolyLine */ = {
 			isa = PBXGroup;
 			children = (
@@ -467,6 +477,7 @@
 		565A1FC91DD8F8D1003CE960 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				56482BF723C48A90001A165E /* TFLRatingController */,
 				564F7A6C23ACD42200FF3426 /* CountDownLabel */,
 				5629CC2522F784E400911C1E /* Settings */,
 				56D6E3782259546F00A2FAE9 /* PolyLineDict */,
@@ -1173,6 +1184,7 @@
 				56E721802213625C00733B9F /* TFLSplashscreenController.swift in Sources */,
 				56E7217D221234C600733B9F /* TFLOfflineView.swift in Sources */,
 				561C1836226FC6F1008016B7 /* Data+Helper.swift in Sources */,
+				56482BF923C48AB4001A165E /* TFLRatingController.swift in Sources */,
 				56D705D5239EFE2A0085B878 /* TFLBusArrivalReminder.swift in Sources */,
 				564EC70A1DE1917D008CFD11 /* TFLNearbyBusStationsController.swift in Sources */,
 				5656717A219A244700F3B7EE /* TFLLineInfoRouteDirectory.swift in Sources */,

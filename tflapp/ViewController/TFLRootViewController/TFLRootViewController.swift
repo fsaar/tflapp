@@ -6,7 +6,7 @@ import Network
 
 class TFLRootViewController: UIViewController {
     typealias CompletionBlock = ()->()
-    @Settings(key: "Distance",defaultValue: TFLRootViewController.searchParameter.max) fileprivate var settingDistance : Double
+    @Settings(key: .distance,defaultValue: TFLRootViewController.searchParameter.max) fileprivate var settingDistance : Double
     fileprivate  var defaultRadius : Double {
         let searchParam = TFLRootViewController.searchParameter
         let radius = settingDistance < searchParam.min ? TFLRootViewController.searchParameter.max : settingDistance

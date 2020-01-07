@@ -10,15 +10,24 @@ import Foundation
 
 
 @propertyWrapper struct Settings<T> {
-    fileprivate let key : String
+    enum SettingsVariable : String {
+        case appForegroundCounter
+        case distance = "Distance"
+    }
+    fileprivate let key : SettingsVariable
     fileprivate let defaultValue : T
-    init(key : String, defaultValue : T) {
+    init(key : SettingsVariable, defaultValue : T) {
         self.key = key
         self.defaultValue = defaultValue
     }
     
     public var wrappedValue : T {
-        let value = UserDefaults.standard.object(forKey: key) as? T ?? defaultValue
-        return value
+        get {
+            let value = UserDefaults.standard.object(forKey: key.rawValue) as? T ?? defaultValue
+            return value
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: key.rawValue)
+        }
     }
 }

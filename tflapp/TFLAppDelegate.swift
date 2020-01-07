@@ -5,11 +5,13 @@ import CoreSpotlight
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    fileprivate let ratingController = TFLRatingController()
     fileprivate var spotlight : (lineRouteList:TFLLineInfoRouteDirectory,provider:TFLCoreSpotLightDataProvider)?
     var window: UIWindow?
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         initCoreData()
         setupSpotLight()
+        
         _ = TFLLocationManager.sharedManager
         return true
     }

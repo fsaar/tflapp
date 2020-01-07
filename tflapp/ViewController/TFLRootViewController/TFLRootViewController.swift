@@ -351,9 +351,9 @@ fileprivate extension TFLRootViewController {
       
     }
 }
-
+//
 // MARK: - TFLErrorContainerViewDelegate
-
+//
 extension TFLRootViewController : TFLErrorContainerViewDelegate {
     func errorContainerViewDidTapNoGPSEnabledButton(_ containerView: UIView, button: UIButton) {
         guard let url = URL(string: UIApplication.openSettingsURLString) else {
@@ -363,12 +363,12 @@ extension TFLRootViewController : TFLErrorContainerViewDelegate {
     }
     
     func errorContainerViewDidTapNoStationsButton(_ containerView: UIView, button: UIButton) {
-        loadNearbyBusstops ()
+        loadNearbyBusstops()
     }
 }
-
+//
 // MARK: - TFLLocationManagerDelegate
-
+//
 extension TFLRootViewController : TFLLocationManagerDelegate {
     func locationManager(_ locationManager : TFLLocationManager, didChangeEnabledStatus enabled : Bool) {
         guard enabled else {
@@ -377,9 +377,9 @@ extension TFLRootViewController : TFLLocationManagerDelegate {
         loadNearbyBusstops()
     }
 }
-
+//
 // MARK: - TFLNearbyBusStationsControllerDelegate
-
+//
 extension TFLRootViewController : TFLNearbyBusStationsControllerDelegate  {
     func nearbyBusStationsController(_ controller: TFLNearbyBusStationsController, didSelectBusstopWith identifier: String) {
        self.mapViewController?.showBusStop(with: identifier, animated: true)
@@ -390,12 +390,12 @@ extension TFLRootViewController : TFLNearbyBusStationsControllerDelegate  {
     }
     
     func refresh(controller: TFLNearbyBusStationsController, using completionBlock:@escaping ()->()) {
-        loadNearbyBusstops (using: completionBlock)
+        loadNearbyBusstops(using: completionBlock)
     }
 }
-
+//
 // MARK: - TFLUpdateStatusViewDelegate
-
+//
 extension TFLRootViewController : TFLUpdateStatusViewDelegate {
     func didExpireTimerInStatusView(_ tflStatusView : TFLUpdateStatusView) {
         TFLLogger.shared.event(osLog: TFLRootViewController.loggingHandle, name: "refreshTimer")

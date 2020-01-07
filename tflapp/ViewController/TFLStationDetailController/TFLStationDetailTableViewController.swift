@@ -222,7 +222,7 @@ extension TFLStationDetailTableViewController : TFLStationDetailMapViewControlle
             return
         }
         let model = viewModels[currentSection]
-        guard let row = model.stations.firstIndex (where:{ $0.naptanId == identifier }) else {
+        guard let row = model.stations.firstIndex(where:{ $0.naptanId == identifier }) else {
             return
         }
         let indexPath = IndexPath(row: row, section: currentSection)

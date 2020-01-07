@@ -64,7 +64,7 @@ class TFLBusStopDBGenerator {
                 completionBlock?()
                 return
             }
-            print (page)
+            print(page)
             self?.loadBusStops(of: page+1,using:completionBlock)
             let context = TFLCoreDataStack.sharedDataStack.privateQueueManagedObjectContext
             context.perform {

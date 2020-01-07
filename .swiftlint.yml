@@ -74,6 +74,7 @@ disabled_rules: # rule identifiers to exclude from running
     - strong_iboutlet
     - unused_optional_binding  
 opt_in_rules:
+    - prefer_self_type_over_type_of_self
     - empty_collection_literal
     - contains_over_filter_count
     - contains_over_filter_is_empty

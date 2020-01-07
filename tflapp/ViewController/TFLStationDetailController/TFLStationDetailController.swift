@@ -225,7 +225,7 @@ fileprivate extension TFLStationDetailController {
             return idx1 < idx2
         }
         
-        guard let index = sortedInfos.map ({ $0.busStopIdentifier }).firstIndex(of:station ) else {
+        guard let index = sortedInfos.map({ $0.busStopIdentifier }).firstIndex(of:station ) else {
             return []
         }
         let sortedInfosRange = Array(sortedInfos[0...index])

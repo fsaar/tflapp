@@ -34,7 +34,7 @@ class TFLNearbyBusStationsController : UIViewController {
     @IBOutlet weak var confirmationView : TFLInformationView!
     fileprivate lazy var busArrivalReminder = TFLBusArrivalReminder(with: self)
     fileprivate let client = TFLClient()
-    static let defaultTableViewRowHeight = CGFloat (120)
+    static let defaultTableViewRowHeight = CGFloat(120)
     
     fileprivate static let loggingHandle  = OSLog(subsystem: TFLLogger.subsystem, category: TFLLogger.category.refresh.rawValue)
 
@@ -232,7 +232,7 @@ extension TFLNearbyBusStationsController : TFLBusStationArrivalCellDelegate {
 extension TFLNearbyBusStationsController : TFLMapViewControllerDelegate {
    
     func mapViewController(_ mapViewController: TFLMapViewController, didSelectStationWith identifier: String) {
-        guard let index = self.busStopArrivalViewModels.firstIndex (where:{ $0.identifier == identifier }) else {
+        guard let index = self.busStopArrivalViewModels.firstIndex(where:{ $0.identifier == identifier }) else {
             return
         }
         self.tableView.scrollToRow(at: IndexPath(row: index, section: 0), at: .top, animated: true)
@@ -366,7 +366,7 @@ fileprivate extension TFLNearbyBusStationsController {
     func updateSpotlightWithLineInfo(_ lineInfo : TFLCDLineInfo?) {
         lineInfo?.managedObjectContext?.perform {
             if let identifier = lineInfo?.identifier,
-                let routes : [String] =  lineInfo?.routes?.compactMap ({ ($0 as? TFLCDLineRoute)?.name }) {
+                let routes : [String] =  lineInfo?.routes?.compactMap({ ($0 as? TFLCDLineRoute)?.name }) {
                 let dict = [ identifier : routes]
                 let lineRouteList = TFLLineInfoRouteDirectory(with: dict)
                 let provider = TFLCoreSpotLightDataProvider(with: lineRouteList)

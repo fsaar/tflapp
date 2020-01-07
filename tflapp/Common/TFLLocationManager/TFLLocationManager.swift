@@ -102,8 +102,9 @@ class TFLLocationManager : NSObject {
     }
 }
 
-/// MARK: Private
-
+//
+// MARK: - Private
+//
 fileprivate extension TFLLocationManager {
     func requestLocation(using completionBlock:  TFLLocationManagerCompletionBlock?)  {
         objc_sync_enter(self)
@@ -139,7 +140,7 @@ fileprivate extension TFLLocationManager {
     }
 }
 
-/// MARK: CLLocationManagerDelegate
+// MARK: - CLLocationManagerDelegate
 
 extension TFLLocationManager : CLLocationManagerDelegate {
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {

@@ -94,11 +94,11 @@ fileprivate extension TFLCircleAnimationView {
     
     
     func animate(_ animator : UIViewPropertyAnimator,_ v : UIView,delay : TimeInterval = 0,using comletionBlock:@escaping ()->Void) {
-        animator.addAnimations ({
+        animator.addAnimations({
             v.transform = .identity
         }, delayFactor: 0.0)
         
-        animator.addAnimations ({
+        animator.addAnimations({
             v.alpha = 0
         }, delayFactor: 0.5)
         

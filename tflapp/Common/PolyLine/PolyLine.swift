@@ -97,7 +97,7 @@ class PolyLine {
     }
     
     func encode(coordinates : [CLLocationCoordinate2D]) -> String? {
-        guard case .none = coordinates.first (where:{ !CLLocationCoordinate2DIsValid($0) }) else  {
+        guard case .none = coordinates.first(where:{ !CLLocationCoordinate2DIsValid($0) }) else  {
             return nil
         }
         

@@ -145,13 +145,13 @@ extension UIFont {
     }
 
     class func tflFontPoweredBy() -> UIFont {
-        let descriptor = UIFontDescriptor(name: "GillSans-Light", size: 17)
+        let descriptor = UIFontDescriptor(name: "GillSans-Light", size: 16)
         let font = UIFont(descriptor: descriptor, size: 17)
         return font
     }
     
     class func tflFontOsData() -> UIFont {
-        let descriptor = UIFontDescriptor(name: "GillSans-Light", size: 12)
+        let descriptor = UIFontDescriptor(name: "GillSans-Light", size: 10)
         let font = UIFont(descriptor: descriptor, size: 12)
         return font
     }

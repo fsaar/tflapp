@@ -28,7 +28,6 @@ public final class TFLClient {
     public func vehicleArrivalsInfo(with vehicleId: String,
                                      with operationQueue : OperationQueue = OperationQueue.main,
                                      using completionBlock:@escaping (([TFLVehicleArrivalInfo]?,_ error:Error?) -> ()))  {
-        
         let vehicleArrivalsInfoPath = "/Vehicle/\(vehicleId)/Arrivals"
         TFLLogger.shared.signPostStart(osLog: TFLClient.loggingHandle, name: "vehicleInfo",identifier: vehicleId)
         tflManager.getDataWithRelativePath(relativePath: vehicleArrivalsInfoPath) { data, error in

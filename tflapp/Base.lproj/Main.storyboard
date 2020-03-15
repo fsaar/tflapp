@@ -572,7 +572,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Powered by TfL Open Data" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9fW-nN-Lr5">
-                                <rect key="frame" x="85" y="74" width="205.5" height="20.5"/>
+                                <rect key="frame" x="85" y="70" width="205.5" height="20.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
@@ -814,7 +814,7 @@
                             <constraint firstAttribute="trailing" secondItem="hCj-7k-Llg" secondAttribute="trailing" id="em9-sk-LsF"/>
                             <constraint firstItem="hCj-7k-Llg" firstAttribute="leading" secondItem="Pbu-BY-CcN" secondAttribute="leading" id="li7-Ig-xXV"/>
                             <constraint firstItem="70N-s4-1TX" firstAttribute="leading" secondItem="Pbu-BY-CcN" secondAttribute="leading" id="lop-ya-FKp"/>
-                            <constraint firstItem="9fW-nN-Lr5" firstAttribute="top" secondItem="kpl-CW-MoJ" secondAttribute="bottom" constant="74" id="ol8-Qx-oR2"/>
+                            <constraint firstItem="9fW-nN-Lr5" firstAttribute="top" secondItem="kpl-CW-MoJ" secondAttribute="bottom" constant="70" id="ol8-Qx-oR2"/>
                             <constraint firstItem="HDB-tf-sWO" firstAttribute="top" secondItem="kpl-CW-MoJ" secondAttribute="bottom" constant="40" id="shP-2X-frC"/>
                             <constraint firstItem="70N-s4-1TX" firstAttribute="top" secondItem="Pbu-BY-CcN" secondAttribute="top" id="y56-8M-xpf"/>
                         </constraints>

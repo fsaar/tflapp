@@ -347,7 +347,7 @@ fileprivate extension TFLRootViewController {
     }
 
     func updateNearbyBusStops(for currentLocation:CLLocationCoordinate2D ) {
-       self.tflClient.nearbyBusStops(with: currentLocation,with: self.networkBackgroundQueue)
+        self.tflClient.nearbyBusStops(with: currentLocation,radius: Int(defaultRadius), with: self.networkBackgroundQueue)
       
     }
 }

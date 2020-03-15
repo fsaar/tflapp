@@ -58,7 +58,7 @@ class TFLNearbyBusStationsController : UIViewController {
     @IBOutlet weak var ackLabel : UILabel! = nil {
         didSet {
             
-            ackLabel.numberOfLines = 2
+            ackLabel.numberOfLines = 3
             ackLabel.attributedText = copyrightText
             ackLabel.textColor = .black
             ackLabel.isHidden = true

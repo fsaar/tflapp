@@ -66,10 +66,12 @@ public final class TFLClient {
     }
 
     public func nearbyBusStops(with coordinate: CLLocationCoordinate2D,
+                               radius: Int = 500,
                                with operationQueue : OperationQueue = OperationQueue.main,
                                using completionBlock: (([TFLCDBusStop]?,_ error:Error?) -> ())? = nil)  {
+        
         let busStopPath = "/StopPoint"
-        let query = "lat=\(coordinate.latitude)&lon=\(coordinate.longitude)&stopTypes=NaptanPublicBusCoachTram&categories=Geo"
+        let query = "radius=\(radius)&lat=\(coordinate.latitude)&lon=\(coordinate.longitude)&stopTypes=NaptanPublicBusCoachTram&categories=Geo,Direction"
         let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
         TFLLogger.shared.signPostStart(osLog: TFLClient.loggingHandle, name: "nearbyBusStops API")
         requestBusStops(with: busStopPath, query: query,context:context, with: backgroundQueue) {stops,error in

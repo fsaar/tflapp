@@ -3,12 +3,7 @@ import CoreData
 
 extension MutableCollection where Index == Int, Iterator.Element == TFLBusStopArrivalsViewModel.LinePredictionViewModel {
     subscript(indexPath : IndexPath) -> TFLBusStopArrivalsViewModel.LinePredictionViewModel {
-        get {
-            return self[indexPath.row]
-        }
-        set {
-           self[indexPath.row] = newValue
-        }
+        return self[indexPath.row]
     }
 }
 

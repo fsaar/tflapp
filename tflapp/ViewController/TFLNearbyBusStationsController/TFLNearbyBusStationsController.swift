@@ -11,12 +11,7 @@ protocol TFLNearbyBusStationsControllerDelegate : AnyObject {
 
 extension MutableCollection where Index == Int, Iterator.Element == TFLBusStopArrivalsViewModel {
     subscript(indexPath : IndexPath) -> TFLBusStopArrivalsViewModel {
-        get {
-            return self[indexPath.row]
-        }
-        set {
-            self[indexPath.row] = newValue
-        }
+        return self[indexPath.row]
     }
 }
 

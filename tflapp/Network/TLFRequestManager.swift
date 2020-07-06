@@ -13,7 +13,7 @@ protocol TFLRequestManagerDelegate : AnyObject {
 }
 
 class TFLRequestManager : NSObject {
-    let tfl_pupkey = "uyOeNu35g/rCrOt2wlgXgISGx9Xw48B4Z8SiTrdEwhQ="
+    let tfl_pupkey = "dBnTsJDXd8ynY2PCqbkplpoMBPaOZ/KxRhv0pcjTnZc="
     weak var delegate : TFLRequestManagerDelegate?
     fileprivate let TFLRequestManagerBaseURL = "https://api.tfl.gov.uk"
 
@@ -86,11 +86,14 @@ extension TFLRequestManager : URLSessionDelegate {
         
         guard isServerTrusted,let certificate = SecTrustGetCertificateAtIndex(serverTrust, 0),
             let serverPublicKey = SecCertificateCopyKey(certificate),
-            let serverPublicKeyData:NSData = SecKeyCopyExternalRepresentation(serverPublicKey, nil ),
-            (serverPublicKeyData as Data).sha256() == tfl_pupkey else {
-                completionHandler(.cancelAuthenticationChallenge, nil)
+            let serverPublicKeyData:NSData = SecKeyCopyExternalRepresentation(serverPublicKey, nil) else {
+                 completionHandler(.cancelAuthenticationChallenge, nil)
                 return
-                
+        }
+        let hash = (serverPublicKeyData as Data).sha256()
+        guard hash == tfl_pupkey else {
+            completionHandler(.cancelAuthenticationChallenge, nil)
+            return
         }
         completionHandler(.useCredential, URLCredential(trust:serverTrust))
         

@@ -85,8 +85,8 @@ fileprivate extension TFLBusStopStack {
     
     func storeUUID(of store : NSPersistentStore) throws -> String {
         try store.loadMetadata()
-        let metaData = store.metadata as [String:Any]
-        let version = metaData[NSStoreUUIDKey] as? String ?? ""
+        let metaData = store.metadata
+        let version = metaData?[NSStoreUUIDKey] as? String ?? ""
         return version
     }
     

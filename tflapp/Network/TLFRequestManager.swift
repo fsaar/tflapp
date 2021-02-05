@@ -13,7 +13,7 @@ protocol TFLRequestManagerDelegate : AnyObject {
 }
 
 class TFLRequestManager : NSObject {
-    let tfl_pupkey = "dBnTsJDXd8ynY2PCqbkplpoMBPaOZ/KxRhv0pcjTnZc="
+    let tfl_pupkey = "PKMxN8xff+xbsEgj97N+EY/F7zSEPX9ChA38bEojFbc="
     weak var delegate : TFLRequestManagerDelegate?
     fileprivate let TFLRequestManagerBaseURL = "https://api.tfl.gov.uk"
 

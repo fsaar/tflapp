@@ -13,7 +13,7 @@ protocol TFLRequestManagerDelegate : AnyObject {
 }
 
 class TFLRequestManager : NSObject {
-    let tfl_pupkey = "dBnTsJDXd8ynY2PCqbkplpoMBPaOZ/KxRhv0pcjTnZc="
+    let tfl_pupkeySet = Set(["bHDn2jpPdHC91AutvRw+ntQNGpN29nXp2Xk+l2MjMZU=","PKMxN8xff+xbsEgj97N+EY/F7zSEPX9ChA38bEojFbc="])
     weak var delegate : TFLRequestManagerDelegate?
     fileprivate let TFLRequestManagerBaseURL = "https://api.tfl.gov.uk"
 
@@ -91,7 +91,7 @@ extension TFLRequestManager : URLSessionDelegate {
                 return
         }
         let hash = (serverPublicKeyData as Data).sha256()
-        guard hash == tfl_pupkey else {
+        guard let hashValue = hash,tfl_pupkeySet.contains(hashValue) else {
             completionHandler(.cancelAuthenticationChallenge, nil)
             return
         }

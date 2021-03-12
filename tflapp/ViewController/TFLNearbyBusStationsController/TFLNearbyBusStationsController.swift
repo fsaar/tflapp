@@ -300,6 +300,7 @@ fileprivate extension TFLNearbyBusStationsController {
     func addRefreshControl() {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(self.refreshHandler(control:)), for: .valueChanged)
+        refreshControl.tintColor = UIColor(named: "tflRefreshColor")
         self.tableView.refreshControl = refreshControl
         self.tableView.refreshControl?.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
     }

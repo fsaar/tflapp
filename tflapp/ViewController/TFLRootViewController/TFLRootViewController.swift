@@ -145,7 +145,9 @@ class TFLRootViewController: UIViewController {
         self.networkMonitor.start(queue: .main)
         self.mapViewController?.delegate = nearbyBusStationController
         self.slideContainerController?.rightCustomView = self.updateStatusView
-        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+        self.navigationController?.delegate = self
+
         TFLLocationManager.sharedManager.delegate = self
         if let mapViewController = self.mapViewController, let nearbyBusStationController = self.nearbyBusStationController {
             self.slideContainerController?.setContentControllers(with: mapViewController,and: nearbyBusStationController)

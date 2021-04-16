@@ -36,8 +36,8 @@ class TFLHUD {
     
     private lazy var containerView : UIView = {
         let view = TFLHUDContainerView()
-        view.traitCollectionDidChangeBlock = { [updateColors] _ in
-            updateColors()
+        view.traitCollectionDidChangeBlock = { [weak self] _ in
+            self?.updateColors()
         }
         view.translatesAutoresizingMaskIntoConstraints = false
         view.clipsToBounds = true

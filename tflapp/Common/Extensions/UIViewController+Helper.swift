@@ -1,21 +1,7 @@
-//
-//  UIViewController+Helper.swift
-//  tflapp
-//
-//  Created by Frank Saar on 13/02/2019.
-//  Copyright © 2019 SAMedialabs. All rights reserved.
-//
 
 import Foundation
 import UIKit
 
-extension UIViewController {
-    func removeController(_ controller : UIViewController?) {
-        controller?.willMove(toParent: nil)
-        controller?.view.removeFromSuperview()
-        controller?.removeFromParent()
-    }
-}
 
 extension UIViewController : UIGestureRecognizerDelegate {
 }
@@ -26,9 +12,25 @@ extension UIViewController : UINavigationControllerDelegate {
             guard rootViewController === popGestureRecognizer.delegate else  {
                 return
             }
-            popGestureRecognizer.isEnabled = navController.viewControllers.count <= 1  ? false : true
+            popGestureRecognizer.isEnabled = navController.viewControllers.count == 1  ? false : true
 
         }
     }
    
+}
+extension UIViewController {
+    func removeController(_ controller : UIViewController?) {
+        controller?.willMove(toParent: nil)
+        controller?.view.removeFromSuperview()
+        controller?.removeFromParent()
+    }
+    
+    func setupBackSwipe() {
+        guard !UIDevice.isIPad,
+              let navController = self.navigationController,navController.viewControllers.first === self else {
+            return
+        }
+        navController.interactivePopGestureRecognizer?.delegate = self
+        navController.delegate = self
+    }
 }

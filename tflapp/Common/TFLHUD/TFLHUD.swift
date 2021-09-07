@@ -101,7 +101,7 @@ fileprivate extension TFLHUD {
         self.containerView.layer.borderColor = UIColor(named:"tflHUDBorderColor")?.cgColor ?? UIColor.white.cgColor
         self.label.backgroundColor = UIColor(named:"tflBackgroundColor")
         self.label.textColor =  UIColor(named:"tflPrimaryTextColor")
-        self.indicator.color = UIColor(named:"tflPrimaryTextColor")
+        self.indicator.color = UIColor(named:"tflRefreshColor")
     }
     
     

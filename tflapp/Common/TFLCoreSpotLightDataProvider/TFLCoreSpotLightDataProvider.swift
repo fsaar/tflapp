@@ -10,6 +10,7 @@ import Foundation
 import CoreData
 import CoreSpotlight
 import CoreServices
+import UniformTypeIdentifiers
 
 extension TFLRouteFormatter {
     init?(route : String) {

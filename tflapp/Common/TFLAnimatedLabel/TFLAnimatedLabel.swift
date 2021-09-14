@@ -1,6 +1,7 @@
 
 import UIKit
 
+@MainActor
 class TFLAnimatedLabel: UIView {
     
     fileprivate var label2TopConstraint : NSLayoutConstraint?

@@ -81,7 +81,7 @@ class TFLLocationManager : NSObject {
    
     fileprivate override init() {
         super.init()
-        let authorisationStatus = CLLocationManager.authorizationStatus()
+        let authorisationStatus = locationManager.authorizationStatus
         switch authorisationStatus {
         case .notDetermined:
             self.state = .authorisation_pending(completionBlocks: [])
@@ -97,8 +97,13 @@ class TFLLocationManager : NSObject {
     
     }
 
-    func updateLocation(completionBlock: @escaping  TFLLocationManagerCompletionBlock)  {
-        requestLocation(using: completionBlock)
+    func updateLocation() async -> CLLocationCoordinate2D  {
+        return await withCheckedContinuation { continuation in
+            requestLocation { coord in
+                continuation.resume(returning: coord)
+            }
+        }
+       
     }
 }
 
@@ -118,7 +123,7 @@ fileprivate extension TFLLocationManager {
             state = state.stateWithCompletionBlock(completionBlock)
             locationManager.startUpdatingLocation()
         case .authorised:
-            guard CLLocationManager.authorizationStatus() == .authorizedWhenInUse else {
+            guard locationManager.authorizationStatus == .authorizedWhenInUse else {
                 self.state = .not_authorised
                 completionBlock?(kCLLocationCoordinate2DInvalid)
                 return

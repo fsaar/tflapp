@@ -9,8 +9,9 @@
 import Foundation
 import UIKit
 
+@MainActor
 class TFLOfflineView : UIView {
-    override func awakeFromNib() {
+    @MainActor override func awakeFromNib() {
         super.awakeFromNib()
         updateColors()
     }
@@ -35,6 +36,8 @@ class TFLOfflineView : UIView {
         }
         updateColors()
     }
+    
+    
 }
 
 

@@ -193,22 +193,13 @@ fileprivate extension TFLStationDetailController {
     }
     
     
-    func trackVehicle(with vehicleID : String,on queue : OperationQueue = .main,using completionBlock :((_ arrivalInfos : [TFLVehicleArrivalInfo]) -> Void)?) {
+    func trackVehicle(with vehicleID : String) async -> [TFLVehicleArrivalInfo]  {
         guard let station = self.lineInfo.station  else {
-            completionBlock?([])
-            return
+            return []
         }
-       
-        self.tflClient.vehicleArrivalsInfo(with: vehicleID) { [weak self] arrivalInfos,_ in
-            guard let self = self else {
-                completionBlock?([])
-                return
-            }
-            let normalizedInfos = self.normalizeArrivalsInfo(arrivalInfos,station:station,tableViewModels:self.tableViewviewModels)
-            queue.addOperation {
-                completionBlock?(normalizedInfos )
-            }
-        }
+        let arrivalInfos = (try? await self.tflClient.vehicleArrivalsInfo(with: vehicleID)) ?? []
+        let normalizedInfos = self.normalizeArrivalsInfo(arrivalInfos,station:station,tableViewModels:self.tableViewviewModels)
+        return normalizedInfos
     }
     
     func normalizeArrivalsInfo(_ arrivalInfos : [TFLVehicleArrivalInfo]?,station : String, tableViewModels : [TFLStationDetailTableViewModel]) -> [TFLVehicleArrivalInfo] {
@@ -243,13 +234,14 @@ fileprivate extension TFLStationDetailController {
         return naptanIdList
     }
     
-    func updateTableViewController(with vehicleID : String) {
+    @MainActor
+    func updateTableViewController(with vehicleID : String) async {
         updateStatusView.state = .updating
-        trackVehicle(with: vehicleID) { [weak self] arrivalInfos in
-            self?.containerView.isHidden = arrivalInfos.isEmpty
-            self?.updateStatusView.state = .updatePending
-            self?.tableViewController?.updateData(newArrivalInfos: arrivalInfos)
-        }
+        let arrivalInfos = await trackVehicle(with: vehicleID)
+        self.containerView.isHidden = arrivalInfos.isEmpty
+        self.updateStatusView.state = .updatePending
+        self.tableViewController?.updateData(newArrivalInfos: arrivalInfos)
+        
     }
 }
 
@@ -278,8 +270,9 @@ extension TFLStationDetailController : TFLUpdateStatusViewDelegate {
     func didExpireTimerInStatusView(_ tflStatusView : TFLUpdateStatusView) {
         guard let vehicleID = lineInfo.vehicleID else {
             return
-            
         }
-        updateTableViewController(with: vehicleID)
+        Task {
+            await  updateTableViewController(with: vehicleID)
+        }
     }
 }

@@ -74,23 +74,29 @@ class TFLNearbyBusStationsController : UIViewController {
     fileprivate var dataSource : UITableViewDiffableDataSource<String,TFLBusStopArrivalsViewModel>?
    
     var currentUserCoordinate = kCLLocationCoordinate2DInvalid
-    var arrivalsInfo :  [TFLBusStopArrivalsInfo] = [] {
+     var arrivalsInfo :  [TFLBusStopArrivalsInfo] = [] {
         didSet {
-            let models = Set(arrivalsInfo).sortedByBusStopDistance().map { TFLBusStopArrivalsViewModel(with: $0) }
-            let (_ ,_ ,updated, moved) = self.busStopArrivalViewModels.transformTo(newList: models, sortedBy : TFLBusStopArrivalsViewModel.compare)
-            busStopArrivalViewModels = models
-            var snapshot = NSDiffableDataSourceSnapshot<String, TFLBusStopArrivalsViewModel>()
-            snapshot.appendSections([sectionIdentifier])
-            snapshot.appendItems(models)
-            dataSource?.apply(snapshot,animatingDifferences: true)
-            
-            let updatedIndexPaths = updated.map { $0.index }.indexPaths()
-            let movedIndexPaths = moved.map { $0.newIndex }.indexPaths()
-            (updatedIndexPaths+movedIndexPaths).forEach { [weak self] indexPath in
-                if let cell = self?.tableView.cellForRow(at: indexPath) as? TFLBusStationArrivalsCell {
-                    cell.configure(with: busStopArrivalViewModels[indexPath],animated:true)
+            OperationQueue.main.addOperation {
+                let models = Set(self.arrivalsInfo).sortedByBusStopDistance().map { TFLBusStopArrivalsViewModel(with: $0) }
+                let (_ ,_ ,updated, moved) = self.busStopArrivalViewModels.transformTo(newList: models, sortedBy : TFLBusStopArrivalsViewModel.compare)
+                self.busStopArrivalViewModels = models
+                var snapshot = NSDiffableDataSourceSnapshot<String, TFLBusStopArrivalsViewModel>()
+                snapshot.appendSections([self.sectionIdentifier])
+                snapshot.appendItems(models)
+                self.dataSource?.apply(snapshot,animatingDifferences: true)
+                
+                let updatedIndexPaths = updated.map { $0.index }.indexPaths()
+                let movedIndexPaths = moved.map { $0.newIndex }.indexPaths()
+                (updatedIndexPaths+movedIndexPaths).forEach { [weak self] indexPath in
+                    guard let self = self else {
+                        return
+                    }
+                    if let cell = self.tableView.cellForRow(at: indexPath) as? TFLBusStationArrivalsCell {
+                        cell.configure(with: self.busStopArrivalViewModels[indexPath],animated:true)
+                    }
                 }
             }
+            
         }
     }
 
@@ -218,7 +224,9 @@ extension TFLNearbyBusStationsController : TFLBusStationArrivalCellDelegate {
     }
     
     func busStationArrivalCell(_ busStationArrivalCell: TFLBusStationArrivalsCell,didSelectLine line: String,with vehicleID: String,at station : String) {
-        updateAndShowLineInfo(line: line,with: vehicleID,at: station)
+        Task {
+            await updateAndShowLineInfo(line: line,with: vehicleID,at: station)
+        }
     }
 }
 //
@@ -261,35 +269,28 @@ extension TFLNearbyBusStationsController : UNUserNotificationCenterDelegate {
 //
 fileprivate extension TFLNearbyBusStationsController {
     @objc
+    @MainActor
     func spotlightLookupNotificationHandler(_ notification : Notification) {
         guard let line = notification.userInfo?[CSSearchableItemActivityIdentifier] as? String else {
             return
         }
         self.navigationController?.popToRootViewController(animated: false)
-        self.updateAndShowLineInfo(line: line,with: nil,at:nil)
+        Task {
+            await self.updateAndShowLineInfo(line: line,with: nil,at:nil)
+        }
     }
     
-    func updateAndShowLineInfo(line : String,with vehicleID: String?,at station : String?) {
- 
+    @MainActor
+    func updateAndShowLineInfo(line : String,with vehicleID: String?,at station : String?) async {
+        
+        var arrivalInfos : [TFLVehicleArrivalInfo] = []
         TFLHUD.show()
-        let group = DispatchGroup()
-        group.enter()
-        var arrivalInfos : [TFLVehicleArrivalInfo]?
-        self.updateLineInfoIfNeedbe(line) { 
-            group.leave()
-        }
-    
+        await self.updateLineInfoIfNeedbe(line)
         if let vehicleID = vehicleID, !vehicleID.isEmpty {
-            group.enter()
-            self.client.vehicleArrivalsInfo(with: vehicleID) { infos,_ in
-                arrivalInfos = infos
-                group.leave()
-            }
+            arrivalInfos = (try? await self.client.vehicleArrivalsInfo(with: vehicleID)) ?? []
         }
-        group.notify(queue: .main) {
-            TFLHUD.hide()
-            self.performSegue(withIdentifier: SegueIdentifier.stationDetailSegue.rawValue, sender: (line,vehicleID,station,arrivalInfos))
-        }
+        TFLHUD.hide()
+        self.performSegue(withIdentifier: SegueIdentifier.stationDetailSegue.rawValue, sender: (line,vehicleID,station,arrivalInfos))
     }
     
     
@@ -336,24 +337,27 @@ fileprivate extension TFLNearbyBusStationsController {
     }
     
 
-    func updateLineInfoIfNeedbe(_ line : String,using completionblock: (() -> Void)? = nil) {
+    @MainActor
+    func updateLineInfoIfNeedbe(_ line : String) async {
         if let lineInfo = TFLCDLineInfo.lineInfo(with: line, and: TFLBusStopStack.sharedDataStack.mainQueueManagedObjectContext) {
-            completionblock?()
-            if lineInfo.needsUpdate { // outdated , download but proceeed with older data
-                self.client.lineStationInfo(for: line,
-                                            context:TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext,
-                                            with:.main) { [weak self] lineInfo,_ in
-                                                self?.updateSpotlightWithLineInfo(lineInfo)
-                                                
+            Task {
+                if lineInfo.needsUpdate { // outdated , download but proceeed with older data
+                    let updateInfo = try? await self.client.lineStationInfo(for: line, context: TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext)
+                    Task.detached(priority:.background) {
+                        await self.updateSpotlightWithLineInfo(updateInfo)
+                    }
+                    
+                    
                 }
             }
+            
         } else { // no information available
-            client.lineStationInfo(for: line,
-                                   context:TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext,
-                                   with:.main) { [weak self] lineInfo,_ in
-                                    completionblock?()
-                                    self?.updateSpotlightWithLineInfo(lineInfo)
+            let lineInfo = try? await client.lineStationInfo(for: line,
+                                                                context:TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext)
+            Task.detached(priority:.background) {
+                await self.updateSpotlightWithLineInfo(lineInfo)
             }
+            
         }
         
         
@@ -367,10 +371,8 @@ fileprivate extension TFLNearbyBusStationsController {
                 let lineRouteList = TFLLineInfoRouteDirectory(with: dict)
                 let provider = TFLCoreSpotLightDataProvider(with: lineRouteList)
                 provider.searchableItems { items in
-                    CSSearchableIndex.default().indexSearchableItems(items) { error in
-                        if let _ = error {
-                            return
-                        }
+                    Task.detached(priority: .background) {
+                        CSSearchableIndex.default().indexSearchableItems(items)
                     }
                 }
             }

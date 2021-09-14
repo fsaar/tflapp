@@ -20,9 +20,9 @@ class TFLHUDContainerView : UIView {
     }
 }
 
-
+@MainActor
 class TFLHUD {
-    private static var tflhud : TFLHUD? = nil
+    private static var tflhud = TFLHUD()
     private let label : UILabel = {
         let label =  UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -53,9 +53,10 @@ class TFLHUD {
     
     private lazy var blurAnimator : UIViewPropertyAnimator = {
         let animator = UIViewPropertyAnimator(duration: 0.5, curve: .linear) {
-            self.visualEffectsView.effect = UIBlurEffect(style: UIBlurEffect.Style.dark)
+            self.visualEffectsView.effect = UIBlurEffect(style: UIBlurEffect.Style.light)
         }
         animator.pauseAnimation()
+
         return animator
     }()
     
@@ -69,33 +70,29 @@ class TFLHUD {
     init() {
         setup()
     }
-    deinit {
-        visualEffectsView.removeFromSuperview()
-        blurAnimator.stopAnimation(true)
-    }
+    
     
     private let indicator : UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView()
-        indicator.style = UIActivityIndicatorView.Style.medium
+        indicator.style = .medium
         indicator.translatesAutoresizingMaskIntoConstraints = false
         indicator.startAnimating()
         return indicator
     }()
     
+    @MainActor
     static func show()  {
-        if case .none = tflhud {
-            tflhud = TFLHUD()
-        }
-        tflhud?.show()
+        tflhud.show()
     }
     
+    @MainActor
     static func hide()  {
-        tflhud?.hide()
-        tflhud = nil
+        tflhud.hide()
     }
 }
 
 fileprivate extension TFLHUD {
+    
     func updateColors() {
         self.containerView.backgroundColor = UIColor(named:"tflBackgroundColor")
         self.containerView.layer.borderColor = UIColor(named:"tflHUDBorderColor")?.cgColor ?? UIColor.white.cgColor
@@ -104,35 +101,38 @@ fileprivate extension TFLHUD {
         self.indicator.color = UIColor(named:"tflRefreshColor")
     }
     
-    
+    @MainActor
     func show()  {
         guard let delegate  = UIApplication.shared.delegate as? AppDelegate,let window  = delegate.window else {
             return
         }
         window.isUserInteractionEnabled = false
+        visualEffectsView.isHidden = false
+        blurAnimator.fractionComplete = 0.2
+        guard case .none = self.visualEffectsView.superview else {
+            return
+        }
         window.addSubview(self.visualEffectsView)
-
         NSLayoutConstraint.activate([
             visualEffectsView.leadingAnchor.constraint(equalTo: window.leadingAnchor),
             visualEffectsView.trailingAnchor.constraint(equalTo: window.trailingAnchor),
             visualEffectsView.bottomAnchor.constraint(equalTo: window.bottomAnchor),
             visualEffectsView.topAnchor.constraint(equalTo: window.topAnchor),
-            ])
-        blurAnimator.fractionComplete = 0.2
+        ])
     }
-    
+    @MainActor
     func hide() {
         let delegate  = UIApplication.shared.delegate as? AppDelegate
         let window  = delegate?.window
         window?.isUserInteractionEnabled = true
-        blurAnimator.fractionComplete = 0
-        visualEffectsView.removeFromSuperview()
+        visualEffectsView.isHidden = true
     }
     
     func setup() {
         containerView.addSubview(label)
         containerView.addSubview(indicator)
         visualEffectsView.contentView.addSubview(containerView)
+       
 
         NSLayoutConstraint.activate([
             containerView.centerYAnchor.constraint(equalTo: visualEffectsView.centerYAnchor),

@@ -60,15 +60,18 @@ class TFLMapViewController: UIViewController {
     var busStopPredicationCoordinateTuple :  ([TFLBusStopArrivalsInfo], CLLocationCoordinate2D)? = nil {
         didSet (oldTuple) {
             synchroniser.synchronise { synchroniseEnd in
-            if let busStopPredicationCoordinateTuple = self.busStopPredicationCoordinateTuple  {
-                    let (busStopPredictionTuples,coords) = busStopPredicationCoordinateTuple
-                    let oldList = oldTuple?.0 ?? []
-                    var (inserted ,deleted ,_, _) : (inserted : [(element:TFLBusStopArrivalsInfo,index:Int)],
-                        deleted : [(element:TFLBusStopArrivalsInfo,index:Int)],
-                        updated : [(element:TFLBusStopArrivalsInfo,index:Int)],
-                        moved : [(element:TFLBusStopArrivalsInfo,oldIndex:Int,newIndex:Int)]) = ([],[],[],[])
-                    (inserted ,deleted ,_, _) = oldList.transformTo(newList: busStopPredictionTuples, sortedBy : TFLBusStopArrivalsInfo.compare)
-                    DispatchQueue.main.async {
+                OperationQueue.main.addOperation {
+                    
+                    
+                    if let busStopPredicationCoordinateTuple = self.busStopPredicationCoordinateTuple  {
+                        let (busStopPredictionTuples,coords) = busStopPredicationCoordinateTuple
+                        let oldList = oldTuple?.0 ?? []
+                        var (inserted ,deleted ,_, _) : (inserted : [(element:TFLBusStopArrivalsInfo,index:Int)],
+                                                         deleted : [(element:TFLBusStopArrivalsInfo,index:Int)],
+                                                         updated : [(element:TFLBusStopArrivalsInfo,index:Int)],
+                                                         moved : [(element:TFLBusStopArrivalsInfo,oldIndex:Int,newIndex:Int)]) = ([],[],[],[])
+                        (inserted ,deleted ,_, _) = oldList.transformTo(newList: busStopPredictionTuples, sortedBy : TFLBusStopArrivalsInfo.compare)
+                        
                         let toBeDeletedIdentifierSet = Set(deleted.map { $0.element.identifier })
                         let toBeDeletedAnnotations = self.mapView.annotations.compactMap { $0 as? TFLMapViewAnnotation }.filter { toBeDeletedIdentifierSet.contains($0.identifier) }
                         self.mapView.removeAnnotations(toBeDeletedAnnotations)

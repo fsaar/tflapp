@@ -14,7 +14,7 @@ protocol TFLUpdateStatusViewDelegate : AnyObject {
 }
 
 
-
+@MainActor
 class TFLUpdateStatusView : UIView {
     weak var delegate : TFLUpdateStatusViewDelegate?
     enum Style {
@@ -39,6 +39,7 @@ class TFLUpdateStatusView : UIView {
     }
     var hideAnimator : UIViewPropertyAnimator?
     var showAnimator : UIViewPropertyAnimator?
+   
     var state = State.updating {
         didSet {
             guard oldValue != state else {
@@ -53,25 +54,42 @@ class TFLUpdateStatusView : UIView {
             case .updating:
                 self.timerView.stop(animated: false)
                 hideAnimator?.addAnimations {
-                    self.updatePendingStateContainerView.alpha = 0
+                    OperationQueue.main.addOperation {
+                        self.updatePendingStateContainerView.alpha = 0
+                    }
                 }
                 showAnimator?.addAnimations {
-                    self.updatingStateContainerView.alpha = 1
+                    OperationQueue.main.addOperation {
+                        self.updatingStateContainerView.alpha = 1
+                    }
+                   
                 }
                 hideAnimator?.addCompletion { _ in
-                    self.timerView.reset()
-                    self.showAnimator?.startAnimation()
+                    OperationQueue.main.addOperation {
+                        self.timerView.reset()
+                        self.showAnimator?.startAnimation()
+                    }
+                  
                 }
                 hideAnimator?.startAnimation()
             case .updatePending:
                 hideAnimator?.addAnimations {
-                    self.updatingStateContainerView.alpha = 0
+                    OperationQueue.main.addOperation {
+                        self.updatingStateContainerView.alpha = 0
+                    }
+                    
                 }
                 showAnimator?.addAnimations {
-                    self.updatePendingStateContainerView.alpha = 1
+                    OperationQueue.main.addOperation {
+                        self.updatePendingStateContainerView.alpha = 1
+                    }
+                    
                 }
                 hideAnimator?.addCompletion {  _ in
-                    self.showAnimator?.startAnimation()
+                    OperationQueue.main.addOperation {
+                        self.showAnimator?.startAnimation()
+                    }
+                    
                 }
                 showAnimator?.addCompletion { _ in
                     self.timerView.start()
@@ -137,6 +155,7 @@ class TFLUpdateStatusView : UIView {
         return view
     }()
     
+    @MainActor
     fileprivate lazy var updatePendingStateContainerView : UIView = {
         let view = UIView(frame:.zero)
         view.alpha = 0
@@ -195,10 +214,12 @@ fileprivate extension TFLUpdateStatusView {
         self.updatingStateLabel.textColor = UIColor(named: "tflRefreshTextColor")
         self.updatingStateIndicatorView.color = UIColor(named: "tflRefreshTextColor")
     }
+    
 }
 
 
 extension TFLUpdateStatusView : TFLTimerButtonDelegate {
+    
     func tflTimerViewDidExpire(_ timerView : TFLTimerButton) {
         self.state = .updating
         self.delegate?.didExpireTimerInStatusView(self)

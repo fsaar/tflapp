@@ -19,74 +19,44 @@ class TFLBusArrivalInfoAggregator {
     private var counter : Int = 0
     var lastUpdate : Date?
     func loadArrivalTimesForStoreStopPoints(with coord: CLLocationCoordinate2D,
-                                            with distance : Double,
-                                            using completionBlock:@escaping (_ arrivalInfos:[TFLBusStopArrivalsInfo],_ completed: Bool)->()) {
-        let mainQueueBlock : ([TFLBusStopArrivalsInfo],Bool) -> Void = { [weak self] infos, completed in
-            DispatchQueue.main.async {
-                completionBlock(infos,completed)
-                #if DEBUG_SCHEDULES
-                guard completed else {
-                    return
-                }
-                infos.log(with: "\(self?.counter ?? 0)")
-                self?.counter += 1
-                #endif
-            }
-        }
+                                            with distance : Double) async -> [TFLBusStopArrivalsInfo] {
         let currentLocation = coord.location
-        DispatchQueue.global().async {
-            let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
-            TFLLogger.shared.signPostStart(osLog: TFLBusArrivalInfoAggregator.loggingHandle, name: "retrieve nearby Busstops")
-
-            TFLCDBusStop.nearbyBusStops(with: coord,with: distance,and: context) { [weak self] busStops in
-                TFLLogger.shared.signPostEnd(osLog: TFLBusArrivalInfoAggregator.loggingHandle, name: "retrieve nearby Busstops")
-                let threshold = 20
-                if busStops.count >= threshold {
-                    let initialLoad = Array(busStops[0..<threshold])
-                    let remainder = Array(busStops[threshold..<busStops.count])
-                    self?.arrivalsForBusStops(initialLoad, and: currentLocation) { initialInfos in
-                        mainQueueBlock(initialInfos,false)
-                        self?.arrivalsForBusStops(remainder, and: currentLocation) { remainderInfos in
-                            let arrivalInfos = initialInfos + remainderInfos
-                            if !arrivalInfos.isEmpty {
-                                self?.lastUpdate = Date()
-                            }
-                            mainQueueBlock(arrivalInfos,true)
-                        }
-                    }
-                }
-                else {
-                    self?.arrivalsForBusStops(busStops, and: currentLocation) { arrivalInfos in
-                        if !arrivalInfos.isEmpty {
-                            self?.lastUpdate = Date()
-                        }
-                        mainQueueBlock(arrivalInfos,true)
-                    }
-                }
+        
+        let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
+        TFLLogger.shared.signPostStart(osLog: TFLBusArrivalInfoAggregator.loggingHandle, name: "retrieve nearby Busstops")
+        let busStops = await withCheckedContinuation { continuation in
+            TFLCDBusStop.nearbyBusStops(with: coord,with: distance,and: context) { busStops in
+                continuation.resume(returning: busStops)
             }
         }
+        TFLLogger.shared.signPostEnd(osLog: TFLBusArrivalInfoAggregator.loggingHandle, name: "retrieve nearby Busstops")
+        
+        let arrivalInfos = await arrivalsForBusStops(busStops, and: currentLocation)
+        lastUpdate = !arrivalInfos.isEmpty ? Date() : lastUpdate
+        return arrivalInfos
     }
     
-    func arrivalsForBusStops(_ busStops : [TFLCDBusStop],and location : CLLocation, using completionBlock:@escaping ([TFLBusStopArrivalsInfo])->()) {
-        let group = DispatchGroup()
+    func arrivalsForBusStops(_ busStops : [TFLCDBusStop],and location : CLLocation) async -> [TFLBusStopArrivalsInfo] {
+       
         var newStopPoints : [TFLBusStopArrivalsInfo] = []
-        let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
-        let queue = self.networkBackgroundQueue
-        busStops.forEach { [weak self] stopPoint in
-            group.enter()
-            context.perform {
-                self?.tflClient.arrivalsForStopPoint(with: stopPoint.identifier,with: queue) { predictions,_ in
-                    context.perform {
-                        let tuple = TFLBusStopArrivalsInfo(busStop: stopPoint, location: location, arrivals: predictions ?? [])
-                        newStopPoints += [tuple]
-                        group.leave()
+        
+        await withTaskGroup(of: TFLBusStopArrivalsInfo.self) { group in
+            busStops.forEach { stopPoint in
+                group.addTask(priority: .medium) {
+                    let predictions = await self.tflClient.arrivalsForStopPoint(with: stopPoint.identifier)
+                    let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
+                    let info = await context.perform {
+                        TFLBusStopArrivalsInfo(busStop: stopPoint, location: location, arrivals: predictions)
                     }
+                    return info
                 }
             }
+            for await info in group  {
+                newStopPoints += [info]
+            }
         }
-        group.notify(queue: DispatchQueue.global()) {
-            completionBlock(newStopPoints)
-        }
+        return newStopPoints
+        
     }
     
     

@@ -9,10 +9,11 @@
 import Foundation
 import UIKit
 
+@MainActor
 protocol TFLTimerButtonDelegate : AnyObject {
     func tflTimerViewDidExpire(_ timerView : TFLTimerButton)
 }
-
+@MainActor
 class TFLTimerButton : UIButton {
     fileprivate lazy var countDownLabel : CountDownLabel = {
         let label = CountDownLabel()

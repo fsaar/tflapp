@@ -42,7 +42,7 @@ class TFLCircleAnimationView : UIView {
     deinit {
         stopAnimation()
     }
-    
+   
     func startAnimation() {
         state = .active
         isHidden = false
@@ -57,7 +57,7 @@ class TFLCircleAnimationView : UIView {
         }
         
     }
-    
+   
     func stopAnimation() {
         isHidden = true
         state = .inactive
@@ -78,18 +78,19 @@ fileprivate extension TFLCircleAnimationView {
         self.sendSubviewToBack(animView3)
     }
     
+    @MainActor
     func completionBlock(_ animator : UIViewPropertyAnimator?,_ view : UIView?) {
         guard let animator = animator,let view = view else {
             return
         }
-        DispatchQueue.main.async {
-            guard self.state == .active else {
-                return
-            }
-            self.animate(animator,view) {
-                self.completionBlock(animator, view)
-            }
+        
+        guard self.state == .active else {
+            return
         }
+        self.animate(animator,view) {
+            self.completionBlock(animator, view)
+        }
+        
     }
     
     

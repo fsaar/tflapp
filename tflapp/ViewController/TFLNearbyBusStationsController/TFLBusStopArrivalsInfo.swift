@@ -37,11 +37,15 @@ extension Collection where Element == TFLBusStopArrivalsInfo {
     //      - merged arrivalinfos
     func mergedArrivalsInfo(_ newInfo : [TFLBusStopArrivalsInfo]) ->  [TFLBusStopArrivalsInfo] {
         let dict = Dictionary(uniqueKeysWithValues: self.map { ($0.identifier,$0) })
-        let mergedInfo : [TFLBusStopArrivalsInfo] = newInfo.map {  info in
-            guard info.arrivals.isEmpty else {
-                return info
+        let mergedInfo : [TFLBusStopArrivalsInfo] = newInfo.reduce([]) { list,info in
+            guard !info.arrivals.isEmpty else {
+                guard let oldInfo = dict[info.identifier],!oldInfo.arrivals.isEmpty else {
+                    return list
+                }
+                return list + [oldInfo]
             }
-            return dict[info.identifier] ?? info
+            return list + [info]
+          
         }
         return mergedInfo
     }

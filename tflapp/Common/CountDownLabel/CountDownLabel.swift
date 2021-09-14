@@ -38,7 +38,7 @@ class CountDownLabel: UIView {
             self.oneDigit.textColor = textColor
         }
     }
-    
+
     var font = UIFont.systemFont(ofSize: 14) {
         didSet {
             self.twoDigit10.font = font
@@ -48,8 +48,9 @@ class CountDownLabel: UIView {
     }
     
     deinit {
-        stop()
+        self.timer?.invalidate()
     }
+    
     
     init() {
         super.init(frame: .zero)
@@ -63,11 +64,15 @@ class CountDownLabel: UIView {
         reset()
     }
     
+    @MainActor
     func start() {
         stop()
-        self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: animationBlock)
+        self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] timer in
+            self?.animationBlock(timer)
+        }
     }
-    
+  
+    @MainActor
     func stop() {
         self.timer?.invalidate()
         self.timer = nil
@@ -80,15 +85,17 @@ class CountDownLabel: UIView {
 // MARK: - Helper
 //
 fileprivate extension CountDownLabel {
+   
     func reset() {
         self.currentValue = self.countDownValue
-        self.twoDigit10.text = twoDigitValue
-        self.twoDigit1.text =  oneDigitValue
-        let value = twoDigitValue.isEmpty ? oneDigitValue : ""
+        self.twoDigit10.text = self.twoDigitValue
+        self.twoDigit1.text =  self.oneDigitValue
+        let value = self.twoDigitValue.isEmpty ? self.oneDigitValue : ""
         self.oneDigit.text = value
-        self.twoDigit10.isHidden = twoDigitValue.isEmpty ? true : false
+        self.twoDigit10.isHidden = self.twoDigitValue.isEmpty ? true : false
         self.twoDigit1.isHidden = self.twoDigit10.isHidden
-        self.oneDigit.isHidden = twoDigitValue.isEmpty ? false : true
+        self.oneDigit.isHidden = self.twoDigitValue.isEmpty ? false : true
+        
     }
 
     func countDownElementView() -> CountDownElementView {
@@ -98,6 +105,7 @@ fileprivate extension CountDownLabel {
         return view
     }
     
+    @MainActor
     func animationBlock(_ timer : Timer) {
         guard self.currentValue > 0 else {
             self.stop()
@@ -124,7 +132,7 @@ fileprivate extension CountDownLabel {
             oneDigit.animateWithInterval(0.25,newText: self.oneDigitValue)
         }
     }
-    
+   
     func setup() {
         self.isUserInteractionEnabled = false
         self.clipsToBounds = true

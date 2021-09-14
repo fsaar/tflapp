@@ -41,63 +41,54 @@ class TFLRequestManager : NSObject {
     }()
 
 
-    public func getDataWithRelativePath(relativePath: String ,and query: String? = nil, completionBlock:@escaping ((_ data : Data?,_ error:Error?) -> Void)) {
+    public func getDataWithRelativePath(relativePath: String ,and query: String? = nil) async throws -> Data {
         guard let url =  self.baseURL(withPath: relativePath,and: query) else {
-            completionBlock(nil,TFLRequestManagerErrorType.InvalidURL(urlString: relativePath))
-            return
+            throw TFLRequestManagerErrorType.InvalidURL(urlString: relativePath)
         }
-        getDataWithURL(URL: url,completionBlock: completionBlock)
+        return try await getDataWithURL(URL: url)
     }
 
    
-    fileprivate func getDataWithURL(URL: URL , completionBlock:@escaping ((_ data : Data?,_ error:Error?) -> Void)) {
-        let task = session.dataTask(with: URL) { [weak self] data, _, error in
+    fileprivate func getDataWithURL(URL: URL) async throws -> Data {
+        defer {
+            self.delegate?.didFinishURLTask(with: self, session: self.session)
             TFLLogger.shared.signPostEnd(osLog: TFLRequestManager.loggingHandle, name: "getDataWithURL")
-
-            if let self = self {
-                self.delegate?.didFinishURLTask(with: self, session: self.session)
-
-            }
-            completionBlock(data,error)
         }
-        task.resume()
+        let urlRequest = URLRequest(url: URL)
         TFLLogger.shared.signPostStart(osLog: TFLRequestManager.loggingHandle, name: "getDataWithURL")
-
         self.delegate?.didStartURLTask(with: self, session: session)
+        let (data,_) = try await session.data(for:urlRequest)
+
+        return data
     }
 }
 
 
 extension TFLRequestManager : URLSessionDelegate {
-    #if !DEBUG
-    func urlSession(_ session: URLSession,
-                    didReceive challenge: URLAuthenticationChallenge,
-                    completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        
+    #if DEBUG
+    func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
         guard challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust,
             let serverTrust = challenge.protectionSpace.serverTrust,
             let baseURL = NSURLComponents(string: TFLRequestManagerBaseURL),
             challenge.protectionSpace.host == baseURL.host else {
-                completionHandler(.cancelAuthenticationChallenge, nil)
-                return
+                return (.cancelAuthenticationChallenge, nil)
         }
         
         let isServerTrusted  = SecTrustEvaluateWithError(serverTrust,nil)
-        
-        guard isServerTrusted,let certificate = SecTrustGetCertificateAtIndex(serverTrust, 0),
+
+        guard isServerTrusted,let certificate = SecTrustGetCertificateAtIndex(serverTrust,0),
             let serverPublicKey = SecCertificateCopyKey(certificate),
             let serverPublicKeyData:NSData = SecKeyCopyExternalRepresentation(serverPublicKey, nil) else {
-                 completionHandler(.cancelAuthenticationChallenge, nil)
-                return
+                 return(.cancelAuthenticationChallenge, nil)
         }
         let hash = (serverPublicKeyData as Data).sha256()
         guard let hashValue = hash,tfl_pupkeySet.contains(hashValue) else {
-            completionHandler(.cancelAuthenticationChallenge, nil)
-            return
+            return(.cancelAuthenticationChallenge, nil)
         }
-        completionHandler(.useCredential, URLCredential(trust:serverTrust))
+        return(.useCredential, URLCredential(trust:serverTrust))
         
     }
+   
     #endif
 }
 

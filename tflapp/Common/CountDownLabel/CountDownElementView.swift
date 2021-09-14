@@ -8,6 +8,7 @@
 
 import UIKit
 
+@MainActor
 class CountDownElementView : UIView {
     fileprivate lazy var lowerLabel = self.label()
     fileprivate lazy var upperLabel = self.label()
@@ -19,6 +20,7 @@ class CountDownElementView : UIView {
     }()
 
     
+    @MainActor
     init() {
         super.init(frame: .zero)
         setup()

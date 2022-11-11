@@ -1451,7 +1451,7 @@
 				DEVELOPMENT_TEAM = RF4LJPC23U;
 				INFOPLIST_FILE = tflapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.63;
+				MARKETING_VERSION = 1.64;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.samedialabs.tflapp;
 				PRODUCT_NAME = BusStops;
@@ -1473,7 +1473,7 @@
 				INFOPLIST_FILE = tflapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LLVM_LTO = YES;
-				MARKETING_VERSION = 1.63;
+				MARKETING_VERSION = 1.64;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.samedialabs.tflapp;
 				PRODUCT_NAME = BusStops;
@@ -1564,7 +1564,7 @@
 				DEVELOPMENT_TEAM = RF4LJPC23U;
 				INFOPLIST_FILE = tflapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.63;
+				MARKETING_VERSION = 1.64;
 				OTHER_SWIFT_FLAGS = " -DDATABASEGENERATION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.samedialabs.tflapp;
 				PRODUCT_NAME = BusStops;

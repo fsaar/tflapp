@@ -13,7 +13,7 @@ protocol TFLRequestManagerDelegate : AnyObject {
 }
 
 class TFLRequestManager : NSObject {
-    let tfl_pupkeySet = Set(["bHDn2jpPdHC91AutvRw+ntQNGpN29nXp2Xk+l2MjMZU=","PKMxN8xff+xbsEgj97N+EY/F7zSEPX9ChA38bEojFbc=","avscQOqhU5MBbW9tK5W+cBPC7UcUGQr+MK1NVWSsCpU="])
+    let tfl_pupkeySet = Set(["bHDn2jpPdHC91AutvRw+ntQNGpN29nXp2Xk+l2MjMZU=","PKMxN8xff+xbsEgj97N+EY/F7zSEPX9ChA38bEojFbc=","avscQOqhU5MBbW9tK5W+cBPC7UcUGQr+MK1NVWSsCpU=","V+h5x2zfJGpPz4+OOJNo7FmTVvkPuIAmIeCeHqarEU8="])
     weak var delegate : TFLRequestManagerDelegate?
     fileprivate let TFLRequestManagerBaseURL = "https://api.tfl.gov.uk"
 

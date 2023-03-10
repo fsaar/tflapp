@@ -13,7 +13,6 @@ protocol TFLRequestManagerDelegate : AnyObject {
 }
 
 class TFLRequestManager : NSObject {
-    let tfl_pupkeySet = Set(["bHDn2jpPdHC91AutvRw+ntQNGpN29nXp2Xk+l2MjMZU=","PKMxN8xff+xbsEgj97N+EY/F7zSEPX9ChA38bEojFbc=","avscQOqhU5MBbW9tK5W+cBPC7UcUGQr+MK1NVWSsCpU=","V+h5x2zfJGpPz4+OOJNo7FmTVvkPuIAmIeCeHqarEU8="])
     weak var delegate : TFLRequestManagerDelegate?
     fileprivate let TFLRequestManagerBaseURL = "https://api.tfl.gov.uk"
 
@@ -35,7 +34,7 @@ class TFLRequestManager : NSObject {
         let configuration = URLSessionConfiguration.ephemeral
         configuration.timeoutIntervalForResource = 120
         configuration.timeoutIntervalForRequest = 60
-        let session = URLSession(configuration:  configuration,delegate:self,delegateQueue:nil)
+        let session = URLSession(configuration:  configuration,delegate:nil,delegateQueue:nil)
         return session
         
     }()
@@ -67,39 +66,6 @@ class TFLRequestManager : NSObject {
     }
 }
 
-
-extension TFLRequestManager : URLSessionDelegate {
-    #if !DEBUG
-    func urlSession(_ session: URLSession,
-                    didReceive challenge: URLAuthenticationChallenge,
-                    completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        
-        guard challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust,
-            let serverTrust = challenge.protectionSpace.serverTrust,
-            let baseURL = NSURLComponents(string: TFLRequestManagerBaseURL),
-            challenge.protectionSpace.host == baseURL.host else {
-                completionHandler(.cancelAuthenticationChallenge, nil)
-                return
-        }
-        
-        let isServerTrusted  = SecTrustEvaluateWithError(serverTrust,nil)
-        
-        guard isServerTrusted,let certificate = SecTrustGetCertificateAtIndex(serverTrust, 0),
-            let serverPublicKey = SecCertificateCopyKey(certificate),
-            let serverPublicKeyData:NSData = SecKeyCopyExternalRepresentation(serverPublicKey, nil) else {
-                 completionHandler(.cancelAuthenticationChallenge, nil)
-                return
-        }
-        let hash = (serverPublicKeyData as Data).sha256()
-        guard let hashValue = hash,tfl_pupkeySet.contains(hashValue) else {
-            completionHandler(.cancelAuthenticationChallenge, nil)
-            return
-        }
-        completionHandler(.useCredential, URLCredential(trust:serverTrust))
-        
-    }
-    #endif
-}
 
 // MARK: Private
 

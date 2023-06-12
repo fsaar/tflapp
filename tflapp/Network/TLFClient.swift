@@ -47,25 +47,13 @@ public final class TFLClient {
         }
     }
     
-    public func arrivalsForStopPoint(with identifier: String,
-                                     with operationQueue : OperationQueue = OperationQueue.main,
-                                     using completionBlock:@escaping (([TFLBusPrediction]?,_ error:Error?) -> ()))  {
+    public func arrivalsForStopPoint(with identifier: String) async throws -> [TFLBusPrediction] {
+                                    
         let arivalsPath = "/StopPoint/\(identifier)/Arrivals"
-        Task{
-            do {
-                logger.log("\(#function) arrivalsForStopPoint:\(identifier)")
-                let data = try await tflManager.getDataWithRelativePath(relativePath: arivalsPath)
-                let predictions = try? TFLClient.jsonDecoder.decode([TFLBusPrediction].self,from: data)
-                operationQueue.addOperation{
-                    completionBlock(predictions,nil)
-                }
-            }
-            catch let error {
-                operationQueue.addOperation{
-                    completionBlock(nil,error)
-                }
-            }
-        }
+        logger.log("\(#function) arrivalsForStopPoint:\(identifier)")
+        let data = try await tflManager.getDataWithRelativePath(relativePath: arivalsPath)
+        let predictions = try TFLClient.jsonDecoder.decode([TFLBusPrediction].self,from: data)
+        return predictions
     }
 
     public func nearbyBusStops(with coordinate: CLLocationCoordinate2D,
@@ -122,7 +110,7 @@ public final class TFLClient {
             return
         }
         let lineStationPath = "/Line/\(line)/Route/Sequence/all"
-        Task {
+        Task{
             do {
                 self.logger.log("\(#function) lineStationInfo: \(line)")
                 let lineInfo = try await lineStationInfo(with: lineStationPath, query: "serviceTypes=Regular&excludeCrowding=true", context: context)

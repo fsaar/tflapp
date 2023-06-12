@@ -68,26 +68,28 @@ class TFLBusArrivalInfoAggregator {
     }
     
     func arrivalsForBusStops(_ busStops : [TFLCDBusStop],and location : CLLocation, using completionBlock:@escaping ([TFLBusStopArrivalsInfo])->()) {
-        let group = DispatchGroup()
-        var newStopPoints : [TFLBusStopArrivalsInfo] = []
-        let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
-        let queue = self.networkBackgroundQueue
-        busStops.forEach { [weak self] stopPoint in
-            group.enter()
-            context.perform {
-                self?.tflClient.arrivalsForStopPoint(with: stopPoint.identifier,with: queue) { predictions,_ in
-                    context.perform {
-                        let tuple = TFLBusStopArrivalsInfo(busStop: stopPoint, location: location, arrivals: predictions ?? [])
-                        newStopPoints += [tuple]
-                        group.leave()
+        Task{
+            await withTaskGroup(of: TFLBusStopArrivalsInfo.self) { group in
+                busStops.forEach{  stopPoint in
+                    let identifier = stopPoint.identifier
+                    group.addTask(priority: .userInitiated) {
+                        let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
+                        let predictions = (try? await self.tflClient.arrivalsForStopPoint(with: identifier)) ?? []
+                        let tuple : TFLBusStopArrivalsInfo = await context.perform{
+                            return TFLBusStopArrivalsInfo(busStop: stopPoint, location: location, arrivals: predictions)
+                        }
+                        
+                        
+                        return tuple
                     }
                 }
+                var newStopPoints : [TFLBusStopArrivalsInfo] = []
+                for await info in group {
+                    newStopPoints += [info]
+                }
+                completionBlock(newStopPoints)
             }
         }
-        group.notify(queue: DispatchQueue.global()) {
-            completionBlock(newStopPoints)
-        }
+        
     }
-    
-    
 }

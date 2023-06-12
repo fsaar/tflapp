@@ -88,7 +88,7 @@ class TFLNearbyBusStationsController : UIViewController {
             let movedIndexPaths = moved.map { $0.newIndex }.indexPaths()
             (updatedIndexPaths+movedIndexPaths).forEach { [weak self] indexPath in
                 if let cell = self?.tableView.cellForRow(at: indexPath) as? TFLBusStationArrivalsCell {
-                    cell.configure(with: busStopArrivalViewModels[indexPath],animated:true)
+                    cell.configure(with: models[indexPath],animated:true)
                 }
             }
         }

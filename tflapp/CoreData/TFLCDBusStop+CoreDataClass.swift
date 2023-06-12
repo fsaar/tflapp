@@ -121,13 +121,13 @@ public class TFLCDBusStop: NSManagedObject {
                     }
 
                     if busStop.status != status { busStop.status = status }
-                    if busStop.name != name && (!name.isEmpty || (busStop.name == .none)) { busStop.name = name }
+                    if busStop.name != name && !name.isEmpty { busStop.name = name }
                     if busStop.long != long && long != kCLLocationCoordinate2DInvalid.longitude { busStop.long = long }
                     if busStop.lat != lat && lat != kCLLocationCoordinate2DInvalid.latitude { busStop.lat = lat }
                     if busStop.stopLetter != stopLetter && (!stopLetter.isEmpty || (busStop.stopLetter == .none))   { busStop.stopLetter = stopLetter }
                     if busStop.towards != towards && (!towards.isEmpty || (busStop.towards == .none)) { busStop.towards = towards }
-                    if busStop.lines != lines && (!lines.isEmpty || (busStop.lines == .none)) { busStop.lines = lines }
-                    if busStop.stationIdentifier != stationIdentifier && (!stationIdentifier.isEmpty || (busStop.stationIdentifier == .none)) { busStop.stationIdentifier = stationIdentifier }
+                    if busStop.lines != lines && !lines.isEmpty { busStop.lines = lines }
+                    if busStop.stationIdentifier != stationIdentifier && !stationIdentifier.isEmpty { busStop.stationIdentifier = stationIdentifier }
                 }
                 completionBlock(busStop)
             }

@@ -44,13 +44,13 @@ public class TFLCDLineRoute: NSManagedObject {
             return
         }
         self.routeEntity(with: name, and: managedObjectContext) { route in
-            managedObjectContext.perform {
+            managedObjectContext.perform{
                 if let route = route {
                     let serviceType = dictionary[Identifiers.serviceType.rawValue] as? String ?? ""
                     let stations = dictionary[Identifiers.stations.rawValue] as? [String] ?? []
 
                     if route.stations != stations && (!stations.isEmpty || (route.stations == .none)) { route.stations = stations }
-                    if route.serviceType != serviceType && (!serviceType.isEmpty || (route.serviceType == .none)) { route.serviceType = serviceType }
+                    if route.serviceType != serviceType && !serviceType.isEmpty  { route.serviceType = serviceType }
                     #if DATABASEGENERATION
                     print("retrieving route \(name) for \(line)")
 

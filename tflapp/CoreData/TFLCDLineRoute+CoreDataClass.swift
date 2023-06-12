@@ -58,7 +58,7 @@ public class TFLCDLineRoute: NSManagedObject {
                     let stationKey = stations.sorted(by:<).joined(separator: "-")
                     let key = "#\(line)|\(stationKey)"
                     let busStops = TFLCDBusStop.busStops(with: stations, and: managedObjectContext)
-                    let coords = busStops.map { CLLocationCoordinate2DMake($0.lat, $0.long) }.filter { $0.isValid }
+                    let coords = busStops.map{ CLLocationCoordinate2DMake($0.lat, $0.long) }.filter{ $0.isValid }
                     if let polyLineString = self.polyLineDict[key] {
                         print("reusing polyline")
                         route.polyline  = polyLineString

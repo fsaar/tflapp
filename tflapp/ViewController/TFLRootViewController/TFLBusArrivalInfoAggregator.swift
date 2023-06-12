@@ -22,7 +22,7 @@ class TFLBusArrivalInfoAggregator {
                                             with distance : Double,
                                             using completionBlock:@escaping (_ arrivalInfos:[TFLBusStopArrivalsInfo],_ completed: Bool)->()) {
         let mainQueueBlock : ([TFLBusStopArrivalsInfo],Bool) -> Void = { [weak self] infos, completed in
-            DispatchQueue.main.async {
+            DispatchQueue.main.async{
                 completionBlock(infos,completed)
                 #if DEBUG_SCHEDULES
                 guard completed else {
@@ -34,7 +34,7 @@ class TFLBusArrivalInfoAggregator {
             }
         }
         let currentLocation = coord.location
-        DispatchQueue.global().async {
+        DispatchQueue.global().async{
             let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
             TFLLogger.shared.signPostStart(osLog: TFLBusArrivalInfoAggregator.loggingHandle, name: "retrieve nearby Busstops")
 

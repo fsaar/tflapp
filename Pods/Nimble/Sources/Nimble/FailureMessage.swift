@@ -45,7 +45,7 @@ public class FailureMessage: NSObject {
         let whitespaces = CharacterSet.whitespacesAndNewlines
         return str
             .components(separatedBy: "\n")
-            .map { line in line.trimmingCharacters(in: whitespaces) }
+            .map{ line in line.trimmingCharacters(in: whitespaces) }
             .joined(separator: "")
     }
 

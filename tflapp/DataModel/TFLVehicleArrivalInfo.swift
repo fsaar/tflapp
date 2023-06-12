@@ -40,7 +40,7 @@ import Foundation
 extension Array where Element == TFLVehicleArrivalInfo {
     
     func info(with naptandID : String) -> TFLVehicleArrivalInfo? {
-        let identifiers = self.map { $0.busStopIdentifier }
+        let identifiers = self.map{ $0.busStopIdentifier }
         guard let index = identifiers.firstIndex(of:naptandID) else {
             return nil
         }

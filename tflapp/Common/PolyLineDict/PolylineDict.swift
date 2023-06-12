@@ -20,7 +20,7 @@ class PolylineDict {
             let group = DispatchGroup()
             group.enter()
             var value : String?
-            queue.addOperation {
+            queue.addOperation{
                 value = self.innerDict[key]
                 group.leave()
             }
@@ -31,7 +31,7 @@ class PolylineDict {
             guard let value = newValue,!value.isEmpty else {
                 return
             }
-            queue.addOperation {
+            queue.addOperation{
                 self.innerDict[key] = value
                 self.save()
             }

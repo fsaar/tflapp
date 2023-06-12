@@ -88,14 +88,14 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
         notificationCenter.getPendingNotificationRequests { [weak self] requests in
             let identifier = self?.identifier ?? ""
             guard let request = requests.first(where:{ ($0.content.userInfo[TFLBusArrivalReminder.NotificationUserInfoKey.predictionIdentifier.rawValue] as? String) == identifier }),let userInfo = request.content.userInfo as? [String:Any], let minutes = userInfo[TFLBusArrivalReminder.NotificationUserInfoKey.minutesBeforeArrival.rawValue] as? Int  else {
-                OperationQueue.main.addOperation {
+                OperationQueue.main.addOperation{
                     self?.notificationBadge.isHidden = true
                     self?.notificationBadgeBackground.isHidden  = true
                 }
                 return
             }
             let image = UIImage(systemName: "\(minutes).circle.fill")
-            OperationQueue.main.addOperation {
+            OperationQueue.main.addOperation{
                 self?.notificationBadgeBackground.isHidden  = false
                 self?.notificationBadge.isHidden = false
                 self?.notificationBadge.image = image

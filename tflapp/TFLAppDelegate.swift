@@ -32,7 +32,7 @@ private extension AppDelegate {
     }
     
     func setupSpotLight() {
-        DispatchQueue.global().async {
+        DispatchQueue.global().async{
             let routeList = TFLLineInfoRouteDirectory.infoRouteDirectoryFromCoreData()
             let provider = TFLCoreSpotLightDataProvider(with: routeList)
             self.spotlight = (routeList,provider)

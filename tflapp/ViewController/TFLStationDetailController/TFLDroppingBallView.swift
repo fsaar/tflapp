@@ -51,7 +51,7 @@ class TFLDroppingBallView : UIView {
         animator.addCompletion { [weak self] _ in
             self?.heightConstraint.constant = 0
             self?.ball.layoutIfNeeded()
-            OperationQueue.main.addOperation {
+            OperationQueue.main.addOperation{
                 self?.startAnimation()
             }
         }

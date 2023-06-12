@@ -10,7 +10,7 @@ public func satisfyAnyOf<T>(_ predicates: Predicate<T>...) -> Predicate<T> {
 /// provided in the variable list of matchers. 
 public func satisfyAnyOf<T, U>(_ matchers: U...) -> Predicate<T>
     where U: Matcher, U.ValueType == T {
-        return satisfyAnyOf(matchers.map { $0.predicate })
+        return satisfyAnyOf(matchers.map{ $0.predicate })
 }
 
 internal func satisfyAnyOf<T>(_ predicates: [Predicate<T>]) -> Predicate<T> {

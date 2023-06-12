@@ -251,11 +251,11 @@ fileprivate extension TFLRootViewController {
         case (true,false):
             mergedInfo = arrivalsInfo
         case (_,true):
-            let newTuples = oldTuples.map { $0.arrivalInfo(with:  coordinate.location) }
+            let newTuples = oldTuples.map{ $0.arrivalInfo(with:  coordinate.location) }
             mergedInfo = newTuples
         }
         
-        let filteredArrivalsInfo = mergedInfo.filter { !$0.liveArrivals().isEmpty }.filter { $0.busStopDistance <= radius }
+        let filteredArrivalsInfo = mergedInfo.filter{ !$0.liveArrivals().isEmpty }.filter{ $0.busStopDistance <= radius }
         self.nearbyBusStationController?.arrivalsInfo = filteredArrivalsInfo
         self.nearbyBusStationController?.currentUserCoordinate = coordinate
         switch (updatePending,filteredArrivalsInfo.isEmpty) {

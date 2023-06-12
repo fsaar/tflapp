@@ -5,7 +5,7 @@ import MapKit
 
 extension Array where Element == TFLStationDetailTableViewModel {
     func indexPaths(for models : [TFLVehicleArrivalInfo]) -> [IndexPath] {
-        let naptanIdentifiers = models.map { $0.busStopIdentifier }
+        let naptanIdentifiers = models.map{ $0.busStopIdentifier }
         let paths = indexPaths(for: naptanIdentifiers)
         return paths
     }
@@ -19,8 +19,8 @@ extension Array where Element == TFLStationDetailTableViewModel {
     func indexPaths(for naptanIdentifiers : [String]) -> [IndexPath] {
         let indexPaths : [IndexPath] = self.naptanIDLists.enumerated().reduce([]) { sum,tuple in
             let (section,naptanIDList) = tuple
-            let sectionIndexPaths = naptanIdentifiers.compactMap { naptanIDList.firstIndex(of:$0) }
-                                                        .map { IndexPath(row:$0,section:section) }
+            let sectionIndexPaths = naptanIdentifiers.compactMap{ naptanIDList.firstIndex(of:$0) }
+                                                        .map{ IndexPath(row:$0,section:section) }
             return sum + sectionIndexPaths
         }
         return indexPaths
@@ -30,7 +30,7 @@ extension Array where Element == TFLStationDetailTableViewModel {
     //                              |- naptandId == arrivalInfo.busStopIdentifer
     var naptanIDLists : [[String]] {
         let lists : [[String]] = self.reduce([]) { sum,model in
-            let modelNaptanIds = model.stations.map { $0.naptanId }
+            let modelNaptanIds = model.stations.map{ $0.naptanId }
             return sum + [modelNaptanIds]
         }
         return lists
@@ -52,18 +52,18 @@ struct TFLStationDetailTableViewModel {
         }
         let routeStations = route.stations ?? []
         let busStops = TFLCDBusStop.busStops(with: routeStations, and: managedObjectContext)
-        let stationDistanceTuple = busStops.map { ($0,$0.distance(to:location)) }.min  { $0.1 < $1.1 }
+        let stationDistanceTuple = busStops.map{ ($0,$0.distance(to:location)) }.min  { $0.1 < $1.1 }
         if let stationDistanceTuple = stationDistanceTuple, stationDistanceTuple.1 < minClostedStationDistance {
             closestStationIdentifer = stationDistanceTuple.0.stationIdentifier
         }
         else {
             closestStationIdentifer = nil
         }
-        let tuples = busStops.map { ($0.stopLetter ?? "",$0.name,$0.stationIdentifier,$0.identifier) }
+        let tuples = busStops.map{ ($0.stopLetter ?? "",$0.name,$0.stationIdentifier,$0.identifier) }
         
         let towards = NSLocalizedString("Common.towards", comment: "")
         let tempName = route.name.replacingOccurrences(of: HtmlEncodings.towards.rawValue, with: towards)
-        let tempNameComponents = tempName.split(separator: " ").map { $0.trimmingCharacters(in: .whitespaces ) }.filter { !$0.isEmpty }
+        let tempNameComponents = tempName.split(separator: " ").map{ $0.trimmingCharacters(in: .whitespaces ) }.filter{ !$0.isEmpty }
         routeName = tempNameComponents.joined(separator: " ")
         stations = tuples
     }

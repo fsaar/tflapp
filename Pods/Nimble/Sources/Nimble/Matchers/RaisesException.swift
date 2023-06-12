@@ -111,7 +111,7 @@ internal func exceptionMatchesNonNilFieldsOrClosure(
                 let assertions = gatherFailingExpectations {
                     closure(exception)
                 }
-                let messages = assertions.map { $0.message }
+                let messages = assertions.map{ $0.message }
                 if messages.count > 0 {
                     matches = false
                 }

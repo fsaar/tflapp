@@ -37,14 +37,14 @@ class TFLCoreSpotLightDataProvider {
     }
     func searchableItems(on queue : OperationQueue = OperationQueue.main,
                          using completionBlock: @escaping (_ items : [CSSearchableItem]) -> Void )   {
-        DispatchQueue.global().async { [weak self] in
+        DispatchQueue.global().async{ [weak self] in
             guard let self = self, let dataSource = self.dataSource else {
                 completionBlock([])
                 return
             }
             let count = dataSource.numberOfLinesForCoreSpotLightDataProvider(self)
             
-            let items : [CSSearchableItem]  = (0 ..< count).compactMap { index in
+            let items : [CSSearchableItem]  = (0 ..< count).compactMap{ index in
                 let identifier = dataSource.lineForCoreSpotLightDataProvider(self, at: index)
                 let routes = dataSource.routesForCoreSpotLightDataProvider(self, for: identifier)
                 let image = self.busPredictionViewBackgroundImage(line: identifier.uppercased())
@@ -54,7 +54,7 @@ class TFLCoreSpotLightDataProvider {
                 let item = CSSearchableItem(uniqueIdentifier: identifier, domainIdentifier: "com.samedialabs.tflapp.lines", attributeSet: attributeSet)
                 return item
             }
-            queue.addOperation {
+            queue.addOperation{
                 completionBlock(items)
             }
         }
@@ -96,7 +96,7 @@ private extension TFLCoreSpotLightDataProvider {
         let attrs = CSSearchableItemAttributeSet(itemContentType: kUTTypeItem as String)
         attrs.displayName = "Routes"
         attrs.thumbnailData = image?.pngData()
-        let formatterList = routes.compactMap { TFLRouteFormatter(route: $0) }
+        let formatterList = routes.compactMap{ TFLRouteFormatter(route: $0) }
         let stationNames = formatterList.shortRoutes.joined(separator: "\n")
         attrs.contentDescription = stationNames
         attrs.keywords = identifier.lowercased() == identifier.uppercased() ? [identifier] : [identifier.lowercased(),identifier.uppercased()]

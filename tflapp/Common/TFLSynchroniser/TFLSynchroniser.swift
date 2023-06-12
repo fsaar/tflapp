@@ -26,7 +26,7 @@ class TFLSynchroniser {
         let synchroniseEnd : () -> () = {
             group.leave()
         }
-        queue.addOperation {
+        queue.addOperation{
             group.enter()
             block(synchroniseEnd)
             group.wait()

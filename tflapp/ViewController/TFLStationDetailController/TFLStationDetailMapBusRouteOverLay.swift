@@ -12,8 +12,8 @@ import MapKit
 
 extension Array where Element == CLLocationCoordinate2D {
     var boundingRect : MKMapRect? {
-        let latSorted = self.sorted { $0.latitude < $1.latitude }
-        let longSorted = self.sorted { $0.longitude < $1.longitude }
+        let latSorted = self.sorted{ $0.latitude < $1.latitude }
+        let longSorted = self.sorted{ $0.longitude < $1.longitude }
         guard let minLat = latSorted.first?.latitude, let maxLat = latSorted.last?.latitude,
             let minLong = longSorted.first?.longitude, let maxLong = longSorted.last?.longitude else {
                 return nil

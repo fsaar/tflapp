@@ -156,9 +156,9 @@ final internal class World: _WorldBase {
         // 1. Grab all included examples.
         let included = includedExamples
         // 2. Grab the intersection of (a) examples for this spec, and (b) included examples.
-        let spec = rootExampleGroup(forSpecClass: specClass).examples.filter { included.contains($0) }
+        let spec = rootExampleGroup(forSpecClass: specClass).examples.filter{ included.contains($0) }
         // 3. Remove all excluded examples.
-        return spec.filter { example in
+        return spec.filter{ example in
             !self.configuration.exclusionFilters.contains { $0(example) }
         }
     }
@@ -222,7 +222,7 @@ final internal class World: _WorldBase {
 
     private var includedExamples: [Example] {
         let all = allExamples
-        let included = all.filter { example in
+        let included = all.filter{ example in
             return self.configuration.inclusionFilters.contains { $0(example) }
         }
 

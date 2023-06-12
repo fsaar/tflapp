@@ -17,10 +17,10 @@ extension Collection where Element : Hashable {
     func transformTo(newList : [Element],sortedBy compare: @escaping TFLTransformCollectionCompare<Element>)  -> (inserted : [(element:Element,index:Int)],deleted : [(element:Element,index:Int)], updated : [(element:Element,index:Int)],moved : [(element:Element,oldIndex:Int,newIndex:Int)])
     {
         guard !self.isEmpty else {
-            return (newList.enumerated().map { ($0.1,$0.0) },[],[],[])
+            return (newList.enumerated().map{ ($0.1,$0.0) },[],[],[])
         }
         guard !newList.isEmpty else {
-            return ([],self.enumerated().map { ($0.1,$0.0) },[],[])
+            return ([],self.enumerated().map{ ($0.1,$0.0) },[],[])
         }
 
         let sortedOldList = self.sorted(by: compare)
@@ -39,7 +39,7 @@ extension Collection where Element : Hashable {
             let deleted = try deletedSet.indexedList(basedOn: sortedOldList)
             
             let movedTypes = try findMovedElements(in: newList,inserted: inserted ,deleted: deleted,sortedBy: compare)
-            let moved : [(Element,Int,Int)] = movedTypes.compactMap { el in
+            let moved : [(Element,Int,Int)] = movedTypes.compactMap{ el in
                 guard let oldIndex = sortedOldList.index(of: el), let newIndex = sortedNewList.index(of: el) else {
                     return nil
                 }
@@ -51,12 +51,12 @@ extension Collection where Element : Hashable {
             return (inserted,deleted,updated,moved)
         }
         catch {
-            return (newList.enumerated().map { ($0.1,$0.0) },self.enumerated().map { ($0.1,$0.0) },[],[])
+            return (newList.enumerated().map { ($0.1,$0.0) },self.enumerated().map{ ($0.1,$0.0) },[],[])
         }
     }
 
     func mergeELements(with indexedList : [(element:Element,index:Int)]) throws  -> [Element] {
-        let sortedIndexListByIndex = indexedList.sorted { $0.1 < $1.1 }
+        let sortedIndexListByIndex = indexedList.sorted{ $0.1 < $1.1 }
         var copy = Array(self)
         try sortedIndexListByIndex.forEach { arg in
             let (element, index) = arg
@@ -73,7 +73,7 @@ extension Collection where Element : Hashable {
 
 fileprivate extension Set {
     func indexedList(basedOn list:[Element]) throws -> [(Element,Int)] {
-        let indexList : [(Element,Int)] = try self.compactMap { el in
+        let indexList : [(Element,Int)] = try self.compactMap{ el in
             guard let index = list.index(of:el) else {
                 throw SetIndexListError.elementNotInTargetList
             }
@@ -112,10 +112,10 @@ fileprivate extension Collection where Element : Hashable{
         // 1. delete items from old list
         // 2. insert new items
         
-        let deletedTypes = deleted.map { $0.element }
-        let reducedOldList = self.filter { !deletedTypes.contains($0) }
-        let sortedInsertedByIndex = inserted.sorted { $0.1 < $1.1 }
-        let updatedList : [Element] = try reducedOldList.compactMap { el in
+        let deletedTypes = deleted.map{ $0.element }
+        let reducedOldList = self.filter{ !deletedTypes.contains($0) }
+        let sortedInsertedByIndex = inserted.sorted{ $0.1 < $1.1 }
+        let updatedList : [Element] = try reducedOldList.compactMap{ el in
             guard let index = newList.index(of: el) else {
                 throw CollectionError.findMovedElementsIndexOutOfRange
             }

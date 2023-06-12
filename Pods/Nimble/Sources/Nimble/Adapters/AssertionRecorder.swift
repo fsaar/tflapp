@@ -121,7 +121,7 @@ public func gatherExpectations(silently: Bool = false, closure: () -> Void) -> [
 /// @see raiseException source for an example use case.
 public func gatherFailingExpectations(silently: Bool = false, closure: () -> Void) -> [AssertionRecord] {
     let assertions = gatherExpectations(silently: silently, closure: closure)
-    return assertions.filter { assertion in
+    return assertions.filter{ assertion in
         !assertion.success
     }
 }

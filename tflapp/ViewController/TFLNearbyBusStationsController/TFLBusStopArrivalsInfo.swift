@@ -25,7 +25,7 @@ extension Collection where Element == TFLBusStopArrivalsInfo {
     // - Returns:
     //      - arrivalinfos sorted by busStopDistance
     func sortedByBusStopDistance() -> [Element] {
-        return self.sorted { $0.busStopDistance < $1.busStopDistance }
+        return self.sorted{ $0.busStopDistance < $1.busStopDistance }
     }
     
     // merges new arrival infos with old infos
@@ -36,8 +36,8 @@ extension Collection where Element == TFLBusStopArrivalsInfo {
     // - Returns:
     //      - merged arrivalinfos
     func mergedArrivalsInfo(_ newInfo : [TFLBusStopArrivalsInfo]) ->  [TFLBusStopArrivalsInfo] {
-        let dict = Dictionary(uniqueKeysWithValues: self.map { ($0.identifier,$0) })
-        let mergedInfo : [TFLBusStopArrivalsInfo] = newInfo.map {  info in
+        let dict = Dictionary(uniqueKeysWithValues: self.map{ ($0.identifier,$0) })
+        let mergedInfo : [TFLBusStopArrivalsInfo] = newInfo.map{  info in
             guard info.arrivals.isEmpty else {
                 return info
             }
@@ -55,16 +55,16 @@ extension Collection where Element == TFLBusStopArrivalsInfo {
     // - Returns:
     //      - updated arrivalinfos
     func mergedUpdatedArrivalsInfo(_ newInfo : [TFLBusStopArrivalsInfo]) ->  [TFLBusStopArrivalsInfo] {
-        let oldIdentifiers = self.map { $0.identifier }
-        let newIdentifiers = newInfo.compactMap { !$0.arrivals.isEmpty ? $0.identifier : nil }
+        let oldIdentifiers = self.map{ $0.identifier }
+        let newIdentifiers = newInfo.compactMap{ !$0.arrivals.isEmpty ? $0.identifier : nil }
         let updatedIdentifiers = Set(oldIdentifiers).intersection(newIdentifiers)
-        let newDict = Dictionary(uniqueKeysWithValues: newInfo.map { ($0.identifier,$0) })
-        var oldDict = Dictionary(uniqueKeysWithValues: self.map { ($0.identifier,$0) })
+        let newDict = Dictionary(uniqueKeysWithValues: newInfo.map{ ($0.identifier,$0) })
+        var oldDict = Dictionary(uniqueKeysWithValues: self.map{ ($0.identifier,$0) })
         updatedIdentifiers.forEach { identifier in
             oldDict[identifier] = newDict[identifier]
         }
         
-        let updatedInfo = oldDict.map { $0.value }
+        let updatedInfo = oldDict.map{ $0.value }
         return updatedInfo.sortedByBusStopDistance()
     }
     
@@ -100,7 +100,7 @@ public struct TFLBusStopArrivalsInfo : Hashable,CustomStringConvertible {
     let arrivals : [TFLBusPrediction]
     
     public var description : String {
-        let lines = arrivals.sorted { $0.timeStamp < $1.timeStamp }.map { $0.lineName }.joined(separator: " < ")
+        let lines = arrivals.sorted{ $0.timeStamp < $1.timeStamp }.map{ $0.lineName }.joined(separator: " < ")
         let desc =  """
                         [\(busStop.stopLetter ?? "")] \(busStop.name ) [\(identifier)]\n
                         \(lines)
@@ -133,7 +133,7 @@ public struct TFLBusStopArrivalsInfo : Hashable,CustomStringConvertible {
         let distance = location.distance(from: busStop.coord.location)
         self.busStopDistance = distance
         self.busStop = busStop
-        self.arrivals = Set(arrivals).sorted { $0.timeToStation  < $1.timeToStation }
+        self.arrivals = Set(arrivals).sorted{ $0.timeToStation  < $1.timeToStation }
     }
 
      init(busStop: TFLCDBusStop, location: CLLocation, arrivals: [TFLBusPrediction]) {
@@ -147,7 +147,7 @@ public struct TFLBusStopArrivalsInfo : Hashable,CustomStringConvertible {
     
     func liveArrivals(with referenceDate: Date = Date()) -> [TFLBusPrediction]  {
         let referenceTime = referenceDate.timeIntervalSinceReferenceDate
-        let filteredArrivals = arrivals.filter { $0.timeToLive.timeIntervalSinceReferenceDate >= referenceTime }
+        let filteredArrivals = arrivals.filter{ $0.timeToLive.timeIntervalSinceReferenceDate >= referenceTime }
         return filteredArrivals
     }
 }

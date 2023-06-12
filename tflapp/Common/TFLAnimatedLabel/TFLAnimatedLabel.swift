@@ -35,7 +35,7 @@ class TFLAnimatedLabel: UIView {
     fileprivate(set) var text : String?
     
     fileprivate var labels : [UILabel] {
-        return self.subviews.compactMap { $0 as? UILabel }
+        return self.subviews.compactMap{ $0 as? UILabel }
     }
     
     private lazy var animator : UIViewPropertyAnimator = {

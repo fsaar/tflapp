@@ -82,7 +82,7 @@ fileprivate extension TFLCircleAnimationView {
         guard let animator = animator,let view = view else {
             return
         }
-        DispatchQueue.main.async {
+        DispatchQueue.main.async{
             guard self.state == .active else {
                 return
             }

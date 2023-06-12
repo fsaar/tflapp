@@ -23,7 +23,7 @@ class TestUrlProtocol: URLProtocol {
     
     override func startLoading() {
         
-        let data = TestUrlProtocol.dataProviders.lazy.compactMap { dataProvider in
+        let data = TestUrlProtocol.dataProviders.lazy.compactmap{ dataProvider in
             return dataProvider(self.request)
         }.first
         if let data = data {

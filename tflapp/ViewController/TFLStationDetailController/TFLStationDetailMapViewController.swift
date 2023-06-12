@@ -33,7 +33,7 @@ class TFLStationDetailMapViewController: UIViewController {
                 let overlay = overlays[index]
                 let stations = overlay.model.stations
                 mapView.addOverlay(overlay)
-                let annotations : [TFLStationDetailMapViewAnnotation] = stations.enumerated().map { tuple in
+                let annotations : [TFLStationDetailMapViewAnnotation] = stations.enumerated().map{ tuple in
                                                                                                     TFLStationDetailMapViewAnnotation(with: tuple.1.identifier,
                                                                                                                                       stopCode: tuple.1.stopCode,
                                                                                                                                       coordinate: tuple.1.coords,
@@ -54,7 +54,7 @@ class TFLStationDetailMapViewController: UIViewController {
             guard !viewModels.isEmpty else {
                 return
             }
-            overlays = self.viewModels.compactMap { TFLStationDetailMapBusRouteOverLay($0) }
+            overlays = self.viewModels.compactMap{ TFLStationDetailMapBusRouteOverLay($0) }
             let mapRect = overlays.reduce(MKMapRect.null) { $0.union($1.boundingMapRect) }
             let insetRect = mapRect.insetBy(dx: -10000, dy: -10000)
             self.mapView.region = MKCoordinateRegion(insetRect)
@@ -95,7 +95,7 @@ extension TFLStationDetailMapViewController : MKMapViewDelegate {
             return
         }
         selectableIdentifer = nil
-        let annnotations = self.mapView.annotations.compactMap { $0 as? TFLStationDetailMapViewAnnotation }
+        let annnotations = self.mapView.annotations.compactMap{ $0 as? TFLStationDetailMapViewAnnotation }
         guard let annotation = annnotations.first(where : { $0.identifier == identifier }),
             let annotationView = self.mapView.view(for: annotation) else {
                 return

@@ -76,7 +76,7 @@ class TFLNearbyBusStationsController : UIViewController {
     var currentUserCoordinate = kCLLocationCoordinate2DInvalid
     var arrivalsInfo :  [TFLBusStopArrivalsInfo] = [] {
         didSet {
-            let models = Set(arrivalsInfo).sortedByBusStopDistance().map { TFLBusStopArrivalsViewModel(with: $0) }
+            let models = Set(arrivalsInfo).sortedByBusStopDistance().map{ TFLBusStopArrivalsViewModel(with: $0) }
             let (_ ,_ ,updated, moved) = self.busStopArrivalViewModels.transformTo(newList: models, sortedBy : TFLBusStopArrivalsViewModel.compare)
             busStopArrivalViewModels = models
             var snapshot = NSDiffableDataSourceSnapshot<String, TFLBusStopArrivalsViewModel>()
@@ -84,8 +84,8 @@ class TFLNearbyBusStationsController : UIViewController {
             snapshot.appendItems(models)
             dataSource?.apply(snapshot,animatingDifferences: true)
             
-            let updatedIndexPaths = updated.map { $0.index }.indexPaths()
-            let movedIndexPaths = moved.map { $0.newIndex }.indexPaths()
+            let updatedIndexPaths = updated.map{ $0.index }.indexPaths()
+            let movedIndexPaths = moved.map{ $0.newIndex }.indexPaths()
             (updatedIndexPaths+movedIndexPaths).forEach { [weak self] indexPath in
                 if let cell = self?.tableView.cellForRow(at: indexPath) as? TFLBusStationArrivalsCell {
                     cell.configure(with: models[indexPath],animated:true)
@@ -165,7 +165,7 @@ extension TFLNearbyBusStationsController : UITableViewDelegate {
 extension TFLNearbyBusStationsController : TFLBusStationArrivalCellDelegate {
     fileprivate func showInformationView(type : TFLInformationView.InformationType = .confirmation) {
         self.informationSynchroniser.synchronise { syncEnd in
-            OperationQueue.main.addOperation {
+            OperationQueue.main.addOperation{
                 self.showInformationView(type:type, true) {
                     DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(type.onScreenTimeout)) {
                         self.showInformationView(type: type,false) {
@@ -191,7 +191,7 @@ extension TFLNearbyBusStationsController : TFLBusStationArrivalCellDelegate {
     }
     
     fileprivate func updateNotificationBadge(arrivalViewModelIdentifier : String,linePredictionViewIdentifier : String) {
-        let arrivalCell = self.tableView.visibleCells.compactMap { $0 as? TFLBusStationArrivalsCell }.first { $0.identifier == arrivalViewModelIdentifier }
+        let arrivalCell = self.tableView.visibleCells.compactMap{ $0 as? TFLBusStationArrivalsCell }.first { $0.identifier == arrivalViewModelIdentifier }
         arrivalCell?.updateBadgeForCellWithIdentifier(linePredictionViewIdentifier)
     }
     
@@ -208,7 +208,7 @@ extension TFLNearbyBusStationsController : TFLBusStationArrivalCellDelegate {
                 }
                 return
             }
-            OperationQueue.main.addOperation {
+            OperationQueue.main.addOperation{
                 self?.showInformationView()
                 if let identifier = identifier {
                     self?.updateNotificationBadge(arrivalViewModelIdentifier: identifier, linePredictionViewIdentifier: predictionIdentifier)
@@ -248,7 +248,7 @@ extension TFLNearbyBusStationsController : UNUserNotificationCenterDelegate {
             return
         }
         let type = TFLInformationView.InformationType.notification(stationName: stationName,line: lineIdentifier)
-        OperationQueue.main.addOperation {
+        OperationQueue.main.addOperation{
             self.showInformationView(type: type)
             self.updateNotificationBadge(arrivalViewModelIdentifier: stationIdentifier, linePredictionViewIdentifier: predictionIdentifier)
         }

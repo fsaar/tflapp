@@ -17,8 +17,8 @@ class TFLCollectionFlowLayout : UICollectionViewFlowLayout {
     }
     override func prepare(forCollectionViewUpdates updateItems: [UICollectionViewUpdateItem]) {
         super.prepare(forCollectionViewUpdates: updateItems)
-        self.deleteIndexPaths = updateItems.filter { $0.updateAction == .delete }.compactMap { $0.indexPathBeforeUpdate }.sorted { $0.item < $1.item }
-        self.insertIndexPaths = updateItems.filter { $0.updateAction == .insert }.compactMap { $0.indexPathAfterUpdate }.sorted { $0.item < $1.item }
+        self.deleteIndexPaths = updateItems.filter{ $0.updateAction == .delete }.compactMap{ $0.indexPathBeforeUpdate }.sorted{ $0.item < $1.item }
+        self.insertIndexPaths = updateItems.filter{ $0.updateAction == .insert }.compactMap{ $0.indexPathAfterUpdate }.sorted{ $0.item < $1.item }
 
     }
 
@@ -57,7 +57,7 @@ private extension TFLCollectionFlowLayout {
             return .scale
         }
         let indices = Array(indexPath.item..<itemCount)
-        let insertedIndices = self.insertIndexPaths[startIndex..<self.insertIndexPaths.count].map { $0.item }
+        let insertedIndices = self.insertIndexPaths[startIndex..<self.insertIndexPaths.count].map{ $0.item }
         let subtractedSet = Set(indices).subtracting(insertedIndices)
         let animationType : TFLCollectionFlowLayoutAppearingItemAnimationType = subtractedSet.isEmpty ? .translate : .scale
         return animationType

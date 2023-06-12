@@ -167,8 +167,8 @@ fileprivate extension TFLStationDetailTableViewController {
             return
         }
         
-        let reloadList  = (inserted + deleted).map { $0.0 }
-        let updateList = updated.map { $0.0 }
+        let reloadList  = (inserted + deleted).map{ $0.0 }
+        let updateList = updated.map{ $0.0 }
         
         let indexPathsToReload  = viewModels.indexPaths(for: reloadList)
         let visibleIndexPathSet = Set(self.tableView.indexPathsForVisibleRows ?? [])
@@ -209,7 +209,7 @@ fileprivate extension TFLStationDetailTableViewController {
         var oldValue : UIImpactFeedbackGenerator?
         (oldValue, self.lightImpactFeedbackGenerator) = (self.lightImpactFeedbackGenerator,oldValue)
         block()
-        OperationQueue.main.addOperation {
+        OperationQueue.main.addOperation{
             self.lightImpactFeedbackGenerator = oldValue
         }
     }

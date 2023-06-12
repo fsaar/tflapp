@@ -114,7 +114,7 @@ public class TFLCDBusStop: NSManagedObject {
                         }
                     }
                     if let linesDictList = dictionary[Identifiers.lines.rawValue] as? [[String:Any]] {
-                        if let lineIdentifiers = (linesDictList.compactMap { $0["id"] }) as? [String] {
+                        if let lineIdentifiers = (linesDictList.compactMap{ $0["id"] }) as? [String] {
                             lines = lineIdentifiers
                         }
 
@@ -136,13 +136,13 @@ public class TFLCDBusStop: NSManagedObject {
 
     class func busStops(with identifiers: [String],and managedObjectContext: NSManagedObjectContext) -> [TFLCDBusStop] {
         var sortedBusStops : [TFLCDBusStop] = []
-        managedObjectContext.performAndWait {
+        managedObjectContext.performAndWait{
             let fetchRequest = NSFetchRequest<TFLCDBusStop>(entityName: String(describing: TFLCDBusStop.self))
             let predicate = NSPredicate(format: "identifier in (%@)",identifiers)
             fetchRequest.predicate = predicate
             let busStops =  (try? managedObjectContext.fetch(fetchRequest)) ?? []
             let busStopsDict = Dictionary(grouping: busStops) { $0.identifier }
-            sortedBusStops = identifiers.compactMap { busStopsDict[$0]?.first }
+            sortedBusStops = identifiers.compactMap{ busStopsDict[$0]?.first }
 
         }
         return sortedBusStops
@@ -174,13 +174,13 @@ public class TFLCDBusStop: NSManagedObject {
             TFLLogger.shared.signPostStart(osLog: TFLCDBusStop.loggingHandle , name: "nearbyBusStops coredata")
             if let stops =  try? privateContext.fetch(busStopFetchRequest) {
                 TFLLogger.shared.signPostEnd(osLog: TFLCDBusStop.loggingHandle, name: "nearbyBusStops coredata")
-                busStops = stops.map { ($0.distance(to:currentLocation),$0) }
-                    .filter { $0.0 < radiusInMeter }
-                    .sorted { $0.0 < $1.0 }
-                    .map { $0.1 }
+                busStops = stops.map{ ($0.distance(to:currentLocation),$0) }
+                    .filter{ $0.0 < radiusInMeter }
+                    .sorted{ $0.0 < $1.0 }
+                    .map{ $0.1 }
             }
             context.perform  {
-                let importedStops = busStops.map { context.object(with:$0.objectID) } as? [TFLCDBusStop] ?? []
+                let importedStops = busStops.map{ context.object(with:$0.objectID) } as? [TFLCDBusStop] ?? []
                 completionBlock(importedStops)
             }
         }

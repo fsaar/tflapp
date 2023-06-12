@@ -13,7 +13,7 @@ class TFLHUDSpecs: QuickSpec {
                 TFLHUD.show()
                 let delegate  = UIApplication.shared.delegate as! AppDelegate
                 let window  = delegate.window
-                let views = window?.subviews.filter { $0 is UIVisualEffectView }
+                let views = window?.subviews.filter{ $0 is UIVisualEffectView }
                 expect(views!.count) == 1
             }
         }
@@ -24,7 +24,7 @@ class TFLHUDSpecs: QuickSpec {
                 TFLHUD.hide()
                 let delegate  = UIApplication.shared.delegate as! AppDelegate
                 let window  = delegate.window
-                let views = window?.subviews.filter { $0 is UIVisualEffectView }
+                let views = window?.subviews.filter{ $0 is UIVisualEffectView }
                 expect(views!.count) == 0
             }
         }

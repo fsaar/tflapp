@@ -68,13 +68,13 @@ class TFLMapViewController: UIViewController {
                         updated : [(element:TFLBusStopArrivalsInfo,index:Int)],
                         moved : [(element:TFLBusStopArrivalsInfo,oldIndex:Int,newIndex:Int)]) = ([],[],[],[])
                     (inserted ,deleted ,_, _) = oldList.transformTo(newList: busStopPredictionTuples, sortedBy : TFLBusStopArrivalsInfo.compare)
-                    DispatchQueue.main.async {
-                        let toBeDeletedIdentifierSet = Set(deleted.map { $0.element.identifier })
-                        let toBeDeletedAnnotations = self.mapView.annotations.compactMap { $0 as? TFLMapViewAnnotation }.filter { toBeDeletedIdentifierSet.contains($0.identifier) }
+                    DispatchQueue.main.async{
+                        let toBeDeletedIdentifierSet = Set(deleted.map{ $0.element.identifier })
+                        let toBeDeletedAnnotations = self.mapView.annotations.compactMap{ $0 as? TFLMapViewAnnotation }.filter{ toBeDeletedIdentifierSet.contains($0.identifier) }
                         self.mapView.removeAnnotations(toBeDeletedAnnotations)
                         
-                        let toBeInsertedAnnotations =  inserted.map { $0.0 }
-                            .map { TFLMapViewAnnotation(with: $0) }
+                        let toBeInsertedAnnotations =  inserted.map{ $0.0 }
+                            .map{ TFLMapViewAnnotation(with: $0) }
                         self.mapView.addAnnotations(toBeInsertedAnnotations)
                         
                         if case .inited = self.state, coords.isValid {
@@ -145,7 +145,7 @@ extension TFLMapViewController : MKMapViewDelegate {
             return
         }
         selectableIdentifer = nil
-        let annnotations = self.mapView.annotations.compactMap { $0 as? TFLMapViewAnnotation }
+        let annnotations = self.mapView.annotations.compactMap{ $0 as? TFLMapViewAnnotation }
         guard let annotation = annnotations.first(where : { $0.identifier == identifier }),
             let annotationView = self.mapView.view(for: annotation) else {
                 return

@@ -102,7 +102,7 @@ public func contain(_ items: [Any?]) -> Predicate<NMBContainer> {
     return Predicate.simple("contain <\(arrayAsString(items))>") { actualExpression in
         guard let actual = try actualExpression.evaluate() else { return .fail }
         let matches = items.allSatisfy { item in
-            return item.map { actual.contains($0) } ?? false
+            return item.map{ actual.contains($0) } ?? false
         }
         return PredicateStatus(bool: matches)
     }

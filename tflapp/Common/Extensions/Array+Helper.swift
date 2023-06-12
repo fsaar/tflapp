@@ -10,9 +10,9 @@ import Foundation
 
 extension Array {
     var evenElements : [Element] {
-        return self.enumerated().filter { ($0.0 % 2) == 0 }.map { $0.1 }
+        return self.enumerated().filter{ ($0.0 % 2) == 0 }.map{ $0.1 }
     }
     var oddElements : [Element] {
-        return self.enumerated().filter { ($0.0 % 2) == 1 }.map { $0.1 }
+        return self.enumerated().filter{ ($0.0 % 2) == 1 }.map{ $0.1 }
     }
 }

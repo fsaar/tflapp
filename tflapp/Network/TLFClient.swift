@@ -33,13 +33,13 @@ public final class TFLClient {
         tflManager.getDataWithRelativePath(relativePath: vehicleArrivalsInfoPath) { data, error in
             TFLLogger.shared.signPostEnd(osLog: TFLClient.loggingHandle, name: "vehicleInfo",identifier: vehicleId)
             guard let data = data else {
-                operationQueue.addOperation {
+                operationQueue.addOperation{
                     completionBlock(nil,error)
                 }
                 return
             }
             let predictions = try? TFLClient.jsonDecoder.decode([TFLVehicleArrivalInfo].self,from: data)
-            operationQueue.addOperation {
+            operationQueue.addOperation{
                 completionBlock(predictions,nil)
             }
         }
@@ -53,13 +53,13 @@ public final class TFLClient {
         tflManager.getDataWithRelativePath(relativePath: arivalsPath) { data, error in
             TFLLogger.shared.signPostEnd(osLog: TFLClient.loggingHandle, name: "arrivalsForStopPoint",identifier: identifier)
             guard let data = data else {
-                operationQueue.addOperation {
+                operationQueue.addOperation{
                     completionBlock(nil,error)
                 }
                 return
             }
             let predictions = try? TFLClient.jsonDecoder.decode([TFLBusPrediction].self,from: data)
-            operationQueue.addOperation {
+            operationQueue.addOperation{
                 completionBlock(predictions,nil)
             }
         }
@@ -80,7 +80,7 @@ public final class TFLClient {
                 if context.hasChanges {
                     _ = try? context.save()
                 }
-                operationQueue.addOperation {
+                operationQueue.addOperation{
                     completionBlock?(stops,error)
                 }
             }
@@ -96,7 +96,7 @@ public final class TFLClient {
         TFLLogger.shared.signPostStart(osLog: TFLClient.loggingHandle, name: "busStops")
         requestBusStops(with: busStopPath, query: query,context:TFLCoreDataStack.sharedDataStack.privateQueueManagedObjectContext) { busstops, error in
             TFLLogger.shared.signPostEnd(osLog: TFLClient.loggingHandle, name: "busStops")
-            operationQueue.addOperation {
+            operationQueue.addOperation{
                 completionBlock(busstops,error)
             }
         }
@@ -107,7 +107,7 @@ public final class TFLClient {
                          with operationQueue : OperationQueue = OperationQueue.main,
                          using completionBlock: ((TFLCDLineInfo?,_ error:Error?) -> ())? = nil)  {
         guard !line.isEmpty else {
-            operationQueue.addOperation {
+            operationQueue.addOperation{
                 completionBlock?(nil,TFLClientError.InvalidLine)
             }
             return
@@ -116,7 +116,7 @@ public final class TFLClient {
         TFLLogger.shared.signPostStart(osLog: TFLClient.loggingHandle, name: "lineStationInfo",identifier: line)
         lineStationInfo(with: lineStationPath, query: "serviceTypes=Regular&excludeCrowding=true", context: context) { lineInfo , error in
             TFLLogger.shared.signPostEnd(osLog: TFLClient.loggingHandle, name: "lineStationInfo",identifier: line)
-            operationQueue.addOperation {
+            operationQueue.addOperation{
                 completionBlock?(lineInfo,error)
             }
         }
@@ -136,14 +136,14 @@ fileprivate extension TFLClient {
                     context.perform {
                         try? context.save()
                     }
-                    operationQueue.addOperation {
+                    operationQueue.addOperation{
                         completionBlock(lineInfo,nil)
                     }
 
                 }
                 
             } else {
-                operationQueue.addOperation {
+                operationQueue.addOperation{
                     completionBlock(nil,TFLClientError.InvalidFormat(data: data))
                 }
             }
@@ -161,19 +161,19 @@ fileprivate extension TFLClient {
                     , options: JSONSerialization.ReadingOptions(rawValue:0)) as? [String : Any] {
                 if let jsonList = jsonDict["stopPoints"] as? [[String: Any]] {
                     self?.stopPoints(from: jsonList, context: context) { stops in
-                        operationQueue.addOperation {
+                        operationQueue.addOperation{
                             completionBlock(stops,nil)
                         }
                     }
                 }
                 else {
-                    operationQueue.addOperation {
+                    operationQueue.addOperation{
                          completionBlock(nil,TFLClientError.InvalidFormat(data: data))
                     }
                 }
             }
             else {
-                operationQueue.addOperation {
+                operationQueue.addOperation{
                     completionBlock(nil,error)
                 }
             }

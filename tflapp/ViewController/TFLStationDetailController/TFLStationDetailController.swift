@@ -184,9 +184,9 @@ fileprivate extension TFLStationDetailController {
         context.perform {
             let lineInfo =  TFLCDLineInfo.lineInfo(with: line, and: context)
             let routes = lineInfo?.routes?.array as? [TFLCDLineRoute] ?? []
-            let models : [TFLStationDetailTableViewModel] =  routes.compactMap { TFLStationDetailTableViewModel(with: $0,location:location) }
-            let mapModels : [TFLStationDetailMapViewModel] = routes.compactMap { TFLStationDetailMapViewModel(with: $0) }
-            queue.addOperation {
+            let models : [TFLStationDetailTableViewModel] =  routes.compactMap{ TFLStationDetailTableViewModel(with: $0,location:location) }
+            let mapModels : [TFLStationDetailMapViewModel] = routes.compactMap{ TFLStationDetailMapViewModel(with: $0) }
+            queue.addOperation{
                 completionBlock(models,mapModels)
             }
         }
@@ -205,7 +205,7 @@ fileprivate extension TFLStationDetailController {
                 return
             }
             let normalizedInfos = self.normalizeArrivalsInfo(arrivalInfos,station:station,tableViewModels:self.tableViewviewModels)
-            queue.addOperation {
+            queue.addOperation{
                 completionBlock?(normalizedInfos )
             }
         }
@@ -219,7 +219,7 @@ fileprivate extension TFLStationDetailController {
         guard !naptanRoute.isEmpty || station.isEmpty else {
             return []
         }
-        let sortedInfos = arrivalInfos.sorted { info1,info2 in
+        let sortedInfos = arrivalInfos.sorted{ info1,info2 in
             let idx1 = naptanRoute.firstIndex(of:info1.busStopIdentifier) ?? 0
             let idx2 = naptanRoute.firstIndex(of:info2.busStopIdentifier) ?? 0
             return idx1 < idx2

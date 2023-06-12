@@ -41,7 +41,7 @@ class TFLBusArrivalReminder {
             return
         }
         let sheet = achtionSheet(for: line, arrivingIn: seconds, at: station, with: stationIdentifier,and:predictionIdentifier,using: completionBlock)
-        OperationQueue.main.addOperation {
+        OperationQueue.main.addOperation{
             self.alertController = sheet
             self.contentViewController?.present(sheet, animated: true)
         }
@@ -68,7 +68,7 @@ fileprivate extension TFLBusArrivalReminder {
         }
         actionSheet.addAction(dismissAction)
         let options = reminderOptionsWithArrivalTime(seconds)
-        let actions : [UIAlertAction]  = options.map { option in
+        let actions : [UIAlertAction]  = options.map{ option in
             UIAlertAction(title: option.copy,style: .default) { [weak self] _ in
                 let userInfo : [String:Any] = [NotificationUserInfoKey.minutesBeforeArrival.rawValue : option.minutesBeforeArrival,
                                                NotificationUserInfoKey.predictionIdentifier.rawValue: predictionIdentifier,
@@ -103,7 +103,7 @@ fileprivate extension TFLBusArrivalReminder {
         default:
             minutesBeforeDeparture = [2,3,5]
         }
-        let options : [(copy:String,timeInSeconds:Int,minutesBeforeArrival:Int)]  = minutesBeforeDeparture.map { minutes in
+        let options : [(copy:String,timeInSeconds:Int,minutesBeforeArrival:Int)]  = minutesBeforeDeparture.map{ minutes in
             let expiryInMinutes = arrivalTimeInMinutes-minutes
             return
                 ("\(minutes) \(minutesCopy)",expiryInMinutes * 60,minutes)

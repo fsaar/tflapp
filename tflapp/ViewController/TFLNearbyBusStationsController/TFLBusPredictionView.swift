@@ -41,8 +41,8 @@ class TFLBusPredictionView: UICollectionView {
         snapshot.appendItems(predictions)
         diffableDataSource?.apply(snapshot,animatingDifferences: animatingDifference)
         
-        let updatedIndexPaths = updated.map { IndexPath(item: $0.index,section:0) }
-        let movedIndexPaths = moved.map { IndexPath(item: $0.newIndex,section:0) }
+        let updatedIndexPaths = updated.map{ IndexPath(item: $0.index,section:0) }
+        let movedIndexPaths = moved.map{ IndexPath(item: $0.newIndex,section:0) }
         (updatedIndexPaths+movedIndexPaths).forEach { indexPath in
             
             if let busPredictionCell = self.cellForItem(at: indexPath) as? TFLBusPredictionViewCell {
@@ -55,7 +55,7 @@ class TFLBusPredictionView: UICollectionView {
     }
     
     func updateBadgeForCellWithIdentifier(_ identifier : String) {
-        let cell = self.visibleCells.compactMap { $0 as? TFLBusPredictionViewCell }.first { $0.identifier == identifier }
+        let cell = self.visibleCells.compactMap{ $0 as? TFLBusPredictionViewCell }.first { $0.identifier == identifier }
         cell?.updateBadgeIfNeedBe(true)
     }
 

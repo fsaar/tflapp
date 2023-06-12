@@ -13,7 +13,7 @@ extension Collection where Element == Int  {
 extension UITableView : Transitionable {
     func transition<T : Hashable>(from oldArrivalInfo: [T], to newArrivalInfo: [T],with compare: @escaping (_ lhs : T,_ rhs: T) -> (Bool), using updateBlock: @escaping  ([IndexPath]) -> ()) {
 
-        DispatchQueue.global().async {
+        DispatchQueue.global().async{
             let (inserted ,deleted ,updated, moved) = oldArrivalInfo.transformTo(newList: newArrivalInfo, sortedBy : compare)
             DispatchQueue.main.async {
                 self.performBatchUpdates({

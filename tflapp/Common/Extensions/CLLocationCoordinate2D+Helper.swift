@@ -14,15 +14,15 @@ extension Array where Element == CLLocationCoordinate2D {
     
     
     func routeSections(n: Int) -> [CountableClosedRange<Int>] {
-        let limits = stride(from:0,to:n-1,by:1).map { ($0,Swift.min($0 + 1, n-1)) }
-                                                    .filter { $0.0 != $0.1 }
-        let ranges = limits.map { $0.0...$0.1 }
+        let limits = stride(from:0,to:n-1,by:1).map{ ($0,Swift.min($0 + 1, n-1)) }
+                                                    .filter{ $0.0 != $0.1 }
+        let ranges = limits.map{ $0.0...$0.1 }
         return ranges
         
     }
     
     func URLsForRouteSections(_ sections : [CountableClosedRange<Int>]) -> [URL] {
-        let urls : [URL] = sections.map { range in
+        let urls : [URL] = sections.map{ range in
             let sublist = Array(self[range])
             let (start,end) = (sublist[0],sublist[1])
             // https://developers.google.com/maps/documentation/directions/intro
@@ -71,13 +71,13 @@ extension Array where Element == CLLocationCoordinate2D {
                 completionBlock([])
                 return
             }
-            let sortedList = list.sorted { $0.0 < $1.0 }.map { $0.1 }
+            let sortedList = list.sorted{ $0.0 < $1.0 }.map{ $0.1 }
             let coords = sortedList.reduce([]) { $0 + $1 }
             completionBlock(coords)
         }
     }
     func save() {
-        let tempCoords :  [[String : Double] ] = self.map { ["latitude" : $0.latitude,"longitude": $0.longitude] }
+        let tempCoords :  [[String : Double] ] = self.map{ ["latitude" : $0.latitude,"longitude": $0.longitude] }
         guard let jsonData = try? JSONEncoder().encode(tempCoords) else {
             return
         }

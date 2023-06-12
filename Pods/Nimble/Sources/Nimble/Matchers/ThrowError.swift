@@ -65,7 +65,7 @@ public func throwError<T: Error>(_ error: T, closure: ((Error) -> Void)? = nil) 
                 let assertions = gatherFailingExpectations {
                     closure(actualError)
                 }
-                let messages = assertions.map { $0.message }
+                let messages = assertions.map{ $0.message }
                 if !messages.isEmpty {
                     matches = false
                 }
@@ -113,7 +113,7 @@ public func throwError<T: Error & Equatable>(_ error: T, closure: ((T) -> Void)?
                 let assertions = gatherFailingExpectations {
                     closure(actualError)
                 }
-                let messages = assertions.map { $0.message }
+                let messages = assertions.map{ $0.message }
                 if !messages.isEmpty {
                     matches = false
                 }
@@ -164,7 +164,7 @@ public func throwError<T: Error>(
                     let assertions = gatherFailingExpectations {
                         closure(actualError)
                     }
-                    let messages = assertions.map { $0.message }
+                    let messages = assertions.map{ $0.message }
                     if !messages.isEmpty {
                         matches = false
                     }
@@ -179,7 +179,7 @@ public func throwError<T: Error>(
                             closure(actual)
                         }
                     }
-                    let messages = assertions.map { $0.message }
+                    let messages = assertions.map{ $0.message }
                     if !messages.isEmpty {
                         matches = false
                     }
@@ -217,7 +217,7 @@ public func throwError(closure: @escaping ((Error) -> Void)) -> Predicate<Any> {
             let assertions = gatherFailingExpectations {
                 closure(actualError)
             }
-            let messages = assertions.map { $0.message }
+            let messages = assertions.map{ $0.message }
             if !messages.isEmpty {
                 matches = false
             }
@@ -253,7 +253,7 @@ public func throwError<T: Error>(closure: @escaping ((T) -> Void)) -> Predicate<
             let assertions = gatherFailingExpectations {
                 closure(actualError)
             }
-            let messages = assertions.map { $0.message }
+            let messages = assertions.map{ $0.message }
             if !messages.isEmpty {
                 matches = false
             }

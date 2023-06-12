@@ -34,11 +34,11 @@ final public class ExampleGroup: NSObject {
     #if canImport(Darwin)
     @objc
     public var examples: [Example] {
-        return childExamples + childGroups.flatMap { $0.examples }
+        return childExamples + childGroups.flatmap{ $0.examples }
     }
     #else
     public var examples: [Example] {
-        return childExamples + childGroups.flatMap { $0.examples }
+        return childExamples + childGroups.flatmap{ $0.examples }
     }
     #endif
 

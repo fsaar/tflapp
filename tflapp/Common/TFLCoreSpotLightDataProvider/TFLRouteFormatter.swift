@@ -23,12 +23,12 @@ extension Array where Element == TFLRouteFormatter {
     }
     
     var shortRoutes : [String] {
-        let routeDescriptions = withoutReturnRoutes().map { $0.shortDescription }
+        let routeDescriptions = withoutReturnRoutes().map{ $0.shortDescription }
         return routeDescriptions
     }
     
     var routes : [String] {
-        let routeDescriptions = withoutReturnRoutes().map { String(describing: $0) }
+        let routeDescriptions = withoutReturnRoutes().map{ String(describing: $0) }
         return routeDescriptions
     }
     

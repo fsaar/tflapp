@@ -70,21 +70,21 @@ class PolyLine {
         guard case .none =  (data.first { $0 < 63 }) else {
             return []
         }
-        let newData1 = data.map { $0 - 63 }
-        let indices = newData1.enumerated().filter { ($0.1 & 0x20) == 0 }.map { $0.0 }
-        let newData2 = newData1.map { ($0 & ~0x20) }
+        let newData1 = data.map{ $0 - 63 }
+        let indices = newData1.enumerated().filter{ ($0.1 & 0x20) == 0 }.map{ $0.0 }
+        let newData2 = newData1.map{ ($0 & ~0x20) }
         let indexRanges = zip([-1] + indices,indices)
-        let numberLists : [[UInt8]] = indexRanges.map { tuple in
+        let numberLists : [[UInt8]] = indexRanges.map{ tuple in
             let (start,end) = tuple
             return Array(newData2[Int(start+1)...Int(end)])
         }
         
         let aggregatedList : [Int32] = numberLists.reduce([]) { results,list in
-            let shiftedList = list.enumerated().map { Int32($0.1) << (fiveBitBlockLength * $0.0) }
+            let shiftedList = list.enumerated().map{ Int32($0.1) << (fiveBitBlockLength * $0.0) }
             let result = shiftedList.reduce(0) { $0 | $1 }
             return results + [result]
         }
-        let decodedList = aggregatedList.map { (result:$0 >> 1,isNegative:($0 & 1) == 1) }.map { $0.isNegative ? -$0.result - 1 :  $0.result }
+        let decodedList = aggregatedList.map{ (result:$0 >> 1,isNegative:($0 & 1) == 1) }.map{ $0.isNegative ? -$0.result - 1 :  $0.result }
         guard decodedList.count % 2 == 0 else {
             return []
         }
@@ -103,14 +103,14 @@ class PolyLine {
         
         let diffedValues = diff(coordinates)
         
-        let leftShiftedTwosComplementAdjusted = diffedValues.map { $0 < 0 ? ~($0 << 1) : $0 << 1 }
+        let leftShiftedTwosComplementAdjusted = diffedValues.map{ $0 < 0 ? ~($0 << 1) : $0 << 1 }
         let byteBlocks : [UInt8] = leftShiftedTwosComplementAdjusted.reduce([]) { list,value in
-            let elements = (0...7).map { (value >> (fiveBitBlockLength * $0)) & 0x1f }.map { UInt8($0) }
+            let elements = (0...7).map{ (value >> (fiveBitBlockLength * $0)) & 0x1f }.map{ UInt8($0) }
             let lastIndex = elements.lastIndex { $0 != 0 } ?? 0
-            let oredElements = elements[0..<lastIndex] .map { $0 | 0x20 } + [elements[lastIndex]]
+            let oredElements = elements[0..<lastIndex] .map{ $0 | 0x20 } + [elements[lastIndex]]
             return list + oredElements
         }
-        let offsetAdjusted = byteBlocks.map { $0 + 63 }
+        let offsetAdjusted = byteBlocks.map{ $0 + 63 }
         let data = Data(offsetAdjusted)
         let encodedString = String(data: data, encoding: .utf8)
         return encodedString
@@ -132,20 +132,20 @@ fileprivate extension PolyLine {
             return []
         }
        
-        let latValues = coordinates.map { Int32(roundValue($0.latitude * self.precisionMultiplicator)) }
-        let diffedLatValues = [latValues[0]] + zip(latValues.dropFirst(),latValues).map { $0.0 - $0.1 }
+        let latValues = coordinates.map{ Int32(roundValue($0.latitude * self.precisionMultiplicator)) }
+        let diffedLatValues = [latValues[0]] + zip(latValues.dropFirst(),latValues).map{ $0.0 - $0.1 }
         
-        let longValues = coordinates.map { Int32(roundValue($0.longitude * self.precisionMultiplicator)) }
-        let diffedLongValues = [longValues[0]] + zip(longValues.dropFirst(),longValues).map { $0.0 - $0.1 }
+        let longValues = coordinates.map{ Int32(roundValue($0.longitude * self.precisionMultiplicator)) }
+        let diffedLongValues = [longValues[0]] + zip(longValues.dropFirst(),longValues).map{ $0.0 - $0.1 }
         
         let diffedList = zip(diffedLatValues,diffedLongValues).reduce([]) { $0 + [$1.0,$1.1] }
         return diffedList
     }
     
     func undiffToCoordinates(_ values : [Int32]) -> [CLLocationCoordinate2D] {
-        let decodedLats = values.evenElements.reduce([]) { combine($0,$1) }.map { Double($0) / self.precisionMultiplicator }
-        let decodedLongs = values.oddElements.reduce([]) { combine($0,$1) }.map { Double($0) / self.precisionMultiplicator }
-        let coords = zip(decodedLats,decodedLongs).map { CLLocationCoordinate2DMake($0.0, $0.1) }
+        let decodedLats = values.evenElements.reduce([]) { combine($0,$1) }.map{ Double($0) / self.precisionMultiplicator }
+        let decodedLongs = values.oddElements.reduce([]) { combine($0,$1) }.map{ Double($0) / self.precisionMultiplicator }
+        let coords = zip(decodedLats,decodedLongs).map{ CLLocationCoordinate2DMake($0.0, $0.1) }
         return coords
     }
 }

@@ -146,7 +146,7 @@ extension TFLLocationManager : CLLocationManagerDelegate {
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         manager.stopUpdatingLocation()
         let coordinate = locations.first?.coordinate ?? kCLLocationCoordinate2DInvalid
-        DispatchQueue.main.async {
+        DispatchQueue.main.async{
             objc_sync_enter(self)
             defer {
                 objc_sync_exit(self)
@@ -158,7 +158,7 @@ extension TFLLocationManager : CLLocationManagerDelegate {
     }
     public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         manager.stopUpdatingLocation()
-        DispatchQueue.main.async {
+        DispatchQueue.main.async{
             objc_sync_enter(self)
             defer {
                 objc_sync_exit(self)

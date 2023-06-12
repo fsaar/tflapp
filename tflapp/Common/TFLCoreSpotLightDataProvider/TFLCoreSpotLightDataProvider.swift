@@ -93,7 +93,7 @@ private extension TFLCoreSpotLightDataProvider {
     }
     
     func searchableItemAttributeSet(with identifier : String,routes : [String], and image : UIImage?) -> CSSearchableItemAttributeSet? {
-        let attrs = CSSearchableItemAttributeSet(itemContentType: kUTTypeItem as String)
+        let attrs = CSSearchableItemAttributeSet(itemContentType: UTType.item.identifier)
         attrs.displayName = "Routes"
         attrs.thumbnailData = image?.pngData()
         let formatterList = routes.compactMap{ TFLRouteFormatter(route: $0) }

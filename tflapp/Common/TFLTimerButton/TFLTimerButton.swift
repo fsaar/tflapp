@@ -185,7 +185,7 @@ fileprivate extension TFLTimerButton {
         self.clipsToBounds = true
 
         self.setTitle(nil, for: .normal)
-        self.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+   
         self.addTarget(self, action: #selector(self.tapHandler(_:)), for: .touchUpInside)
         self.isAccessibilityElement = true
         self.accessibilityLabel = NSLocalizedString("TFLTimerButton.refresh_stopped.accessibilityTitle", comment: "")

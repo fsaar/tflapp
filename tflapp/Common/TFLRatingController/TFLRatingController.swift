@@ -34,12 +34,10 @@ fileprivate extension TFLRatingController {
     func evaluateRatingDialog() {
         switch foregroundCounter {
         case 100,1000:
-            SKStoreReviewController.requestReview()
+          break
         default:
-            guard foregroundCounter % 1000 == 0 else  {
-                return
-            }
-            SKStoreReviewController.requestReview()
+            break
+
         }
     }
 }

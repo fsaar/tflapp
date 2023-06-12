@@ -41,6 +41,8 @@ class TFLLogger {
         #endif
     }
     
+    
+    
     func event(osLog: OSLog, name: StaticString,identifier : String? = nil) {
         #if DEBUG
         log(.event,osLog: osLog,name: name,identifier: identifier)

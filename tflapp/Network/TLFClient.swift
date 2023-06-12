@@ -156,11 +156,8 @@ fileprivate extension TFLClient {
         if let jsonDict = try JSONSerialization.jsonObject(with: data as Data
                 , options: JSONSerialization.ReadingOptions(rawValue:0)) as? [String : Any] {
             if let jsonList = jsonDict["stopPoints"] as? [[String: Any]] {
-                return await withCheckedContinuation { continuation in
-                    self.stopPoints(from: jsonList, context: context) { stops in
-                        continuation.resume(returning: stops)
-                    }
-                }
+                async let stops = self.stopPoints(from: jsonList, context: context)
+                return await stops
             }
             else {
                 throw TFLClientError.InvalidFormat(data: data)
@@ -172,20 +169,25 @@ fileprivate extension TFLClient {
         
     }
 
-    func stopPoints(from dictionaryList : [[String: Any]],context: NSManagedObjectContext, using completionBlock : @escaping (_ stopPoints : [TFLCDBusStop]) -> ()) {
-        var stops : [TFLCDBusStop] = []
-        let group = DispatchGroup()
-        dictionaryList.forEach {
-            group.enter()
-            TFLCDBusStop.busStop(with: $0,and:context) { busStop in
-                if let busStop = busStop {
-                    stops += [busStop]
+    func stopPoints(from dictionaryList : [[String: Any]],context: NSManagedObjectContext) async -> [TFLCDBusStop] {
+        await withTaskGroup(of: TFLCDBusStop?.self) { group in
+            dictionaryList.forEach{ dict in
+                group.addTask{
+                    await withCheckedContinuation{ continuation in
+                        TFLCDBusStop.busStop(with: dict,and:context) { busStop in
+                            continuation.resume(returning: busStop)
+                        }
+                    }
+                    
                 }
-                group.leave()
             }
-        }
-        group.notify(queue: DispatchQueue.global()) {
-            completionBlock(stops)
+            var stops : [TFLCDBusStop] = []
+            for await stop in group {
+                if let stop = stop {
+                    stops += [stop]
+                }
+            }
+            return stops
         }
     }
 }

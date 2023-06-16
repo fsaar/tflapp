@@ -26,6 +26,7 @@
 		5629CC2722F785BC00911C1E /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5629CC2622F785BC00911C1E /* Settings.swift */; };
 		562DBF5A1E05B6780028F3CD /* TFLSnapHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562DBF591E05B6780028F3CD /* TFLSnapHandler.swift */; };
 		5632A7A221B342BB000E2E81 /* TFLUpdateStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5632A7A121B342BB000E2E81 /* TFLUpdateStatusView.swift */; };
+		563F56742A38F6EF0090B0B2 /* BusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563F56732A38F6EF0090B0B2 /* BusView.swift */; };
 		563FF2F121A34524006DB5BB /* TFLCircleAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563FF2F021A34524006DB5BB /* TFLCircleAnimationView.swift */; };
 		5641F6EE1F19F68B00A3A9D2 /* TFLRequestManagerSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5641F6ED1F19F68100A3A9D2 /* TFLRequestManagerSpecs.swift */; };
 		56439A2021B861690076A906 /* TFLTimerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56439A1F21B861680076A906 /* TFLTimerButton.swift */; };
@@ -158,6 +159,7 @@
 		5629CC2622F785BC00911C1E /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		562DBF591E05B6780028F3CD /* TFLSnapHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLSnapHandler.swift; sourceTree = "<group>"; };
 		5632A7A121B342BB000E2E81 /* TFLUpdateStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLUpdateStatusView.swift; sourceTree = "<group>"; };
+		563F56732A38F6EF0090B0B2 /* BusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusView.swift; sourceTree = "<group>"; };
 		563FF2F021A34524006DB5BB /* TFLCircleAnimationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLCircleAnimationView.swift; sourceTree = "<group>"; };
 		5641F6ED1F19F68100A3A9D2 /* TFLRequestManagerSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLRequestManagerSpecs.swift; sourceTree = "<group>"; };
 		5642EF0720ED63AD00A7914F /* mapstogpx20180704_193755.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = mapstogpx20180704_193755.gpx; sourceTree = "<group>"; };
@@ -354,6 +356,14 @@
 				5629CC2622F785BC00911C1E /* Settings.swift */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		563F56722A38F6DA0090B0B2 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				563F56732A38F6EF0090B0B2 /* BusView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		563FF2EF21A34524006DB5BB /* TFLCircleAnimationView */ = {
@@ -734,6 +744,7 @@
 		56A81B2D1DD862DC001DF7F1 /* tflapp */ = {
 			isa = PBXGroup;
 			children = (
+				563F56722A38F6DA0090B0B2 /* View */,
 				569EB2952321BCD700122E31 /* screenshots */,
 				566EF7C31DDA2D31006162D7 /* DataModel */,
 				565A1FC91DD8F8D1003CE960 /* Common */,
@@ -1188,6 +1199,7 @@
 				56E7217D221234C600733B9F /* TFLOfflineView.swift in Sources */,
 				561C1836226FC6F1008016B7 /* Data+Helper.swift in Sources */,
 				56482BF923C48AB4001A165E /* TFLRatingController.swift in Sources */,
+				563F56742A38F6EF0090B0B2 /* BusView.swift in Sources */,
 				56D705D5239EFE2A0085B878 /* TFLBusArrivalReminder.swift in Sources */,
 				564EC70A1DE1917D008CFD11 /* TFLNearbyBusStationsController.swift in Sources */,
 				5656717A219A244700F3B7EE /* TFLLineInfoRouteDirectory.swift in Sources */,

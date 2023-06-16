@@ -181,12 +181,15 @@ fileprivate extension TFLClient {
                     
                 }
             }
+            
             var stops : [TFLCDBusStop] = []
+        
             for await stop in group {
                 if let stop = stop {
                     stops += [stop]
                 }
             }
+            logger.log("stops:\(stops)")
             return stops
         }
     }

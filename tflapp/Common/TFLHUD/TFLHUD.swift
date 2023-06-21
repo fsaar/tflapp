@@ -106,27 +106,27 @@ fileprivate extension TFLHUD {
     
     
     func show()  {
-        guard let delegate  = UIApplication.shared.delegate as? AppDelegate,let window  = delegate.window else {
-            return
-        }
-        window.isUserInteractionEnabled = false
-        window.addSubview(self.visualEffectsView)
-
-        NSLayoutConstraint.activate([
-            visualEffectsView.leadingAnchor.constraint(equalTo: window.leadingAnchor),
-            visualEffectsView.trailingAnchor.constraint(equalTo: window.trailingAnchor),
-            visualEffectsView.bottomAnchor.constraint(equalTo: window.bottomAnchor),
-            visualEffectsView.topAnchor.constraint(equalTo: window.topAnchor),
-            ])
-        blurAnimator.fractionComplete = 0.2
+//        guard let delegate  = UIApplication.shared.delegate as? AppDelegate,let window  = delegate.window else {
+//            return
+//        }
+//        window.isUserInteractionEnabled = false
+//        window.addSubview(self.visualEffectsView)
+//
+//        NSLayoutConstraint.activate([
+//            visualEffectsView.leadingAnchor.constraint(equalTo: window.leadingAnchor),
+//            visualEffectsView.trailingAnchor.constraint(equalTo: window.trailingAnchor),
+//            visualEffectsView.bottomAnchor.constraint(equalTo: window.bottomAnchor),
+//            visualEffectsView.topAnchor.constraint(equalTo: window.topAnchor),
+//            ])
+//        blurAnimator.fractionComplete = 0.2
     }
     
     func hide() {
-        let delegate  = UIApplication.shared.delegate as? AppDelegate
-        let window  = delegate?.window
-        window?.isUserInteractionEnabled = true
-        blurAnimator.fractionComplete = 0
-        visualEffectsView.removeFromSuperview()
+//        let delegate  = UIApplication.shared.delegate as? AppDelegate
+//        let window  = delegate?.window
+//        window?.isUserInteractionEnabled = true
+//        blurAnimator.fractionComplete = 0
+//        visualEffectsView.removeFromSuperview()
     }
     
     func setup() {

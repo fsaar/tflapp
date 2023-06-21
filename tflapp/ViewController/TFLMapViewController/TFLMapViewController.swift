@@ -37,14 +37,14 @@ class TFLMapViewController: UIViewController {
     @IBOutlet weak var coverView : UIView!
     @IBOutlet weak var mapView : MKMapView! = nil {
         didSet {
-            let windowFrame = (UIApplication.shared.delegate as? AppDelegate)?.window?.frame ?? CGRect.zero
-            let botttomMargin = windowFrame.size.height / 2
-            mapView.layoutMargins = UIEdgeInsets(top:0, left:0,bottom:botttomMargin,right:0)
-            mapView.delegate = self
-            mapView.showsCompass = false
-            mapView.register(TFLBusStopAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
-            mapView.showsUserLocation = true
-            mapView.pointOfInterestFilter = MKPointOfInterestFilter(including: [.publicTransport,.park,.nationalPark,.beach,.amusementPark])
+//            let windowFrame = (UIApplication.shared.delegate as? AppDelegate)?.window?.frame ?? CGRect.zero
+//            let botttomMargin = windowFrame.size.height / 2
+//            mapView.layoutMargins = UIEdgeInsets(top:0, left:0,bottom:botttomMargin,right:0)
+//            mapView.delegate = self
+//            mapView.showsCompass = false
+//            mapView.register(TFLBusStopAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
+//            mapView.showsUserLocation = true
+//            mapView.pointOfInterestFilter = MKPointOfInterestFilter(including: [.publicTransport,.park,.nationalPark,.beach,.amusementPark])
         }
     }
 

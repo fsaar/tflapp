@@ -69,10 +69,10 @@ class TFLInformationView: UIView {
         updateColors()
     }
     
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        updateColors()
-    }
+//    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+//        super.traitCollectionDidChange(previousTraitCollection)
+//        updateColors()
+//    }
 }
 
 extension TFLInformationView {

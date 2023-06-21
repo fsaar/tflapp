@@ -11,13 +11,13 @@ import UIKit
 class TFLHUDContainerView : UIView {
     var traitCollectionDidChangeBlock : ((_ previousTraitCollection: UITraitCollection?) -> Void)?
     
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else {
-            return
-        }
-        traitCollectionDidChangeBlock?(previousTraitCollection)
-    }
+//    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+//        super.traitCollectionDidChange(previousTraitCollection)
+//        guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else {
+//            return
+//        }
+//        traitCollectionDidChangeBlock?(previousTraitCollection)
+//    }
 }
 
 

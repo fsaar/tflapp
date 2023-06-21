@@ -70,7 +70,9 @@ extension Collection where Element == TFLBusStopArrivalsInfo {
     
 }
 
-public struct TFLBusStopArrivalsInfo : Hashable,CustomStringConvertible {
+
+
+public struct TFLBusStopArrivalsInfo : Hashable,CustomStringConvertible,Identifiable {
     public struct TFLContextFreeBusStopInfo  {
         let identifier: String
         fileprivate(set) var stopLetter : String?
@@ -85,6 +87,7 @@ public struct TFLBusStopArrivalsInfo : Hashable,CustomStringConvertible {
             name = busStop.name
             identifier = busStop.identifier
         }
+        
         init(identifier : String, stopLetter : String?, towards: String?, name : String, coord : CLLocationCoordinate2D) {
             self.identifier = identifier
             self.stopLetter = stopLetter
@@ -107,7 +110,9 @@ public struct TFLBusStopArrivalsInfo : Hashable,CustomStringConvertible {
                     """
         return desc
     }
-    
+    public var id : String {
+        return identifier
+    }
     var identifier : String
     {
         return self.busStop.identifier
@@ -165,6 +170,7 @@ extension TFLBusStopArrivalsInfo : Codable {
         busStop = try  container.decode(TFLContextFreeBusStopInfo.self, forKey: .busStop)
         arrivals = try  container.decode([TFLBusPrediction].self, forKey: .arrivals)
     }
+    
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(busStopDistance, forKey: .busStopDistance)

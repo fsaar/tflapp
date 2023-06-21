@@ -143,7 +143,7 @@ class TFLRootViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.networkMonitor.start(queue: .main)
-        self.mapViewController?.delegate = nearbyBusStationController
+//        self.mapViewController?.delegate = nearbyBusStationController
         self.slideContainerController?.rightCustomView = self.updateStatusView
         setupBackSwipe()
 
@@ -162,17 +162,17 @@ class TFLRootViewController: UIViewController {
                 }
                 self?.mapViewController?.coverView.alpha = opacity(for: origin.y)
             }
-            self.nearbyBusStationController?.delegate = self
+//            self.nearbyBusStationController?.delegate = self
         }
 
         self.foregroundNotificationHandler = TFLNotificationObserver(notification: UIApplication.willEnterForegroundNotification) { [weak self]  _ in
             self?.updateStatusView.state = .updating
-            let retryIfRequestWasPending = !(self?.state.isComplete ?? true)
-            self?.loadNearbyBusstops {
-                if retryIfRequestWasPending {
-                    self?.loadNearbyBusstops()
-                }
-            }
+//            let retryIfRequestWasPending = !(self?.state.isComplete ?? true)
+//            self?.loadNearbyBusstops {
+//                if retryIfRequestWasPending {
+//                    self?.loadNearbyBusstops()
+//                }
+//            }
         }
         self.backgroundNotificationHandler = TFLNotificationObserver(notification:UIApplication.didEnterBackgroundNotification) { [weak self]  _ in
             self?.updateStatusView.state = .paused
@@ -378,22 +378,7 @@ extension TFLRootViewController : TFLLocationManagerDelegate {
         loadNearbyBusstops()
     }
 }
-//
-// MARK: - TFLNearbyBusStationsControllerDelegate
-//
-extension TFLRootViewController : TFLNearbyBusStationsControllerDelegate  {
-    func nearbyBusStationsController(_ controller: TFLNearbyBusStationsController, didSelectBusstopWith identifier: String) {
-       self.mapViewController?.showBusStop(with: identifier, animated: true)
-    }
-    
-    func lastRefresh(of controller: TFLNearbyBusStationsController) -> Date? {
-        return busInfoAggregator.lastUpdate
-    }
-    
-    func refresh(controller: TFLNearbyBusStationsController, using completionBlock:@escaping ()->()) {
-        loadNearbyBusstops(using: completionBlock)
-    }
-}
+
 //
 // MARK: - TFLUpdateStatusViewDelegate
 //

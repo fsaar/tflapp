@@ -62,14 +62,14 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
         self.identifier = nil
     }
     
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        TFLBusPredictionViewCell.busPredictionViewBackgroundImage = TFLBusPredictionViewCell.defaultBackgroundImage()
-        guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else {
-            return
-        }
-        updateColors()
-    }
+//    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+//        super.traitCollectionDidChange(previousTraitCollection)
+//        TFLBusPredictionViewCell.busPredictionViewBackgroundImage = TFLBusPredictionViewCell.defaultBackgroundImage()
+//        guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else {
+//            return
+//        }
+//        updateColors()
+//    }
 
     func configure(with predictionViewModel: TFLBusStopArrivalsViewModel.LinePredictionViewModel,as update : Bool = false,using longTapClosure :@escaping () -> Void) {
         self.longTapClosure = longTapClosure

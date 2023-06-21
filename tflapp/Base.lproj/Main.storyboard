@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="zaI-Wd-PX9">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22113.1" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="zaI-Wd-PX9">
     <device id="retina4_7" orientation="portrait" appearance="dark"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22089"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -12,7 +13,7 @@
             <objects>
                 <navigationController id="zaI-Wd-PX9" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="VWs-ZC-sqq">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -46,7 +47,7 @@
                                 <rect key="frame" x="0.0" y="667" width="375" height="60"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="nosign" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="EJv-nn-aZu">
-                                        <rect key="frame" x="120.5" y="14" width="34" height="33"/>
+                                        <rect key="frame" x="119.5" y="13" width="35" height="35"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="22" scale="large" weight="black"/>
                                     </imageView>
@@ -117,7 +118,7 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fbd-zZ-kZD" customClass="TFLButton" customModule="BusStops" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fbd-zZ-kZD" customClass="TFLButton" customModule="BusStops" customModuleProvider="target">
                                                 <rect key="frame" x="89.5" y="128" width="156" height="41"/>
                                                 <accessibility key="accessibilityConfiguration">
                                                     <accessibilityTraits key="traits" none="YES"/>
@@ -341,7 +342,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="TFLStationDetailTableViewCell" rowHeight="42" id="jEU-He-LqK" customClass="TFLStationDetailTableViewCell" customModule="BusStops" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="42"/>
+                                <rect key="frame" x="0.0" y="50" width="375" height="42"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="jEU-He-LqK" id="Uly-2b-PIo">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="42"/>
@@ -505,7 +506,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </mapView>
                             <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Ip-bC-e82">
-                                <rect key="frame" x="330" y="30" width="40" height="40"/>
+                                <rect key="frame" x="330" y="50" width="40" height="40"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="apc-i1-zeq">
                                     <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -570,261 +571,9 @@
                     <view key="view" contentMode="scaleToFill" id="Pbu-BY-CcN">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Powered by TfL Open Data" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9fW-nN-Lr5">
-                                <rect key="frame" x="85" y="70" width="205.5" height="20.5"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Powered by TfL Open Data" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HDB-tf-sWO" userLabel="last updateLabel">
-                                <rect key="frame" x="85" y="40" width="205.5" height="20.5"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="70N-s4-1TX">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="TFLBusStationArrivalsCell" rowHeight="120" id="32c-bD-0Gg" customClass="TFLBusStationArrivalsCell" customModule="BusStops" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="120"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="32c-bD-0Gg" id="rhp-0I-pzd">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="120"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uRM-tA-waM" userLabel="StopCodeLabelHelperView">
-                                                    <rect key="frame" x="9" y="30" width="25" height="34"/>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="25" id="fJb-0K-a08"/>
-                                                    </constraints>
-                                                </view>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="251" text="ST" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="WRh-Nr-hrx" userLabel="stopCodeLabel">
-                                                    <rect key="frame" x="9" y="38.5" width="25" height="17"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Picadilly Circus Station / Hay Market" lineBreakMode="tailTruncation" minimumScaleFactor="0.40000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="Kkg-jU-POR" userLabel="StationName">
-                                                    <rect key="frame" x="4" y="5" width="314" height="21"/>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="towards Chiswick, Ealing or North Acton or wherever you feel you want to go" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.59999999999999998" translatesAutoresizingMaskIntoConstraints="NO" id="Njp-UU-MPM" userLabel="StationDetails">
-                                                    <rect key="frame" x="39" y="29" width="284" height="34.5"/>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="14"/>
-                                                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <collectionView autoresizesSubviews="NO" contentMode="scaleToFill" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" bouncesZoom="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="JkC-Y4-Fea" customClass="TFLBusPredictionView" customModule="BusStops" customModuleProvider="target">
-                                                    <rect key="frame" x="8" y="68" width="359" height="46"/>
-                                                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="46" id="Ce5-JF-JFJ"/>
-                                                    </constraints>
-                                                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="5" minimumInteritemSpacing="0.0" id="dxW-6p-dcc" customClass="TFLCollectionFlowLayout" customModule="BusStops" customModuleProvider="target">
-                                                        <size key="itemSize" width="54" height="46"/>
-                                                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                    </collectionViewFlowLayout>
-                                                    <cells>
-                                                        <collectionViewCell contentMode="center" reuseIdentifier="TFLBusPredictionViewCell" id="sSL-d7-rLk" customClass="TFLBusPredictionViewCell" customModule="BusStops" customModuleProvider="target">
-                                                            <rect key="frame" x="0.0" y="0.0" width="54" height="46"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                                                <rect key="frame" x="0.0" y="0.0" width="54" height="46"/>
-                                                                <autoresizingMask key="autoresizingMask"/>
-                                                                <subviews>
-                                                                    <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="207" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="89R-yJ-7Rc" userLabel="Line">
-                                                                        <rect key="frame" x="16.5" y="6" width="21" height="13.5"/>
-                                                                        <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="11"/>
-                                                                        <nil key="textColor"/>
-                                                                        <nil key="highlightedColor"/>
-                                                                    </label>
-                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wtV-FH-gnO" customClass="TFLAnimatedLabel" customModule="BusStops" customModuleProvider="target">
-                                                                        <rect key="frame" x="0.0" y="25.5" width="54" height="14"/>
-                                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                        <constraints>
-                                                                            <constraint firstAttribute="height" constant="14" id="aT5-ps-AJo"/>
-                                                                        </constraints>
-                                                                    </view>
-                                                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lSd-g6-Kbz" userLabel="notificationBadgeBackground">
-                                                                        <rect key="frame" x="50" y="-4" width="6" height="6"/>
-                                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                        <constraints>
-                                                                            <constraint firstAttribute="height" constant="6" id="L8T-My-Iyv"/>
-                                                                            <constraint firstAttribute="width" constant="6" id="tAo-nm-XOZ"/>
-                                                                        </constraints>
-                                                                    </view>
-                                                                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="2.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="2xf-fj-qC1">
-                                                                        <rect key="frame" x="46" y="-7.5" width="14" height="13"/>
-                                                                        <constraints>
-                                                                            <constraint firstAttribute="height" constant="14" id="6bT-kU-ZHe"/>
-                                                                            <constraint firstAttribute="width" constant="14" id="tzz-cs-yPX"/>
-                                                                        </constraints>
-                                                                    </imageView>
-                                                                </subviews>
-                                                            </view>
-                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                            <color key="tintColor" name="tflArrivalInfoViewBorderColor"/>
-                                                            <constraints>
-                                                                <constraint firstItem="wtV-FH-gnO" firstAttribute="top" secondItem="89R-yJ-7Rc" secondAttribute="bottom" constant="6" id="8UQ-pj-Bfl"/>
-                                                                <constraint firstAttribute="trailing" secondItem="2xf-fj-qC1" secondAttribute="trailing" constant="-6" id="BKN-TN-EZ3"/>
-                                                                <constraint firstItem="lSd-g6-Kbz" firstAttribute="centerX" secondItem="2xf-fj-qC1" secondAttribute="centerX" id="DhB-P3-yZy"/>
-                                                                <constraint firstItem="89R-yJ-7Rc" firstAttribute="centerX" secondItem="sSL-d7-rLk" secondAttribute="centerX" id="Xxz-3U-xig"/>
-                                                                <constraint firstItem="wtV-FH-gnO" firstAttribute="leading" secondItem="sSL-d7-rLk" secondAttribute="leading" id="YVw-sx-oPE"/>
-                                                                <constraint firstItem="89R-yJ-7Rc" firstAttribute="top" secondItem="sSL-d7-rLk" secondAttribute="top" constant="6" id="dwh-15-GHS"/>
-                                                                <constraint firstAttribute="trailing" secondItem="wtV-FH-gnO" secondAttribute="trailing" id="khv-f1-t5p"/>
-                                                                <constraint firstItem="2xf-fj-qC1" firstAttribute="top" secondItem="sSL-d7-rLk" secondAttribute="top" constant="-8" id="nO4-9V-7b7"/>
-                                                                <constraint firstItem="lSd-g6-Kbz" firstAttribute="centerY" secondItem="2xf-fj-qC1" secondAttribute="centerY" id="unu-eh-PPE"/>
-                                                            </constraints>
-                                                            <connections>
-                                                                <outlet property="arrivalTime" destination="wtV-FH-gnO" id="aWi-e0-6PZ"/>
-                                                                <outlet property="line" destination="89R-yJ-7Rc" id="cLh-Jo-gId"/>
-                                                                <outlet property="notificationBadge" destination="2xf-fj-qC1" id="W50-xI-H6K"/>
-                                                                <outlet property="notificationBadgeBackground" destination="lSd-g6-Kbz" id="W0i-yv-jiH"/>
-                                                            </connections>
-                                                        </collectionViewCell>
-                                                    </cells>
-                                                </collectionView>
-                                                <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nIB-Kw-g2i" userLabel="separator">
-                                                    <rect key="frame" x="5" y="0.0" width="365" height="0.5"/>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="0.5" id="luD-Db-ORE"/>
-                                                    </constraints>
-                                                </view>
-                                                <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="752" text="300 m" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e6p-57-1uC" userLabel="distanceLabel">
-                                                    <rect key="frame" x="323" y="7" width="42" height="17"/>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="nIB-Kw-g2i" firstAttribute="leading" secondItem="rhp-0I-pzd" secondAttribute="leading" constant="5" id="6C0-LY-7jg"/>
-                                                <constraint firstItem="WRh-Nr-hrx" firstAttribute="trailing" secondItem="uRM-tA-waM" secondAttribute="trailing" id="FGk-ya-8ah"/>
-                                                <constraint firstItem="e6p-57-1uC" firstAttribute="centerY" secondItem="Kkg-jU-POR" secondAttribute="centerY" id="Ifn-2c-b7W"/>
-                                                <constraint firstItem="Njp-UU-MPM" firstAttribute="trailing" secondItem="e6p-57-1uC" secondAttribute="leading" id="JVn-TS-TrP"/>
-                                                <constraint firstAttribute="bottom" secondItem="JkC-Y4-Fea" secondAttribute="bottom" constant="6" id="Lcw-wc-nj5"/>
-                                                <constraint firstItem="JkC-Y4-Fea" firstAttribute="top" secondItem="uRM-tA-waM" secondAttribute="bottom" constant="4" id="NOD-aN-Dje"/>
-                                                <constraint firstItem="uRM-tA-waM" firstAttribute="top" secondItem="Kkg-jU-POR" secondAttribute="bottom" constant="4" id="OPx-tZ-Ant"/>
-                                                <constraint firstItem="uRM-tA-waM" firstAttribute="leading" secondItem="Kkg-jU-POR" secondAttribute="leading" constant="5" id="U8y-mv-SPJ"/>
-                                                <constraint firstItem="nIB-Kw-g2i" firstAttribute="top" secondItem="rhp-0I-pzd" secondAttribute="top" id="Uoz-Tr-kAe"/>
-                                                <constraint firstItem="Njp-UU-MPM" firstAttribute="leading" secondItem="uRM-tA-waM" secondAttribute="trailing" constant="5" id="XYi-hv-rFG"/>
-                                                <constraint firstItem="Kkg-jU-POR" firstAttribute="leading" secondItem="rhp-0I-pzd" secondAttribute="leading" constant="4" id="Yuv-VW-u8a"/>
-                                                <constraint firstItem="JkC-Y4-Fea" firstAttribute="top" relation="greaterThanOrEqual" secondItem="WRh-Nr-hrx" secondAttribute="bottom" constant="5" id="bTs-CN-A1e"/>
-                                                <constraint firstAttribute="trailing" secondItem="JkC-Y4-Fea" secondAttribute="trailing" constant="8" id="cCh-Ga-EPM"/>
-                                                <constraint firstAttribute="trailing" secondItem="nIB-Kw-g2i" secondAttribute="trailing" constant="5" id="dJZ-W8-UzG"/>
-                                                <constraint firstItem="WRh-Nr-hrx" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Kkg-jU-POR" secondAttribute="bottom" constant="5" id="dz4-0o-HvU"/>
-                                                <constraint firstItem="e6p-57-1uC" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Kkg-jU-POR" secondAttribute="trailing" constant="5" id="fQt-Tj-Yrw"/>
-                                                <constraint firstItem="Kkg-jU-POR" firstAttribute="top" secondItem="rhp-0I-pzd" secondAttribute="top" constant="5" id="gQQ-h5-jdb"/>
-                                                <constraint firstItem="WRh-Nr-hrx" firstAttribute="centerY" secondItem="uRM-tA-waM" secondAttribute="centerY" id="k1e-jz-ox5"/>
-                                                <constraint firstItem="WRh-Nr-hrx" firstAttribute="leading" secondItem="uRM-tA-waM" secondAttribute="leading" id="k5j-Bb-ZX8"/>
-                                                <constraint firstItem="JkC-Y4-Fea" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Njp-UU-MPM" secondAttribute="bottom" constant="4" id="onS-Mv-Rrv"/>
-                                                <constraint firstAttribute="trailing" secondItem="e6p-57-1uC" secondAttribute="trailing" constant="10" id="qGO-SZ-Eta"/>
-                                                <constraint firstItem="Njp-UU-MPM" firstAttribute="top" secondItem="Kkg-jU-POR" secondAttribute="bottom" constant="3" id="wQY-4v-DJQ"/>
-                                                <constraint firstItem="JkC-Y4-Fea" firstAttribute="leading" secondItem="rhp-0I-pzd" secondAttribute="leading" constant="8" id="zXM-Qk-6kZ"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <connections>
-                                            <outlet property="busStopLabel" destination="WRh-Nr-hrx" id="pRF-Uo-1A7"/>
-                                            <outlet property="distanceLabel" destination="e6p-57-1uC" id="n9e-lY-DXf"/>
-                                            <outlet property="predictionView" destination="JkC-Y4-Fea" id="kMx-an-5XM"/>
-                                            <outlet property="separator" destination="nIB-Kw-g2i" id="HNf-D2-4IU"/>
-                                            <outlet property="stationDetails" destination="Njp-UU-MPM" id="zSS-2T-jkR"/>
-                                            <outlet property="stationName" destination="Kkg-jU-POR" id="G43-PD-H4Q"/>
-                                        </connections>
-                                    </tableViewCell>
-                                </prototypes>
-                                <connections>
-                                    <outlet property="dataSource" destination="dt0-NZ-OrX" id="Kd9-t6-U6S"/>
-                                    <outlet property="delegate" destination="dt0-NZ-OrX" id="UdK-A3-UVo"/>
-                                </connections>
-                            </tableView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hCj-7k-Llg" customClass="TFLInformationView" customModule="BusStops" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="667" width="375" height="90"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s1D-M9-8Lr">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
-                                        <color key="backgroundColor" name="tflConfirmationViewBorderColor"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="1" id="mPs-EA-fkb"/>
-                                        </constraints>
-                                    </view>
-                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="k2S-QT-L8w">
-                                        <rect key="frame" x="81" y="20" width="213" height="50"/>
-                                        <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="8li-Wq-tDE">
-                                                <rect key="frame" x="0.0" y="5.5" width="40" height="39"/>
-                                                <color key="tintColor" name="tflConfirmationViewTextColor"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="40" id="BNp-q6-m8J"/>
-                                                    <constraint firstAttribute="height" constant="40" id="NmM-3J-dE8"/>
-                                                </constraints>
-                                            </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="999" verticalHuggingPriority="900" horizontalCompressionResistancePriority="999" text="Reminder notification" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Ctj-Kj-edc">
-                                                <rect key="frame" x="50" y="15" width="163" height="20.5"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" name="tflConfirmationViewTextColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="XH2-AT-f4M"/>
-                                        </constraints>
-                                    </stackView>
-                                </subviews>
-                                <color key="backgroundColor" name="tflConfirmationViewBackgroundColor"/>
-                                <constraints>
-                                    <constraint firstItem="k2S-QT-L8w" firstAttribute="centerX" secondItem="hCj-7k-Llg" secondAttribute="centerX" id="3vC-cp-6ih"/>
-                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="k2S-QT-L8w" secondAttribute="trailing" constant="20" id="5EL-RE-EZ7"/>
-                                    <constraint firstAttribute="trailing" secondItem="s1D-M9-8Lr" secondAttribute="trailing" id="Gvn-fp-pcI"/>
-                                    <constraint firstItem="k2S-QT-L8w" firstAttribute="top" secondItem="hCj-7k-Llg" secondAttribute="top" constant="20" id="T4f-Cb-fww"/>
-                                    <constraint firstItem="k2S-QT-L8w" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="hCj-7k-Llg" secondAttribute="leading" constant="20" id="XXL-zC-HCl"/>
-                                    <constraint firstItem="s1D-M9-8Lr" firstAttribute="top" secondItem="hCj-7k-Llg" secondAttribute="top" id="YDy-zk-2Sg"/>
-                                    <constraint firstItem="s1D-M9-8Lr" firstAttribute="leading" secondItem="hCj-7k-Llg" secondAttribute="leading" id="Z16-ld-E4F"/>
-                                    <constraint firstAttribute="bottom" secondItem="k2S-QT-L8w" secondAttribute="bottom" constant="20" id="v1q-gY-yz5"/>
-                                </constraints>
-                                <connections>
-                                    <outlet property="imageView" destination="8li-Wq-tDE" id="6bE-o4-dVz"/>
-                                    <outlet property="titleLabel" destination="Ctj-Kj-edc" id="Jlo-2T-Qps"/>
-                                    <outlet property="topBorderLine" destination="s1D-M9-8Lr" id="Sco-ig-uft"/>
-                                </connections>
-                            </view>
-                        </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="70N-s4-1TX" secondAttribute="trailing" id="08l-Vf-AkV"/>
-                            <constraint firstItem="9fW-nN-Lr5" firstAttribute="centerX" secondItem="Pbu-BY-CcN" secondAttribute="centerX" id="Sia-AO-d1s"/>
-                            <constraint firstAttribute="bottom" secondItem="70N-s4-1TX" secondAttribute="bottom" id="TW4-i7-7Gg" userLabel="tableViewBottomConstraint"/>
-                            <constraint firstItem="HDB-tf-sWO" firstAttribute="centerX" secondItem="Pbu-BY-CcN" secondAttribute="centerX" id="XcD-mb-9pH"/>
-                            <constraint firstItem="hCj-7k-Llg" firstAttribute="top" secondItem="Pbu-BY-CcN" secondAttribute="bottom" id="Y2k-Ou-SRX" userLabel="ConfirmationViewTopBorderConstraint"/>
-                            <constraint firstAttribute="trailing" secondItem="hCj-7k-Llg" secondAttribute="trailing" id="em9-sk-LsF"/>
-                            <constraint firstItem="hCj-7k-Llg" firstAttribute="leading" secondItem="Pbu-BY-CcN" secondAttribute="leading" id="li7-Ig-xXV"/>
-                            <constraint firstItem="70N-s4-1TX" firstAttribute="leading" secondItem="Pbu-BY-CcN" secondAttribute="leading" id="lop-ya-FKp"/>
-                            <constraint firstItem="9fW-nN-Lr5" firstAttribute="top" secondItem="kpl-CW-MoJ" secondAttribute="bottom" constant="70" id="ol8-Qx-oR2"/>
-                            <constraint firstItem="HDB-tf-sWO" firstAttribute="top" secondItem="kpl-CW-MoJ" secondAttribute="bottom" constant="40" id="shP-2X-frC"/>
-                            <constraint firstItem="70N-s4-1TX" firstAttribute="top" secondItem="Pbu-BY-CcN" secondAttribute="top" id="y56-8M-xpf"/>
-                        </constraints>
                     </view>
                     <connections>
-                        <outlet property="ackLabel" destination="9fW-nN-Lr5" id="e5V-NY-lae"/>
-                        <outlet property="confirmationView" destination="hCj-7k-Llg" id="Mbl-c5-Bne"/>
-                        <outlet property="confirmationViewTopConstraint" destination="Y2k-Ou-SRX" id="aEe-3I-jwd"/>
-                        <outlet property="lastUpdatedLabel" destination="HDB-tf-sWO" id="eli-b0-iD7"/>
-                        <outlet property="tableView" destination="70N-s4-1TX" id="yje-DL-4cM"/>
                         <segue destination="Oga-ig-WMN" kind="show" identifier="TFLStationDetailSegue" id="TwU-Ay-g9J"/>
                     </connections>
                 </viewController>
@@ -890,7 +639,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="nosign" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="aOC-Ln-ON7">
-                                        <rect key="frame" x="120.5" y="12" width="34" height="36.5"/>
+                                        <rect key="frame" x="119.5" y="11" width="35" height="38.5"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="22" scale="large" weight="black"/>
                                     </imageView>
@@ -1038,22 +787,22 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jzW-fO-l5j" userLabel="containerVIew">
-                                <rect key="frame" x="16.5" y="213" width="342" height="241"/>
+                                <rect key="frame" x="58.5" y="238" width="258" height="191"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stops" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CKr-qU-GQT">
-                                        <rect key="frame" x="40" y="147" width="302" height="94"/>
+                                        <rect key="frame" x="40" y="97" width="218" height="94"/>
                                         <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="77"/>
                                         <color key="textColor" name="tflSplashScreenTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Bus" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nox-49-dvi">
-                                        <rect key="frame" x="190" y="53" width="142" height="94"/>
+                                        <rect key="frame" x="106" y="3" width="142" height="94"/>
                                         <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="77"/>
                                         <color key="textColor" name="tflSplashScreenTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="busTemplate" translatesAutoresizingMaskIntoConstraints="NO" id="LBz-VH-nOP">
-                                        <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="116" height="100"/>
                                         <color key="tintColor" name="tflSplashScreenTextColor"/>
                                     </imageView>
                                 </subviews>
@@ -1089,22 +838,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="2.circle.fill" catalog="system" width="64" height="60"/>
         <image name="busTemplate" width="100" height="100"/>
-        <image name="checkmark.circle" catalog="system" width="64" height="60"/>
-        <image name="nosign" catalog="system" width="64" height="60"/>
-        <namedColor name="tflArrivalInfoViewBorderColor">
-            <color red="1" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
-        <namedColor name="tflConfirmationViewBackgroundColor">
-            <color red="1" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
-        <namedColor name="tflConfirmationViewBorderColor">
-            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
-        <namedColor name="tflConfirmationViewTextColor">
-            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
+        <image name="nosign" catalog="system" width="128" height="123"/>
         <namedColor name="tflSplashScreenBackgroundColor">
             <color red="1" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>

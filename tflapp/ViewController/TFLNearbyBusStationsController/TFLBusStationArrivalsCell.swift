@@ -68,13 +68,13 @@ class TFLBusStationArrivalsCell: UITableViewCell {
         self.accessibilityLabel = nil
     }
     
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else {
-            return
-        }
-        updateColors()
-    }
+//    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+//        super.traitCollectionDidChange(previousTraitCollection)
+//        guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else {
+//            return
+//        }
+//        updateColors()
+//    }
 
     func configure(with busStopArrivalViewModel: TFLBusStopArrivalsViewModel,animated: Bool = false) {
         self.identifier = busStopArrivalViewModel.identifier

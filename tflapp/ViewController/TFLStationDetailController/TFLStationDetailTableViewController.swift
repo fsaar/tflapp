@@ -81,13 +81,13 @@ class TFLStationDetailTableViewController: UITableViewController {
         updateColors()
     }
     
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else {
-            return
-        }
-        updateColors()
-    }
+//    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+//        super.traitCollectionDidChange(previousTraitCollection)
+//        guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else {
+//            return
+//        }
+//        updateColors()
+//    }
 }
 
 // MARK: UITableViewDataSource

@@ -39,13 +39,13 @@ class TFLStationDetailBusStopAnnotationView: MKMarkerAnnotationView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else {
-            return
-        }
-        updateColors()
-    }
+//    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+//        super.traitCollectionDidChange(previousTraitCollection)
+//        guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else {
+//            return
+//        }
+//        updateColors()
+//    }
 
     @objc
     func tapGestureHandler() {

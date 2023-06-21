@@ -17,10 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
    
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-        if userActivity.activityType == CSSearchableItemActionType {
-            NotificationCenter.default.post(name: NSNotification.Name.spotLightLineLookupNotification, object: nil, userInfo: userActivity.userInfo)
-            return true
-        }
+       
         return false
     }
 }

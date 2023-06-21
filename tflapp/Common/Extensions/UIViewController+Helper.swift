@@ -25,6 +25,19 @@ extension UIViewController {
         controller?.removeFromParent()
     }
     
+    func addController(_ controller : UIViewController) {
+        self.addChild(controller)
+        controller.view.frame = self.view.frame
+        self.view.addSubview(controller.view)
+        controller.didMove(toParent: self)
+        NSLayoutConstraint.activate([
+            controller.view.topAnchor.constraint(equalTo: self.view.topAnchor),
+            controller.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+            controller.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            controller.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+        ])
+    }
+    
     func setupBackSwipe() {
         guard !UIDevice.isIPad,
               let navController = self.navigationController,navController.viewControllers.first === self else {

@@ -1,4 +1,5 @@
 disabled_rules: # rule identifiers to exclude from running
+    - no_space_in_method_call
     - attributes                               
     - closure_parameter_position               
     - colon                                    

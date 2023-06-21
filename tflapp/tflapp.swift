@@ -9,7 +9,7 @@
 import SwiftUI
 
 @main
-struct Test99App: App {
+struct TFLApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()

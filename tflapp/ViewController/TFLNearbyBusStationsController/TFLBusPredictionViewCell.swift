@@ -71,17 +71,17 @@ class TFLBusPredictionViewCell: UICollectionViewCell {
 //        updateColors()
 //    }
 
-    func configure(with predictionViewModel: TFLBusStopArrivalsViewModel.LinePredictionViewModel,as update : Bool = false,using longTapClosure :@escaping () -> Void) {
-        self.longTapClosure = longTapClosure
-        self.identifier = predictionViewModel.identifier
-        self.line.text = predictionViewModel.line
-        let arrivalTime = self.arrivalTime.text ?? ""
-        if !update || arrivalTime != predictionViewModel.eta {
-            self.arrivalTime.setText(predictionViewModel.eta, animated: update)
-        }
-        self.accessibilityLabel = "\(predictionViewModel.line) - \(predictionViewModel.accessibilityTimeToStation)"
-        updateBadgeIfNeedBe()
-    }
+//    func configure(with predictionViewModel: TFLBusStopArrivalsViewModel.LinePredictionViewModel,as update : Bool = false,using longTapClosure :@escaping () -> Void) {
+//        self.longTapClosure = longTapClosure
+//        self.identifier = predictionViewModel.identifier
+//        self.line.text = predictionViewModel.line
+//        let arrivalTime = self.arrivalTime.text ?? ""
+//        if !update || arrivalTime != predictionViewModel.eta {
+//            self.arrivalTime.setText(predictionViewModel.eta, animated: update)
+//        }
+//        self.accessibilityLabel = "\(predictionViewModel.line) - \(predictionViewModel.accessibilityTimeToStation)"
+//        updateBadgeIfNeedBe()
+//    }
     
     func updateBadgeIfNeedBe(_ animated : Bool = false) {
         let notificationCenter = UNUserNotificationCenter.current()

@@ -25,14 +25,14 @@ struct BusArrivalInfo : Identifiable,Equatable {
         return identifier
     }
     
-    init(_ model: TFLBusStopArrivalsViewModel.LinePredictionViewModel) {
-        self.line = model.line
-        self.eta = model.eta
-        self.accessibilityTimeToStation = model.accessibilityTimeToStation
-        self.identifier = model.identifier
-        self.busStopIdentifier = model.busStopIdentifier
-        self.vehicleID = model.vehicleID
-        self.timeToStation = model.timeToStation
-        self.towards = model.towards
-    }
+//    init(_ model: TFLBusStopArrivalsViewModel.LinePredictionViewModel) {
+//        self.line = model.line
+//        self.eta = model.eta
+//        self.accessibilityTimeToStation = model.accessibilityTimeToStation
+//        self.identifier = model.identifier
+//        self.busStopIdentifier = model.busStopIdentifier
+//        self.vehicleID = model.vehicleID
+//        self.timeToStation = model.timeToStation
+//        self.towards = model.towards
+//    }
 }

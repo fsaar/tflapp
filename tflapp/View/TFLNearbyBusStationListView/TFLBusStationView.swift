@@ -21,12 +21,13 @@ struct TFLBusStationView : View {
            
             Divider().padding([.horizontal],10).background(.tflSeparator)
             HStack(alignment: .center) {
-                Text(station.stationName)
+                Text(station.name)
                     .foregroundColor(.tflPrimaryText)
                     .tflRegularFont(size: headerSize)
                     .frame(alignment: .leading)
                 
                 Spacer()
+               
                 Text(station.distance)
                     .foregroundColor(.tflPrimaryText)
                     .tflRegularFont(size: distanceSize)
@@ -37,7 +38,8 @@ struct TFLBusStationView : View {
                 
             }.padding([.horizontal],10)
             HStack(spacing:0) {
-                Text(station.stopLetter)
+                    
+                Text(station.stopLetter ?? "-")
                     .tflRegularFont(size: stopCodeSize)
                     .foregroundColor(.tflStopCodeText)
                     .frame(alignment: .center)
@@ -49,7 +51,7 @@ struct TFLBusStationView : View {
                         RoundedRectangle(cornerRadius: 7).fill(.tflStopCodeBackground)
                        
                     }
-                Text(station.stationDetails)
+                Text(station.towards ?? "")
                     .foregroundColor(.tflPrimaryText)
                     .tflRegularFont(size: directionSize)
                     .lineLimit(3)
@@ -57,7 +59,8 @@ struct TFLBusStationView : View {
                 
                 Spacer()
             }.padding([.horizontal],10)
-            TFLBusArrivalListView(busInfoList: $station.arrivals)
+     
+            TFLBusPredictionListView(predictionList: $station.arrivals )
         }
         .background(.tflBackground)
         

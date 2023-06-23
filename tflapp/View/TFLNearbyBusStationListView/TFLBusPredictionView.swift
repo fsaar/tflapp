@@ -6,18 +6,18 @@ import Foundation
 import SwiftUI
 
 
-struct TFLBusArrivalView : View {
+struct TFLBusPredictionView : View {
     let bus : String
 
     @State var eta: String
-    @Binding var busArrivalInfo : BusArrivalInfo
+    @Binding var prediction : TFLBusPrediction
     @ScaledMetric(relativeTo: .title) var busFontSize = 16
     @ScaledMetric(relativeTo: .body) var timeFontSize = 14
     @ScaledMetric(relativeTo: .body) var padding = 2
 
-    init(_ info: Binding<BusArrivalInfo>) {
-        _busArrivalInfo = info
-        self.bus = info.wrappedValue.line
+    init(_ info: Binding<TFLBusPrediction>) {
+        _prediction = info
+        self.bus = info.wrappedValue.lineName
         _eta = State(initialValue:info.wrappedValue.eta)
     
     }
@@ -41,8 +41,8 @@ struct TFLBusArrivalView : View {
         .background(Color(.tflBusInfoBackground)
         .opacity(0.5))
         .clipShape(RoundedRectangle(cornerRadius:10))
-        .onChange(of: busArrivalInfo) {
-            self.eta = _busArrivalInfo.wrappedValue.eta
+        .onChange(of: prediction) {
+            self.eta = _prediction.wrappedValue.eta
         }
            
     }

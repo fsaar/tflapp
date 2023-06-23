@@ -9,6 +9,7 @@
 import Foundation
 import SwiftUI
 import Observation
+import SwiftData
 
 @Observable
 class StationList : ObservableObject {
@@ -18,21 +19,18 @@ class StationList : ObservableObject {
 
 struct TFLNearbyBusStationListView : View {
     @State var stationInfoList : StationList
-    
+    let refreshableAction : @Sendable () async ->  Void
+//    @Query(sort: \.distanceInMeters) var stations: [TFLBusStationInfo]
     var body : some View {
         ScrollView {
             LazyVStack {
-                Spacer()
-                ForEach(0..<stationInfoList.list.count,id:\.self) { index in
-                    TFLBusStationView(station:$stationInfoList.list[index])
+                ForEach($stationInfoList.list) { station in
+                    TFLBusStationView(station:station)
                 }
-//                ForEach($stationInfoList.list) { station in
-//                    TFLBusStationView(station:station)
-//                }
-                Spacer()
             }
             Spacer(minLength: 80) // fix for being inside HostViewController. Change later
         }
+        .refreshable(action: refreshableAction)
         .background(.tflBackground)
        
     }

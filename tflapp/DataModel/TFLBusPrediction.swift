@@ -1,5 +1,5 @@
 import Foundation
-
+import SwiftData
 
 
 /*
@@ -36,7 +36,8 @@ import Foundation
      }
  
  */
-public struct TFLBusPrediction : Equatable,Hashable,Codable,CustomStringConvertible {
+@Model
+public final class TFLBusPrediction : Decodable,Identifiable {
 
     enum TFLBusPredictionError : Error {
         case decodingError
@@ -68,52 +69,51 @@ public struct TFLBusPrediction : Equatable,Hashable,Codable,CustomStringConverti
         case timeToStation = "timeToStation"
         case towards = "towards"
     }
-    public static func ==(lhs: TFLBusPrediction,rhs: TFLBusPrediction) -> (Bool) {
-        return lhs.identifier == rhs.identifier
-    }
     
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(identifier)
-    }
-
-    public var description: String {
-        let secondsPerMinute : UInt = 60
-        let prefix = self.lineName + " towards " + destination
-        return prefix + " in " + "\(Int(timeToStation/secondsPerMinute)) minutes [\(timeToStation) secs]\n"
-    }
-    
-    init(identifier: String, timeToLive: Date, timeStamp: Date, busStopIdentifier: String, lineIdentifier: String, lineName: String, destination: String, timeToStation: UInt,vehicleId : String, towards : String) {
-        self.identifier = identifier
-        self.timeToLive = timeToLive
-        self.timeStamp = timeStamp
-        self.busStopIdentifier = busStopIdentifier
-        self.lineIdentifier = lineIdentifier
-        self.lineName = lineName
-        self.destination = destination
-        self.timeToStation = timeToStation
-        self.vehicleId = vehicleId
-        self.towards = towards
-    }
-    
-    
-    
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(identifier, forKey: .identifier)
-        let ttlString = TFLBusPrediction.isoDefault.string(from: timeToLive)
-        try container.encode(ttlString, forKey: .timeToLive)
-        let timeStampString = TFLBusPrediction.iso8601Full.string(from: timeStamp)
-        try container.encode(timeStampString, forKey: .timeStamp)
-        try container.encode(busStopIdentifier, forKey: .busStopIdentifier)
-        try container.encode(lineIdentifier, forKey: .lineIdentifier)
-        try container.encode(lineName, forKey: .lineName)
-        try container.encode(destination, forKey: .destination)
-        try container.encode(timeToStation, forKey: .timeToStation)
-        try container.encode(vehicleId, forKey: .vehicleId)
-        try container.encode(towards, forKey: .towards)
+    let identifier : String
+    let timeToLive : Date
+    let timeStamp : Date
+    let busStopIdentifier : String
+    let lineIdentifier : String
+    let lineName : String
+    let destination : String
+    let timeToStation : UInt
+    let vehicleId : String
+    let towards : String
+    let eta : String
+    let etaInSeconds : Int
+    public var id : String {
+        return identifier
     }
     
     public init(from decoder: Decoder) throws {
+        
+
+        func arrivalTime(in secs : Int) -> String {
+            let minTitle = "1 \(NSLocalizedString("Common.min", comment: ""))"
+            let minsTitle = NSLocalizedString("Common.mins", comment: "")
+            var timeString = ""
+            
+            switch secs {
+            case ..<30:
+                timeString = NSLocalizedString("Common.due", comment: "")
+                
+            case 30..<60:
+                timeString = minTitle
+                
+            case 60..<(99*60):
+                let mins = secs/60
+                timeString = "\(mins) \(minsTitle)"
+                
+                if mins == 1 {
+                    timeString = minTitle
+                 
+                }
+            default:
+                break
+            }
+            return timeString
+        }
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let ttlString = try container.decode(String.self, forKey: .timeToLive)
         let timeStampString = try container.decode(String.self, forKey: .timeStamp)
@@ -132,16 +132,11 @@ public struct TFLBusPrediction : Equatable,Hashable,Codable,CustomStringConverti
         timeToStation = try container.decode(UInt.self, forKey: .timeToStation)
         vehicleId = try container.decode(String.self, forKey: .vehicleId)
         towards = try container.decode(String.self, forKey: .towards)
+        
+        let timeStampSinceReferenceDate = timeStamp.timeIntervalSinceReferenceDate
+        let timeOffset = Int(Date().timeIntervalSinceReferenceDate - timeStampSinceReferenceDate)
+        etaInSeconds = Int(timeToStation) - timeOffset
+        eta =  arrivalTime(in:etaInSeconds )
     }
     
-    let identifier : String
-    let timeToLive : Date
-    let timeStamp : Date
-    let busStopIdentifier : String
-    let lineIdentifier : String
-    let lineName : String
-    let destination : String
-    let timeToStation : UInt
-    let vehicleId : String
-    let towards : String
 }

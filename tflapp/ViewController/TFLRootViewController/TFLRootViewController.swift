@@ -89,20 +89,21 @@ class TFLRootViewController: UIViewController {
     
     fileprivate var state : State = .noError {
         didSet {
-            let shouldHide = self.nearbyBusStationController?.arrivalsInfo.isEmpty ?? true
-            switch self.state.errorView {
-            case .noGPSAvailable:
-                self.contentView.isHidden = true
-                self.errorContainerView.showErrorView(.noGPSAvailable)
-            case let errorView?:
-                self.contentView.isHidden = shouldHide
-                if shouldHide {
-                    self.errorContainerView.showErrorView(errorView)
-                }
-            case .none:
-                self.contentView.isHidden = false
-                self.errorContainerView.hideErrorViews()
-            }
+    
+//            let shouldHide = self.nearbyBusStationController?.arrivalsInfo.isEmpty ?? true
+//            switch self.state.errorView {
+//            case .noGPSAvailable:
+//                self.contentView.isHidden = true
+//                self.errorContainerView.showErrorView(.noGPSAvailable)
+//            case let errorView?:
+//                self.contentView.isHidden = shouldHide
+//                if shouldHide {
+//                    self.errorContainerView.showErrorView(errorView)
+//                }
+//            case .none:
+//                self.contentView.isHidden = false
+//                self.errorContainerView.hideErrorViews()
+//            }
         }
     }
     private enum SegueIdentifier : String {
@@ -240,37 +241,38 @@ fileprivate extension TFLRootViewController {
     }
     
     func updateContentViewController(with arrivalsInfo: [TFLBusStopArrivalsInfo],isUpdatePending updatePending : Bool, and  coordinate: CLLocationCoordinate2D) -> Bool {
-        let radius = self.defaultRadius
-
-        let oldTuples = self.nearbyBusStationController?.arrivalsInfo ?? []
-        var mergedInfo : [TFLBusStopArrivalsInfo] = []
-    
-        switch (oldTuples.isEmpty,arrivalsInfo.isEmpty) {
-        case (false,false):
-            mergedInfo = updatePending ? oldTuples.mergedUpdatedArrivalsInfo(arrivalsInfo) : oldTuples.mergedArrivalsInfo(arrivalsInfo)
-        case (true,false):
-            mergedInfo = arrivalsInfo
-        case (_,true):
-            let newTuples = oldTuples.map{ $0.arrivalInfo(with:  coordinate.location) }
-            mergedInfo = newTuples
-        }
-        
-        let filteredArrivalsInfo = mergedInfo.filter{ !$0.liveArrivals().isEmpty }.filter{ $0.busStopDistance <= radius }
-        self.nearbyBusStationController?.arrivalsInfo = filteredArrivalsInfo
-        self.nearbyBusStationController?.currentUserCoordinate = coordinate
-        switch (updatePending,filteredArrivalsInfo.isEmpty) {
-        case (true,false):
-            self.state = .loadingArrivals
-            return true
-        case (false,false):
-            self.mapViewController?.busStopPredicationCoordinateTuple = (filteredArrivalsInfo,coordinate)
-            return true
-        case (true,true): // Wait til complete
-            return true
-        case (false,true):
-            self.mapViewController?.busStopPredicationCoordinateTuple = (filteredArrivalsInfo,coordinate)
-            return false
-        }
+//        let radius = self.defaultRadius
+//
+//        let oldTuples = self.nearbyBusStationController?.arrivalsInfo ?? []
+//        var mergedInfo : [TFLBusStopArrivalsInfo] = []
+//    
+//        switch (oldTuples.isEmpty,arrivalsInfo.isEmpty) {
+//        case (false,false):
+//            mergedInfo = updatePending ? oldTuples.mergedUpdatedArrivalsInfo(arrivalsInfo) : oldTuples.mergedArrivalsInfo(arrivalsInfo)
+//        case (true,false):
+//            mergedInfo = arrivalsInfo
+//        case (_,true):
+//            let newTuples = oldTuples.map{ $0.arrivalInfo(with:  coordinate.location) }
+//            mergedInfo = newTuples
+//        }
+//        
+//        let filteredArrivalsInfo = mergedInfo.filter{ !$0.liveArrivals().isEmpty }.filter{ $0.busStopDistance <= radius }
+//        self.nearbyBusStationController?.arrivalsInfo = filteredArrivalsInfo
+//        self.nearbyBusStationController?.currentUserCoordinate = coordinate
+//        switch (updatePending,filteredArrivalsInfo.isEmpty) {
+//        case (true,false):
+//            self.state = .loadingArrivals
+//            return true
+//        case (false,false):
+//            self.mapViewController?.busStopPredicationCoordinateTuple = (filteredArrivalsInfo,coordinate)
+//            return true
+//        case (true,true): // Wait til complete
+//            return true
+//        case (false,true):
+//            self.mapViewController?.busStopPredicationCoordinateTuple = (filteredArrivalsInfo,coordinate)
+//            return false
+//        }
+        true
     }
     
     
@@ -333,22 +335,22 @@ fileprivate extension TFLRootViewController {
     }
     
     func retrieveBusstops(for location:CLLocationCoordinate2D, using completionBlock:@escaping ([TFLBusStopArrivalsInfo],_ completed: Bool)->()) {
-        self.state = .retrievingNearbyStations
-        if location.isValid {
-            
-            self.state = .loadingArrivals
-            self.busInfoAggregator.loadArrivalTimesForStoreStopPoints(with: location,with: self.defaultRadius, using: completionBlock)
-            self.updateNearbyBusStops(for: location)
-        }
-        else
-        {
-            self.state = .errorNoGPSAvailable
-            completionBlock([],true)
-        }
+//        self.state = .retrievingNearbyStations
+//        if location.isValid {
+//            
+//            self.state = .loadingArrivals
+//            await self.busInfoAggregator.loadArrivalTimesForStoreStopPoints(with: location,with: self.defaultRadius, using: completionBlock)
+//            self.updateNearbyBusStops(for: location)
+//        }
+//        else
+//        {
+//            self.state = .errorNoGPSAvailable
+//            completionBlock([],true)
+//        }
     }
 
     func updateNearbyBusStops(for currentLocation:CLLocationCoordinate2D ) {
-        self.tflClient.nearbyBusStops(with: currentLocation,radius: Int(defaultRadius), with: self.networkBackgroundQueue)
+//        self.tflClient.nearbyBusStops(with: currentLocation,radius: Int(defaultRadius), with: self.networkBackgroundQueue)
       
     }
 }

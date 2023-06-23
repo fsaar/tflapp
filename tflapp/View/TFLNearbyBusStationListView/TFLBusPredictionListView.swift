@@ -17,27 +17,20 @@ extension AnyTransition {
 }
 
 
-struct TFLBusArrivalListView : View {
-    @Binding var busInfoList : [BusArrivalInfo]
-   
-    func isLast(_ info: BusArrivalInfo) -> Bool {
-        guard !busInfoList.isEmpty else {
-            return true
-        }
-        return busInfoList.last == info
-    }
+struct TFLBusPredictionListView : View {
+    @Binding var predictionList : [TFLBusPrediction]
+    
     var body : some View {
         
         ScrollView(.horizontal,showsIndicators: false) {
             LazyVStack {
                 LazyHStack {
-                    ForEach($busInfoList) { bus in
-                        TFLBusArrivalView(bus).transition(.asymmetric(insertion: .scaleOut, removal:  .scaleDown))
+                    ForEach($predictionList) { prediction in
+                        TFLBusPredictionView(prediction).transition(.asymmetric(insertion: .scaleOut, removal:  .scaleDown))
                             
                     }
 //                    TFLBusArrivalView($dummy).opacity(0.01) // prevents HStack from vertically shrinking
                 }
-               
             }
            
         }

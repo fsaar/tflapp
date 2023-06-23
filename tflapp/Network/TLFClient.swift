@@ -4,6 +4,12 @@ import CoreLocation
 import CoreData
 import os.signpost
 
+
+private struct TFLBusStationWrapper : Decodable {
+    let stopPoints : [TFLBusStation]
+}
+
+
 enum TFLClientError : Error {
     case InvalidFormat(data : Data?)
     case InvalidLine
@@ -57,32 +63,14 @@ public final class TFLClient {
     }
 
     public func nearbyBusStops(with coordinate: CLLocationCoordinate2D,
-                               radius: Int = 500,
-                               with operationQueue : OperationQueue = OperationQueue.main,
-                               using completionBlock: (([TFLCDBusStop]?,_ error:Error?) -> ())? = nil)  {
+                               radius: Int = 500) async -> [TFLBusStation] {
         let busStopPath = "/StopPoint"
         let query = "radius=\(radius)&lat=\(coordinate.latitude)&lon=\(coordinate.longitude)&stopTypes=NaptanPublicBusCoachTram&categories=Geo,Direction"
-
-        Task{
-            do{
-                logger.log("\(#function) \(query)")
-                let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
-                let stops = try await requestBusStops(with: busStopPath, query: query,context:context)
-                await context.perform{
-                    if context.hasChanges {
-                        _ = try? context.save()
-                    }
-                    operationQueue.addOperation{
-                        completionBlock?(stops,nil)
-                    }
-                }
-            }
-            catch let error {
-                operationQueue.addOperation{
-                    completionBlock?(nil,error)
-                }
-            }
-        }
+        
+        logger.log("\(#function) \(query)")
+        
+        let stops = try? await requestBusStops(with: busStopPath, query: query)
+        return stops ?? []
     }
     #if DATABASEGENERATION
     public func busStops(with page: UInt,
@@ -148,49 +136,13 @@ fileprivate extension TFLClient {
             throw TFLClientError.InvalidFormat(data: data)
         }
     }
-
-
+    
+    
     func requestBusStops(with relativePath: String,
-                                     query: String,context: NSManagedObjectContext) async throws -> [TFLCDBusStop] {
+                                     query: String) async throws -> [TFLBusStation] {
         let data = try await tflManager.getDataWithRelativePath(relativePath: relativePath,and: query)
-        if let jsonDict = try JSONSerialization.jsonObject(with: data as Data
-                , options: JSONSerialization.ReadingOptions(rawValue:0)) as? [String : Any] {
-            if let jsonList = jsonDict["stopPoints"] as? [[String: Any]] {
-                async let stops = self.stopPoints(from: jsonList, context: context)
-                return await stops
-            }
-            else {
-                throw TFLClientError.InvalidFormat(data: data)
-            }
-        }
-        else {
-            throw TFLClientError.InvalidJSON
-        }
-        
-    }
-
-    func stopPoints(from dictionaryList : [[String: Any]],context: NSManagedObjectContext) async -> [TFLCDBusStop] {
-        await withTaskGroup(of: TFLCDBusStop?.self) { group in
-            dictionaryList.forEach{ dict in
-                group.addTask{
-                    await withCheckedContinuation{ continuation in
-                        TFLCDBusStop.busStop(with: dict,and:context) { busStop in
-                            continuation.resume(returning: busStop)
-                        }
-                    }
-                    
-                }
-            }
-            
-            var stops : [TFLCDBusStop] = []
-        
-            for await stop in group {
-                if let stop = stop {
-                    stops += [stop]
-                }
-            }
-            logger.log("stops:\(stops)")
-            return stops
-        }
+        let wrapper = try JSONDecoder().decode(TFLBusStationWrapper.self, from: data)
+        return wrapper.stopPoints
     }
 }
+

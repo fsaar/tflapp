@@ -8,17 +8,17 @@ extension Collection where Element == TFLBusStopArrivalsInfo {
     //      - tag: string to further uniqify filename
     func log(with tag: String = "") {
        
-        guard  let infos = self as? [TFLBusStopArrivalsInfo],let data = try? JSONEncoder().encode(infos) else {
-            return
-        }
-        let date = Date()
-        let dateFormatter = ISO8601DateFormatter()
-        let dateString = dateFormatter.string(from: date)
-        let fileName = tag.isEmpty ? "\(dateString).dat" : "\(dateString)_\(tag).dat"
-        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-        let path = "\(documentsPath)/\(fileName)"
-        let url = URL(fileURLWithPath: path)
-        try? data.write(to: url, options: Data.WritingOptions.atomicWrite)
+//        guard  let infos = self as? [TFLBusStopArrivalsInfo],let data = try? JSONEncoder().encode(infos) else {
+//            return
+//        }
+//        let date = Date()
+//        let dateFormatter = ISO8601DateFormatter()
+//        let dateString = dateFormatter.string(from: date)
+//        let fileName = tag.isEmpty ? "\(dateString).dat" : "\(dateString)_\(tag).dat"
+//        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+//        let path = "\(documentsPath)/\(fileName)"
+//        let url = URL(fileURLWithPath: path)
+//        try? data.write(to: url, options: Data.WritingOptions.atomicWrite)
     }
     
     // Method to sort by property busStopDistance to make code more readable
@@ -103,12 +103,13 @@ public struct TFLBusStopArrivalsInfo : Hashable,CustomStringConvertible,Identifi
     let arrivals : [TFLBusPrediction]
     
     public var description : String {
-        let lines = arrivals.sorted{ $0.timeStamp < $1.timeStamp }.map{ $0.lineName }.joined(separator: " < ")
-        let desc =  """
-                        [\(busStop.stopLetter ?? "")] \(busStop.name ) [\(identifier)]\n
-                        \(lines)
-                    """
-        return desc
+//        let lines = arrivals.sorted{ $0.timeStamp < $1.timeStamp }.map{ $0.lineName }.joined(separator: " < ")
+//        let desc =  """
+//                        [\(busStop.stopLetter ?? "")] \(busStop.name ) [\(identifier)]\n
+//                        \(lines)
+//                    """
+//        return desc
+        return ""
     }
     public var id : String {
         return identifier
@@ -138,7 +139,8 @@ public struct TFLBusStopArrivalsInfo : Hashable,CustomStringConvertible,Identifi
         let distance = location.distance(from: busStop.coord.location)
         self.busStopDistance = distance
         self.busStop = busStop
-        self.arrivals = Set(arrivals).sorted{ $0.timeToStation  < $1.timeToStation }
+        self.arrivals = []
+//        Set(arrivals).sorted{ $0.timeToStation  < $1.timeToStation }
     }
 
      init(busStop: TFLCDBusStop, location: CLLocation, arrivals: [TFLBusPrediction]) {
@@ -151,33 +153,34 @@ public struct TFLBusStopArrivalsInfo : Hashable,CustomStringConvertible,Identifi
     }
     
     func liveArrivals(with referenceDate: Date = Date()) -> [TFLBusPrediction]  {
-        let referenceTime = referenceDate.timeIntervalSinceReferenceDate
-        let filteredArrivals = arrivals.filter{ $0.timeToLive.timeIntervalSinceReferenceDate >= referenceTime }
-        return filteredArrivals
+//        let referenceTime = referenceDate.timeIntervalSinceReferenceDate
+//        let filteredArrivals = Array<TFLBusPrediction>()
+//        arrivals.filter{ $0.timeToLive.timeIntervalSinceReferenceDate >= referenceTime }
+        return []
     }
 }
 
-extension TFLBusStopArrivalsInfo : Codable {
-    enum CodingKeys: String, CodingKey {
-        case busStop = "busStop"
-        case busStopDistance = "busStopDistance"
-        case arrivals = "arrivals"
-    }
-    
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        busStopDistance = try  container.decode(Double.self, forKey: .busStopDistance)
-        busStop = try  container.decode(TFLContextFreeBusStopInfo.self, forKey: .busStop)
-        arrivals = try  container.decode([TFLBusPrediction].self, forKey: .arrivals)
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(busStopDistance, forKey: .busStopDistance)
-        try container.encode(busStop, forKey: .busStop)
-        try container.encode(arrivals, forKey: .arrivals)
-    }
-}
+//extension TFLBusStopArrivalsInfo : Codable {
+//    enum CodingKeys: String, CodingKey {
+//        case busStop = "busStop"
+//        case busStopDistance = "busStopDistance"
+//        case arrivals = "arrivals"
+//    }
+//    
+//    public init(from decoder: Decoder) throws {
+//        let container = try decoder.container(keyedBy: CodingKeys.self)
+//        busStopDistance = try  container.decode(Double.self, forKey: .busStopDistance)
+//        busStop = try  container.decode(TFLContextFreeBusStopInfo.self, forKey: .busStop)
+//        arrivals = try  container.decode([TFLBusPrediction].self, forKey: .arrivals)
+//    }
+//    
+//    public func encode(to encoder: Encoder) throws {
+//        var container = encoder.container(keyedBy: CodingKeys.self)
+//        try container.encode(busStopDistance, forKey: .busStopDistance)
+//        try container.encode(busStop, forKey: .busStop)
+//        try container.encode(arrivals, forKey: .arrivals)
+//    }
+//}
 
 
 extension TFLBusStopArrivalsInfo.TFLContextFreeBusStopInfo : Codable {

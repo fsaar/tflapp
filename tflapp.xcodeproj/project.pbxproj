@@ -30,13 +30,14 @@
 		563F3EC92A4241E200EFF524 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563F3EC82A4241E200EFF524 /* Font.swift */; };
 		563F3ECB2A424E6100EFF524 /* TFLBusArrivalInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563F3ECA2A424E6100EFF524 /* TFLBusArrivalInfo.swift */; };
 		563F3ED12A42541200EFF524 /* View+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563F3ED02A42541200EFF524 /* View+Helper.swift */; };
-		563F3EDC2A43887B00EFF524 /* TFLBusArrivalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563F3ED72A43887B00EFF524 /* TFLBusArrivalView.swift */; };
+		563F3EDC2A43887B00EFF524 /* TFLBusPredictionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563F3ED72A43887B00EFF524 /* TFLBusPredictionView.swift */; };
 		563F3EDD2A43887B00EFF524 /* TFLNearbyBusStationListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563F3ED82A43887B00EFF524 /* TFLNearbyBusStationListView.swift */; };
 		563F3EDE2A43887B00EFF524 /* TFLCountDownLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563F3ED92A43887B00EFF524 /* TFLCountDownLabel.swift */; };
 		563F3EDF2A43887B00EFF524 /* TFLBusStationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563F3EDA2A43887B00EFF524 /* TFLBusStationView.swift */; };
-		563F3EE02A43887B00EFF524 /* TFLBusArrivalListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563F3EDB2A43887B00EFF524 /* TFLBusArrivalListView.swift */; };
+		563F3EE02A43887B00EFF524 /* TFLBusPredictionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563F3EDB2A43887B00EFF524 /* TFLBusPredictionListView.swift */; };
 		563F3EE22A4388FD00EFF524 /* tflapp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563F3EE12A4388FD00EFF524 /* tflapp.swift */; };
 		563F3EE42A438A3100EFF524 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563F3EE32A438A3100EFF524 /* ContentView.swift */; };
+		563F3EE62A4390F300EFF524 /* TFLBusStation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563F3EE52A4390F300EFF524 /* TFLBusStation.swift */; };
 		563FF2F121A34524006DB5BB /* TFLCircleAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563FF2F021A34524006DB5BB /* TFLCircleAnimationView.swift */; };
 		5641F6EE1F19F68B00A3A9D2 /* TFLRequestManagerSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5641F6ED1F19F68100A3A9D2 /* TFLRequestManagerSpecs.swift */; };
 		56439A2021B861690076A906 /* TFLTimerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56439A1F21B861680076A906 /* TFLTimerButton.swift */; };
@@ -47,7 +48,6 @@
 		564CA5A62223561600E69A1C /* PolyLineSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564CA5A52223561600E69A1C /* PolyLineSpecs.swift */; };
 		564CA5A8222356B200E69A1C /* Array+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564CA5A7222356B200E69A1C /* Array+Helper.swift */; };
 		564EC6F51DE0A2A0008CFD11 /* TFLButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564EC6F41DE0A2A0008CFD11 /* TFLButton.swift */; };
-		564EC7051DE1917D008CFD11 /* TFLBusPredictionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564EC6FF1DE1917D008CFD11 /* TFLBusPredictionView.swift */; };
 		564EC7061DE1917D008CFD11 /* TFLBusPredictionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564EC7001DE1917D008CFD11 /* TFLBusPredictionViewCell.swift */; };
 		564EC7071DE1917D008CFD11 /* TFLBusStationArrivalsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564EC7011DE1917D008CFD11 /* TFLBusStationArrivalsCell.swift */; };
 		564EC7081DE1917D008CFD11 /* TFLBusStopArrivalsInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564EC7021DE1917D008CFD11 /* TFLBusStopArrivalsInfo.swift */; };
@@ -173,13 +173,14 @@
 		563F3EC82A4241E200EFF524 /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 		563F3ECA2A424E6100EFF524 /* TFLBusArrivalInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLBusArrivalInfo.swift; sourceTree = "<group>"; };
 		563F3ED02A42541200EFF524 /* View+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Helper.swift"; sourceTree = "<group>"; };
-		563F3ED72A43887B00EFF524 /* TFLBusArrivalView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusArrivalView.swift; sourceTree = "<group>"; };
+		563F3ED72A43887B00EFF524 /* TFLBusPredictionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusPredictionView.swift; sourceTree = "<group>"; };
 		563F3ED82A43887B00EFF524 /* TFLNearbyBusStationListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLNearbyBusStationListView.swift; sourceTree = "<group>"; };
 		563F3ED92A43887B00EFF524 /* TFLCountDownLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLCountDownLabel.swift; sourceTree = "<group>"; };
 		563F3EDA2A43887B00EFF524 /* TFLBusStationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusStationView.swift; sourceTree = "<group>"; };
-		563F3EDB2A43887B00EFF524 /* TFLBusArrivalListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusArrivalListView.swift; sourceTree = "<group>"; };
+		563F3EDB2A43887B00EFF524 /* TFLBusPredictionListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusPredictionListView.swift; sourceTree = "<group>"; };
 		563F3EE12A4388FD00EFF524 /* tflapp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tflapp.swift; sourceTree = "<group>"; };
 		563F3EE32A438A3100EFF524 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		563F3EE52A4390F300EFF524 /* TFLBusStation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusStation.swift; sourceTree = "<group>"; };
 		563FF2F021A34524006DB5BB /* TFLCircleAnimationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLCircleAnimationView.swift; sourceTree = "<group>"; };
 		5641F6ED1F19F68100A3A9D2 /* TFLRequestManagerSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLRequestManagerSpecs.swift; sourceTree = "<group>"; };
 		5642EF0720ED63AD00A7914F /* mapstogpx20180704_193755.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = mapstogpx20180704_193755.gpx; sourceTree = "<group>"; };
@@ -192,7 +193,6 @@
 		564CA5A7222356B200E69A1C /* Array+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Helper.swift"; sourceTree = "<group>"; };
 		564EC6EF1DDFAA67008CFD11 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		564EC6F41DE0A2A0008CFD11 /* TFLButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLButton.swift; sourceTree = "<group>"; };
-		564EC6FF1DE1917D008CFD11 /* TFLBusPredictionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusPredictionView.swift; sourceTree = "<group>"; };
 		564EC7001DE1917D008CFD11 /* TFLBusPredictionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusPredictionViewCell.swift; sourceTree = "<group>"; };
 		564EC7011DE1917D008CFD11 /* TFLBusStationArrivalsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusStationArrivalsCell.swift; sourceTree = "<group>"; };
 		564EC7021DE1917D008CFD11 /* TFLBusStopArrivalsInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusStopArrivalsInfo.swift; sourceTree = "<group>"; };
@@ -381,11 +381,11 @@
 		563F3ED62A43887B00EFF524 /* TFLNearbyBusStationListView */ = {
 			isa = PBXGroup;
 			children = (
-				563F3ED72A43887B00EFF524 /* TFLBusArrivalView.swift */,
 				563F3ED82A43887B00EFF524 /* TFLNearbyBusStationListView.swift */,
+				563F3ED72A43887B00EFF524 /* TFLBusPredictionView.swift */,
+				563F3EDB2A43887B00EFF524 /* TFLBusPredictionListView.swift */,
 				563F3ED92A43887B00EFF524 /* TFLCountDownLabel.swift */,
 				563F3EDA2A43887B00EFF524 /* TFLBusStationView.swift */,
-				563F3EDB2A43887B00EFF524 /* TFLBusArrivalListView.swift */,
 			);
 			path = TFLNearbyBusStationListView;
 			sourceTree = "<group>";
@@ -442,7 +442,6 @@
 		564EC6FE1DE1917D008CFD11 /* TFLNearbyBusStationsController */ = {
 			isa = PBXGroup;
 			children = (
-				564EC6FF1DE1917D008CFD11 /* TFLBusPredictionView.swift */,
 				564EC7001DE1917D008CFD11 /* TFLBusPredictionViewCell.swift */,
 				564EC7011DE1917D008CFD11 /* TFLBusStationArrivalsCell.swift */,
 				564EC7021DE1917D008CFD11 /* TFLBusStopArrivalsInfo.swift */,
@@ -565,9 +564,10 @@
 			isa = PBXGroup;
 			children = (
 				56B888EF21BDD039008CC2B8 /* TFLVehicleArrivalInfo.swift */,
+				563F3ECA2A424E6100EFF524 /* TFLBusArrivalInfo.swift */,
 				566EF7C61DDA3A2B006162D7 /* TFLBusPrediction.swift */,
 				563F3EC62A42418000EFF524 /* TFLBusStationInfo.swift */,
-				563F3ECA2A424E6100EFF524 /* TFLBusArrivalInfo.swift */,
+				563F3EE52A4390F300EFF524 /* TFLBusStation.swift */,
 			);
 			path = DataModel;
 			sourceTree = "<group>";
@@ -1178,7 +1178,7 @@
 				5689612220C074AE00335DEB /* TFLCDLineRoute+CoreDataClass.swift in Sources */,
 				565A1FC51DD8F331003CE960 /* TLFClient.swift in Sources */,
 				564EC7061DE1917D008CFD11 /* TFLBusPredictionViewCell.swift in Sources */,
-				563F3EDC2A43887B00EFF524 /* TFLBusArrivalView.swift in Sources */,
+				563F3EDC2A43887B00EFF524 /* TFLBusPredictionView.swift in Sources */,
 				563F3EE42A438A3100EFF524 /* ContentView.swift in Sources */,
 				5600FC8E217C8E4400B7EC7E /* TFLHUD.swift in Sources */,
 				565A1FC31DD8F317003CE960 /* TLFRequestManager.swift in Sources */,
@@ -1238,6 +1238,7 @@
 				561C1832226FC1D7008016B7 /* String+Helper.swift in Sources */,
 				563F3EDE2A43887B00EFF524 /* TFLCountDownLabel.swift in Sources */,
 				567F533A20BC20610022FEFF /* TFLCDLineInfo+CoreDataProperties.swift in Sources */,
+				563F3EE62A4390F300EFF524 /* TFLBusStation.swift in Sources */,
 				56113B2E223F7DC900C8EDA4 /* GoogleRouteInfo.swift in Sources */,
 				56835920218243BE0096615D /* TFLStationDetailErrorView.swift in Sources */,
 				5692B5031DF2E4EB00C56A3C /* TFLMapViewController.swift in Sources */,
@@ -1246,7 +1247,7 @@
 				561C1836226FC6F1008016B7 /* Data+Helper.swift in Sources */,
 				56482BF923C48AB4001A165E /* TFLRatingController.swift in Sources */,
 				56D705D5239EFE2A0085B878 /* TFLBusArrivalReminder.swift in Sources */,
-				563F3EE02A43887B00EFF524 /* TFLBusArrivalListView.swift in Sources */,
+				563F3EE02A43887B00EFF524 /* TFLBusPredictionListView.swift in Sources */,
 				564EC70A1DE1917D008CFD11 /* TFLNearbyBusStationsController.swift in Sources */,
 				5656717A219A244700F3B7EE /* TFLLineInfoRouteDirectory.swift in Sources */,
 				56A4907C219781C0004024D9 /* TFLRouteFormatter.swift in Sources */,
@@ -1258,7 +1259,6 @@
 				56439A2021B861690076A906 /* TFLTimerButton.swift in Sources */,
 				563FF2F121A34524006DB5BB /* TFLCircleAnimationView.swift in Sources */,
 				5632A7A221B342BB000E2E81 /* TFLUpdateStatusView.swift in Sources */,
-				564EC7051DE1917D008CFD11 /* TFLBusPredictionView.swift in Sources */,
 				566EF7CD1DDB0851006162D7 /* TFLCDBusStop+CoreDataProperties.swift in Sources */,
 				564EC7071DE1917D008CFD11 /* TFLBusStationArrivalsCell.swift in Sources */,
 			);

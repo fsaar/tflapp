@@ -31,8 +31,8 @@ import UIKit
         }
 
 
-        let models = NSManagedObjectModel.mergedModel(from: nil)!
-        storeCoordinator = NSPersistentStoreCoordinator(managedObjectModel: models)
+//        let models = NSManagedObjectModel.mergedModel(from: nil)!
+        storeCoordinator = NSPersistentStoreCoordinator(managedObjectModel: [])
         _ = initCoreData(storeCoordinator)
 
         super.init()

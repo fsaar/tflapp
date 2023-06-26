@@ -10,18 +10,35 @@ import Foundation
 import SwiftUI
 import Observation
 import SwiftData
+import CoreLocation
 
 @Observable
-class StationList : ObservableObject {
+class StationList  {
+//    @Settings(key: .distance,defaultValue: 400) fileprivate var settingDistance : Double
+//    @AppStorage("Distance") fileprivate var distance = Double(400)
+//    @Environment(\.modelContext) var modelContext
+
+    private let client = TFLClient()
+    private let aggregator = TFLBusArrivalInfoAggregator()
     var list : [TFLBusStationInfo] = []
+    private let currentLocation = CLLocationCoordinate2DMake( 51.510093564781975, -0.13490563038747838)
+    func refresh() async {
+        self.list = await updateNearbyBusStops(for: currentLocation)
+    }
+    
+    func updateNearbyBusStops(for currentLocation:CLLocationCoordinate2D ) async -> [TFLBusStationInfo]  {
+        let stops = await self.client.nearbyBusStops(with: currentLocation,radius: Int(400))
+        let stations = await aggregator.loadArrivalTimesForBusStations(with: stops, location: currentLocation)
+        return stations.sorted { $0.distance < $1.distance }
+    }
 }
 
 
 struct TFLNearbyBusStationListView : View {
-    @State var stationInfoList : StationList
-    let refreshableAction : @Sendable () async ->  Void
-//    @Query(sort: \.distanceInMeters) var stations: [TFLBusStationInfo]
+    @State var stationInfoList = StationList()
+  
     var body : some View {
+ 
         ScrollView {
             LazyVStack {
                 ForEach($stationInfoList.list) { station in
@@ -30,8 +47,13 @@ struct TFLNearbyBusStationListView : View {
             }
             Spacer(minLength: 80) // fix for being inside HostViewController. Change later
         }
-        .refreshable(action: refreshableAction)
+        .refreshable {
+            await stationInfoList.refresh()
+        }
         .background(.tflBackground)
+        .task {
+            await stationInfoList.refresh()
+        }
        
     }
 }

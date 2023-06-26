@@ -36,8 +36,7 @@ import SwiftData
      }
  
  */
-@Model
-public final class TFLBusPrediction : Decodable,Identifiable {
+public struct TFLBusPrediction : Decodable,Identifiable {
 
     enum TFLBusPredictionError : Error {
         case decodingError
@@ -85,6 +84,8 @@ public final class TFLBusPrediction : Decodable,Identifiable {
     public var id : String {
         return identifier
     }
+    
+   
     
     public init(from decoder: Decoder) throws {
         
@@ -139,4 +140,10 @@ public final class TFLBusPrediction : Decodable,Identifiable {
         eta =  arrivalTime(in:etaInSeconds )
     }
     
+}
+
+ extension TFLBusPrediction : Equatable {
+    static public func ==(lhs: TFLBusPrediction, rhs: TFLBusPrediction) -> Bool {
+        return lhs.id == rhs.id
+    }
 }

@@ -11,8 +11,8 @@ import SwiftData
 import CoreLocation
 
 
-@Model
-public class TFLBusStationInfo : Identifiable {
+
+public struct TFLBusStationInfo : Identifiable {
     fileprivate static let distanceFormatter : LengthFormatter = {
         let formatter = LengthFormatter()
         formatter.unitStyle = .short
@@ -20,15 +20,15 @@ public class TFLBusStationInfo : Identifiable {
         formatter.numberFormatter.maximumFractionDigits = 0
         return formatter
     }()
-    @Attribute(.unique) var identifier : String
-    var name : String
-    var stopLetter : String?
-    var towards : String?
-    var distanceInMeters : Double
-    var distance : String
-// FIXME: uncomment
-//    @Relationship(.cascade) var arrivals : [TFLBusPrediction] = []
-    @Transient var arrivals : [TFLBusPrediction] = []
+    let identifier : String
+    let name : String
+    let stopLetter : String?
+    let towards : String?
+    let distanceInMeters : Double
+    let distance : String
+
+    var arrivals : [TFLBusPrediction] = []
+    
     public var id : String {
         return identifier
     }

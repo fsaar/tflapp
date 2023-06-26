@@ -16,7 +16,7 @@ struct TFLApp: App {
 
     init() {
         do {
-            let container =  try ModelContainer(for: [TFLBusStation.self,TFLBusStationInfo.self,TFLBusPrediction.self], ModelConfiguration(schema: Schema([TFLBusStation.self,TFLBusStationInfo.self,TFLBusPrediction.self]),inMemory:true))
+            let container =  try ModelContainer(for: [TFLBusStation.self], ModelConfiguration(schema: Schema([TFLBusStation.self]),inMemory:true))
             self.container = container
         }
         catch let error {

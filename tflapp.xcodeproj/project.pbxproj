@@ -54,6 +54,7 @@
 		564EC70A1DE1917D008CFD11 /* TFLNearbyBusStationsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564EC7041DE1917D008CFD11 /* TFLNearbyBusStationsController.swift */; };
 		564F7A6F23ACD42200FF3426 /* CountDownLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564F7A6D23ACD42200FF3426 /* CountDownLabel.swift */; };
 		564F7A7023ACD42200FF3426 /* CountDownElementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564F7A6E23ACD42200FF3426 /* CountDownElementView.swift */; };
+		56543FF72A4A2F7C0049CB00 /* TFLSwiftDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56543FF62A4A2F7C0049CB00 /* TFLSwiftDataStack.swift */; };
 		5656717A219A244700F3B7EE /* TFLLineInfoRouteDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56567179219A244600F3B7EE /* TFLLineInfoRouteDirectory.swift */; };
 		56577D0120A0CF7700B40318 /* TFLRootViewControllerSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56577D0020A0CF7700B40318 /* TFLRootViewControllerSpecs.swift */; };
 		5657D3711DE38ADF004E4CD0 /* TFLBusPredictionSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5657D3701DE38ADF004E4CD0 /* TFLBusPredictionSpecs.swift */; };
@@ -200,6 +201,7 @@
 		564EC7041DE1917D008CFD11 /* TFLNearbyBusStationsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLNearbyBusStationsController.swift; sourceTree = "<group>"; };
 		564F7A6D23ACD42200FF3426 /* CountDownLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountDownLabel.swift; sourceTree = "<group>"; };
 		564F7A6E23ACD42200FF3426 /* CountDownElementView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountDownElementView.swift; sourceTree = "<group>"; };
+		56543FF62A4A2F7C0049CB00 /* TFLSwiftDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLSwiftDataStack.swift; sourceTree = "<group>"; };
 		56567179219A244600F3B7EE /* TFLLineInfoRouteDirectory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLLineInfoRouteDirectory.swift; sourceTree = "<group>"; };
 		56577D0020A0CF7700B40318 /* TFLRootViewControllerSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLRootViewControllerSpecs.swift; sourceTree = "<group>"; };
 		5657D3661DE387E6004E4CD0 /* tflApp Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "tflApp Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -382,10 +384,10 @@
 			isa = PBXGroup;
 			children = (
 				563F3ED82A43887B00EFF524 /* TFLNearbyBusStationListView.swift */,
+				563F3EDA2A43887B00EFF524 /* TFLBusStationView.swift */,
 				563F3ED72A43887B00EFF524 /* TFLBusPredictionView.swift */,
 				563F3EDB2A43887B00EFF524 /* TFLBusPredictionListView.swift */,
 				563F3ED92A43887B00EFF524 /* TFLCountDownLabel.swift */,
-				563F3EDA2A43887B00EFF524 /* TFLBusStationView.swift */,
 			);
 			path = TFLNearbyBusStationListView;
 			sourceTree = "<group>";
@@ -514,6 +516,7 @@
 				566EF7CB1DDB0851006162D7 /* TFLCDBusStop+CoreDataProperties.swift */,
 				565A1FC71DD8F6E6003CE960 /* TFLCoreDataStack.swift */,
 				566EF7D21DDB71CE006162D7 /* TFLBusStopStack.swift */,
+				56543FF62A4A2F7C0049CB00 /* TFLSwiftDataStack.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -1249,6 +1252,7 @@
 				56D705D5239EFE2A0085B878 /* TFLBusArrivalReminder.swift in Sources */,
 				563F3EE02A43887B00EFF524 /* TFLBusPredictionListView.swift in Sources */,
 				564EC70A1DE1917D008CFD11 /* TFLNearbyBusStationsController.swift in Sources */,
+				56543FF72A4A2F7C0049CB00 /* TFLSwiftDataStack.swift in Sources */,
 				5656717A219A244700F3B7EE /* TFLLineInfoRouteDirectory.swift in Sources */,
 				56A4907C219781C0004024D9 /* TFLRouteFormatter.swift in Sources */,
 				5692B5001DF2E26300C56A3C /* TFLSlideContainerController.swift in Sources */,

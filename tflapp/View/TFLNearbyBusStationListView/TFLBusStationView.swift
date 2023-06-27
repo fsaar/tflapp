@@ -60,7 +60,7 @@ struct TFLBusStationView : View {
                 Spacer()
             }.padding([.horizontal],10)
      
-//            TFLBusPredictionListView(predictionList: $station.arrivals )
+            TFLBusPredictionListView(predictionList: $station.arrivals )
         }
         .background(.tflBackground)
         

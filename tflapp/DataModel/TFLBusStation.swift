@@ -55,7 +55,7 @@ import CoreLocation
 
 
 @Model
-public final class TFLBusStation : Identifiable,Decodable {
+public final class TFLBusStation : Identifiable,Decodable,Hashable,Equatable {
     private enum CodingKeys : String,CodingKey {
         case naptanId = "naptanId"
         case stationNaptan = "stationNaptan"
@@ -70,6 +70,13 @@ public final class TFLBusStation : Identifiable,Decodable {
         case towardsKeyValue = "Towards"
     }
     
+    static public func ==(lhs: TFLBusStation, rhs: TFLBusStation) -> Bool {
+        return lhs.identifier == rhs.identifier
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.identifier)
+    }
     
     struct AdditionalProperties : Decodable {
         let category : String
@@ -91,7 +98,7 @@ public final class TFLBusStation : Identifiable,Decodable {
     var status: Bool
     var stopLetter: String?
     var towards: String?
-    var lines: [String]?
+    var lines: [String]
     
     var location : CLLocation {
         CLLocation(latitude: lat, longitude: long)
@@ -115,7 +122,7 @@ public final class TFLBusStation : Identifiable,Decodable {
         stopLetter = try container.decodeIfPresent(String.self, forKey: .stopLetter)
         let towardsInfo = additionalProperties.first { $0.key == CodingKeys.towardsKeyValue.rawValue }
         towards = towardsInfo?.value
-        let linesList : [Line] = try container.decode([Line].self, forKey: .lines)
+        let linesList : [Line] = try container.decodeIfPresent([Line].self, forKey: .lines) ?? []
         lines = linesList.map { $0.id }
     }
 }

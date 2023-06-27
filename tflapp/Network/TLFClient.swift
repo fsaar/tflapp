@@ -72,21 +72,16 @@ public final class TFLClient {
         let stops = try? await requestBusStops(with: busStopPath, query: query)
         return stops ?? []
     }
-    #if DATABASEGENERATION
-    public func busStops(with page: UInt,
-                         with operationQueue : OperationQueue = OperationQueue.main,
-                         using completionBlock: @escaping (([TFLCDBusStop]?,_ error:Error?) -> ()))  {
+  
+    public func busStops(with page: UInt) async throws -> [TFLBusStation] {
         let busStopPath = "/StopPoint/Mode/bus"
         let query = "page=\(page+1)"
-        TFLLogger.shared.signPostStart(osLog: TFLClient.loggingHandle, name: "busStops")
-        requestBusStops(with: busStopPath, query: query,context:TFLCoreDataStack.sharedDataStack.privateQueueManagedObjectContext) { busstops, error in
-            TFLLogger.shared.signPostEnd(osLog: TFLClient.loggingHandle, name: "busStops")
-            operationQueue.addOperation{
-                completionBlock(busstops,error)
-            }
-        }
+        logger.log("\(#function) start:\(page)")
+        let busstops = try await requestBusStops(with: busStopPath, query: query)
+        logger.log("\(#function) stop:\(page)")
+        return busstops
     }
-    #endif
+    
     public func lineStationInfo(for line: String,
                         context: NSManagedObjectContext,
                          with operationQueue : OperationQueue = OperationQueue.main,
@@ -145,4 +140,3 @@ fileprivate extension TFLClient {
         return wrapper.stopPoints
     }
 }
-

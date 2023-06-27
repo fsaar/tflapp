@@ -8,10 +8,24 @@ import SwiftData
 
 struct ContentView: View {
    
- 
+    private let busStopDBGenerator = TFLBusStopDBGenerator()
     var body: some View {
-        TFLNearbyBusStationListView()
-        Spacer()
+        VStack {
+            Button("Create Database") {
+                Task {
+                    
+                    try? await self.busStopDBGenerator.loadBusStops()
+                }
+              
+//                { [weak self] in
+//                    self?.busStopDBGenerator.loadLineStations()
+//                }
+            }
+            Spacer()
+            TFLNearbyBusStationListView()
+            Spacer()
+        }
+     
     }
    
    

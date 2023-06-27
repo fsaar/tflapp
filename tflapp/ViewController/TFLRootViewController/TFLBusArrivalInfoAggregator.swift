@@ -27,7 +27,7 @@ class TFLBusArrivalInfoAggregator {
             stations.forEach {  station in
                 group.addTask(priority: .userInitiated) {
                     var stationInfo = TFLBusStationInfo(station, coordinates: location)
-                    let arrivals : [TFLBusPrediction] = [] //(try? await self.tflClient.arrivalsForStopPoint(with: stationInfo.identifier)) ?? []
+                    let arrivals  = (try? await self.tflClient.arrivalsForStopPoint(with: stationInfo.identifier)) ?? []
                     stationInfo.arrivals = arrivals.sorted { $0.etaInSeconds < $1.etaInSeconds }
                     return stationInfo
                 }
@@ -35,7 +35,7 @@ class TFLBusArrivalInfoAggregator {
             for await info in group {
                 infoList += [info]
             }
-            let filteredList = infoList //.filter { !$0.arrivals.isEmpty }
+            let filteredList = infoList.filter { !$0.arrivals.isEmpty }
             logger.log("\(#function) \(filteredList.count) arrival times retrieved")
             lastUpdate = Date()
             return filteredList

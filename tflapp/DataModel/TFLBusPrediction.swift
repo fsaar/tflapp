@@ -91,35 +91,22 @@ public struct TFLBusPrediction : Decodable,Identifiable {
         return identifier
     }
     
-   
-    
     public init(from decoder: Decoder) throws {
-        
-
         func arrivalTime(in secs : Int) -> String {
             let minTitle = "1 \(NSLocalizedString("Common.min", comment: ""))"
             let minsTitle = NSLocalizedString("Common.mins", comment: "")
-            var timeString = ""
             
             switch secs {
             case ..<30:
-                timeString = NSLocalizedString("Common.due", comment: "")
-                
+                return NSLocalizedString("Common.due", comment: "")
             case 30..<60:
-                timeString = minTitle
-                
+                return minTitle
             case 60..<(99*60):
                 let mins = secs/60
-                timeString = "\(mins) \(minsTitle)"
-                
-                if mins == 1 {
-                    timeString = minTitle
-                 
-                }
+                return mins == 1 ? minTitle : "\(mins) \(minsTitle)"
             default:
-                break
+                return ""
             }
-            return timeString
         }
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let ttlString = try container.decode(String.self, forKey: .timeToLive)
@@ -135,18 +122,19 @@ public struct TFLBusPrediction : Decodable,Identifiable {
         busStopIdentifier = try container.decode(String.self, forKey: .busStopIdentifier)
         lineIdentifier = try container.decode(String.self, forKey: .lineIdentifier)
         lineName = try container.decode(String.self, forKey: .lineName)
+        
         let modeName = try container.decode(String.self, forKey: .modeName)
         guard let modeType = Mode(rawValue: modeName) else {
             throw TFLBusPredictionError.invalidModeType
         }
         mode = modeType
+        
         destination = try container.decode(String.self, forKey: .destination)
         timeToStation = try container.decode(UInt.self, forKey: .timeToStation)
         vehicleId = try container.decode(String.self, forKey: .vehicleId)
         towards = try container.decode(String.self, forKey: .towards)
         
-        let timeStampSinceReferenceDate = timeStamp.timeIntervalSinceReferenceDate
-        let timeOffset = Int(Date().timeIntervalSinceReferenceDate - timeStampSinceReferenceDate)
+        let timeOffset = Int(Date() - timeStamp)
         etaInSeconds = Int(timeToStation) - timeOffset
         eta =  arrivalTime(in:etaInSeconds )
     }
@@ -156,5 +144,11 @@ public struct TFLBusPrediction : Decodable,Identifiable {
  extension TFLBusPrediction : Equatable {
     static public func ==(lhs: TFLBusPrediction, rhs: TFLBusPrediction) -> Bool {
         return lhs.id == rhs.id
+    }
+}
+
+extension Date {
+    static func-(lhs: Self, rhs: Self) -> Double {
+        lhs.timeIntervalSinceReferenceDate - rhs.timeIntervalSinceReferenceDate
     }
 }

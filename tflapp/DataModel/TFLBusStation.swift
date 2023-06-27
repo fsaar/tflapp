@@ -126,3 +126,47 @@ public final class TFLBusStation : Identifiable,Decodable,Hashable,Equatable {
         lines = linesList.map { $0.id }
     }
 }
+
+extension TFLBusStation {
+    func distance(from fromLocation: CLLocation) -> Double {
+        return fromLocation.distance(from:location)
+    }
+    
+    static func nearbyBusStops(with coordinate: CLLocationCoordinate2D, with radiusInMeter: Double = 350,and context: ModelContext) async ->  [TFLBusStation] {
+      
+        // London : long=-0.252395&lat=51.506788
+        // Latitude 1 Degree : 111.111 KM = 1/1111 Degree ≈ 100 m
+        // Longitude 1 Degree : cos(51.506788)*111.111 = 0.3235612467* 111.111 = 35.9512136821 => 1/359.512136 Degree ≈ 100 m
+        let factor = (radiusInMeter/100)
+        let latOffset : Double =  factor/1111.11
+        let longOffset : Double =  factor/359.512136
+        let latLowerLimit = coordinate.latitude-latOffset
+        let latUpperLimit = coordinate.latitude+latOffset
+        let longLowerLimit = coordinate.longitude-longOffset
+        let longUpperLimit = coordinate.longitude+longOffset
+    
+        let predicate = #Predicate<TFLBusStation> { stop in
+             (stop.long>=longLowerLimit && stop.long<=longUpperLimit) && (stop.lat>=latLowerLimit && stop.lat <= latUpperLimit) && stop.status == true
+        }
+        let descriptor = FetchDescriptor<TFLBusStation>(predicate: predicate)
+        var busStops : [TFLBusStation] = []
+        let currentLocation = coordinate.location
+   
+        if let stops =  try? context.fetch(descriptor) {
+            busStops = stops.map{ ($0.distance(from:currentLocation),$0) }
+                .filter{ $0.0 < radiusInMeter }
+                .sorted{ $0.0 < $1.0 }
+                .map{ $0.1 }
+        }
+        return busStops
+    }
+    
+    
+    static func existingStationsMatchingStops(_ stops: [TFLBusStation],context: ModelContext) throws -> [TFLBusStation] {
+        let identifiers = stops.map { $0.identifier }
+        let predicate = #Predicate<TFLBusStation> { identifiers.contains($0.identifier) }
+        let descriptor = FetchDescriptor<TFLBusStation>(predicate: predicate)
+        let toBeExcluded : [TFLBusStation] = try context.fetch(descriptor)
+        return toBeExcluded
+    }
+}

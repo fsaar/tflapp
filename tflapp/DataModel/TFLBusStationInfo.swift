@@ -10,8 +10,6 @@ import Foundation
 import SwiftData
 import CoreLocation
 
-
-
 public struct TFLBusStationInfo : Identifiable {
     fileprivate static let distanceFormatter : LengthFormatter = {
         let formatter = LengthFormatter()
@@ -33,12 +31,12 @@ public struct TFLBusStationInfo : Identifiable {
         return identifier
     }
     
-    init(_ station: TFLBusStation, coordinates: CLLocationCoordinate2D) {
+    init(_ station: TFLBusStation, userCoordinates: CLLocationCoordinate2D) {
         self.identifier = station.identifier
         self.name = station.name
         self.stopLetter = station.stopLetter
         self.towards = station.towards
-        self.distanceInMeters = coordinates.location.distance(from: station.location)
+        self.distanceInMeters = userCoordinates.location.distance(from: station.location)
         self.distance = Self.distanceFormatter.string(fromValue: distanceInMeters, unit: .meter)
 
     }

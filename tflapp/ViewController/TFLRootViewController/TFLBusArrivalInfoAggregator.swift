@@ -9,7 +9,8 @@ import MapKit
 import Foundation
 import CoreLocation
 import UIKit
-import os.signpost
+import SwiftData
+import OSLog
 
 
 class TFLBusArrivalInfoAggregator {
@@ -20,13 +21,18 @@ class TFLBusArrivalInfoAggregator {
         return handle
     }()
     var lastUpdate : Date?
-    func loadArrivalTimesForBusStations(with stations: [TFLBusStation], location: CLLocationCoordinate2D) async -> [TFLBusStationInfo] {
+    
+   
+    func loadArrivalTimesForBusStations(with location: CLLocationCoordinate2D,radius: Int) async -> [TFLBusStationInfo] {
         var infoList : [TFLBusStationInfo] = []
+        let modelContext = ModelContext(SwiftDataStack.shared.container)
+        let stations = await TFLBusStation.nearbyBusStops(with: location, and: modelContext)
+        updateDatabase(for: location,radius: radius)
         logger.log("\(#function) retrieving arrival times for \(stations.count) stations")
         return await withTaskGroup(of: TFLBusStationInfo.self) { group in
             stations.forEach {  station in
                 group.addTask(priority: .userInitiated) {
-                    var stationInfo = TFLBusStationInfo(station, coordinates: location)
+                    var stationInfo = TFLBusStationInfo(station, userCoordinates: location)
                     let arrivals  = (try? await self.tflClient.arrivalsForStopPoint(with: stationInfo.identifier)) ?? []
                     stationInfo.arrivals = arrivals.sorted { $0.etaInSeconds < $1.etaInSeconds }
                     return stationInfo
@@ -39,6 +45,16 @@ class TFLBusArrivalInfoAggregator {
             logger.log("\(#function) \(filteredList.count) arrival times retrieved")
             lastUpdate = Date()
             return filteredList
+        }
+    }
+    
+    func updateDatabase(for currentLocation: CLLocationCoordinate2D,radius: Int)  {
+        Task.detached {
+            let modelContext = ModelContext(SwiftDataStack.shared.container)
+            let busStops = await self.tflClient.nearbyBusStops(with: currentLocation,radius: radius)
+            let toBeExcluded = try TFLBusStation.existingStationsMatchingStops(busStops, context: modelContext)
+            let savedSet = Set(busStops).subtracting(toBeExcluded)
+            savedSet.forEach { modelContext.insert($0) }
         }
     }
 }

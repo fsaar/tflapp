@@ -27,8 +27,8 @@ class StationList  {
     }
     
     func updateNearbyBusStops(for currentLocation:CLLocationCoordinate2D ) async -> [TFLBusStationInfo]  {
-        let stops = await self.client.nearbyBusStops(with: currentLocation,radius: Int(400))
-        let stations = await aggregator.loadArrivalTimesForBusStations(with: stops, location: currentLocation)
+     
+        let stations = await aggregator.loadArrivalTimesForBusStations(with: currentLocation, radius: Int(400))
         return stations.sorted { $0.distance < $1.distance }
     }
 }

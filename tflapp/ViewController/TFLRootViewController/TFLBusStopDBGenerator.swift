@@ -83,7 +83,7 @@ class TFLBusStopDBGenerator {
                 continue
             }
             totalCount += busStops.count
-            let toBeExcluded = try existingStationsMatchingStops(busStops, context: modelContext)
+            let toBeExcluded = try TFLBusStation.existingStationsMatchingStops(busStops, context: modelContext)
             let savedSet = Set(busStops).subtracting(toBeExcluded)
             savedSet.forEach { modelContext.insert($0) }
             try modelContext.save()
@@ -91,13 +91,7 @@ class TFLBusStopDBGenerator {
         }
     }
  
-    func existingStationsMatchingStops(_ stops: [TFLBusStation],context: ModelContext) throws -> [TFLBusStation] {
-        let identifiers = stops.map { $0.identifier }
-        let predicate = #Predicate<TFLBusStation> { identifiers.contains($0.identifier) }
-        let descriptor = FetchDescriptor<TFLBusStation>(predicate: predicate)
-        let toBeExcluded : [TFLBusStation] = try context.fetch(descriptor)
-        return toBeExcluded
-    }
+    
     
     func loadBusStopInBulk(of pageRange: Range<Int>) async -> [TFLBusStation] {
         
@@ -113,8 +107,6 @@ class TFLBusStopDBGenerator {
                         self.logger.log("\(#function)  error:\(error)")
                         return []
                     }
-                    
-                    
                 }
             }
             for await newStations in group {

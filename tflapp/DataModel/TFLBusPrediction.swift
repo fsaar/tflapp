@@ -37,9 +37,12 @@ import SwiftData
  
  */
 public struct TFLBusPrediction : Decodable,Identifiable {
-
+    enum Mode : String {
+        case bus
+    }
     enum TFLBusPredictionError : Error {
         case decodingError
+        case invalidModeType
     }
     
     static let iso8601Full: DateFormatter = {
@@ -67,6 +70,7 @@ public struct TFLBusPrediction : Decodable,Identifiable {
         case destination = "destinationName"
         case timeToStation = "timeToStation"
         case towards = "towards"
+        case modeName
     }
     
     let identifier : String
@@ -81,6 +85,8 @@ public struct TFLBusPrediction : Decodable,Identifiable {
     let towards : String
     let eta : String
     let etaInSeconds : Int
+   
+    let mode : Mode
     public var id : String {
         return identifier
     }
@@ -129,6 +135,11 @@ public struct TFLBusPrediction : Decodable,Identifiable {
         busStopIdentifier = try container.decode(String.self, forKey: .busStopIdentifier)
         lineIdentifier = try container.decode(String.self, forKey: .lineIdentifier)
         lineName = try container.decode(String.self, forKey: .lineName)
+        let modeName = try container.decode(String.self, forKey: .modeName)
+        guard let modeType = Mode(rawValue: modeName) else {
+            throw TFLBusPredictionError.invalidModeType
+        }
+        mode = modeType
         destination = try container.decode(String.self, forKey: .destination)
         timeToStation = try container.decode(UInt.self, forKey: .timeToStation)
         vehicleId = try container.decode(String.self, forKey: .vehicleId)

@@ -9,7 +9,7 @@ class SwiftDataStack {
     init() {
         do {
             let storeURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last!.appendingPathComponent("stops.store")
-            print(storeURL)
+           
             let config = ModelConfiguration(schema: Schema(types),url:storeURL)
             let container =  try ModelContainer(for: types, config)
             self.container = container

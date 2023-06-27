@@ -385,8 +385,8 @@
 			children = (
 				563F3ED82A43887B00EFF524 /* TFLNearbyBusStationListView.swift */,
 				563F3EDA2A43887B00EFF524 /* TFLBusStationView.swift */,
-				563F3ED72A43887B00EFF524 /* TFLBusPredictionView.swift */,
 				563F3EDB2A43887B00EFF524 /* TFLBusPredictionListView.swift */,
+				563F3ED72A43887B00EFF524 /* TFLBusPredictionView.swift */,
 				563F3ED92A43887B00EFF524 /* TFLCountDownLabel.swift */,
 			);
 			path = TFLNearbyBusStationListView;

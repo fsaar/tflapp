@@ -35,8 +35,5 @@ struct TFLBusPredictionListView : View {
            
         }
         .safeAreaPadding([.leading],10)
-      
     }
-                                
-                                
 }

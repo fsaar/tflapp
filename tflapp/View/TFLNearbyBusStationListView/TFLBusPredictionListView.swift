@@ -19,17 +19,15 @@ extension AnyTransition {
 
 struct TFLBusPredictionListView : View {
     @Binding var predictionList : [TFLBusPrediction]
-    
+   
     var body : some View {
         
         ScrollView(.horizontal,showsIndicators: false) {
             LazyVStack {
                 LazyHStack {
                     ForEach($predictionList) { prediction in
-                        TFLBusPredictionView(prediction).transition(.asymmetric(insertion: .scaleOut, removal:  .scaleDown))
-                            
+                        TFLBusPredictionView(prediction)
                     }
-//                    TFLBusArrivalView($dummy).opacity(0.01) // prevents HStack from vertically shrinking
                 }
             }
            

@@ -180,8 +180,37 @@ public struct TFLBusPrediction : Decodable,Identifiable, CustomStringConvertible
         }
         let newTimeToStation = max(timeToStation - seconds,0)
         let newEtaInSeconds = max(etaInSeconds - seconds,0)
-        let newEta =  arrivalTime(in:etaInSeconds )
+        let newEta =  arrivalTime(in:newEtaInSeconds )
         let new =  TFLBusPrediction(identifier: self.identifier, timeToLive: self.timeToLive, timeStamp: self.timeStamp, busStopIdentifier: self.busStopIdentifier, lineIdentifier: self.lineIdentifier, lineName: self.lineName, destination: self.destination, timeToStation: newTimeToStation, vehicleId: self.vehicleId, towards: self.towards, eta: newEta, etaInSeconds: newEtaInSeconds, mode: mode)
+   
+        return new
+    }
+    
+    func predictionsUpdatedToCurrentTime() -> TFLBusPrediction {
+        func arrivalTime(in secs : Int) -> String {
+            let minTitle = "1 \(NSLocalizedString("Common.min", comment: ""))"
+            let minsTitle = NSLocalizedString("Common.mins", comment: "")
+            
+            switch secs {
+            case ..<30:
+                return NSLocalizedString("Common.due", comment: "")
+            case 30..<60:
+                return minTitle
+            case 60..<(99*60):
+                let mins = secs/60
+                return mins == 1 ? minTitle : "\(mins) \(minsTitle)"
+            default:
+                return ""
+            }
+        }
+        
+       
+        let timeOffset = Int(Date() - timeStamp)
+        let newEtaInSeconds = max(Int(timeToStation) - timeOffset,0)
+        let newEta =  arrivalTime(in:newEtaInSeconds )
+        
+        
+        let new =  TFLBusPrediction(identifier: self.identifier, timeToLive: self.timeToLive, timeStamp: self.timeStamp, busStopIdentifier: self.busStopIdentifier, lineIdentifier: self.lineIdentifier, lineName: self.lineName, destination: self.destination, timeToStation: self.timeToStation, vehicleId: self.vehicleId, towards: self.towards, eta: newEta, etaInSeconds: newEtaInSeconds, mode: mode)
    
         return new
     }

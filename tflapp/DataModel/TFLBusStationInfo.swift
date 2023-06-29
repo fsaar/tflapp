@@ -57,8 +57,25 @@ public struct TFLBusStationInfo : Identifiable,Equatable {
 
     }
     
+    init(_ station: TFLBusStationInfo) {
+        self.identifier = station.identifier
+        self.name = station.name
+        self.stopLetter = station.stopLetter
+        self.towards = station.towards
+        self.distanceInMeters = station.distanceInMeters
+        self.distance = station.distance
+        self.arrivals = station.arrivals.map { $0.predictionsUpdatedToCurrentTime() }.filter { $0.etaInSeconds > 0 }
+
+    }
+    
     func stationInfoWithTimestampReducedBy(_ seconds : Int) -> TFLBusStationInfo {
-        let new = Self.init(self,seconds: seconds)
+        let new = TFLBusStationInfo(self,seconds: seconds)
+        return new
+       
+    }
+    
+    func stationInfoUpdateToCurrentTime() -> TFLBusStationInfo {
+        let new = TFLBusStationInfo(self)
         return new
        
     }

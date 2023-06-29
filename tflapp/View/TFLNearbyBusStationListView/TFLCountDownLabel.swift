@@ -57,7 +57,7 @@ struct TFLCountDownLabel : View {
                             
                         }
                     }
-            }.clipped()
+                }.clipped()
     }
 }
 

@@ -63,7 +63,6 @@ struct TFLBusStationView : View {
             TFLBusPredictionListView(predictionList: $station.arrivals )
         }
         .background(.tflBackground)
-        
     }
 }
 

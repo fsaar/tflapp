@@ -50,10 +50,10 @@ struct TFLBusPredictionView : View {
         }
         .scaleEffect(isVisible ? 1.0 : 0.01,anchor: .center)
         .onDisappear {
-            withAnimation {
-                self.isVisible = false
-            }
-            
+            self.isVisible = false
+        }
+        .onAppear {
+            self.isVisible = true
         }
        
     }

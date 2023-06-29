@@ -26,7 +26,7 @@ class TFLStationList  {
     
     init() {
         NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification).sink {_ in 
-            self.list = self.list.map { $0.stationInfoUpdateToCurrentTime() }
+            self.list = self.list.map { $0.stationInfoUpdateToCurrentTime() }.filter { !$0.arrivals.isEmpty }
         }.store(in: &cancelableSet)
     }
     
@@ -39,7 +39,7 @@ class TFLStationList  {
     
     func debug() {
         Timer.publish(every: 2, on: .main, in: .common).autoconnect().sink { _ in
-            self.list = self.list.map { $0.stationInfoWithTimestampReducedBy(30) }
+            self.list = self.list.map { $0.stationInfoWithTimestampReducedBy(30) }.filter { !$0.arrivals.isEmpty }
         }.store(in:&cancelableSet)
     }
 }

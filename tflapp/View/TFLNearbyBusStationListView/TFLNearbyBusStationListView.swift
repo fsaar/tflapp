@@ -30,7 +30,7 @@ class StationList  {
     func updateNearbyBusStops(for currentLocation:CLLocationCoordinate2D ) async -> [TFLBusStationInfo]  {
      
         let stations = await aggregator.loadArrivalTimesForBusStations(with: currentLocation, radius: Int(400))
-        return Array(stations.sorted { $0.distance < $1.distance }.prefix(1))
+        return stations.filter { !$0.arrivals.isEmpty }.sorted { $0.distance < $1.distance }
     }
     var set : Set<AnyCancellable> = []
     func start() {

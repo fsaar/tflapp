@@ -19,7 +19,7 @@ extension AnyTransition {
 
 struct TFLBusPredictionListView : View {
     @Binding var predictionList : [TFLBusPrediction]
-   
+    @State var firstId : TFLBusPrediction.ID?
     var body : some View {
         
         ScrollView(.horizontal,showsIndicators: false) {
@@ -36,6 +36,10 @@ struct TFLBusPredictionListView : View {
             }
            
         }
+        .scrollPosition(id: $firstId)
         .safeAreaPadding([.leading],10)
+        .onDisappear {
+            firstId = self.predictionList.first?.id
+        }
     }
 }

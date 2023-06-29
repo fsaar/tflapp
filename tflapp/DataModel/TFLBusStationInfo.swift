@@ -53,7 +53,7 @@ public struct TFLBusStationInfo : Identifiable,Equatable {
         self.towards = station.towards
         self.distanceInMeters = station.distanceInMeters
         self.distance = station.distance
-        self.arrivals = station.arrivals.map { $0.predictionoWithTimestampReducedBy(seconds) }.filter { $0.timeToStation > 0}
+        self.arrivals = station.arrivals.map { $0.predictionoWithTimestampReducedBy(seconds) }.filter { $0.etaInSeconds > 0}
 
     }
     

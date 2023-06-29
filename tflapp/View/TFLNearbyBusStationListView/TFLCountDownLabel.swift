@@ -49,7 +49,7 @@ struct TFLCountDownLabel : View {
                                     .offset(y: scrollState.offset(height: proxy.size.height))
                             }
                         } .onChange(of: value) {
-                            if (width == 0) {
+                            if width == 0 {
                                 width = proxy.size.width
                             }
                             values[0] = _value.wrappedValue

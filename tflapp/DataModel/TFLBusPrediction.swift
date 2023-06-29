@@ -36,7 +36,8 @@ import SwiftData
      }
  
  */
-public struct TFLBusPrediction : Decodable,Identifiable {
+
+public struct TFLBusPrediction : Decodable,Identifiable, CustomStringConvertible {
     enum Mode : String {
         case bus
     }
@@ -72,6 +73,9 @@ public struct TFLBusPrediction : Decodable,Identifiable {
         case towards = "towards"
         case modeName
     }
+    public var description: String {
+        "identifier: \(identifier) eta:\(eta) etaInSeconds:\(etaInSeconds)"
+    }
     
     let identifier : String
     let timeToLive : Date
@@ -80,15 +84,33 @@ public struct TFLBusPrediction : Decodable,Identifiable {
     let lineIdentifier : String
     let lineName : String
     let destination : String
-    let timeToStation : UInt
+    let timeToStation : Int
     let vehicleId : String
     let towards : String
-    let eta : String
+    let eta : String 
     let etaInSeconds : Int
    
     let mode : Mode
     public var id : String {
         return identifier
+    }
+    
+    init(identifier: String, timeToLive: Date,timeStamp: Date, busStopIdentifier: String, lineIdentifier: String, lineName: String, destination: String, timeToStation : Int, vehicleId : String, towards: String, eta: String, etaInSeconds: Int, mode: Mode) {
+        self.identifier = identifier
+        self.timeToLive = timeToLive
+        self.timeStamp = timeStamp
+        self.busStopIdentifier = busStopIdentifier
+        self.lineIdentifier = lineIdentifier
+        self.lineName = lineName
+        self.destination = destination
+        self.timeToStation = timeToStation
+        self.vehicleId = vehicleId
+        self.towards = towards
+        self.eta = eta
+        self.etaInSeconds = etaInSeconds
+        self.mode = mode
+        
+        
     }
     
     public init(from decoder: Decoder) throws {
@@ -130,7 +152,7 @@ public struct TFLBusPrediction : Decodable,Identifiable {
         mode = modeType
         
         destination = try container.decode(String.self, forKey: .destination)
-        timeToStation = try container.decode(UInt.self, forKey: .timeToStation)
+        timeToStation = try container.decode(Int.self, forKey: .timeToStation)
         vehicleId = try container.decode(String.self, forKey: .vehicleId)
         towards = try container.decode(String.self, forKey: .towards)
         
@@ -139,11 +161,36 @@ public struct TFLBusPrediction : Decodable,Identifiable {
         eta =  arrivalTime(in:etaInSeconds )
     }
     
+    func predictionoWithTimestampReducedBy(_ seconds: Int) -> TFLBusPrediction {
+        func arrivalTime(in secs : Int) -> String {
+            let minTitle = "1 \(NSLocalizedString("Common.min", comment: ""))"
+            let minsTitle = NSLocalizedString("Common.mins", comment: "")
+            
+            switch secs {
+            case ..<30:
+                return NSLocalizedString("Common.due", comment: "")
+            case 30..<60:
+                return minTitle
+            case 60..<(99*60):
+                let mins = secs/60
+                return mins == 1 ? minTitle : "\(mins) \(minsTitle)"
+            default:
+                return ""
+            }
+        }
+        let newTimeToStation = max(timeToStation - seconds,0)
+        let newEtaInSeconds = max(etaInSeconds - seconds,0)
+        let newEta =  arrivalTime(in:etaInSeconds )
+        let new =  TFLBusPrediction(identifier: self.identifier, timeToLive: self.timeToLive, timeStamp: self.timeStamp, busStopIdentifier: self.busStopIdentifier, lineIdentifier: self.lineIdentifier, lineName: self.lineName, destination: self.destination, timeToStation: newTimeToStation, vehicleId: self.vehicleId, towards: self.towards, eta: newEta, etaInSeconds: newEtaInSeconds, mode: mode)
+   
+        return new
+    }
+    
 }
 
  extension TFLBusPrediction : Equatable {
     static public func ==(lhs: TFLBusPrediction, rhs: TFLBusPrediction) -> Bool {
-        return lhs.id == rhs.id
+        return lhs.etaInSeconds == rhs.etaInSeconds && lhs.lineName == rhs.lineName
     }
 }
 

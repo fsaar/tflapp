@@ -11,6 +11,7 @@ import SwiftUI
 import Observation
 import SwiftData
 import CoreLocation
+import Combine
 
 @Observable
 class StationList  {
@@ -29,7 +30,13 @@ class StationList  {
     func updateNearbyBusStops(for currentLocation:CLLocationCoordinate2D ) async -> [TFLBusStationInfo]  {
      
         let stations = await aggregator.loadArrivalTimesForBusStations(with: currentLocation, radius: Int(400))
-        return stations.sorted { $0.distance < $1.distance }
+        return Array(stations.sorted { $0.distance < $1.distance }.prefix(1))
+    }
+    var set : Set<AnyCancellable> = []
+    func start() {
+        Timer.publish(every: 2, on: .main, in: .common).autoconnect().sink { _ in
+            self.list = self.list.map { $0.stationInfoWithTimestampReducedBy(30) }
+        }.store(in:&set)
     }
 }
 
@@ -38,22 +45,29 @@ struct TFLNearbyBusStationListView : View {
     @State var stationInfoList = StationList()
   
     var body : some View {
- 
-        ScrollView {
-            LazyVStack {
-                ForEach($stationInfoList.list) { station in
-                    TFLBusStationView(station:station)
+        VStack {
+            Spacer()
+            Button("Debug") {
+                self.stationInfoList.start()
+            }
+            ScrollView {
+                LazyVStack {
+                    ForEach($stationInfoList.list) { station in
+                        TFLBusStationView(station:station)
+                    }
                 }
             }
-            Spacer(minLength: 80) // fix for being inside HostViewController. Change later
+            .refreshable {
+                await stationInfoList.refresh()
+            }
+            .background(.tflBackground)
+            .task {
+                await stationInfoList.refresh()
+            }
         }
-        .refreshable {
-            await stationInfoList.refresh()
-        }
-        .background(.tflBackground)
-        .task {
-            await stationInfoList.refresh()
-        }
+        Spacer()
+        
+
        
     }
 }

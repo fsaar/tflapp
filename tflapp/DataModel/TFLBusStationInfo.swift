@@ -9,8 +9,10 @@
 import Foundation
 import SwiftData
 import CoreLocation
+import Observation
 
-public struct TFLBusStationInfo : Identifiable {
+
+public struct TFLBusStationInfo : Identifiable,Equatable {
     fileprivate static let distanceFormatter : LengthFormatter = {
         let formatter = LengthFormatter()
         formatter.unitStyle = .short
@@ -18,6 +20,9 @@ public struct TFLBusStationInfo : Identifiable {
         formatter.numberFormatter.maximumFractionDigits = 0
         return formatter
     }()
+    static public func ==(lhs: Self,rhs: Self) -> Bool {
+        return lhs.name == rhs.name &&  lhs.stopLetter == rhs.stopLetter && lhs.towards == rhs.towards && lhs.distanceInMeters == rhs.distanceInMeters
+    }
     let identifier : String
     let name : String
     let stopLetter : String?
@@ -39,5 +44,22 @@ public struct TFLBusStationInfo : Identifiable {
         self.distanceInMeters = userCoordinates.location.distance(from: station.location)
         self.distance = Self.distanceFormatter.string(fromValue: distanceInMeters, unit: .meter)
 
+    }
+    
+    init(_ station: TFLBusStationInfo, seconds: Int) {
+        self.identifier = station.identifier
+        self.name = station.name
+        self.stopLetter = station.stopLetter
+        self.towards = station.towards
+        self.distanceInMeters = station.distanceInMeters
+        self.distance = station.distance
+        self.arrivals = station.arrivals.map { $0.predictionoWithTimestampReducedBy(seconds) }.filter { $0.timeToStation > 0}
+
+    }
+    
+    func stationInfoWithTimestampReducedBy(_ seconds : Int) -> TFLBusStationInfo {
+        let new = Self.init(self,seconds: seconds)
+        return new
+       
     }
 }

@@ -27,6 +27,10 @@ struct TFLBusPredictionListView : View {
                 LazyHStack {
                     ForEach($predictionList) { prediction in
                         TFLBusPredictionView(prediction)
+                            .transition(.opacity.animation(.linear(duration: 0.20)))
+                            .animation(.linear(duration: 0.4),value:predictionList)
+                           
+                          
                     }
                 }
             }

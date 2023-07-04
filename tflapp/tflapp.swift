@@ -8,13 +8,19 @@
 
 import SwiftUI
 import SwiftData
+import MapKit
 
 @main
 struct TFLApp: App {
    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            Slider(backgroundViewBuilder: {
+                Map()
+            })  {
+                ContentView()
+            }
+           
         }
         .modelContainer(SwiftDataStack.shared.container)
     }

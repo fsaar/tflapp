@@ -11,20 +11,15 @@ struct ContentView: View {
     private let busStopDBGenerator = TFLBusStopDBGenerator()
     var body: some View {
         VStack {
-            Button("Create Database") {
-                Task {
-                    
-                    try? await self.busStopDBGenerator.loadBusStops()
-                }
-              
-//                { [weak self] in
-//                    self?.busStopDBGenerator.loadLineStations()
+//            Button("Create Database") {
+//                Task {
+//                    try? await self.busStopDBGenerator.loadBusStops()
 //                }
-            }
-            Spacer()
+//            }
+//            Spacer()
             TFLNearbyBusStationListView()
             Spacer()
-        }
+        }.background(.white)
      
     }
    

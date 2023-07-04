@@ -21,10 +21,10 @@ struct TFLNearbyBusStationListView : View {
   
     var body : some View {
         VStack {
-            Spacer()
-            Button("Debug") {
-                self.stationInfoList.debug()
-            }
+//            Spacer()
+//            Button("Debug") {
+//                self.stationInfoList.debug()
+//            }
             ScrollView {
                 LazyVStack {
                     ForEach($stationInfoList.list) { station in
@@ -32,6 +32,7 @@ struct TFLNearbyBusStationListView : View {
                             
                     }
                 }
+                Spacer(minLength: 140)
             }
             .refreshable {
                 await stationInfoList.refresh()

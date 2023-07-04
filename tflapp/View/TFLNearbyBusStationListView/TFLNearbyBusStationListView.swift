@@ -31,11 +31,18 @@ struct TFLNearbyBusStationListView : View {
                 LazyVStack {
                     ForEach($stationInfoList.list) { station in
                         TFLBusStationView(station:station)
+                            .scrollTransition(axis: .vertical) { content, phase in
+                                content
+                                    .scaleEffect(
+                                        x: phase.isIdentity ? 1.0 : 0.90,
+                                        y: phase.isIdentity ? 1.0 : 0.90)
+                            }
                             
                     }
-                }
-                Spacer(minLength: 140)
+                }.scrollTargetLayout()
             }
+            .safeAreaPadding([.bottom],140)
+            .scrollTargetBehavior(.viewAligned)
             .refreshable {
                 await stationInfoList.refresh()
             }

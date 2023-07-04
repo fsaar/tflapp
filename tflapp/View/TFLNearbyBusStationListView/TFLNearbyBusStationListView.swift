@@ -17,8 +17,10 @@ import Combine
 
 
 struct TFLNearbyBusStationListView : View {
+    @Environment(\.scenePhase) var scenePhase
+   
     @State var stationInfoList = TFLStationList()
-  
+    @EnvironmentObject var settings : TFLSettings
     var body : some View {
         VStack {
 //            Spacer()
@@ -38,13 +40,23 @@ struct TFLNearbyBusStationListView : View {
                 await stationInfoList.refresh()
             }
             .background(.tflBackground)
-            .task {
-                await stationInfoList.refresh()
+            .onChange(of: scenePhase) {
+                if scenePhase == .active {
+                    Task {
+                        await refresh()
+                    }
+                }
             }
+            
         }
         Spacer()
-        
-
-       
     }
+    
+    func refresh() async {
+        settings.showProgress(stationInfoList.list.isEmpty)
+        await stationInfoList.refresh()
+        settings.showProgress(false)
+    }
+    
+    
 }

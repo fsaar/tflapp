@@ -12,16 +12,21 @@ import MapKit
 
 @main
 struct TFLApp: App {
-   
+    @ObservedObject var settings = TFLSettings()
     var body: some Scene {
         WindowGroup {
-            Slider(backgroundViewBuilder: {
-                Map()
-            })  {
-                ContentView()
+            ZStack {
+                Slider(backgroundViewBuilder: {
+                    Map()
+                })  {
+                    ContentView()
+                }.environmentObject(settings)
+                TFLProgressView().isHidden(settings.progressViewHidden)
             }
+           
            
         }
         .modelContainer(SwiftDataStack.shared.container)
+        
     }
 }

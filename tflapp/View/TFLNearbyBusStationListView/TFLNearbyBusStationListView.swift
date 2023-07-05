@@ -20,7 +20,7 @@ struct TFLNearbyBusStationListView : View {
     @Environment(\.scenePhase) var scenePhase
    
     @State var stationInfoList = TFLStationList()
-    @EnvironmentObject var settings : TFLSettings
+    @Environment(\.settings) var settings 
     var body : some View {
         VStack {
 //            Spacer()

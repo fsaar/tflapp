@@ -8,10 +8,11 @@
 
 import Foundation
 import SwiftUI
+import Observation
 
-
-final class TFLSettings : ObservableObject {
-    @Published var progressViewHidden = false
+@Observable
+final class TFLSettings  {
+    var progressViewHidden = false
     
     func showProgress(_ show : Bool = true) {
         withAnimation {

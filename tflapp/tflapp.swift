@@ -10,9 +10,20 @@ import SwiftUI
 import SwiftData
 import MapKit
 
+private struct SettingsKey: EnvironmentKey {
+  static let defaultValue = TFLSettings()
+}
+
+extension EnvironmentValues {
+  var settings: TFLSettings {
+    get { self[SettingsKey.self] }
+    set { self[SettingsKey.self] = newValue }
+  }
+}
+
 @main
 struct TFLApp: App {
-    @ObservedObject var settings = TFLSettings()
+    var settings = TFLSettings()
     var body: some Scene {
         WindowGroup {
             ZStack {
@@ -20,7 +31,7 @@ struct TFLApp: App {
                     Map()
                 })  {
                     ContentView()
-                }.environmentObject(settings)
+                }.environment(\.settings,settings)
                 TFLProgressView().isHidden(settings.progressViewHidden)
             }
            

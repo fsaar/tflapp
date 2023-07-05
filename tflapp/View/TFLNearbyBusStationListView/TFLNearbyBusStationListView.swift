@@ -19,8 +19,8 @@ import Combine
 struct TFLNearbyBusStationListView : View {
     @Environment(\.scenePhase) var scenePhase
    
-    @State var stationInfoList = TFLStationList()
-    @Environment(\.settings) var settings 
+    @Environment(\.settings) var settings
+    @Environment(\.stationList) var stationList : Binding<TFLStationList>
     var body : some View {
         VStack {
 //            Spacer()
@@ -29,7 +29,7 @@ struct TFLNearbyBusStationListView : View {
 //            }
             ScrollView(showsIndicators: false) {
                 LazyVStack {
-                    ForEach($stationInfoList.list) { station in
+                    ForEach(stationList.list) { station in
                         TFLBusStationView(station:station)
                             .scrollTransition(axis: .vertical) { content, phase in
                                 content
@@ -45,7 +45,7 @@ struct TFLNearbyBusStationListView : View {
             .safeAreaPadding([.bottom],140)
             .scrollTargetBehavior(.viewAligned)
             .refreshable {
-                await stationInfoList.refresh()
+                await stationList.wrappedValue.refresh()
             }
             .background(.tflBackground)
             .onChange(of: scenePhase) {
@@ -61,8 +61,8 @@ struct TFLNearbyBusStationListView : View {
     }
     
     func refresh() async {
-        settings.showProgress(stationInfoList.list.isEmpty)
-        await stationInfoList.refresh()
+        settings.showProgress(stationList.list.isEmpty)
+        await stationList.wrappedValue.refresh()
         settings.showProgress(false)
     }
     

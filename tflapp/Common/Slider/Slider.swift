@@ -33,9 +33,9 @@ struct Slider<BackgroundView: View,ForegroundView : View> : View {
         self.backgroundView = backgroundViewBuilder()
         self.foregroundView = foregroundViewBuilder()
     }
-    @State var current = CGSizeZero
-    @State var start = CGSizeMake(0, 80)
-    @State var offset = CGSizeZero
+    @State var current = CGSize.zero
+    @State var start = CGSize(width:0,height: 80)
+    @State var offset = CGSize.zero
     let sliderHeight = Double(50)
     
     var body : some View {
@@ -59,7 +59,7 @@ struct Slider<BackgroundView: View,ForegroundView : View> : View {
                 
                 backgroundView
                 SliderHandle()
-                    .fill(.gray)
+                    .fill(.tflSliderHandle)
                     .frame(height:sliderHeight)
                    
                     .offset(y: start.height + offset.height)

@@ -27,7 +27,7 @@ struct TFLNearbyBusStationListView : View {
 //            Button("Debug") {
 //                self.stationInfoList.debug()
 //            }
-            ScrollView {
+            ScrollView(showsIndicators: false) {
                 LazyVStack {
                     ForEach($stationInfoList.list) { station in
                         TFLBusStationView(station:station)

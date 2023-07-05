@@ -49,7 +49,7 @@ struct Slider<BackgroundView: View,ForegroundView : View> : View {
                                 offset = value.translation
                             }
                         }
-                    }.onEnded { value in
+                    }.onEnded { _ in
                         let snap = closestSnapPosition(height: height, offset: offset)
                         withAnimation(.bouncy) {
                             start = snap
@@ -82,9 +82,9 @@ struct Slider<BackgroundView: View,ForegroundView : View> : View {
         let final = start.height + offset.height
         let coords = (top: snapPositions.top * height, center:snapPositions.center * height,bottom: snapPositions.bottom * height)
         let snapPositions = [coords.top,coords.center,coords.bottom]
-        let values = snapPositions.enumerated().map { ($0.0,abs($0.1 - final)) }.sorted { $0.1 < $1.1 }.first ?? (0,0)
+        let values = snapPositions.enumerated().map { ($0.0,abs($0.1 - final)) }.min { $0.1 < $1.1 } ?? (0,0)
         let snapPosition = snapPositions[values.0]
-        return CGSizeMake(offset.width, snapPosition)
+        return CGSize(width:offset.width,height: snapPosition)
 
     }
 }

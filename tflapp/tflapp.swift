@@ -15,10 +15,10 @@ private struct SettingsKey: EnvironmentKey {
 }
 
 extension EnvironmentValues {
-  var settings: TFLSettings {
-    get { self[SettingsKey.self] }
-    set { self[SettingsKey.self] = newValue }
-  }
+    var settings: TFLSettings {
+        set { self[SettingsKey.self] = newValue }
+        get { self[SettingsKey.self] }
+    }
 }
 
 @main

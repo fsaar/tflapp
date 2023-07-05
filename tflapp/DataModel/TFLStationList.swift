@@ -30,14 +30,14 @@ class TFLStationList  {
     
     init() {
         NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification).sink {_ in
-            let tempList = self.list.map { $0.stationInfoUpdateToCurrentTimeAndLocation(self.lastLocation?.location) }
+            self.list = self.list.map { $0.stationInfoUpdateToCurrentTimeAndLocation(self.lastLocation?.location) }
                 .filter { !$0.arrivals.isEmpty }
-            if let lastLocation = self.lastLocation {
-                self.list = tempList.filter { $0.location.distance(from: lastLocation.location) < CLLocationDistance(self.radius) }
-            }
-            else {
-                self.list = tempList
-            }
+                .filter {  guard let lastLocation = self.lastLocation else {
+                                return true
+                            }
+                    return $0.location.distance(from: lastLocation.location) < CLLocationDistance(self.radius)
+                }
+           
             
         }.store(in: &cancelableSet)
     }
@@ -47,13 +47,14 @@ class TFLStationList  {
         self.lastLocation = currentLocation
      
         let stations = await aggregator.loadArrivalTimesForBusStations(with: currentLocation, radius: radius)
-        let filteredStations = stations.filter { !$0.arrivals.isEmpty }
-                                        .sorted { $0.distance < $1.distance }
-        guard let lastLocation else {
-            return filteredStations
-        }
-        
-        return filteredStations.filter { $0.location.distance(from: lastLocation.location) < CLLocationDistance(radius) }
+        return stations.filter { !$0.arrivals.isEmpty }
+            .sorted { $0.distance < $1.distance }
+            .filter {
+                guard let lastLocation else {
+                    return true
+                }
+                return $0.location.distance(from: lastLocation.location) < CLLocationDistance(radius)
+            }
     }
     
     ///

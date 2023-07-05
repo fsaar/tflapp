@@ -38,8 +38,5 @@ struct TFLBusPredictionListView : View {
         }
         .scrollPosition(id: $firstId)
         .safeAreaPadding([.leading],10)
-        .onDisappear {
-            firstId = self.predictionList.first?.id
-        }
     }
 }

@@ -39,7 +39,8 @@ struct TFLNearbyBusStationListView : View {
                             }
                             
                     }
-                }.scrollTargetLayout()
+                }
+                .scrollTargetLayout()
             }
             .safeAreaPadding([.bottom],140)
             .scrollTargetBehavior(.viewAligned)

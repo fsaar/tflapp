@@ -6,6 +6,7 @@
 "TFLNoStationsView.description" = "No stations found for your current location. You can increase the search distance in settings.";
 "TFLNoStationsView.accessibilityTitle" = "No stations found for your current location. You can increase the search distance in settings.";
 "TFLNoStationsView.retryButtonTitle" = "Try again";
+"TFLRetryButton.retryButtonTitle" = "Try again";
 "TFLStationDetailNearby.title" = "Nearby";
 "TFLLoadArrivalTimesView.title" = "Loading bus schedules ...";
 "TFLLoadArrivalTimesView.accessiblityTitle" = "Loading bus schedules - Please wait";

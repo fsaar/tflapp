@@ -65,6 +65,8 @@
 		565A1FC81DD8F6E6003CE960 /* TFLCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565A1FC71DD8F6E6003CE960 /* TFLCoreDataStack.swift */; };
 		565A1FCF1DD8F93F003CE960 /* TFLNotificationObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565A1FCE1DD8F93F003CE960 /* TFLNotificationObserver.swift */; };
 		565A1FD21DD8FB2A003CE960 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 565A1FD01DD8FB2A003CE960 /* Model.xcdatamodeld */; };
+		565E1A502A575FD7001960AD /* RetryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565E1A4F2A575FD7001960AD /* RetryButton.swift */; };
+		565E1A532A576077001960AD /* NoContentAvailableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565E1A522A576077001960AD /* NoContentAvailableView.swift */; };
 		5666A75820F11C40003A38D4 /* TFLLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5666A75720F11C40003A38D4 /* TFLLogger.swift */; };
 		566EF7C71DDA3A2B006162D7 /* TFLBusPrediction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566EF7C61DDA3A2B006162D7 /* TFLBusPrediction.swift */; };
 		566EF7CC1DDB0851006162D7 /* TFLCDBusStop+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566EF7CA1DDB0851006162D7 /* TFLCDBusStop+CoreDataClass.swift */; };
@@ -218,6 +220,8 @@
 		565A1FC71DD8F6E6003CE960 /* TFLCoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLCoreDataStack.swift; sourceTree = "<group>"; };
 		565A1FCE1DD8F93F003CE960 /* TFLNotificationObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLNotificationObserver.swift; sourceTree = "<group>"; };
 		565A1FD11DD8FB2A003CE960 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		565E1A4F2A575FD7001960AD /* RetryButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RetryButton.swift; sourceTree = "<group>"; };
+		565E1A522A576077001960AD /* NoContentAvailableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoContentAvailableView.swift; sourceTree = "<group>"; };
 		5666A75720F11C40003A38D4 /* TFLLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLLogger.swift; sourceTree = "<group>"; };
 		566EF7C61DDA3A2B006162D7 /* TFLBusPrediction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusPrediction.swift; sourceTree = "<group>"; };
 		566EF7CA1DDB0851006162D7 /* TFLCDBusStop+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TFLCDBusStop+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -532,6 +536,8 @@
 		565A1FC91DD8F8D1003CE960 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				565E1A512A576077001960AD /* NoContentAvailableView */,
+				565E1A4E2A575FD7001960AD /* RetryButton */,
 				5686694C2A54BA34009FE721 /* TFLProgressView */,
 				568668DB2A549AB0009FE721 /* Slider */,
 				56482BF723C48A90001A165E /* TFLRatingController */,
@@ -563,6 +569,22 @@
 				565A1FCE1DD8F93F003CE960 /* TFLNotificationObserver.swift */,
 			);
 			path = TFLNotificationObserver;
+			sourceTree = "<group>";
+		};
+		565E1A4E2A575FD7001960AD /* RetryButton */ = {
+			isa = PBXGroup;
+			children = (
+				565E1A4F2A575FD7001960AD /* RetryButton.swift */,
+			);
+			path = RetryButton;
+			sourceTree = "<group>";
+		};
+		565E1A512A576077001960AD /* NoContentAvailableView */ = {
+			isa = PBXGroup;
+			children = (
+				565E1A522A576077001960AD /* NoContentAvailableView.swift */,
+			);
+			path = NoContentAvailableView;
 			sourceTree = "<group>";
 		};
 		5666A75620F11BE6003A38D4 /* TFLLogger */ = {
@@ -1202,6 +1224,7 @@
 				56D70D141DD9A25F004CA293 /* TFLLocationManager.swift in Sources */,
 				564CA5A4222355F400E69A1C /* PolyLine.swift in Sources */,
 				5646150823A236B30077108D /* TFLConfirmationView.swift in Sources */,
+				565E1A532A576077001960AD /* NoContentAvailableView.swift in Sources */,
 				567F533F20BDB9C50022FEFF /* TFLStationDetailHeaderView.swift in Sources */,
 				56C6A3471DF44F6A00067D06 /* TFLStationDetailMapViewAnnotation.swift in Sources */,
 				5672250320D578C6007DA481 /* TFLStationDetailBusStopAnnotationView.swift in Sources */,
@@ -1224,6 +1247,7 @@
 				56823EAE1DDDA5B300E79B1A /* TFLNoGPSEnabledView.swift in Sources */,
 				568E068521E6B14D00E92AF7 /* TFLArrivalInfoView.swift in Sources */,
 				567F533D20BDB34E0022FEFF /* TFLStationDetailController.swift in Sources */,
+				565E1A502A575FD7001960AD /* RetryButton.swift in Sources */,
 				5629CC2722F785BC00911C1E /* Settings.swift in Sources */,
 				564F7A7023ACD42200FF3426 /* CountDownElementView.swift in Sources */,
 				564CA5A8222356B200E69A1C /* Array+Helper.swift in Sources */,

@@ -1,6 +1,7 @@
 "TFLLoadLocationView.title" = "Retrieving current location ...";
 "TFLLoadLocationView.accessibilityTitle" = "Retrieving current location - Please wait";
 "TFLLoadNearbyStationsView.title" = "Loading nearby stations ...";
+"TFLProgressView.title" = "Loading nearby stations ...";
 "TFLLoadNearbyStationsView.accessibilityTitle" = "Loading nearby stations  - Please wait";
 "TFLNoStationsView.title" = "No stations found";
 "TFLNoStationsView.description" = "No stations found for your current location. You can increase the search distance in settings.";

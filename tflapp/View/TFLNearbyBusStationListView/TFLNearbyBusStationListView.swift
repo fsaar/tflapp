@@ -35,7 +35,7 @@ struct TFLNearbyBusStationListView : View {
                                     .scaleEffect(
                                         x: phase.isIdentity ? 1.0 : 0.90,
                                         y: phase.isIdentity ? 1.0 : 0.90)
-                                }
+                            }
                         
                     }
                 }

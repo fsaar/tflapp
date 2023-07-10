@@ -18,6 +18,7 @@ class TFLLogger {
         case location = "location"
         case rootViewController = "rootViewController"
         case arrivalInfoAggregator = "arrivalInfoAggregator"
+        case stationList = "stationList"
         case busStop = "TFLCDBusStop"
         case databasegeneration 
     }

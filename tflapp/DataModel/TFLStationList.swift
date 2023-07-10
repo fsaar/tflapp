@@ -11,6 +11,7 @@ import Observation
 import CoreLocation
 import Combine
 import UIKit
+import OSLog
 
 @Observable
 class TFLStationList  {
@@ -21,14 +22,17 @@ class TFLStationList  {
     var list : [TFLBusStationInfo] = []
     var cancelableSet : Set<AnyCancellable> = []
     var updating = false
-    
+    fileprivate let logger : Logger =  {
+        let handle = Logger(subsystem: TFLLogger.subsystem, category: TFLLogger.category.stationList.rawValue)
+        return handle
+    }()
     func refresh() async {
-        guard let currentLocation = lastLocation else {
+        guard let currentLocation = lastLocation,!updating else {
             return
         }
-        self.updating = false
-        self.list = await updateNearbyBusStops(for: currentLocation)
         self.updating = true
+        self.list = await updateNearbyBusStops(for: currentLocation)
+        self.updating = false
     }
     
     

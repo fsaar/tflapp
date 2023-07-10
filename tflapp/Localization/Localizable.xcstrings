@@ -1,0 +1,599 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "%@" : {
+
+    },
+    "Common.dismiss" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "dismiss"
+          }
+        }
+      }
+    },
+    "Common.due" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "due"
+          }
+        }
+      }
+    },
+    "Common.meter" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "meter"
+          }
+        }
+      }
+    },
+    "Common.meters" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "meters"
+          }
+        }
+      }
+    },
+    "Common.min" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "min"
+          }
+        }
+      }
+    },
+    "Common.mins" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "mins"
+          }
+        }
+      }
+    },
+    "Common.minute" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "minute"
+          }
+        }
+      }
+    },
+    "Common.minutes" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "minutes"
+          }
+        }
+      }
+    },
+    "Common.second" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "second"
+          }
+        }
+      }
+    },
+    "Common.seconds" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "seconds"
+          }
+        }
+      }
+    },
+    "Common.towards" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "towards"
+          }
+        }
+      }
+    },
+    "Create Database" : {
+
+    },
+    "DateStringConversion.about_1_hour_ago" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 hour ago"
+          }
+        }
+      }
+    },
+    "DateStringConversion.about_1_minute_ago" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 minute ago"
+          }
+        }
+      }
+    },
+    "DateStringConversion.about_30_secs_ago" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "about 30 seconds ago"
+          }
+        }
+      }
+    },
+    "DateStringConversion.about_hours_ago" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "hours ago"
+          }
+        }
+      }
+    },
+    "DateStringConversion.about_minutes_ago" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "minutes ago"
+          }
+        }
+      }
+    },
+    "DateStringConversion.days_ago" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "a few days ago"
+          }
+        }
+      }
+    },
+    "DateStringConversion.just_now" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "just now"
+          }
+        }
+      }
+    },
+    "DateStringConversion.last_week" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "last week"
+          }
+        }
+      }
+    },
+    "DateStringConversion.weeks_ago" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "weeks ago"
+          }
+        }
+      }
+    },
+    "DateStringConversion.yesterday" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "yesterday"
+          }
+        }
+      }
+    },
+    "TFLHUD.accessiblityTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading - Please wait"
+          }
+        }
+      }
+    },
+    "TFLHUD.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading ..."
+          }
+        }
+      }
+    },
+    "TFLInformationView.notification" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your reminder for bus %@ at %@"
+          }
+        }
+      }
+    },
+    "TFLInformationView.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reminder created"
+          }
+        }
+      }
+    },
+    "TFLInformationView.warning.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrival pending. No reminder needed"
+          }
+        }
+      }
+    },
+    "TFLLoadArrivalTimesView.accessiblityTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading bus schedules - Please wait"
+          }
+        }
+      }
+    },
+    "TFLLoadArrivalTimesView.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading bus schedules ..."
+          }
+        }
+      }
+    },
+    "TFLLoadLocationView.accessibilityTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retrieving current location - Please wait"
+          }
+        }
+      }
+    },
+    "TFLLoadLocationView.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retrieving current location ..."
+          }
+        }
+      }
+    },
+    "TFLLoadNearbyStationsView.accessibilityTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading nearby stations  - Please wait"
+          }
+        }
+      }
+    },
+    "TFLLoadNearbyStationsView.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading nearby stations ..."
+          }
+        }
+      }
+    },
+    "TFLNearbyBusStationsController.last_updated" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "last updated: "
+          }
+        }
+      }
+    },
+    "TFLNearbyBusStationsController.notification.body" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your reminder for bus %@ at %@"
+          }
+        }
+      }
+    },
+    "TFLNearbyBusStationsController.notification.generic_station" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "your bus stop"
+          }
+        }
+      }
+    },
+    "TFLNearbyBusStationsController.notification.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scheduled reminder"
+          }
+        }
+      }
+    },
+    "TFLNearbyBusStationsController.reminder.message" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Minutes to show reminder before %@'s arrival at %@"
+          }
+        }
+      }
+    },
+    "TFLNearbyBusStationsController.reminder.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create Reminder"
+          }
+        }
+      }
+    },
+    "TFLNoGPSEnabledView.accessibilityTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "For this app to function properly location services need to be enabled in settings."
+          }
+        }
+      }
+    },
+    "TFLNoGPSEnabledView.headerTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Location Services"
+          }
+        }
+      }
+    },
+    "TFLNoGPSEnabledView.settingsButtonTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Go to Settings"
+          }
+        }
+      }
+    },
+    "TFLNoGPSEnabledView.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "For this app to function properly location services need to be enabled in settings."
+          }
+        }
+      }
+    },
+    "TFLNoStationsView.accessibilityTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No stations found for your current location. You can increase the search distance in settings."
+          }
+        }
+      }
+    },
+    "TFLNoStationsView.description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No stations found for your current location. You can increase the search distance in settings."
+          }
+        }
+      }
+    },
+    "TFLNoStationsView.retryButtonTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try again"
+          }
+        }
+      }
+    },
+    "TFLNoStationsView.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No stations found"
+          }
+        }
+      }
+    },
+    "TFLOfflineView.offline.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Offline"
+          }
+        }
+      }
+    },
+    "TFLProgressView.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading nearby stations ..."
+          }
+        }
+      }
+    },
+    "TFLRetryButton.retryButtonTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try again"
+          }
+        }
+      }
+    },
+    "TFLRootViewController.ackSubTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contains OS data © Crown copyright and database rights 2016' and Geomni UK Map data © and database rights [2019]"
+          }
+        }
+      }
+    },
+    "TFLRootViewController.ackTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Powered by TfL Open Data"
+          }
+        }
+      }
+    },
+    "TFLStationDetailController.backbutton.accessibitliyTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back button"
+          }
+        }
+      }
+    },
+    "TFLStationDetailErrorView.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oops, something went wrong. No route information available."
+          }
+        }
+      }
+    },
+    "TFLStationDetailNearby.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nearby"
+          }
+        }
+      }
+    },
+    "TFLTimerButton.refresh_pending.accessibitliyTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Refreshing in"
+          }
+        }
+      }
+    },
+    "TFLTimerButton.refresh_stopped.accessibilityTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Refresh counter stopped"
+          }
+        }
+      }
+    },
+    "TFLUpdateStatusView.pending.accessibilityTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Updating - Please wait"
+          }
+        }
+      }
+    },
+    "TFLUpdateStatusView.pending.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Updating ..."
+          }
+        }
+      }
+    },
+    "yo" : {
+
+    }
+  },
+  "version" : "1.0"
+}

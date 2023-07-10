@@ -1,0 +1,30 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "CKi-3k-HzJ.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"Bus\"; ObjectID = \"CKi-3k-HzJ\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Bus"
+          }
+        }
+      }
+    },
+    "rTB-Mw-hos.text" : {
+      "comment" : "Class = \"UILabel\"; text = \"Stops\"; ObjectID = \"rTB-Mw-hos\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Stops"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

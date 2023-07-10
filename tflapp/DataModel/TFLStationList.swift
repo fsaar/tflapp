@@ -20,28 +20,27 @@ class TFLStationList  {
     private let aggregator = TFLBusArrivalInfoAggregator()
     var list : [TFLBusStationInfo] = []
     var cancelableSet : Set<AnyCancellable> = []
-
+    var updating = false
+    
     func refresh() async {
         guard let currentLocation = lastLocation else {
             return
         }
+        self.updating = false
         self.list = await updateNearbyBusStops(for: currentLocation)
+        self.updating = true
     }
     
-    init() {
-        NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification).sink {_ in
-            self.list = self.list.map { $0.stationInfoUpdateToCurrentTimeAndLocation(self.lastLocation?.location) }
-                .filter { !$0.arrivals.isEmpty }
-                .filter {  guard let lastLocation = self.lastLocation else {
-                                return true
-                            }
-                    return $0.location.distance(from: lastLocation.location) < CLLocationDistance(self.radius)
-                }
-           
-            
-        }.store(in: &cancelableSet)
-    }
     
+    func updateList() {
+        self.list = self.list.map { $0.stationInfoUpdateToCurrentTimeAndLocation(self.lastLocation?.location) }
+            .filter { !$0.arrivals.isEmpty }
+            .filter {  guard let lastLocation = self.lastLocation else {
+                            return true
+                        }
+                return $0.location.distance(from: lastLocation.location) < CLLocationDistance(self.radius)
+            }
+    }
     
     func updateNearbyBusStops(for currentLocation:CLLocationCoordinate2D ) async -> [TFLBusStationInfo]  {
         self.lastLocation = currentLocation

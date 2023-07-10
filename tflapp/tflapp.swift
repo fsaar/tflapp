@@ -13,11 +13,10 @@ import SwiftData
 @main
 struct TFLApp: App {
     @State var stationList = TFLStationList()
-    var settings = TFLSettings()
+   
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environment(\.settings,settings)
                 .environment(\.stationList,$stationList)
         }
         .modelContainer(SwiftDataStack.shared.container)

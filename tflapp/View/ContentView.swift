@@ -5,21 +5,13 @@ import SwiftUI
 import Observation
 import MapKit
 
-struct SettingsKey: EnvironmentKey {
-    static let defaultValue = TFLSettings()
-}
-
 
 struct StationListKey: EnvironmentKey {
     static let defaultValue : Binding<TFLStationList> = .constant(TFLStationList())
 }
 
 extension EnvironmentValues {
-    var settings: TFLSettings {
-        set { self[SettingsKey.self] = newValue }
-        get { self[SettingsKey.self] }
-    }
-    
+   
     var stationList: Binding<TFLStationList> {
         set { self[StationListKey.self] = newValue }
         get { self[StationListKey.self] }
@@ -28,7 +20,7 @@ extension EnvironmentValues {
 
 struct GenerateDatabaseButton : View {
     private let busStopDBGenerator = TFLBusStopDBGenerator()
-    
+  
     var body : some View {
         Button("Create Database") {
             Task {
@@ -38,10 +30,19 @@ struct GenerateDatabaseButton : View {
     }
 }
 
+
 struct ContentView: View {
     @Environment(\.scenePhase) private var scenePhase
-    @Environment(\EnvironmentValues.settings) private var settings : TFLSettings
     @Environment(\EnvironmentValues.stationList) private var stationList
+    @State var isUpdating = true
+    
+    var showContentUnavailable : Bool {
+        self.stationList.list.isEmpty && !self.isUpdating
+    }
+    var hideProgress : Bool {
+        !stationList.list.isEmpty || !self.isUpdating
+    }
+    
     var body: some View {
         ZStack {
             Slider(backgroundViewBuilder: {
@@ -56,37 +57,25 @@ struct ContentView: View {
             }
             .isHidden(stationList.list.isEmpty)
             
-            let showContentUnavailable = stationList.list.isEmpty && settings.progressViewHidden
-            
-            NoContentAvailableView(title: "TFLNoStationsView.title",description: "TFLNoStationsView.description") {
-                RetryButton {
-                    Task {
-                        await refresh()
-                    }
-                    
-                }
-                
-            }
-            .isHidden(!showContentUnavailable)
-            TFLProgressView().isHidden(settings.progressViewHidden)
+            TFLNoStationListView()
+                .isHidden(!showContentUnavailable)
+            TFLProgressView().isHidden(hideProgress)
             
         }
         .onChange(of: scenePhase) {
             if scenePhase == .active {
+                stationList.wrappedValue.updateList()
                 Task {
-                    await refresh()
+                    await stationList.wrappedValue.refresh()
                 }
+            }
+        }.onChange(of: stationList.updating.wrappedValue) {
+            withAnimation {
+                self.isUpdating = self.stationList.updating.wrappedValue
+
             }
         }
     }
-    
-    
-    func refresh() async {
-        settings.showProgress(stationList.list.isEmpty)
-        await stationList.wrappedValue.refresh()
-        settings.showProgress(false)
-    }
-    
 }
 
 #Preview {

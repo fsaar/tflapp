@@ -28,9 +28,6 @@ struct NoContentAvailableView<Button: View> : View {
             button
             
         }
-        .padding(30)
-        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
-        Spacer()
-        
+        .dynamicTypeSize(...DynamicTypeSize.accessibility1)        
     }
 }

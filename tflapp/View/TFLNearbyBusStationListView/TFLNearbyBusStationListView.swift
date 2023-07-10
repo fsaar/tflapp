@@ -19,7 +19,6 @@ import Combine
 struct TFLNearbyBusStationListView : View {
     @Environment(\.scenePhase) var scenePhase
    
-    @Environment(\.settings) var settings
     @Environment(\.stationList) var stationList : Binding<TFLStationList>
     var body : some View {
         VStack {
@@ -48,23 +47,10 @@ struct TFLNearbyBusStationListView : View {
                 await stationList.wrappedValue.refresh()
             }
             .background(.tflBackground)
-            .onChange(of: scenePhase) {
-                if scenePhase == .active {
-                    Task {
-                        await refresh()
-                    }
-                }
-            }
             
         }
         Spacer()
     }
-    
-    func refresh() async {
-        settings.showProgress(stationList.list.isEmpty)
-        await stationList.wrappedValue.refresh()
-        settings.showProgress(false)
-    }
-    
+
     
 }

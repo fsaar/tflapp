@@ -48,12 +48,19 @@ struct ContentView: View {
             Slider(backgroundViewBuilder: {
                 Map()
             })  {
-                VStack {
-//                    GenerateDatabaseButton()
-//                    Spacer()
-                    TFLNearbyBusStationListView()
-                    Spacer()
-                }.background(.white)
+                ZStack {
+                    VStack {
+                        Text("yo")
+                        Spacer()
+                    }
+                    VStack {
+    //                    GenerateDatabaseButton()
+    //                    Spacer()
+                        TFLNearbyBusStationListView()
+                        Spacer()
+                    }.background(.white)
+                }
+                
             }
             .isHidden(stationList.list.isEmpty)
             

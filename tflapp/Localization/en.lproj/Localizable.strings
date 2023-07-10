@@ -16,7 +16,7 @@
 "TFLNoGPSEnabledView.settingsButtonTitle" = "Go to Settings";
 "TFLNoGPSEnabledView.headerTitle" = "No Location Services";
 "TFLRootViewController.ackTitle" = "Powered by TfL Open Data";
-"TFLRootViewController.ackSubTitle" = "Contains OS data © Crown copyright and database rights 2016'\n and Geomni UK Map data © and database rights [2019]";
+"TFLRootViewController.ackSubTitle" = "Contains OS data © Crown copyright and database rights 2016' and Geomni UK Map data © and database rights [2019]";
 "DateStringConversion.just_now" = "just now";
 "DateStringConversion.about_30_secs_ago" = "about 30 seconds ago";
 "DateStringConversion.about_1_minute_ago" = "1 minute ago";

@@ -18,8 +18,9 @@ import Combine
 
 struct TFLNearbyBusStationListView : View {
     @Environment(\.scenePhase) var scenePhase
-    
+    @Environment(\.stationSelection) var stationSelection : Binding<TFLBusstationSelection>
     @Environment(\.stationList) var stationList : Binding<TFLStationList>
+    @State var scrollPostion : String?
     var body : some View {
         
         VStack {
@@ -37,13 +38,18 @@ struct TFLNearbyBusStationListView : View {
                                         x: phase.isIdentity ? 1.0 : 0.90,
                                         y: phase.isIdentity ? 1.0 : 0.90)
                             }
+                            .onTapGesture {
+                                withAnimation {
+                                    stationSelection.wrappedValue.station =  station.wrappedValue
+                                }
+                            }
                         
                     }
                 }
                 .background(.tflBackground)
                 .scrollTargetLayout()
             }
-          
+            .scrollPosition(id: $scrollPostion)
             .background {
                 VStack {
                     Spacer().frame(height:60)
@@ -67,6 +73,14 @@ struct TFLNearbyBusStationListView : View {
             .scrollTargetBehavior(.viewAligned)
             .refreshable {
                 await stationList.wrappedValue.refresh()
+            }
+            .onChange(of:stationSelection.wrappedValue.station) {
+                guard let station = stationSelection.wrappedValue.station else  {
+                    return
+                }
+                withAnimation {
+                    scrollPostion = station.identifier
+                }
             }
             
         }

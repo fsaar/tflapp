@@ -5,16 +5,32 @@ import SwiftUI
 import Observation
 import MapKit
 
+@Observable
+final class TFLBusstationSelection {
+    var station : TFLBusStationInfo?
+   
+   
+}
 
 struct StationListKey: EnvironmentKey {
     static let defaultValue : Binding<TFLStationList> = .constant(TFLStationList())
 }
+
+struct BusstationSelectionKey: EnvironmentKey {
+    static let defaultValue : Binding<TFLBusstationSelection> = .constant(TFLBusstationSelection())
+}
+
 
 extension EnvironmentValues {
    
     var stationList: Binding<TFLStationList> {
         set { self[StationListKey.self] = newValue }
         get { self[StationListKey.self] }
+    }
+    
+    var stationSelection: Binding<TFLBusstationSelection> {
+        set { self[BusstationSelectionKey.self] = newValue }
+        get { self[BusstationSelectionKey.self] }
     }
 }
 
@@ -35,7 +51,7 @@ struct ContentView: View {
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\EnvironmentValues.stationList) private var stationList
     @State var isUpdating = true
-    
+    @State var stationSelection = TFLBusstationSelection()
     var showContentUnavailable : Bool {
         self.stationList.list.isEmpty && !self.isUpdating
     }
@@ -46,7 +62,7 @@ struct ContentView: View {
     var body: some View {
         ZStack {
             Slider(backgroundViewBuilder: {
-                Map()
+                TFLMapBusStationView()
             })  {
                 ZStack {
                     VStack {
@@ -62,8 +78,8 @@ struct ContentView: View {
                 }
                 
             }
+            .environment(\.stationSelection,$stationSelection)
             .isHidden(stationList.list.isEmpty)
-            
             TFLNoStationListView()
                 .isHidden(!showContentUnavailable)
             TFLProgressView().isHidden(hideProgress)

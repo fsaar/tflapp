@@ -23,6 +23,7 @@ struct TFLProgressView : View {
             }
             Text("TFLProgressView.title").font(.headline).foregroundColor(.tflPrimaryText)
         }
+        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
         .padding(20)
         .overlay {
             Capsule().stroke(.tflProgressViewBorder,lineWidth:2)

@@ -71,7 +71,7 @@ struct TFLNearbyBusStationListView : View {
                 await stationList.wrappedValue.refresh()
             }
             .onChange(of:stationSelection.wrappedValue.station) {
-                guard let station = stationSelection.wrappedValue.station else  {
+                guard let station = stationSelection.wrappedValue.station,scrollPostion != station.identifier else  {
                     return
                 }
                 withAnimation {

@@ -20,7 +20,8 @@ class TFLLogger {
         case arrivalInfoAggregator = "arrivalInfoAggregator"
         case stationList = "stationList"
         case busStop = "TFLCDBusStop"
-        case databasegeneration 
+        case map = "map"
+        case databasegeneration
     }
     fileprivate init() { }
     

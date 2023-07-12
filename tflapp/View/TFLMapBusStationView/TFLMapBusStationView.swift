@@ -46,7 +46,10 @@ struct TFLMapBusStationView : View {
             }
             
             withAnimation {
-                position = .item(MKMapItem(placemark: .init(coordinate: station.location.coordinate)))
+                let oldCoord = station.location.coordinate
+                // Latitude 1 Degree : 111.111 KM = 1/1111 Degree ≈ 100 m
+                let newCoord = CLLocationCoordinate2DMake( oldCoord.latitude - 1/1111, oldCoord.longitude )
+                position = .item(MKMapItem(placemark: .init(coordinate: newCoord)))
                 selection = station.identifier
             }
         }
@@ -67,4 +70,3 @@ struct TFLMapBusStationView : View {
 #Preview {
     TFLMapBusStationView()
 }
-

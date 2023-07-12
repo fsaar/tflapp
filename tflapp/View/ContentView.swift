@@ -64,19 +64,7 @@ struct ContentView: View {
             Slider(backgroundViewBuilder: {
                 TFLMapBusStationView()
             })  {
-                ZStack {
-                    VStack {
-                        Text("yo")
-                        Spacer()
-                    }
-                    VStack {
-    //                    GenerateDatabaseButton()
-    //                    Spacer()
-                        TFLNearbyBusStationListView()
-                        Spacer()
-                    }.background(.white)
-                }
-                
+                TFLNearbyBusStationListView()
             }
             .environment(\.stationSelection,$stationSelection)
             .isHidden(stationList.list.isEmpty)
@@ -85,6 +73,30 @@ struct ContentView: View {
             TFLProgressView().isHidden(hideProgress)
             
         }
+#if DEBUG_TOOLS
+        .safeAreaInset(edge: .bottom) {
+            HStack(spacing:40) {
+                Spacer()
+                Button("Debug") {
+                    self.stationList.wrappedValue.debug()
+                }
+                .padding(10)
+                .overlay {
+                    RoundedRectangle(cornerRadius: 10).stroke(.white,lineWidth:2)
+                }
+                
+                
+                GenerateDatabaseButton()
+                    .padding(10)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 10).stroke(.white,lineWidth:2)
+                    }
+                Spacer()
+            }.padding(10)
+                .background(.thinMaterial)
+                .isHidden(stationList.list.isEmpty)
+        }
+#endif
         .onChange(of: scenePhase) {
             if scenePhase == .active {
                 stationList.wrappedValue.updateList()

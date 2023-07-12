@@ -37,12 +37,14 @@ struct TFLMapBusStationView : View {
         .buttonBorderShape(.circle)
         .controlSize(.large)
         .safeAreaPadding([.top],100)
-      
+    
         
         
         
         .onChange(of:stationSelection.wrappedValue.station) {
-            guard let station = stationSelection.wrappedValue.station, let mapPos = self.position else  {
+            guard let station = stationSelection.wrappedValue.station else {
+                
+//            }, let _ = self.position else  {
                 return
             }
 //            let zoomScale = mapPos.camera.zoo

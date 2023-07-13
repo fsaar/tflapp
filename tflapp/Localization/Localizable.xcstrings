@@ -582,6 +582,7 @@
       }
     },
     "TFLTimerButton.refresh_pending.accessibitliyTitle" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -592,6 +593,7 @@
       }
     },
     "TFLTimerButton.refresh_stopped.accessibilityTitle" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

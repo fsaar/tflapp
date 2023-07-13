@@ -1,18 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "4vi-ZW-0YJ.text" : {
-      "comment" : "Class = \"UILabel\"; text = \"For this app to function properly you need to enable location services in settings\"; ObjectID = \"4vi-ZW-0YJ\";",
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "For this app to function properly you need to enable location services in settings"
-          }
-        }
-      }
-    },
     "396-Ge-Kd1.text" : {
       "comment" : "Class = \"UILabel\"; text = \"Offline\"; ObjectID = \"396-Ge-Kd1\";",
       "extractionState" : "extracted_with_value",
@@ -21,42 +9,6 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Offline"
-          }
-        }
-      }
-    },
-    "CKr-qU-GQT.text" : {
-      "comment" : "Class = \"UILabel\"; text = \"Stops\"; ObjectID = \"CKr-qU-GQT\";",
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Stops"
-          }
-        }
-      }
-    },
-    "eKp-Xb-yvE.text" : {
-      "comment" : "Class = \"UILabel\"; text = \"Offline\"; ObjectID = \"eKp-Xb-yvE\";",
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Offline"
-          }
-        }
-      }
-    },
-    "Fbd-zZ-kZD.normalTitle" : {
-      "comment" : "Class = \"UIButton\"; normalTitle = \"Go to Settings\"; ObjectID = \"Fbd-zZ-kZD\";",
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Go to Settings"
           }
         }
       }
@@ -85,18 +37,6 @@
         }
       }
     },
-    "I0q-qz-SWa.text" : {
-      "comment" : "Class = \"UILabel\"; text = \"Loading arrival times ...\"; ObjectID = \"I0q-qz-SWa\";",
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Loading arrival times ..."
-          }
-        }
-      }
-    },
     "jLQ-Fs-fjb.text" : {
       "comment" : "Class = \"UILabel\"; text = \"nearby\"; ObjectID = \"jLQ-Fs-fjb\";",
       "extractionState" : "extracted_with_value",
@@ -109,18 +49,6 @@
         }
       }
     },
-    "KQr-ak-Jig.text" : {
-      "comment" : "Class = \"UILabel\"; text = \"No Location Services\"; ObjectID = \"KQr-ak-Jig\";",
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "No Location Services"
-          }
-        }
-      }
-    },
     "Niz-5g-CIO.text" : {
       "comment" : "Class = \"UILabel\"; text = \"Label\"; ObjectID = \"Niz-5g-CIO\";",
       "extractionState" : "extracted_with_value",
@@ -129,18 +57,6 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Label"
-          }
-        }
-      }
-    },
-    "Nox-49-dvi.text" : {
-      "comment" : "Class = \"UILabel\"; text = \"Bus\"; ObjectID = \"Nox-49-dvi\";",
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Bus"
           }
         }
       }

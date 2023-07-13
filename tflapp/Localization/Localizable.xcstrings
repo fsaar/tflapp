@@ -522,6 +522,7 @@
       }
     },
     "TFLStationDetailController.backbutton.accessibitliyTitle" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -532,6 +533,7 @@
       }
     },
     "TFLStationDetailErrorView.title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -542,6 +544,7 @@
       }
     },
     "TFLStationDetailNearby.title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

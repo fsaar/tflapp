@@ -111,12 +111,7 @@ class TFLRootViewController: UIViewController {
         case splashViewController = "TFLSplashscreenControllerSegue"
     }
     
-    fileprivate lazy var mapViewController : TFLMapViewController? = {
-        guard let controller = self.storyboard?.instantiateViewController(withIdentifier: "TFLMapViewController") as? TFLMapViewController else {
-            return nil
-        }
-        return controller
-    }()
+   
 
      fileprivate lazy var nearbyBusStationController : TFLNearbyBusStationsController? =  {
         let controller = self.storyboard?.instantiateViewController(withIdentifier: "TFLNearbyBusStationsController") as? TFLNearbyBusStationsController
@@ -143,48 +138,7 @@ class TFLRootViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.networkMonitor.start(queue: .main)
-//        self.mapViewController?.delegate = nearbyBusStationController
-        self.slideContainerController?.rightCustomView = self.updateStatusView
-        setupBackSwipe()
-
-        TFLLocationManager.sharedManager.delegate = self
-        if let mapViewController = self.mapViewController, let nearbyBusStationController = self.nearbyBusStationController {
-            self.slideContainerController?.setContentControllers(with: mapViewController,and: nearbyBusStationController)
-            self.slideContainerController?.sliderViewUpdateBlock =  { [weak self] slider, origin,final in
-                func opacity(for y: CGFloat) -> CGFloat {
-                    let y0 : CGFloat = 0.3 * (self?.view.frame.size.height ?? 0)
-                    guard y < y0 else {
-                        return 0
-                    }
-                    let baseOpacity : CGFloat = 0.25
-                    let opacity = (-baseOpacity) * y/y0 + baseOpacity
-                    return opacity
-                }
-                self?.mapViewController?.coverView.alpha = opacity(for: origin.y)
-            }
-//            self.nearbyBusStationController?.delegate = self
-        }
-
-        self.foregroundNotificationHandler = TFLNotificationObserver(notification: UIApplication.willEnterForegroundNotification) { [weak self]  _ in
-            self?.updateStatusView.state = .updating
-//            let retryIfRequestWasPending = !(self?.state.isComplete ?? true)
-//            self?.loadNearbyBusstops {
-//                if retryIfRequestWasPending {
-//                    self?.loadNearbyBusstops()
-//                }
-//            }
-        }
-        self.backgroundNotificationHandler = TFLNotificationObserver(notification:UIApplication.didEnterBackgroundNotification) { [weak self]  _ in
-            self?.updateStatusView.state = .paused
-        }
-        #if DATABASEGENERATION
-        self.busStopDBGenerator.loadBusStops { [weak self] in
-            self?.busStopDBGenerator.loadLineStations()
-        }
-        #else
-            self.loadNearbyBusstops()
-        #endif
+        
 
     }
 

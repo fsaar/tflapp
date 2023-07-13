@@ -49,6 +49,7 @@ struct GenerateDatabaseButton : View {
 
 struct ContentView: View {
     @Environment(\.scenePhase) private var scenePhase
+    @AppStorage("Distance") private var distance = 400
     @Environment(\EnvironmentValues.stationList) private var stationList
     @State var isUpdating = true
     @State var stationSelection = TFLBusstationSelection()
@@ -99,7 +100,7 @@ struct ContentView: View {
 #endif
         .onChange(of: scenePhase) {
             if scenePhase == .active {
-                stationList.wrappedValue.updateList()
+                stationList.wrappedValue.updateList(with: self.distance)
                 Task {
                     await stationList.wrappedValue.refresh()
                 }

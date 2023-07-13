@@ -16,7 +16,7 @@ import OSLog
 @Observable
 class TFLStationList  {
     var lastLocation : CLLocationCoordinate2D? = CLLocationCoordinate2DMake( 51.510093564781975, -0.13490563038747838)
-    let radius = 400
+    private var radius = 400
     private let client = TFLClient()
     private let aggregator = TFLBusArrivalInfoAggregator()
     var list : [TFLBusStationInfo] = []
@@ -26,6 +26,7 @@ class TFLStationList  {
         let handle = Logger(subsystem: TFLLogger.subsystem, category: TFLLogger.category.stationList.rawValue)
         return handle
     }()
+    
     func refresh() async {
         guard let currentLocation = lastLocation,!updating else {
             return
@@ -36,17 +37,18 @@ class TFLStationList  {
     }
     
     
-    func updateList() {
+    func updateList(with radius: Int) {
+        self.radius = radius
         self.list = self.list.map { $0.stationInfoUpdateToCurrentTimeAndLocation(self.lastLocation?.location) }
             .filter { !$0.arrivals.isEmpty }
             .filter {  guard let lastLocation = self.lastLocation else {
-                            return true
-                        }
+                return true
+            }
                 return $0.location.distance(from: lastLocation.location) < CLLocationDistance(self.radius)
             }
     }
     
-    func updateNearbyBusStops(for currentLocation:CLLocationCoordinate2D ) async -> [TFLBusStationInfo]  {
+    private func updateNearbyBusStops(for currentLocation:CLLocationCoordinate2D ) async -> [TFLBusStationInfo]  {
         self.lastLocation = currentLocation
      
         let stations = await aggregator.loadArrivalTimesForBusStations(with: currentLocation, radius: radius)
@@ -68,4 +70,5 @@ class TFLStationList  {
             self.list = self.list.map { $0.stationInfoWithTimestampReducedBy(30) }.filter { !$0.arrivals.isEmpty }
         }.store(in:&cancelableSet)
     }
+    
 }

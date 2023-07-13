@@ -17,7 +17,6 @@ import Combine
 
 
 struct TFLNearbyBusStationListView : View {
-    @Environment(\.scenePhase) var scenePhase
     @Environment(\.stationSelection) var stationSelection : Binding<TFLBusstationSelection>
     @Environment(\.stationList) var stationList : Binding<TFLStationList>
     @State var scrollPostion : String?

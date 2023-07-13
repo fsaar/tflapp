@@ -5,6 +5,7 @@
 
     },
     "Common.dismiss" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -25,6 +26,7 @@
       }
     },
     "Common.meter" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -35,6 +37,7 @@
       }
     },
     "Common.meters" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -65,6 +68,7 @@
       }
     },
     "Common.minute" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -75,6 +79,7 @@
       }
     },
     "Common.minutes" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -107,6 +112,7 @@
       }
     },
     "Common.towards" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -240,6 +246,7 @@
       }
     },
     "TFLInformationView.notification" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -250,6 +257,7 @@
       }
     },
     "TFLInformationView.title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -260,6 +268,7 @@
       }
     },
     "TFLInformationView.warning.title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -347,6 +356,7 @@
       }
     },
     "TFLNearbyBusStationsController.notification.body" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -368,6 +378,7 @@
       }
     },
     "TFLNearbyBusStationsController.notification.title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -378,6 +389,7 @@
       }
     },
     "TFLNearbyBusStationsController.reminder.message" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -388,6 +400,7 @@
       }
     },
     "TFLNearbyBusStationsController.reminder.title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

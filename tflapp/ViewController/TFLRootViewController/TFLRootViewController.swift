@@ -130,7 +130,7 @@ class TFLRootViewController: UIViewController {
         return view
     }()
     fileprivate var slideContainerController : TFLSlideContainerController?
-    fileprivate var splashScreenController : TFLSplashscreenController?
+   
     private var foregroundNotificationHandler  : TFLNotificationObserver?
     private var backgroundNotificationHandler  : TFLNotificationObserver?
     @IBOutlet weak var errorContainerView : TFLErrorContainerView! = nil {
@@ -198,21 +198,7 @@ class TFLRootViewController: UIViewController {
         hideSplashscreenIfNeedBe()
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let identifier = segue.identifier , let segueIdentifier = SegueIdentifier(rawValue: identifier) else {
-            return
-        }
-        switch segueIdentifier {
-        case .slideContainerController:
-            if let slideContainerController = segue.destination as? TFLSlideContainerController {
-                self.slideContainerController = slideContainerController
-            }
-        case .splashViewController:
-            if let controller = segue.destination as? TFLSplashscreenController {
-                self.splashScreenController = controller
-            }
-        }
-    }
+  
     var loadNearbyBusStopsCompletionBlocks : [CompletionBlock?] = []
 }
 
@@ -220,16 +206,7 @@ class TFLRootViewController: UIViewController {
 
 fileprivate extension TFLRootViewController {
     func hideSplashscreenIfNeedBe() {
-        guard let _ = splashScreenContainerView.superview else {
-            return
-        }
-        UIView.animate(withDuration: 0.5, delay: 1.0, options: UIView.AnimationOptions.curveLinear, animations: {
-            self.splashScreenContainerView.alpha = 0
-        }) { _ in
-            self.removeController(self.splashScreenController)
-            self.splashScreenContainerView.removeFromSuperview()
-            self.splashScreenController = nil
-        }
+       
     }
     
     

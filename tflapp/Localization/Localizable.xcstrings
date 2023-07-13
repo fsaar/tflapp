@@ -226,6 +226,7 @@
       }
     },
     "TFLHUD.accessiblityTitle" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -236,6 +237,7 @@
       }
     },
     "TFLHUD.title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -499,6 +501,7 @@
       }
     },
     "TFLOfflineView.offline.title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

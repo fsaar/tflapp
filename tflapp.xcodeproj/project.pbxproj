@@ -34,7 +34,6 @@
 		563F3EE22A4388FD00EFF524 /* tflapp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563F3EE12A4388FD00EFF524 /* tflapp.swift */; };
 		563F3EE62A4390F300EFF524 /* TFLBusStation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563F3EE52A4390F300EFF524 /* TFLBusStation.swift */; };
 		5641F6EE1F19F68B00A3A9D2 /* TFLRequestManagerSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5641F6ED1F19F68100A3A9D2 /* TFLRequestManagerSpecs.swift */; };
-		56482BF923C48AB4001A165E /* TFLRatingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56482BF823C48AB4001A165E /* TFLRatingController.swift */; };
 		564CA5A4222355F400E69A1C /* PolyLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564CA5A3222355F400E69A1C /* PolyLine.swift */; };
 		564CA5A62223561600E69A1C /* PolyLineSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564CA5A52223561600E69A1C /* PolyLineSpecs.swift */; };
 		564CA5A8222356B200E69A1C /* Array+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564CA5A7222356B200E69A1C /* Array+Helper.swift */; };
@@ -132,7 +131,6 @@
 		563F3EE52A4390F300EFF524 /* TFLBusStation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusStation.swift; sourceTree = "<group>"; };
 		5641F6ED1F19F68100A3A9D2 /* TFLRequestManagerSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLRequestManagerSpecs.swift; sourceTree = "<group>"; };
 		5642EF0720ED63AD00A7914F /* mapstogpx20180704_193755.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = mapstogpx20180704_193755.gpx; sourceTree = "<group>"; };
-		56482BF823C48AB4001A165E /* TFLRatingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLRatingController.swift; sourceTree = "<group>"; };
 		564CA5A3222355F400E69A1C /* PolyLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolyLine.swift; sourceTree = "<group>"; };
 		564CA5A52223561600E69A1C /* PolyLineSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolyLineSpecs.swift; sourceTree = "<group>"; };
 		564CA5A7222356B200E69A1C /* Array+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Helper.swift"; sourceTree = "<group>"; };
@@ -294,14 +292,6 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		56482BF723C48A90001A165E /* TFLRatingController */ = {
-			isa = PBXGroup;
-			children = (
-				56482BF823C48AB4001A165E /* TFLRatingController.swift */,
-			);
-			path = TFLRatingController;
-			sourceTree = "<group>";
-		};
 		564CA5A2222355CB00E69A1C /* PolyLine */ = {
 			isa = PBXGroup;
 			children = (
@@ -408,7 +398,6 @@
 				565300952A6080420021DAFF /* Views */,
 				5653008D2A607F6E0021DAFF /* TFLBusArrivalInfoAggregator */,
 				5653008F2A607F6E0021DAFF /* TFLBusStopDBGenerator */,
-				56482BF723C48A90001A165E /* TFLRatingController */,
 				5629CC2522F784E400911C1E /* Settings */,
 				56D6E3782259546F00A2FAE9 /* PolyLineDict */,
 				56113B2C223F7DAE00C8EDA4 /* GoogleRouteInfo */,
@@ -1013,7 +1002,6 @@
 				563F3EE62A4390F300EFF524 /* TFLBusStation.swift in Sources */,
 				56113B2E223F7DC900C8EDA4 /* GoogleRouteInfo.swift in Sources */,
 				561C1836226FC6F1008016B7 /* Data+Helper.swift in Sources */,
-				56482BF923C48AB4001A165E /* TFLRatingController.swift in Sources */,
 				563F3EE02A43887B00EFF524 /* TFLBusPredictionListView.swift in Sources */,
 				56543FF72A4A2F7C0049CB00 /* TFLSwiftDataStack.swift in Sources */,
 				5656717A219A244700F3B7EE /* TFLLineInfoRouteDirectory.swift in Sources */,

@@ -97,7 +97,6 @@
 		56A4907C219781C0004024D9 /* TFLRouteFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A4907B219781C0004024D9 /* TFLRouteFormatter.swift */; };
 		56A4907F219799EA004024D9 /* TFLCoreSpotLightDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A4907E219799EA004024D9 /* TFLCoreSpotLightDataProvider.swift */; };
 		56A81B2F1DD862DC001DF7F1 /* TFLAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A81B2E1DD862DC001DF7F1 /* TFLAppDelegate.swift */; };
-		56A81B341DD862DC001DF7F1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56A81B321DD862DC001DF7F1 /* Main.storyboard */; };
 		56A81B391DD862DC001DF7F1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 56A81B381DD862DC001DF7F1 /* Assets.xcassets */; };
 		56A81B3C1DD862DC001DF7F1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56A81B3A1DD862DC001DF7F1 /* LaunchScreen.storyboard */; };
 		56A98CE92115A9B100E69BCB /* TFLBusArrivalInfoAggregator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A98CE82115A9B100E69BCB /* TFLBusArrivalInfoAggregator.swift */; };
@@ -193,7 +192,6 @@
 		565300802A5CA6920021DAFF /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		565300822A5CA6920021DAFF /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		565300842A5CA6920021DAFF /* mul */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; name = mul; path = mul.lproj/LaunchScreen.xcstrings; sourceTree = "<group>"; };
-		565300852A5CA6920021DAFF /* mul */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; name = mul; path = mul.lproj/Main.xcstrings; sourceTree = "<group>"; };
 		565300872A5DD3BA0021DAFF /* TFLMapBusStationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLMapBusStationView.swift; sourceTree = "<group>"; };
 		56543FF62A4A2F7C0049CB00 /* TFLSwiftDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLSwiftDataStack.swift; sourceTree = "<group>"; };
 		56567179219A244600F3B7EE /* TFLLineInfoRouteDirectory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLLineInfoRouteDirectory.swift; sourceTree = "<group>"; };
@@ -271,7 +269,6 @@
 		56A4907E219799EA004024D9 /* TFLCoreSpotLightDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLCoreSpotLightDataProvider.swift; sourceTree = "<group>"; };
 		56A81B2B1DD862DC001DF7F1 /* BusStops.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BusStops.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		56A81B2E1DD862DC001DF7F1 /* TFLAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLAppDelegate.swift; sourceTree = "<group>"; };
-		56A81B331DD862DC001DF7F1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		56A81B381DD862DC001DF7F1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		56A81B3B1DD862DC001DF7F1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		56A81B3D1DD862DC001DF7F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -469,6 +466,15 @@
 			path = tflapp/TFLBusStopDBGenerator;
 			sourceTree = SOURCE_ROOT;
 		};
+		5653008A2A607DEE0021DAFF /* TFLBusArrivalInfoAggregator */ = {
+			isa = PBXGroup;
+			children = (
+				56A98CE82115A9B100E69BCB /* TFLBusArrivalInfoAggregator.swift */,
+			);
+			name = TFLBusArrivalInfoAggregator;
+			path = tflapp/TFLBusArrivalInfoAggregator;
+			sourceTree = SOURCE_ROOT;
+		};
 		5657D3671DE387E6004E4CD0 /* tflApp Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -528,6 +534,7 @@
 		565A1FC91DD8F8D1003CE960 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				5653008A2A607DEE0021DAFF /* TFLBusArrivalInfoAggregator */,
 				565300892A607D0E0021DAFF /* TFLBusStopDBGenerator */,
 				5653007D2A5C8BE50021DAFF /* TFLNoStationListView */,
 				565E1A512A576077001960AD /* NoContentAvailableView */,
@@ -618,7 +625,6 @@
 				566EF7D61DDC4D14006162D7 /* TFLRootViewController.swift */,
 				56823EAD1DDDA5B300E79B1A /* TFLNoGPSEnabledView.swift */,
 				56823EAB1DDDA54100E79B1A /* TFLProgressInformationView.swift */,
-				56A98CE82115A9B100E69BCB /* TFLBusArrivalInfoAggregator.swift */,
 				56A98CEC211A4FB200E69BCB /* TFLErrorContainerVIew.swift */,
 				5632A7A121B342BB000E2E81 /* TFLUpdateStatusView.swift */,
 			);
@@ -800,7 +806,6 @@
 				56A81B2E1DD862DC001DF7F1 /* TFLAppDelegate.swift */,
 				563F3EE12A4388FD00EFF524 /* tflapp.swift */,
 				566EF7D41DDC4D14006162D7 /* ViewController */,
-				56A81B321DD862DC001DF7F1 /* Main.storyboard */,
 				56A81B381DD862DC001DF7F1 /* Assets.xcassets */,
 				56A81B3A1DD862DC001DF7F1 /* LaunchScreen.storyboard */,
 				56A4907121977B40004024D9 /* tflapp.entitlements */,
@@ -1010,7 +1015,6 @@
 				56D008C02278D199005E1344 /* polyLineDict.plist in Resources */,
 				56A81B391DD862DC001DF7F1 /* Assets.xcassets in Resources */,
 				56A4907721977FF6004024D9 /* abbreviations.plist in Resources */,
-				56A81B341DD862DC001DF7F1 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1276,15 +1280,6 @@
 				56A4907821977FF6004024D9 /* en */,
 			);
 			name = abbreviations.plist;
-			sourceTree = "<group>";
-		};
-		56A81B321DD862DC001DF7F1 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				56A81B331DD862DC001DF7F1 /* Base */,
-				565300852A5CA6920021DAFF /* mul */,
-			);
-			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 		56A81B3A1DD862DC001DF7F1 /* LaunchScreen.storyboard */ = {

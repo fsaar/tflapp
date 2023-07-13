@@ -24,7 +24,7 @@ private struct SliderHandle: Shape {
 }
 
 
-struct Slider<BackgroundView: View,ForegroundView : View> : View {
+struct SliderView<BackgroundView: View,ForegroundView : View> : View {
     let snapPositions: (top:Double,center: Double,bottom: Double) = (0.88,0.4,0.08)
     let backgroundView :  BackgroundView
     let foregroundView : ForegroundView

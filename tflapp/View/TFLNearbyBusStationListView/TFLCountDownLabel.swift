@@ -55,7 +55,7 @@ struct TFLCountDownLabel : View {
                             values[0] = _value.wrappedValue
                             update()
                             
-                        }
+                                    }
                     }
                 }.clipped()
     }

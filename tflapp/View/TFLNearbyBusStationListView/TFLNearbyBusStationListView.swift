@@ -14,8 +14,6 @@ import CoreLocation
 import Combine
 
 
-
-
 struct TFLNearbyBusStationListView : View {
     @Environment(TFLBusstationSelection.self) var stationSelection
     @Environment(\.stationList) var stationList : Binding<TFLStationList>
@@ -67,7 +65,9 @@ struct TFLNearbyBusStationListView : View {
             .safeAreaPadding([.bottom],140)
             .scrollTargetBehavior(.viewAligned)
             .refreshable {
-                await stationList.wrappedValue.refresh()
+                Task {
+                    await stationList.wrappedValue.refresh()
+                }
             }
             .onChange(of:stationSelection.station) {
                 guard let station = stationSelection.station,scrollPostion != station.identifier else  {

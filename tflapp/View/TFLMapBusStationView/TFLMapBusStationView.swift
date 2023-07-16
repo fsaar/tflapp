@@ -12,7 +12,7 @@ import MapKit
 import OSLog
 
 struct TFLMapBusStationView : View {
-    @Environment(\.stationList) var stationList : Binding<TFLStationList>
+    @Environment(TFLStationList.self) private var stationList 
     @Environment(TFLBusstationSelection.self) private var stationSelection
     @State private var position : MapCameraPosition = .automatic
     @State private var selection : String?
@@ -23,11 +23,11 @@ struct TFLMapBusStationView : View {
     var body : some View {
         Map(position:$position, selection:$selection) {
             ForEach(stationList.list) { station in
-                Marker(station.wrappedValue.name,
+                Marker(station.name,
                        systemImage: "bus.doubledecker.fill",
-                       coordinate:  station.wrappedValue.location.coordinate)
+                       coordinate:  station.location.coordinate)
                 .tint(.tflMapStation)
-                .tag(station.wrappedValue.identifier)
+                .tag(station.identifier)
                 
             }
         }
@@ -58,7 +58,7 @@ struct TFLMapBusStationView : View {
                 return
             }
             
-            let list = self.stationList.wrappedValue.list
+            let list = self.stationList.list
             guard let station = list.first(where:{ $0.identifier == selection }) else {
                 return
             }

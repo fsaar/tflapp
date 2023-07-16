@@ -2,14 +2,14 @@ import SwiftUI
 
 
 struct TFLNoStationListView : View {
-    @Environment(\EnvironmentValues.stationList) private var stationList
+    @Environment(TFLStationList.self) private var stationList
    
     var body : some View {
         NoContentAvailableView(title: "TFLNoStationsView.title",description: "TFLNoStationsView.description") {
             
             RetryButton {
                 Task {
-                    await stationList.wrappedValue.refresh()
+                    await stationList.refresh()
                 }
             }
             

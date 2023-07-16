@@ -10,18 +10,6 @@ final class TFLBusstationSelection {
     var station : TFLBusStationInfo?
 }
 
-struct StationListKey: EnvironmentKey {
-    static let defaultValue : Binding<TFLStationList> = .constant(TFLStationList())
-}
-
-extension EnvironmentValues {
-   
-    var stationList: Binding<TFLStationList> {
-        set { self[StationListKey.self] = newValue }
-        get { self[StationListKey.self] }
-    }
-}
-
 struct GenerateDatabaseButton : View {
     private let busStopDBGenerator = TFLBusStopDBGenerator()
   
@@ -38,7 +26,7 @@ struct GenerateDatabaseButton : View {
 struct ContentView: View {
     @Environment(\.scenePhase) private var scenePhase
     @AppStorage("Distance") private var distance = 400
-    @Environment(\EnvironmentValues.stationList) private var stationList
+    @Environment(TFLStationList.self) private var stationList
     @State var isUpdating = true
     @State var stationSelection = TFLBusstationSelection()
     var showContentUnavailable : Bool {
@@ -88,14 +76,14 @@ struct ContentView: View {
 #endif
         .onChange(of: scenePhase) {
             if scenePhase == .active {
-                stationList.wrappedValue.updateList(with: self.distance)
+                stationList.updateList(with: self.distance)
                 Task {
-                    await stationList.wrappedValue.refresh()
+                    await stationList.refresh()
                 }
             }
-        }.onChange(of: stationList.updating.wrappedValue) {
+        }.onChange(of: stationList.updating) {
             withAnimation {
-                self.isUpdating = self.stationList.updating.wrappedValue
+                self.isUpdating = self.stationList.updating
 
             }
         }

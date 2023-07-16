@@ -15,8 +15,9 @@ import Combine
 
 
 struct TFLNearbyBusStationListView : View {
-    @Environment(TFLBusstationSelection.self) var stationSelection
-    @Environment(\.stationList) var stationList : Binding<TFLStationList>
+    @Environment(TFLBusstationSelection.self) private var stationSelection
+    @Environment(TFLStationList.self) private var stationList
+   
     @State var scrollPostion : String?
     var body : some View {
         
@@ -24,7 +25,7 @@ struct TFLNearbyBusStationListView : View {
             ScrollView(showsIndicators: false) {
                 LazyVStack {
                     ForEach(stationList.list) { station in
-                        TFLBusStationView(station:station)
+                        TFLBusStationView(station:Binding.constant(station))
                             .scrollTransition(axis: .vertical) { content, phase in
                                 content
                                     .scaleEffect(
@@ -33,7 +34,7 @@ struct TFLNearbyBusStationListView : View {
                             }
                             .onTapGesture {
                                 withAnimation {
-                                    stationSelection.station =  station.wrappedValue
+                                    stationSelection.station =  station
                                 }
                             }
                         
@@ -66,7 +67,7 @@ struct TFLNearbyBusStationListView : View {
             .scrollTargetBehavior(.viewAligned)
             .refreshable {
                 Task {
-                    await stationList.wrappedValue.refresh()
+                    await stationList.refresh()
                 }
             }
             .onChange(of:stationSelection.station) {
@@ -77,6 +78,7 @@ struct TFLNearbyBusStationListView : View {
                     scrollPostion = station.identifier
                 }
             }
+          
             
         }
         Spacer()

@@ -8,18 +8,11 @@ import MapKit
 @Observable
 final class TFLBusstationSelection {
     var station : TFLBusStationInfo?
-   
-   
 }
 
 struct StationListKey: EnvironmentKey {
     static let defaultValue : Binding<TFLStationList> = .constant(TFLStationList())
 }
-
-//struct BusstationSelectionKey: EnvironmentKey {
-//    static let defaultValue : Binding<TFLBusstationSelection> = .constant(TFLBusstationSelection())
-//}
-
 
 extension EnvironmentValues {
    
@@ -27,11 +20,6 @@ extension EnvironmentValues {
         set { self[StationListKey.self] = newValue }
         get { self[StationListKey.self] }
     }
-    
-//    var stationSelection: Binding<TFLBusstationSelection> {
-//        set { self[BusstationSelectionKey.self] = newValue }
-//        get { self[BusstationSelectionKey.self] }
-//    }
 }
 
 struct GenerateDatabaseButton : View {

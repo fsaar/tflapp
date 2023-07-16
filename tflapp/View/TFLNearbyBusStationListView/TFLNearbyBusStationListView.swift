@@ -17,7 +17,7 @@ import Combine
 
 
 struct TFLNearbyBusStationListView : View {
-    @Environment(\.stationSelection) var stationSelection : Binding<TFLBusstationSelection>
+    @Environment(TFLBusstationSelection.self) var stationSelection
     @Environment(\.stationList) var stationList : Binding<TFLStationList>
     @State var scrollPostion : String?
     var body : some View {
@@ -35,7 +35,7 @@ struct TFLNearbyBusStationListView : View {
                             }
                             .onTapGesture {
                                 withAnimation {
-                                    stationSelection.wrappedValue.station =  station.wrappedValue
+                                    stationSelection.station =  station.wrappedValue
                                 }
                             }
                         
@@ -69,8 +69,8 @@ struct TFLNearbyBusStationListView : View {
             .refreshable {
                 await stationList.wrappedValue.refresh()
             }
-            .onChange(of:stationSelection.wrappedValue.station) {
-                guard let station = stationSelection.wrappedValue.station,scrollPostion != station.identifier else  {
+            .onChange(of:stationSelection.station) {
+                guard let station = stationSelection.station,scrollPostion != station.identifier else  {
                     return
                 }
                 withAnimation {

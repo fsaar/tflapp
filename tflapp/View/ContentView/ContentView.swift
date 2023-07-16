@@ -16,9 +16,9 @@ struct StationListKey: EnvironmentKey {
     static let defaultValue : Binding<TFLStationList> = .constant(TFLStationList())
 }
 
-struct BusstationSelectionKey: EnvironmentKey {
-    static let defaultValue : Binding<TFLBusstationSelection> = .constant(TFLBusstationSelection())
-}
+//struct BusstationSelectionKey: EnvironmentKey {
+//    static let defaultValue : Binding<TFLBusstationSelection> = .constant(TFLBusstationSelection())
+//}
 
 
 extension EnvironmentValues {
@@ -28,10 +28,10 @@ extension EnvironmentValues {
         get { self[StationListKey.self] }
     }
     
-    var stationSelection: Binding<TFLBusstationSelection> {
-        set { self[BusstationSelectionKey.self] = newValue }
-        get { self[BusstationSelectionKey.self] }
-    }
+//    var stationSelection: Binding<TFLBusstationSelection> {
+//        set { self[BusstationSelectionKey.self] = newValue }
+//        get { self[BusstationSelectionKey.self] }
+//    }
 }
 
 struct GenerateDatabaseButton : View {
@@ -67,7 +67,7 @@ struct ContentView: View {
             })  {
                 TFLNearbyBusStationListView()
             }
-            .environment(\.stationSelection,$stationSelection)
+            .environment(stationSelection)
             .isHidden(stationList.list.isEmpty)
             TFLNoStationListView()
                 .isHidden(!showContentUnavailable)

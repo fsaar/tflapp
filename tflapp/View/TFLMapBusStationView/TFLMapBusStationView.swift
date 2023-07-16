@@ -13,7 +13,7 @@ import OSLog
 
 struct TFLMapBusStationView : View {
     @Environment(\.stationList) var stationList : Binding<TFLStationList>
-    @Environment(\.stationSelection) var stationSelection : Binding<TFLBusstationSelection>
+    @Environment(TFLBusstationSelection.self) private var stationSelection
     @State private var position : MapCameraPosition = .automatic
     @State private var selection : String?
     fileprivate let logger : Logger =  {
@@ -40,8 +40,8 @@ struct TFLMapBusStationView : View {
         .buttonBorderShape(.circle)
         .controlSize(.large)
         .safeAreaPadding([.top],100)
-        .onChange(of:stationSelection.wrappedValue.station) {
-            guard let station = stationSelection.wrappedValue.station else {
+        .onChange(of:stationSelection.station) {
+            guard let station = stationSelection.station else {
                 return
             }
             
@@ -54,7 +54,7 @@ struct TFLMapBusStationView : View {
             }
         }
         .onChange(of: selection) {
-            guard let selection ,selection != stationSelection.wrappedValue.station?.identifier else {
+            guard let selection ,selection != stationSelection.station?.identifier else {
                 return
             }
             
@@ -62,7 +62,7 @@ struct TFLMapBusStationView : View {
             guard let station = list.first(where:{ $0.identifier == selection }) else {
                 return
             }
-            stationSelection.station.wrappedValue = station
+            stationSelection.station = station
         }
     }
 }

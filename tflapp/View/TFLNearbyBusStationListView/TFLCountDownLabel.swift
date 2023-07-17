@@ -37,11 +37,12 @@ struct TFLCountDownLabel : View {
             }
         }
     }
-  
+    @ScaledMetric(relativeTo: .title) static var defaultHeight = 16
+
     @Binding var value : String
     @State private var values : [String]
     @State private var scrollState : ScrollState = .initial
-    @State private var size : CGSize = .zero
+    @State private var size = CGSize(width: 40,height: 18)
     init(_ boundValue: Binding<String>) {
         _value = boundValue
         values = [_value.wrappedValue,_value.wrappedValue]

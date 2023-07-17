@@ -26,7 +26,7 @@ struct TFLBusPredictionView : View {
     
     var body : some View {
         VStack {
-            Text("\(bus)")
+            Text(prediction.lineName)
                 .tflBoldFont(size:busFontSize)
                 .foregroundColor(.tflSecondaryText)
                 .padding(EdgeInsets(top:7,leading:20,bottom:5,trailing:20))
@@ -46,7 +46,7 @@ struct TFLBusPredictionView : View {
         .clipShape(RoundedRectangle(cornerRadius:10))
         .contentShape(RoundedRectangle(cornerRadius:10))
         .onChange(of: prediction) {
-            self.eta = _prediction.wrappedValue.eta
+            self.eta = prediction.eta
         }
         .scaleEffect(isVisible ? 1.0 : 0.01,anchor: .center)
         .onDisappear {

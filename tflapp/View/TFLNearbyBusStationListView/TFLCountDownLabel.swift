@@ -7,6 +7,21 @@
 import Foundation
 import SwiftUI
 
+struct ViewSizeKey: PreferenceKey {
+  static var defaultValue: CGSize = .zero
+  static func reduce(value: inout CGSize, nextValue: () -> CGSize) {
+    value = nextValue()
+  }
+}
+
+struct ViewGeometry: View {
+  var body: some View {
+    GeometryReader { geometry in
+      Color.clear
+        .preference(key: ViewSizeKey.self, value: geometry.size)
+    }
+  }
+}
 
 struct TFLCountDownLabel : View {
     enum ScrollState {
@@ -16,48 +31,39 @@ struct TFLCountDownLabel : View {
         func offset(height: CGFloat) -> CGFloat {
             switch self {
             case .initial:
-                return -height
+                return -height/2
             case .updateing:
-                return 0
+                return height/2
             }
         }
     }
   
-    private var normalizedText : String {
-        let maxText = values[0].count > values[1].count ? values[0] : values[1]
-        return Array(repeating:"x",count:maxText.count+1).joined(separator: "")
-    }
     @Binding var value : String
-    @State var width : CGFloat = 0
     @State private var values : [String]
     @State private var scrollState : ScrollState = .initial
+    @State private var size : CGSize = .zero
     init(_ boundValue: Binding<String>) {
         _value = boundValue
         values = [_value.wrappedValue,_value.wrappedValue]
     }
+   
     var body: some View {
-            Text(normalizedText)
-                .frame(minWidth: width, alignment: .center)
-                .lineLimit(1)
-                .opacity(0.01)
-                .overlay {
-                    GeometryReader { proxy in
-                        VStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/) {
-                            ForEach(0..<2,id:\.self) { index in
-                                Text(values[index])
-                                    .frame(width: proxy.size.width,alignment: .center)
-                                    .offset(y: scrollState.offset(height: proxy.size.height))
-                            }
-                        } .onChange(of: value) {
-                            if width == 0 {
-                                width = proxy.size.width
-                            }
-                            values[0] = _value.wrappedValue
-                            update()
-                            
-                                    }
-                    }
-                }.clipped()
+        VStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/) {
+            text(values[0])
+            text(values[1])
+                .background(ViewGeometry())
+                .onPreferenceChange(ViewSizeKey.self) { size in
+                    self.size = size
+                }
+        }
+        .fixedSize(horizontal: true, vertical: false)
+        .lineLimit(1)
+        .frame(height:size.height)
+        .clipped()
+        .onChange(of: value) {
+            values[0] = value
+            update()
+        }
     }
 }
 
@@ -65,6 +71,13 @@ struct TFLCountDownLabel : View {
 // MARK: Helper
 //
 private extension TFLCountDownLabel {
+    @ViewBuilder
+    private func text(_ text: String) -> some View {
+        Text(text)
+            .frame(maxWidth: .infinity,alignment: .center)
+            .offset(y: scrollState.offset(height: size.height))
+    }
+    
     func update() {
         withAnimation(.spring(duration:0.6,bounce:0.6)) {
             self.scrollState = .updateing

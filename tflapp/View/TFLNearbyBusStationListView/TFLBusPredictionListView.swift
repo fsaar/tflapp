@@ -6,17 +6,6 @@ import Foundation
 import SwiftUI
 
 
-extension AnyTransition {
-    static var scaleDown : AnyTransition {
-        .scale(scale: 0.01,anchor: .init(x: 0, y: 0.5)).combined(with: .opacity).animation(.linear(duration: 0.25))
-    }
-    
-    static var scaleOut : AnyTransition {
-        .scale.combined(with: .opacity).animation(.linear(duration:0.25))
-    }
-}
-
-
 struct TFLBusPredictionListView : View {
     @Binding var predictionList : [TFLBusPrediction]
     @State var firstId : TFLBusPrediction.ID?
@@ -29,8 +18,6 @@ struct TFLBusPredictionListView : View {
                         TFLBusPredictionView(prediction)
                             .transition(.opacity.animation(.linear(duration: 0.20)))
                             .animation(.linear(duration: 0.4),value:predictionList)
-                           
-                          
                     }
                 }
             }

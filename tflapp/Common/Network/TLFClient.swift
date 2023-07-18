@@ -82,55 +82,55 @@ public final class TFLClient {
         return busstops
     }
     
-    public func lineStationInfo(for line: String,
-                        context: NSManagedObjectContext,
-                         with operationQueue : OperationQueue = OperationQueue.main,
-                         using completionBlock: ((TFLCDLineInfo?,_ error:Error?) -> ())? = nil)  {
-        guard !line.isEmpty else {
-            operationQueue.addOperation{
-                completionBlock?(nil,TFLClientError.InvalidLine)
-            }
-            return
-        }
-        let lineStationPath = "/Line/\(line)/Route/Sequence/all"
-        Task{
-            do {
-                self.logger.log("\(#function) lineStationInfo: \(line)")
-                let lineInfo = try await lineStationInfo(with: lineStationPath, query: "serviceTypes=Regular&excludeCrowding=true", context: context)
-                operationQueue.addOperation{
-                    completionBlock?(lineInfo,nil)
-                }
-            }
-            catch let error {
-                completionBlock?(nil,error)
-            }
-        }
-    }
+//    public func lineStationInfo(for line: String,
+//                        context: NSManagedObjectContext,
+//                         with operationQueue : OperationQueue = OperationQueue.main,
+//                         using completionBlock: ((TFLCDLineInfo?,_ error:Error?) -> ())? = nil)  {
+//        guard !line.isEmpty else {
+//            operationQueue.addOperation{
+//                completionBlock?(nil,TFLClientError.InvalidLine)
+//            }
+//            return
+//        }
+//        let lineStationPath = "/Line/\(line)/Route/Sequence/all"
+//        Task{
+//            do {
+//                self.logger.log("\(#function) lineStationInfo: \(line)")
+//                let lineInfo = try await lineStationInfo(with: lineStationPath, query: "serviceTypes=Regular&excludeCrowding=true", context: context)
+//                operationQueue.addOperation{
+//                    completionBlock?(lineInfo,nil)
+//                }
+//            }
+//            catch let error {
+//                completionBlock?(nil,error)
+//            }
+//        }
+//    }
 
 }
 
 fileprivate extension TFLClient {
-    func lineStationInfo(with relativePath: String,
-                         query: String,context: NSManagedObjectContext) async throws -> TFLCDLineInfo {
-        let data = try await tflManager.getDataWithRelativePath(relativePath: relativePath,and: query)
-        
-        if let jsonDict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String : Any] {
-            return try await withCheckedThrowingContinuation { continuation in
-                TFLCDLineInfo.lineInfo(with: jsonDict, and: context) { lineInfo in
-                    guard let lineInfo = lineInfo else {
-                        continuation.resume(throwing: TFLClientError.InvalidJSON)
-                        return
-                    }
-                    context.perform {
-                        try? context.save()
-                    }
-                    continuation.resume(returning: lineInfo)
-                }
-            }
-        } else {
-            throw TFLClientError.InvalidFormat(data: data)
-        }
-    }
+//    func lineStationInfo(with relativePath: String,
+//                         query: String,context: NSManagedObjectContext) async throws -> TFLCDLineInfo {
+//        let data = try await tflManager.getDataWithRelativePath(relativePath: relativePath,and: query)
+//        
+//        if let jsonDict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String : Any] {
+//            return try await withCheckedThrowingContinuation { continuation in
+//                TFLCDLineInfo.lineInfo(with: jsonDict, and: context) { lineInfo in
+//                    guard let lineInfo = lineInfo else {
+//                        continuation.resume(throwing: TFLClientError.InvalidJSON)
+//                        return
+//                    }
+//                    context.perform {
+//                        try? context.save()
+//                    }
+//                    continuation.resume(returning: lineInfo)
+//                }
+//            }
+//        } else {
+//            throw TFLClientError.InvalidFormat(data: data)
+//        }
+//    }
     
     
     func requestBusStops(with relativePath: String,

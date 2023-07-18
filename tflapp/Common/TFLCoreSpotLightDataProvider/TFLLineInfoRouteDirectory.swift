@@ -18,24 +18,24 @@ class TFLLineInfoRouteDirectory : TFLCoreSpotLightDataProviderDataSource {
         lines = Array(routesDict.keys)
     }
     
-    class func infoRouteDirectoryFromCoreData() ->  TFLLineInfoRouteDirectory {
-        let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
-        let fetchRequest = NSFetchRequest<TFLCDLineInfo>(entityName: String(describing: TFLCDLineInfo.self))
-        fetchRequest.fetchBatchSize = 100
-        var dict : [String : [String]] = [:]
-        context.performAndWait {
-            if let lineInfos = try? context.fetch(fetchRequest) {
-                lineInfos.forEach { lineInfo in
-                    if let identifier = lineInfo.identifier,
-                        let routes : [String] =  lineInfo.routes?.compactMap({ ($0 as? TFLCDLineRoute)?.name }) {
-                        dict[identifier] = routes
-                    }
-                }
-            }
-        }
-        let infoRouteDirectory = TFLLineInfoRouteDirectory(with: dict)
-        return infoRouteDirectory
-    }
+//    class func infoRouteDirectoryFromCoreData() ->  TFLLineInfoRouteDirectory {
+//        let context = TFLBusStopStack.sharedDataStack.privateQueueManagedObjectContext
+//        let fetchRequest = NSFetchRequest<TFLCDLineInfo>(entityName: String(describing: TFLCDLineInfo.self))
+//        fetchRequest.fetchBatchSize = 100
+//        var dict : [String : [String]] = [:]
+//        context.performAndWait {
+//            if let lineInfos = try? context.fetch(fetchRequest) {
+//                lineInfos.forEach { lineInfo in
+//                    if let identifier = lineInfo.identifier,
+//                        let routes : [String] =  lineInfo.routes?.compactMap({ ($0 as? TFLCDLineRoute)?.name }) {
+//                        dict[identifier] = routes
+//                    }
+//                }
+//            }
+//        }
+//        let infoRouteDirectory = TFLLineInfoRouteDirectory(with: dict)
+//        return infoRouteDirectory
+//    }
     
     func numberOfLinesForCoreSpotLightDataProvider(_ provider : TFLCoreSpotLightDataProvider) -> Int {
         return lines.count

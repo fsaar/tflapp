@@ -27,10 +27,7 @@ struct TFLApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environment(stationList).task {
-                    print(Bundle.main)
-
-                }
+                .environment(stationList)
         }
         .modelContainer(swiftDataStack.container)
     }

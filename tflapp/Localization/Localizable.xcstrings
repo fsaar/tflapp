@@ -1,9 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "%@" : {
-
-    },
     "Common.dismiss" : {
       "extractionState" : "stale",
       "localizations" : {

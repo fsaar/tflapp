@@ -120,7 +120,6 @@
 		563F3EE12A4388FD00EFF524 /* tflapp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tflapp.swift; sourceTree = "<group>"; };
 		563F3EE52A4390F300EFF524 /* TFLBusStation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusStation.swift; sourceTree = "<group>"; };
 		5641F6ED1F19F68100A3A9D2 /* TFLRequestManagerSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLRequestManagerSpecs.swift; sourceTree = "<group>"; };
-		5642EF0720ED63AD00A7914F /* mapstogpx20180704_193755.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = mapstogpx20180704_193755.gpx; sourceTree = "<group>"; };
 		564CA5A3222355F400E69A1C /* PolyLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolyLine.swift; sourceTree = "<group>"; };
 		564CA5A52223561600E69A1C /* PolyLineSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolyLineSpecs.swift; sourceTree = "<group>"; };
 		564CA5A7222356B200E69A1C /* Array+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Helper.swift"; sourceTree = "<group>"; };
@@ -596,7 +595,6 @@
 				56D008BF2278D199005E1344 /* polyLineDict.plist */,
 				56DB35D62265201100B164CB /* rawPolyLineDict.plist */,
 				565A1FD01DD8FB2A003CE960 /* Model.xcdatamodeld */,
-				5642EF0720ED63AD00A7914F /* mapstogpx20180704_193755.gpx */,
 				564EC6EF1DDFAA67008CFD11 /* LICENSE */,
 			);
 			path = tflapp;

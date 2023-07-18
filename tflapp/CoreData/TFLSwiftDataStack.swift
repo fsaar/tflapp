@@ -13,49 +13,30 @@ class SwiftDataStack {
     let container : ModelContainer
     let types = [TFLBusStation.self]
     init() throws {
-        let copyDB : () -> Void = {
-            guard let toURL = Self.destinationURL,let fromURL = Self.sourceURL  else {
-                return
-            }
-            
-            if !FileManager.default.fileExists(atPath: toURL.path) {
-                _ = try? FileManager.default.copyItem(at: fromURL, to: toURL)
-            }
-           
+        guard let toURL = Self.destinationURL,let fromURL = Self.sourceURL  else {
+            throw Errors.initialisation
         }
-        do {
-            copyDB()
-            guard let storeURL = Self.destinationURL else {
-                throw Errors.initialisation
-            }
-            let config = ModelConfiguration(schema: Schema(types),url:storeURL)
-            let container =  try ModelContainer(for: types, config)
-            self.container = container
+       
+        if !FileManager.default.fileExists(atPath: toURL.path) {
+            _ = try? FileManager.default.copyItem(at: fromURL, to: toURL)
         }
-        catch let error {
-            fatalError("Unable to initialise ModelContainer:\(error)")
-        }
+        
+        let config = ModelConfiguration(schema: Schema(types),url:toURL)
+        let container =  try ModelContainer(for: types, config)
+        self.container = container
         
     }
     
     static var destinationURL : URL? {
-        guard let url = URL(string: Self.dbFileName) else {
-            return nil
-        }
-        let dbFullFileName = url.path
-                
-        guard let destinationURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: groupID)?.appendingPathComponent(dbFullFileName) else {
+        guard let destinationURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: groupID)?.appendingPathComponent(Self.dbFileName) else {
             return nil
         }
         return destinationURL
     }
     
     static var sourceURL : URL? {
-        guard let url = URL(string: Self.dbFileName) else {
-            return nil
-        }
-        let path = url.deletingPathExtension().path
-        let ext = url.pathExtension
+        let path = (Self.dbFileName as NSString).deletingPathExtension
+        let ext = (Self.dbFileName as NSString).pathExtension
         guard let sourceURL = Bundle.main.url(forResource: path, withExtension: ext) else {
                 return nil
         }

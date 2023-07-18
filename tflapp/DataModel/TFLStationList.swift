@@ -18,7 +18,7 @@ class TFLStationList  {
     var lastLocation : CLLocationCoordinate2D? = CLLocationCoordinate2DMake( 51.510093564781975, -0.13490563038747838)
     private var radius = 400
     private let client = TFLClient()
-    private let aggregator = TFLBusArrivalInfoAggregator()
+    private let aggregator : TFLBusArrivalInfoAggregator
     var list : [TFLBusStationInfo] = []
     var cancelableSet : Set<AnyCancellable> = []
     var updating = false
@@ -26,6 +26,10 @@ class TFLStationList  {
         let handle = Logger(subsystem: TFLLogger.subsystem, category: TFLLogger.category.stationList.rawValue)
         return handle
     }()
+    
+    init(_ aggregator : TFLBusArrivalInfoAggregator) {
+        self.aggregator = aggregator
+    }
     
     func refresh() async {
         guard let currentLocation = lastLocation,!updating else {

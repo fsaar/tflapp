@@ -4,6 +4,7 @@ import Foundation
 import SwiftUI
 import Observation
 import MapKit
+import SwiftData
 
 @Observable
 final class TFLBusstationSelection {
@@ -11,12 +12,16 @@ final class TFLBusstationSelection {
 }
 
 struct GenerateDatabaseButton : View {
-    private let busStopDBGenerator = TFLBusStopDBGenerator()
-  
+    @State private var busStopDBGenerator : TFLBusStopDBGenerator?
+    @Environment private var container : ModelContainer
+   
     var body : some View {
         Button("Create Database") {
             Task {
-                try? await self.busStopDBGenerator.loadBusStops()
+                if case .none = busStopDBGenerator {
+                    busStopDBGenerator = TFLBusStopDBGenerator(self.container)
+                }
+                try? await self.busStopDBGenerator?.loadBusStops()
             }
         }
     }

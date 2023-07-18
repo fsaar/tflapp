@@ -14,18 +14,21 @@ import OSLog
 
 
 class TFLBusArrivalInfoAggregator {
-    fileprivate let tflClient = TFLClient()
-    
-    fileprivate let logger : Logger =  {
+    private let tflClient = TFLClient()
+    private let modelContainer : ModelContainer
+    private let logger : Logger =  {
         let handle = Logger(subsystem: TFLLogger.subsystem, category: TFLLogger.category.arrivalInfoAggregator.rawValue)
         return handle
     }()
     var lastUpdate : Date?
     
+    init(_ modelContainer : ModelContainer) {
+        self.modelContainer = modelContainer
+    }
    
     func loadArrivalTimesForBusStations(with location: CLLocationCoordinate2D,radius: Int) async -> [TFLBusStationInfo] {
         var infoList : [TFLBusStationInfo] = []
-        let modelContext = ModelContext(SwiftDataStack.shared.container)
+        let modelContext = ModelContext(modelContainer)
         let stations = await TFLBusStation.nearbyBusStops(with: location, and: modelContext)
         updateDatabase(for: location,radius: radius)
         logger.log("\(#function) retrieving arrival times for \(stations.count) stations")
@@ -50,7 +53,7 @@ class TFLBusArrivalInfoAggregator {
     
     func updateDatabase(for currentLocation: CLLocationCoordinate2D,radius: Int)  {
         Task.detached {
-            let modelContext = ModelContext(SwiftDataStack.shared.container)
+            let modelContext = ModelContext(self.modelContainer)
             let busStops = await self.tflClient.nearbyBusStops(with: currentLocation,radius: radius)
             let toBeExcluded = try TFLBusStation.existingStationsMatchingStops(busStops, context: modelContext)
             let savedSet = Set(busStops).subtracting(toBeExcluded)

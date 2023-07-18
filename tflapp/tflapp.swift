@@ -12,14 +12,27 @@ import SwiftData
 
 @main
 struct TFLApp: App {
-    @State var stationList = TFLStationList()
+    let swiftDataStack : SwiftDataStack
+    let stationList : TFLStationList
    
+    init() {
+        guard let stack = try? SwiftDataStack() else {
+            fatalError("Unable to initialise SwiftData")
+        }
+        swiftDataStack = stack
+        let aggregator = TFLBusArrivalInfoAggregator(stack.container)
+        stationList = TFLStationList(aggregator)
+    }
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environment(stationList)
+                .environment(stationList).task {
+                    print(Bundle.main)
+
+                }
         }
-        .modelContainer(SwiftDataStack.shared.container)
+        .modelContainer(swiftDataStack.container)
     }
     
 }

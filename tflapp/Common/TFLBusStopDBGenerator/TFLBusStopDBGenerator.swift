@@ -11,10 +11,15 @@ import SwiftData
 import OSLog
 
 class TFLBusStopDBGenerator {
-    fileprivate let logger : Logger =  {
+    private let modelContainer : ModelContainer
+    private let logger : Logger =  {
         let handle = Logger(subsystem: TFLLogger.subsystem, category: TFLLogger.category.databasegeneration.rawValue)
         return handle
     }()
+    
+    init(_ modelContainer: ModelContainer) {
+        self.modelContainer = modelContainer
+    }
     //
     // MARK: DataBase Generation
     //
@@ -67,8 +72,7 @@ class TFLBusStopDBGenerator {
     //
     func loadBusStops()  async throws {
       
-        let container =  SwiftDataStack.shared.container
-        let modelContext = ModelContext(container)
+        let modelContext = ModelContext(self.modelContainer)
         var page = 0
         var keepLoading = true
         let stepSize = 10

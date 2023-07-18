@@ -71,7 +71,6 @@
 		56CB7D5F2A67149F00B333B1 /* stops.store in Resources */ = {isa = PBXBuildFile; fileRef = 56CB7D5E2A67149500B333B1 /* stops.store */; };
 		56D008C02278D199005E1344 /* polyLineDict.plist in Resources */ = {isa = PBXBuildFile; fileRef = 56D008BF2278D199005E1344 /* polyLineDict.plist */; };
 		56D6E37A2259547D00A2FAE9 /* PolylineDict.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D6E3792259547D00A2FAE9 /* PolylineDict.swift */; };
-		56D70D141DD9A25F004CA293 /* TFLLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D70D131DD9A25F004CA293 /* TFLLocationManager.swift */; };
 		56DA42EC21051E8A00ED9C54 /* TFLBusStopArrivalsInfoSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DA42EB21051E8A00ED9C54 /* TFLBusStopArrivalsInfoSpecs.swift */; };
 		E20D423B8CB389E40E7B31A8 /* libPods-tflApp Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E5F3652046144D840A09945C /* libPods-tflApp Tests.a */; };
 /* End PBXBuildFile section */
@@ -193,7 +192,6 @@
 		56CB7D5E2A67149500B333B1 /* stops.store */ = {isa = PBXFileReference; lastKnownFileType = file; path = stops.store; sourceTree = "<group>"; };
 		56D008BF2278D199005E1344 /* polyLineDict.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = polyLineDict.plist; sourceTree = "<group>"; };
 		56D6E3792259547D00A2FAE9 /* PolylineDict.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolylineDict.swift; sourceTree = "<group>"; };
-		56D70D131DD9A25F004CA293 /* TFLLocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLLocationManager.swift; sourceTree = "<group>"; };
 		56DA42EB21051E8A00ED9C54 /* TFLBusStopArrivalsInfoSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLBusStopArrivalsInfoSpecs.swift; sourceTree = "<group>"; };
 		56DB35D62265201100B164CB /* rawPolyLineDict.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = rawPolyLineDict.plist; sourceTree = "<group>"; };
 		7A89F45A39DFA1D633B11475 /* Pods-tflApp Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tflApp Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-tflApp Tests/Pods-tflApp Tests.release.xcconfig"; sourceTree = "<group>"; };
@@ -348,6 +346,7 @@
 		565A1FC91DD8F8D1003CE960 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				565A1FC61DD8F6D9003CE960 /* SwiftDataStack */,
 				56CB7D5B2A67120700B333B1 /* LocationManager */,
 				5653009B2A6081550021DAFF /* Network */,
 				565300952A6080420021DAFF /* Views */,
@@ -359,7 +358,6 @@
 				56A4907D219799DF004024D9 /* TFLCoreSpotLightDataProvider */,
 				5666A75620F11BE6003A38D4 /* TFLLogger */,
 				566EF7E01DDC59D9006162D7 /* Extensions */,
-				56D70D121DD9A24E004CA293 /* TFLLocationManager */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -558,7 +556,6 @@
 				569EB2952321BCD700122E31 /* screenshots */,
 				566EF7C31DDA2D31006162D7 /* DataModel */,
 				565A1FC91DD8F8D1003CE960 /* Common */,
-				565A1FC61DD8F6D9003CE960 /* SwiftDataStack */,
 				563F3EE12A4388FD00EFF524 /* tflapp.swift */,
 				56A81B381DD862DC001DF7F1 /* Assets.xcassets */,
 				56A81B3A1DD862DC001DF7F1 /* LaunchScreen.storyboard */,
@@ -589,14 +586,6 @@
 				56D6E3792259547D00A2FAE9 /* PolylineDict.swift */,
 			);
 			path = PolyLineDict;
-			sourceTree = "<group>";
-		};
-		56D70D121DD9A24E004CA293 /* TFLLocationManager */ = {
-			isa = PBXGroup;
-			children = (
-				56D70D131DD9A25F004CA293 /* TFLLocationManager.swift */,
-			);
-			path = TFLLocationManager;
 			sourceTree = "<group>";
 		};
 		56D70D2F1DD9A7A6004CA293 /* Localization */ = {
@@ -904,7 +893,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				56D70D141DD9A25F004CA293 /* TFLLocationManager.swift in Sources */,
 				564CA5A4222355F400E69A1C /* PolyLine.swift in Sources */,
 				565E1A532A576077001960AD /* NoContentAvailableView.swift in Sources */,
 				568668DD2A549AB0009FE721 /* SliderView.swift in Sources */,

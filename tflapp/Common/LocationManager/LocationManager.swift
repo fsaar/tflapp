@@ -35,10 +35,10 @@ final class LocationManager {
         let handle = Logger(subsystem: TFLLogger.subsystem, category: TFLLogger.category.location.rawValue)
         return handle
     }()
-    init() {}
     
     func checkLocationUpdatesEnabled() async {
         if case .notDetermined =  locationManager.authorizationStatus  {
+            logger.log("\(#function) requesting authorisation &  restarting location update")
             self.locationManager.requestWhenInUseAuthorization()
             await start()
             return
@@ -46,9 +46,11 @@ final class LocationManager {
         let isEnabled = locationUpdatesEnabled
         
         switch (self.state,isEnabled) {
-        case (_,false):
+        case (.authorised,false):
             self.state = .not_authorised
+            logger.log("\(#function) location update unauthorised")
         case (.not_authorised,true):
+            logger.log("\(#function) restarting location update")
             await start()
         default:
             break
@@ -70,20 +72,21 @@ private extension LocationManager  {
     func start() async {
         try? await self.startLocationUpdates()
         self.state = .not_authorised
+        logger.log("\(#function) location update unauthorised")
     }
     
     func startLocationUpdates() async throws {
         for try await update in CLLocationUpdate.liveUpdates() {
             if let location = update.location {
                 self.state = .authorised(location)
-                print("My current location : \(location)")
+                logger.log("\(#function) updated location")
             }
             else {
                 if !locationUpdatesEnabled {
+                    logger.log("\(#function) location update disabled")
                     throw LocationError.not_authorised
                 }
             }
         }
-        print("failed")
     }
 }

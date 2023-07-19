@@ -3,15 +3,19 @@ import SwiftUI
 
 struct TFLNoStationListView : View {
     @Environment(TFLStationList.self) private var stationList
-   
+    @Environment(LocationManager.self) private var locationManager
+    @State var locationAvailable = false
     var body : some View {
         NoContentAvailableView(title: "TFLNoStationsView.title",description: "TFLNoStationsView.description") {
             
             RetryButton {
-                Task {
-                    await stationList.refresh()
+                guard case .authorised(let location) = locationManager.state else {
+                    return
                 }
-            }
+                Task {
+                    await stationList.refresh(location: location)
+                }
+            }.disabled(!locationAvailable)
             
         }
         
@@ -21,6 +25,10 @@ struct TFLNoStationListView : View {
                 .stroke(.tflNoStationsListViewBorder,lineWidth:2)
         }
         .padding(10)
+        .onChange(of:locationManager.state) {
+            self.locationAvailable = locationManager.state.locationAvailable
+           
+        }
     }
         
 }

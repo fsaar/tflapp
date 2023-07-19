@@ -32,8 +32,14 @@ struct ContentView: View {
     @Environment(\.scenePhase) private var scenePhase
     @AppStorage("Distance") private var distance = 400
     @Environment(TFLStationList.self) private var stationList
-    @State var isUpdating = true
+    @Environment(LocationManager.self) private var locationManager
+    @State var isUpdating = false
     @State var stationSelection = TFLBusstationSelection()
+   
+    @State var foreground = false
+    var requestStations : Bool {
+        self.locationManager.state.locationAvailable && foreground
+    }
     var showContentUnavailable : Bool {
         self.stationList.list.isEmpty && !self.isUpdating
     }
@@ -79,18 +85,23 @@ struct ContentView: View {
                 .isHidden(stationList.list.isEmpty)
         }
 #endif
-        .onChange(of: scenePhase) {
-            if scenePhase == .active {
-                stationList.updateList(with: self.distance)
-                Task {
-                    await stationList.refresh()
-                }
+       
+        .onChange(of: requestStations) {
+            guard requestStations, case .authorised(let location) = locationManager.state  else {
+                return
             }
-        }.onChange(of: stationList.updating) {
+            stationList.updateList(with: self.distance, location: location)
+            Task {
+                await stationList.refresh(location: location)
+            }
+        }
+        .onChange(of: stationList.updating) {
             withAnimation {
                 self.isUpdating = self.stationList.updating
-
             }
+        }
+        .onChange(of: scenePhase) {
+            self.foreground = scenePhase == .active
         }
     }
 }

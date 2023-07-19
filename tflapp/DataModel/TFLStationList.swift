@@ -15,7 +15,6 @@ import OSLog
 
 @Observable
 class TFLStationList  {
-    var lastLocation : CLLocationCoordinate2D? = CLLocationCoordinate2DMake( 51.510093564781975, -0.13490563038747838)
     private var radius = 400
     private let client = TFLClient()
     private let aggregator : TFLBusArrivalInfoAggregator
@@ -31,38 +30,32 @@ class TFLStationList  {
         self.aggregator = aggregator
     }
     
-    func refresh() async {
-        guard let currentLocation = lastLocation,!updating else {
+    func refresh(location: CLLocation) async {
+        guard !updating else {
             return
         }
         self.updating = true
-        self.list = await updateNearbyBusStops(for: currentLocation)
+        self.list = await updateNearbyBusStops(for: location.coordinate)
         self.updating = false
     }
     
     
-    func updateList(with radius: Int) {
+    func updateList(with radius: Int,location: CLLocation) {
+        
         self.radius = radius
-        self.list = self.list.map { $0.stationInfoUpdateToCurrentTimeAndLocation(self.lastLocation?.location) }
+        self.list = self.list.map { $0.stationInfoUpdateToCurrentTimeAndLocation(location) }
             .filter { !$0.arrivals.isEmpty }
-            .filter {  guard let lastLocation = self.lastLocation else {
-                return true
-            }
-                return $0.location.distance(from: lastLocation.location) < CLLocationDistance(self.radius)
+            .filter {
+                return $0.location.distance(from: location) < CLLocationDistance(self.radius)
             }
     }
     
     private func updateNearbyBusStops(for currentLocation:CLLocationCoordinate2D ) async -> [TFLBusStationInfo]  {
-        self.lastLocation = currentLocation
-     
         let stations = await aggregator.loadArrivalTimesForBusStations(with: currentLocation, radius: radius)
         return stations.filter { !$0.arrivals.isEmpty }
             .sorted { $0.distance < $1.distance }
             .filter {
-                guard let lastLocation else {
-                    return true
-                }
-                return $0.location.distance(from: lastLocation.location) < CLLocationDistance(radius)
+                return $0.location.distance(from: currentLocation.location) < CLLocationDistance(radius)
             }
     }
     

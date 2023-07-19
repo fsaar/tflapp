@@ -16,8 +16,9 @@ struct TFLBusPredictionListView : View {
                 HStack {
                     ForEach($predictionList) { prediction in
                         TFLBusPredictionView(prediction)
-                            .animation(.bouncy) {
-                                $0.scaleEffect(isVisible ? 1.0 : 0.01,anchor: .center)
+                            .scaleEffect(isVisible ? 1.0 : 0.01,anchor: .center)
+                            .transaction(value:self.isVisible) {
+                                $0.animation = self.isVisible ? nil : $0.animation
                             }
                     }
                 } .animation(.linear(duration: 0.4),value:predictionList)

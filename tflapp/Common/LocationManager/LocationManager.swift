@@ -24,9 +24,26 @@ final class LocationManager {
         return manager
     }()
     
-    enum State {
+    enum State : Equatable {
         case not_authorised
         case authorised(CLLocation)
+        static func ==(lhs: Self,rhs: Self) -> Bool {
+            switch (lhs,rhs) {
+            case (.not_authorised,.not_authorised),(.authorised,.authorised):
+                return true
+            default:
+                return false
+            }
+        }
+        var locationAvailable : Bool {
+            switch self {
+            case .authorised:
+               return true
+            case .not_authorised:
+               return false
+            }
+        }
+       
     }
     
     private(set) var state = State.not_authorised
@@ -55,6 +72,10 @@ final class LocationManager {
         default:
             break
         }
+    }
+    
+    func stopLocationUpdates() {
+        self.state = .not_authorised
     }
     
     var locationUpdatesEnabled : Bool {

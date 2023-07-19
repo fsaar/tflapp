@@ -17,7 +17,8 @@ import Combine
 struct TFLNearbyBusStationListView : View {
     @Environment(TFLBusstationSelection.self) private var stationSelection
     @Environment(TFLStationList.self) private var stationList
-   
+    @Environment(LocationManager.self) private var locationManager
+    
     @State var scrollPostion : String?
     var body : some View {
         
@@ -65,8 +66,11 @@ struct TFLNearbyBusStationListView : View {
             .safeAreaPadding([.bottom],140)
             .scrollTargetBehavior(.viewAligned)
             .refreshable {
+                guard case .authorised(let location) = locationManager.state else {
+                    return
+                }
                 Task {
-                    await stationList.refresh()
+                    await stationList.refresh(location: location)
                 }
             }
             .onChange(of:stationSelection.station) {

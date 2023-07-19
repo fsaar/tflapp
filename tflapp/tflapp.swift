@@ -29,11 +29,15 @@ struct TFLApp: App {
         WindowGroup {
             ContentView()
                 .environment(stationList)
+                .environment(locationManager)
                 .onChange(of:scenePhase) {
                     if scenePhase == .active {
                         Task {
                           await  locationManager.checkLocationUpdatesEnabled()
                         }
+                    }
+                    else {
+                        locationManager.stopLocationUpdates()
                     }
                 }
         }

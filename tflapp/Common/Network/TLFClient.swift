@@ -56,7 +56,7 @@ public final class TFLClient {
     public func arrivalsForStopPoint(with identifier: String) async throws -> [TFLBusPrediction] {
                                     
         let arivalsPath = "/StopPoint/\(identifier)/Arrivals"
-        logger.log("\(#function) arrivalsForStopPoint:\(identifier)")
+        logger.log("\(#function) identifier:\(identifier)")
         let data = try await tflManager.getDataWithRelativePath(relativePath: arivalsPath)
         let predictions = try TFLClient.jsonDecoder.decode([TFLBusPrediction].self,from: data)
         return predictions

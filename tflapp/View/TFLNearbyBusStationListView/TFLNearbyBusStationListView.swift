@@ -26,18 +26,17 @@ struct TFLNearbyBusStationListView : View {
                 LazyVStack {
                     ForEach(stationList.list) { station in
                         TFLBusStationView(station:Binding.constant(station))
+                            .onTapGesture {
+                                withAnimation {
+                                    stationSelection.station =  station
+                                }
+                            }
                             .scrollTransition(axis: .vertical) { content, phase in
                                 content
                                     .scaleEffect(
                                         x: phase.isIdentity ? 1.0 : 0.90,
                                         y: phase.isIdentity ? 1.0 : 0.90)
                             }
-                            .onTapGesture {
-                                withAnimation {
-                                    stationSelection.station =  station
-                                }
-                            }
-                        
                     }
                 }
                 .background(.tflBackground)

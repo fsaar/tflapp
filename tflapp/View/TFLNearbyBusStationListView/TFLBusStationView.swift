@@ -14,7 +14,7 @@ struct TFLBusStationView : View {
     @ScaledMetric(relativeTo:.title) var stopCodeSize = 16
     @ScaledMetric(relativeTo:.title) var directionSize = 16
     @ScaledMetric(relativeTo:.body) var detailsPadding = 4
-    @Environment(\.dynamicTypeSize) var dynamicTypeSize
+
     var body: some View {
         
         VStack(spacing:4) {

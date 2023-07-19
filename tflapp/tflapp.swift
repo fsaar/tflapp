@@ -31,7 +31,9 @@ struct TFLApp: App {
                 .environment(stationList)
                 .onChange(of:scenePhase) {
                     if scenePhase == .active {
-                        locationManager.checkLocationUpdatesEnabled()
+                        Task {
+                          await  locationManager.checkLocationUpdatesEnabled()
+                        }
                     }
                 }
         }

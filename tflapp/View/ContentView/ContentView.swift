@@ -102,7 +102,7 @@ struct ContentView: View {
 #endif
        
         .onChange(of: requestStations) {
-            guard requestStations, case .authorised(let location) = locationManager.state  else {
+            guard requestStations, case .updating(let location) = locationManager.state  else {
                 return
             }
             stationList.updateList(with: self.distance, location: location)

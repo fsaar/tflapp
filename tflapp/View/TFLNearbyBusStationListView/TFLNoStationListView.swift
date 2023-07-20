@@ -9,7 +9,7 @@ struct TFLNoStationListView : View {
         NoContentAvailableView(title: "TFLNoStationsView.title",description: "TFLNoStationsView.description") {
             
             RetryButton {
-                guard case .authorised(let location) = locationManager.state else {
+                guard case .updating(let location) = locationManager.state else {
                     return
                 }
                 Task {

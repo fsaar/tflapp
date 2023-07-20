@@ -66,7 +66,7 @@ struct TFLNearbyBusStationListView : View {
             .safeAreaPadding([.bottom],140)
             .scrollTargetBehavior(.viewAligned)
             .refreshable {
-                guard case .authorised(let location) = locationManager.state else {
+                guard case .updating(let location) = locationManager.state else {
                     return
                 }
                 Task {

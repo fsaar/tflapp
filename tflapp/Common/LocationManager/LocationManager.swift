@@ -25,11 +25,11 @@ final class LocationManager {
     }()
     
     enum State : Equatable {
-        case not_authorised
-        case authorised(CLLocation)
+        case not_updating
+        case updating(CLLocation)
         static func ==(lhs: Self,rhs: Self) -> Bool {
             switch (lhs,rhs) {
-            case (.not_authorised,.not_authorised),(.authorised,.authorised):
+            case (.not_updating,.not_updating),(.updating,.updating):
                 return true
             default:
                 return false
@@ -37,20 +37,23 @@ final class LocationManager {
         }
         var locationAvailable : Bool {
             switch self {
-            case .authorised:
+            case .updating:
                return true
-            case .not_authorised:
+            case .not_updating:
                return false
             }
         }
-        
-       
     }
+    
     var isLocationNotDetermined : Bool {
         locationManager.authorizationStatus == .notDetermined
     }
     
-    private(set) var state = State.not_authorised
+    var isAuthorised : Bool {
+        [.authorizedAlways,.authorizedWhenInUse].contains(locationManager.authorizationStatus)
+    }
+    
+    private(set) var state = State.not_updating
    
     private let logger : Logger =  {
         let handle = Logger(subsystem: TFLLogger.subsystem, category: TFLLogger.category.location.rawValue)
@@ -67,10 +70,10 @@ final class LocationManager {
         let isEnabled = locationUpdatesEnabled
         
         switch (self.state,isEnabled) {
-        case (.authorised,false):
-            self.state = .not_authorised
+        case (.updating,false):
+            self.state = .not_updating
             logger.log("\(#function) location update unauthorised")
-        case (.not_authorised,true):
+        case (.not_updating,true):
             logger.log("\(#function) restarting location update")
             await start()
         default:
@@ -79,7 +82,7 @@ final class LocationManager {
     }
     
     func stopLocationUpdates() {
-        self.state = .not_authorised
+        self.state = .not_updating
     }
     
     var locationUpdatesEnabled : Bool {
@@ -96,14 +99,14 @@ final class LocationManager {
 private extension LocationManager  {
     func start() async {
         try? await self.startLocationUpdates()
-        self.state = .not_authorised
+        self.state = .not_updating
         logger.log("\(#function) location update unauthorised")
     }
     
     func startLocationUpdates() async throws {
         for try await update in CLLocationUpdate.liveUpdates() {
             if let location = update.location {
-                self.state = .authorised(location)
+                self.state = .updating(location)
                 logger.log("\(#function) updated location")
             }
             else {

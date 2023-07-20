@@ -28,8 +28,9 @@ struct GenerateDatabaseButton : View {
 }
 
 // requestStations: has Location && is Active
-// NoContentView: has Location && has no content
+// NoContentView: has Location && has no content && foreground
 // NoLocationView: has no location && location status !== not determined && isActive
+// AnimationView: as no location && location status == not determined && isActive
 // Hide Progress : has content || no update in progress
 
 
@@ -52,7 +53,11 @@ struct ContentView: View {
         return !isLocationNotDetermined && !locationAvailable && foreground
     }
     var showContentUnavailable : Bool {
-        self.stationList.list.isEmpty && !self.isUpdating
+        self.stationList.list.isEmpty && !self.isUpdating && foreground
+    }
+    var showAnimationView : Bool {
+        let isLocationNotDetermined = self.locationManager.isLocationNotDetermined
+        return isLocationNotDetermined
     }
     var hideProgress : Bool {
         !stationList.list.isEmpty || !self.isUpdating
@@ -69,6 +74,9 @@ struct ContentView: View {
             .isHidden(showContentUnavailable || showNoLocation)
             if showNoLocation {
                 TFLNoLocationView()
+            }
+            else if showAnimationView {
+                EmptyView()
             }
             else if showContentUnavailable {
                 TFLNoStationListView()
@@ -111,6 +119,7 @@ struct ContentView: View {
             }
         }
         .onChange(of: stationList.updating) {
+            print(stationList.updating)
             withAnimation {
                 self.isUpdating = self.stationList.updating
             }

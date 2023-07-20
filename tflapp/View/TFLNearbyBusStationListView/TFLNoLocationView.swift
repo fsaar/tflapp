@@ -12,7 +12,7 @@ struct TFLNoLocationView : View {
                 .padding(10)
                 .background(.tflButton)
                 .foregroundColor(.white)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
+                .clipShape(RoundedRectangle(cornerRadius: 10)).padding([.top],20)
         }
 
         .padding(10)

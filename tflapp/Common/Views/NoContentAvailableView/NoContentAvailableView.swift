@@ -15,6 +15,7 @@ struct NoContentAvailableView<Button: View> : View {
         VStack(spacing:10) {
             
             Text(LocalizedStringKey(title))
+                .multilineTextAlignment(.center)
                 .textCase(.uppercase)
                 .font(.title)
                 .foregroundColor(.tflPrimaryText)
@@ -28,6 +29,7 @@ struct NoContentAvailableView<Button: View> : View {
             button
             
         }
-        .dynamicTypeSize(...DynamicTypeSize.accessibility1)        
+       
+        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
     }
 }

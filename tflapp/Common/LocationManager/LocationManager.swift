@@ -43,7 +43,11 @@ final class LocationManager {
                return false
             }
         }
+        
        
+    }
+    var isLocationNotDetermined : Bool {
+        locationManager.authorizationStatus == .notDetermined
     }
     
     private(set) var state = State.not_authorised

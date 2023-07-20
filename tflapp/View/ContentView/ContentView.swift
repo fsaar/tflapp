@@ -27,8 +27,14 @@ struct GenerateDatabaseButton : View {
     }
 }
 
+// requestStations: has Location && is Active
+// NoContentView: has Location && has no content
+// NoLocationView: has no location && location status !== not determined && isActive
+// Hide Progress : has content || no update in progress
+
 
 struct ContentView: View {
+    
     @Environment(\.scenePhase) private var scenePhase
     @AppStorage("Distance") private var distance = 400
     @Environment(TFLStationList.self) private var stationList
@@ -39,6 +45,11 @@ struct ContentView: View {
     @State var foreground = false
     var requestStations : Bool {
         self.locationManager.state.locationAvailable && foreground
+    }
+    var showNoLocation : Bool {
+        let isLocationNotDetermined = self.locationManager.isLocationNotDetermined
+        let locationAvailable =  self.locationManager.state.locationAvailable
+        return !isLocationNotDetermined && !locationAvailable && foreground
     }
     var showContentUnavailable : Bool {
         self.stationList.list.isEmpty && !self.isUpdating
@@ -55,9 +66,13 @@ struct ContentView: View {
                 TFLNearbyBusStationListView()
             }
             .environment(stationSelection)
-            .isHidden(stationList.list.isEmpty)
-            TFLNoStationListView()
-                .isHidden(!showContentUnavailable)
+            .isHidden(showContentUnavailable || showNoLocation)
+            if showNoLocation {
+                TFLNoLocationView()
+            }
+            else if showContentUnavailable {
+                TFLNoStationListView()
+            }
             TFLProgressView().isHidden(hideProgress)
             
         }

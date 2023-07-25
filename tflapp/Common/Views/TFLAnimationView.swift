@@ -12,10 +12,10 @@ import SwiftUI
 
 
 struct TFLAnimationView : View {
-    
+    let isAnimating : Bool
     var body : some View {
         GeometryReader { proxy in
-            TFLAnimationColumnsContainer(proxy.size)
+            TFLAnimationColumnsContainer(proxy.size,isAnimating: isAnimating)
         }.ignoresSafeArea()
     }
 }

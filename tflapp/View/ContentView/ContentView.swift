@@ -35,30 +35,33 @@ struct GenerateDatabaseButton : View {
 
 
 struct ContentView: View {
-    
+    enum ViewState {
+        case noLocation
+        case contentUnavailable
+        case runAnimation
+        case busSchedules
+    }
     @Environment(\.scenePhase) private var scenePhase
     @AppStorage("Distance") private var distance = 400
     @Environment(TFLStationList.self) private var stationList
     @Environment(LocationManager.self) private var locationManager
     @State var isUpdating = false
     @State var stationSelection = TFLBusstationSelection()
-   
+    @State var viewState : ViewState = .runAnimation
     @State var foreground = false
     var requestStations : Bool {
         self.locationManager.state.locationAvailable && foreground
     }
-    var showNoLocation : Bool {
-        let isLocationNotDetermined = self.locationManager.isLocationNotDetermined
-        let locationAvailable =  self.locationManager.state.locationAvailable
-        return !isLocationNotDetermined && !locationAvailable && foreground
+    var locationNotAvailable : Bool {
+        self.locationManager.state.locationAvailable
     }
-    var showContentUnavailable : Bool {
-        self.stationList.list.isEmpty && !self.isUpdating && foreground
+    var noContent : Bool {
+        self.stationList.list.isEmpty
     }
-    var showAnimationView : Bool {
-        let isLocationNotDetermined = self.locationManager.isLocationNotDetermined
-        return isLocationNotDetermined
+    var locationNotDetermined : Bool {
+        self.locationManager.isLocationNotDetermined
     }
+   
     var hideProgress : Bool {
         !stationList.list.isEmpty || !self.isUpdating
     }
@@ -71,16 +74,15 @@ struct ContentView: View {
                 TFLNearbyBusStationListView()
             }
             .environment(stationSelection)
-            .isHidden(showContentUnavailable || showNoLocation)
-            if showNoLocation {
-                TFLNoLocationView()
-            }
-            else if showAnimationView {
-                EmptyView()
-            }
-            else if showContentUnavailable {
-                TFLNoStationListView()
-            }
+            .isHidden(viewState != .busSchedules)
+    
+            TFLNoLocationView()
+                .isHidden(viewState != .noLocation)
+            TFLNoStationListView()
+                .isHidden(viewState != .contentUnavailable)
+            TFLAnimationView(isAnimating: false).opacity(0.15)
+                .isHidden(viewState != .runAnimation)
+
             TFLProgressView().isHidden(hideProgress)
             
         }
@@ -119,13 +121,49 @@ struct ContentView: View {
             }
         }
         .onChange(of: stationList.updating) {
-            print(stationList.updating)
             withAnimation {
                 self.isUpdating = self.stationList.updating
             }
+            updateState()
         }
         .onChange(of: scenePhase) {
             self.foreground = scenePhase == .active
+            updateState()
+        }
+        .onChange(of: locationNotAvailable) {
+           updateState()
+        }
+        .onChange(of: noContent) {
+            updateState()
+        }
+        .onChange(of: locationNotDetermined) {
+            updateState()
+        }
+    }
+    
+    @MainActor
+    func updateState() {
+        let oldState = viewState
+        let newState : ViewState
+        switch (isUpdating,locationNotAvailable,locationNotDetermined,noContent) {
+        case (_,_,true,true):
+            newState = .runAnimation
+        case (true,_,_,true):
+            newState = .runAnimation
+        case (true,_,_,false):
+            newState = .busSchedules
+        case (false,true,_,true):
+            newState = .noLocation
+        case (false,_,_,true):
+            newState = .contentUnavailable
+        case (false, _, _, false):
+            newState = .busSchedules
+        }
+        guard oldState != newState else {
+            return
+        }
+        withAnimation(.linear(duration: 0.5)) {
+            viewState = newState
         }
     }
 }

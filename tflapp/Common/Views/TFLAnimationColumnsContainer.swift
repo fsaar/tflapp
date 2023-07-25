@@ -17,8 +17,9 @@ struct TFLAnimationColumnsContainer : View {
     let columns : Int
     let size : CGSize
     let views : [TFLAnimationColumnView]
-
-    init(_ size: CGSize) {
+    let isAnimating : Bool
+    init(_ size: CGSize,isAnimating: Bool) {
+        self.isAnimating = isAnimating
         self.size = size
         let itemWidth = (Self.symbolSize.width + Self.xSpacing)
         self.columns  = Int((size.width / itemWidth) + 1)
@@ -42,6 +43,9 @@ struct TFLAnimationColumnsContainer : View {
     }
     
     func animate() {
+        guard isAnimating else {
+            return
+        }
         let itemHeight = Self.symbolSize.height + Self.spacing
         let itemCount = size.height / itemHeight
         let scrollDistance = itemCount * itemHeight - 2

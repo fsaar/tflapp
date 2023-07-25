@@ -9,8 +9,6 @@
 import SwiftUI
 
 struct TFLProgressView : View {
-   
-  
     var body: some View {
         HStack(spacing:20) {
             ProgressView().phaseAnimator([false, true]) { content, value in
@@ -27,7 +25,6 @@ struct TFLProgressView : View {
         .padding(20)
         .overlay {
             Capsule().stroke(.tflProgressViewBorder,lineWidth:2)
-        }
-       
+        }.background(.ultraThinMaterial)
     }
 }

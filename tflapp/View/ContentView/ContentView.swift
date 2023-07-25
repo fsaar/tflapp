@@ -27,12 +27,6 @@ struct GenerateDatabaseButton : View {
     }
 }
 
-// requestStations: has Location && is Active
-// NoContentView: has Location && has no content && foreground
-// NoLocationView: has no location && location status !== not determined && isActive
-// AnimationView: as no location && location status == not determined && isActive
-// Hide Progress : has content || no update in progress
-
 
 struct ContentView: View {
     enum ViewState {

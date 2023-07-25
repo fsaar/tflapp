@@ -68,6 +68,9 @@
 		56BA8F9320FE9BB60031A3E4 /* QuickSpec+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BA8F9220FE9BB60031A3E4 /* QuickSpec+Helper.swift */; };
 		56C0944C20D9AE0C00581995 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 56C0944B20D9ADD800581995 /* Settings.bundle */; };
 		56C11D552A69BA39000DFDB9 /* TFLNoLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C11D542A69BA39000DFDB9 /* TFLNoLocationView.swift */; };
+		56C11D572A69C91F000DFDB9 /* TFLAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C11D562A69C91F000DFDB9 /* TFLAnimationView.swift */; };
+		56C11D5A2A705619000DFDB9 /* TFLAnimationColumnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C11D592A705619000DFDB9 /* TFLAnimationColumnView.swift */; };
+		56C11D5C2A705654000DFDB9 /* TFLAnimationColumnsContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C11D5B2A705654000DFDB9 /* TFLAnimationColumnsContainer.swift */; };
 		56CB7D5D2A67121800B333B1 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56CB7D5C2A67121800B333B1 /* LocationManager.swift */; };
 		56CB7D5F2A67149F00B333B1 /* stops.store in Resources */ = {isa = PBXBuildFile; fileRef = 56CB7D5E2A67149500B333B1 /* stops.store */; };
 		56D008C02278D199005E1344 /* polyLineDict.plist in Resources */ = {isa = PBXBuildFile; fileRef = 56D008BF2278D199005E1344 /* polyLineDict.plist */; };
@@ -190,6 +193,9 @@
 		56BA8F9220FE9BB60031A3E4 /* QuickSpec+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "QuickSpec+Helper.swift"; sourceTree = "<group>"; };
 		56C0944B20D9ADD800581995 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		56C11D542A69BA39000DFDB9 /* TFLNoLocationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFLNoLocationView.swift; sourceTree = "<group>"; };
+		56C11D562A69C91F000DFDB9 /* TFLAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLAnimationView.swift; sourceTree = "<group>"; };
+		56C11D592A705619000DFDB9 /* TFLAnimationColumnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLAnimationColumnView.swift; sourceTree = "<group>"; };
+		56C11D5B2A705654000DFDB9 /* TFLAnimationColumnsContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLAnimationColumnsContainer.swift; sourceTree = "<group>"; };
 		56CB7D5C2A67121800B333B1 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		56CB7D5E2A67149500B333B1 /* stops.store */ = {isa = PBXFileReference; lastKnownFileType = file; path = stops.store; sourceTree = "<group>"; };
 		56D008BF2278D199005E1344 /* polyLineDict.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = polyLineDict.plist; sourceTree = "<group>"; };
@@ -290,6 +296,7 @@
 		565300952A6080420021DAFF /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				56C11D582A7055F9000DFDB9 /* TFLAnimationView */,
 				565E1A512A576077001960AD /* NoContentAvailableView */,
 				568668DB2A549AB0009FE721 /* Slider */,
 				565E1A4E2A575FD7001960AD /* RetryButton */,
@@ -573,6 +580,16 @@
 				564EC6EF1DDFAA67008CFD11 /* LICENSE */,
 			);
 			path = tflapp;
+			sourceTree = "<group>";
+		};
+		56C11D582A7055F9000DFDB9 /* TFLAnimationView */ = {
+			isa = PBXGroup;
+			children = (
+				56C11D562A69C91F000DFDB9 /* TFLAnimationView.swift */,
+				56C11D5B2A705654000DFDB9 /* TFLAnimationColumnsContainer.swift */,
+				56C11D592A705619000DFDB9 /* TFLAnimationColumnView.swift */,
+			);
+			name = TFLAnimationView;
 			sourceTree = "<group>";
 		};
 		56CB7D5B2A67120700B333B1 /* LocationManager */ = {
@@ -902,6 +919,7 @@
 				563F3EDC2A43887B00EFF524 /* TFLBusPredictionView.swift in Sources */,
 				563F3EC72A42418000EFF524 /* TFLBusStationInfo.swift in Sources */,
 				563F3EDF2A43887B00EFF524 /* TFLBusStationView.swift in Sources */,
+				56C11D5C2A705654000DFDB9 /* TFLAnimationColumnsContainer.swift in Sources */,
 				565300882A5DD3BA0021DAFF /* TFLMapBusStationView.swift in Sources */,
 				56928F742A4E1B7F003C6F61 /* TFLStationList.swift in Sources */,
 				565E1A502A575FD7001960AD /* RetryButton.swift in Sources */,
@@ -921,10 +939,12 @@
 				56A4907F219799EA004024D9 /* TFLCoreSpotLightDataProvider.swift in Sources */,
 				5699A68C218EE77200CD1427 /* CLLocationCoordinate2D+Helper.swift in Sources */,
 				566EF7E21DDC59ED006162D7 /* UIFont.swift in Sources */,
+				56C11D572A69C91F000DFDB9 /* TFLAnimationView.swift in Sources */,
 				561C1832226FC1D7008016B7 /* String+Helper.swift in Sources */,
 				563F3EDE2A43887B00EFF524 /* TFLCountDownLabel.swift in Sources */,
 				56CB7D5D2A67121800B333B1 /* LocationManager.swift in Sources */,
 				563F3EE62A4390F300EFF524 /* TFLBusStation.swift in Sources */,
+				56C11D5A2A705619000DFDB9 /* TFLAnimationColumnView.swift in Sources */,
 				56113B2E223F7DC900C8EDA4 /* GoogleRouteInfo.swift in Sources */,
 				561C1836226FC6F1008016B7 /* Data+Helper.swift in Sources */,
 				563F3EE02A43887B00EFF524 /* TFLBusPredictionListView.swift in Sources */,

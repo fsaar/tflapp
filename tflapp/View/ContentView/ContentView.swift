@@ -11,22 +11,6 @@ final class TFLBusstationSelection {
     var station : TFLBusStationInfo?
 }
 
-struct GenerateDatabaseButton : View {
-    @State private var busStopDBGenerator : TFLBusStopDBGenerator?
-    @Environment private var container : ModelContainer
-   
-    var body : some View {
-        Button("Create Database") {
-            Task {
-                if case .none = busStopDBGenerator {
-                    busStopDBGenerator = TFLBusStopDBGenerator(self.container)
-                }
-                try? await self.busStopDBGenerator?.loadBusStops()
-            }
-        }
-    }
-}
-
 
 struct ContentView: View {
     enum ViewState {
@@ -43,11 +27,15 @@ struct ContentView: View {
     @State var stationSelection = TFLBusstationSelection()
     @State var viewState : ViewState = .runAnimation
     @State var foreground = false
+   
     var requestStations : Bool {
         self.locationManager.state.locationAvailable && foreground
     }
     var locationNotAvailable : Bool {
-        self.locationManager.state.locationAvailable
+        !self.locationManager.state.locationAvailable
+    }
+    var notAuthorised : Bool {
+        !self.locationManager.isAuthorised
     }
     var noContent : Bool {
         self.stationList.list.isEmpty
@@ -57,7 +45,7 @@ struct ContentView: View {
     }
    
     var hideProgress : Bool {
-        !stationList.list.isEmpty || !self.isUpdating
+        !stationList.list.isEmpty || !isUpdating
     }
     
     var body: some View {
@@ -80,12 +68,13 @@ struct ContentView: View {
             TFLProgressView().isHidden(hideProgress)
             
         }
+   
 #if DEBUG_TOOLS
         .safeAreaInset(edge: .bottom) {
             HStack(spacing:40) {
                 Spacer()
                 Button("Debug") {
-                    self.stationList.wrappedValue.debug()
+                    self.stationList.debug()
                 }
                 .padding(10)
                 .overlay {
@@ -101,7 +90,6 @@ struct ContentView: View {
                 Spacer()
             }.padding(10)
                 .background(.thinMaterial)
-                .isHidden(stationList.list.isEmpty)
         }
 #endif
        
@@ -139,18 +127,19 @@ struct ContentView: View {
     func updateState() {
         let oldState = viewState
         let newState : ViewState
-        switch (isUpdating,locationNotAvailable,locationNotDetermined,noContent) {
-        case (_,_,true,true):
+        let location = (notAuthorised,locationNotAvailable,locationNotDetermined)
+        switch (isUpdating,location,noContent) {
+        case (_,(_,_,true),true):
             newState = .runAnimation
-        case (true,_,_,true):
+        case (true,_,true):
             newState = .runAnimation
-        case (true,_,_,false):
+        case (true,_,false):
             newState = .busSchedules
-        case (false,true,_,true):
+        case (_,(true,_,false),_):
             newState = .noLocation
-        case (false,_,_,true):
+        case (false,(false,_,_),true):
             newState = .contentUnavailable
-        case (false, _, _, false):
+        case (false, _, false):
             newState = .busSchedules
         }
         guard oldState != newState else {

@@ -62,7 +62,7 @@ struct ContentView: View {
                 .isHidden(viewState != .noLocation)
             TFLNoStationListView()
                 .isHidden(viewState != .contentUnavailable)
-            TFLAnimationView(isAnimating: false).opacity(0.15)
+            TFLAnimationView().opacity(0.15)
                 .isHidden(viewState != .runAnimation)
 
             TFLProgressView().isHidden(hideProgress)

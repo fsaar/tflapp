@@ -12,6 +12,7 @@ final class TFLBusstationSelection {
 }
 
 
+
 struct ContentView: View {
     enum ViewState {
         case noLocation
@@ -28,6 +29,11 @@ struct ContentView: View {
     @State var viewState : ViewState = .runAnimation
     @State var foreground = false
    
+    let monitor = NetworkMonitor()
+    var showOffline : Bool {
+        !self.monitor.isOnline && viewState != .runAnimation
+    }
+    
     var requestStations : Bool {
         self.locationManager.state.locationAvailable && foreground
     }
@@ -49,6 +55,8 @@ struct ContentView: View {
     }
     
     var body: some View {
+        
+       
         ZStack {
             SliderView(backgroundViewBuilder: {
                 TFLMapBusStationView()
@@ -64,10 +72,22 @@ struct ContentView: View {
                 .isHidden(viewState != .contentUnavailable)
             TFLAnimationView().opacity(0.15)
                 .isHidden(viewState != .runAnimation)
-
+            
             TFLProgressView().isHidden(hideProgress)
             
         }
+        .overlay {
+                VStack {
+                    Spacer()
+                    OfflineView()
+                        .padding(10)
+                }
+                .offset(y: showOffline ? 0 : UIScreen.main.bounds.height)
+                .animation(.spring(duration:0.5,bounce:0.2), value: showOffline)
+                
+            
+        }
+        
    
 #if DEBUG_TOOLS
         .safeAreaInset(edge: .bottom) {

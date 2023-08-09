@@ -16,8 +16,6 @@ class SwiftDataStack {
         guard let toURL = Self.destinationURL,let fromURL = Self.sourceURL  else {
             throw Errors.initialisation
         }
-// TODO: remove later
-        try? FileManager.default.removeItem(at: toURL)
         if !FileManager.default.fileExists(atPath: toURL.path) {
             _ = try? FileManager.default.copyItem(at: fromURL, to: toURL)
         }

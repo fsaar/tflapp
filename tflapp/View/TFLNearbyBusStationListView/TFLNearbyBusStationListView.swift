@@ -32,12 +32,7 @@ struct TFLNearbyBusStationListView : View {
                                     stationSelection.station =  station
                                 }
                             }
-                            .scrollTransition(axis: .vertical) { content, phase in
-                                content
-                                    .scaleEffect(
-                                        x: phase.isIdentity ? 1.0 : 0.90,
-                                        y: phase.isIdentity ? 1.0 : 0.90)
-                            }
+                            .scrollTransition(axis: .vertical,transition:transitionEffect)
                     }
                 }
                 .background(.tflBackground)
@@ -86,6 +81,10 @@ struct TFLNearbyBusStationListView : View {
         }
         Spacer()
     }
-
+    @Sendable
+   
+    private func transitionEffect(_ content: EmptyVisualEffect,phase: ScrollTransitionPhase) -> some VisualEffect {
+        content
+    }
     
 }

@@ -15,6 +15,7 @@ import Combine
 
 
 struct TFLNearbyBusStationListView : View {
+    fileprivate let lightImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
     @Environment(TFLBusstationSelection.self) private var stationSelection
     @Environment(TFLStationList.self) private var stationList
     @Environment(LocationManager.self) private var locationManager
@@ -64,6 +65,8 @@ struct TFLNearbyBusStationListView : View {
                 guard case .updating(let location) = locationManager.state else {
                     return
                 }
+                lightImpactFeedbackGenerator.prepare()
+                lightImpactFeedbackGenerator.impactOccurred()
                 Task {
                     await stationList.refresh(location: location)
                 }

@@ -32,26 +32,26 @@ public final class TFLClient {
         return queue
     }()
     
-    public func vehicleArrivalsInfo(with vehicleId: String,
-                                     with operationQueue : OperationQueue = OperationQueue.main,
-                                     using completionBlock:@escaping (([TFLVehicleArrivalInfo]?,_ error:Error?) -> ()))  {
-        let vehicleArrivalsInfoPath = "/Vehicle/\(vehicleId)/Arrivals"
-        Task{
-            do {
-                logger.log("\(#function) vehicleInfo:\(vehicleId)")
-                let data = try await tflManager.getDataWithRelativePath(relativePath: vehicleArrivalsInfoPath)
-                let predictions = try? TFLClient.jsonDecoder.decode([TFLVehicleArrivalInfo].self,from: data)
-                operationQueue.addOperation{
-                    completionBlock(predictions,nil)
-                }
-            }
-            catch let error {
-                operationQueue.addOperation{
-                    completionBlock(nil,error)
-                }
-            }
-        }
-    }
+//    public func vehicleArrivalsInfo(with vehicleId: String,
+//                                     with operationQueue : OperationQueue = OperationQueue.main,
+//                                     using completionBlock:@escaping (([TFLVehicleArrivalInfo]?,_ error:Error?) -> ()))  {
+//        let vehicleArrivalsInfoPath = "/Vehicle/\(vehicleId)/Arrivals"
+//        Task{
+//            do {
+//                logger.log("\(#function) vehicleInfo:\(vehicleId)")
+//                let data = try await tflManager.getDataWithRelativePath(relativePath: vehicleArrivalsInfoPath)
+//                let predictions = try? TFLClient.jsonDecoder.decode([TFLVehicleArrivalInfo].self,from: data)
+//                operationQueue.addOperation{
+//                    completionBlock(predictions,nil)
+//                }
+//            }
+//            catch let error {
+//                operationQueue.addOperation{
+//                    completionBlock(nil,error)
+//                }
+//            }
+//        }
+//    }
     
     public func arrivalsForStopPoint(with identifier: String) async throws -> [TFLBusPrediction] {
                                     

@@ -16,7 +16,7 @@ enum TFLClientError : Error {
     case InvalidJSON
 }
 
-public final class TFLClient {
+final class TFLClient {
     static let jsonDecoder = { ()-> JSONDecoder in
         let decoder = JSONDecoder()
         return decoder
@@ -53,8 +53,8 @@ public final class TFLClient {
 //        }
 //    }
     
-    public func arrivalsForStopPoint(with identifier: String) async throws -> [TFLBusPrediction] {
-                                    
+    func arrivalsForStopPoint(with identifier: String) async throws -> [TFLBusPrediction] {
+        
         let arivalsPath = "/StopPoint/\(identifier)/Arrivals"
         logger.log("\(#function) identifier:\(identifier)")
         let data = try await tflManager.getDataWithRelativePath(relativePath: arivalsPath)
@@ -62,8 +62,8 @@ public final class TFLClient {
         return predictions
     }
 
-    public func nearbyBusStops(with coordinate: CLLocationCoordinate2D,
-                               radius: Int = 500) async -> [TFLBusStation] {
+    func nearbyBusStops(with coordinate: CLLocationCoordinate2D,
+                        radius: Int = 500) async -> [TFLBusStation] {
         let busStopPath = "/StopPoint"
         let query = "radius=\(radius)&lat=\(coordinate.latitude)&lon=\(coordinate.longitude)&stopTypes=NaptanPublicBusCoachTram&categories=Geo,Direction"
         
@@ -73,7 +73,7 @@ public final class TFLClient {
         return stops ?? []
     }
   
-    public func busStops(with page: UInt) async throws -> [TFLBusStation] {
+    func busStops(with page: UInt) async throws -> [TFLBusStation] {
         let busStopPath = "/StopPoint/Mode/bus"
         let query = "page=\(page+1)"
         logger.log("\(#function) start:\(page)")
@@ -82,57 +82,19 @@ public final class TFLClient {
         return busstops
     }
     
-//    public func lineStationInfo(for line: String,
-//                        context: NSManagedObjectContext,
-//                         with operationQueue : OperationQueue = OperationQueue.main,
-//                         using completionBlock: ((TFLCDLineInfo?,_ error:Error?) -> ())? = nil)  {
-//        guard !line.isEmpty else {
-//            operationQueue.addOperation{
-//                completionBlock?(nil,TFLClientError.InvalidLine)
-//            }
-//            return
-//        }
-//        let lineStationPath = "/Line/\(line)/Route/Sequence/all"
-//        Task{
-//            do {
-//                self.logger.log("\(#function) lineStationInfo: \(line)")
-//                let lineInfo = try await lineStationInfo(with: lineStationPath, query: "serviceTypes=Regular&excludeCrowding=true", context: context)
-//                operationQueue.addOperation{
-//                    completionBlock?(lineInfo,nil)
-//                }
-//            }
-//            catch let error {
-//                completionBlock?(nil,error)
-//            }
-//        }
-//    }
-
+    func lineStationInfo(for line: String) async throws -> TFLLineInfo {
+        guard !line.isEmpty else {
+            throw TFLClientError.InvalidLine
+        }
+        let lineStationPath = "/Line/\(line)/Route/Sequence/all"
+        logger.log("\(#function) lineStationInfo:\(line)")
+        let data = try await tflManager.getDataWithRelativePath(relativePath:lineStationPath ,and: "serviceTypes=Regular&excludeCrowding=true")
+        let lineInfo = try JSONDecoder().decode(TFLLineInfo.self, from: data)
+        return lineInfo
+    }
 }
 
 fileprivate extension TFLClient {
-//    func lineStationInfo(with relativePath: String,
-//                         query: String,context: NSManagedObjectContext) async throws -> TFLCDLineInfo {
-//        let data = try await tflManager.getDataWithRelativePath(relativePath: relativePath,and: query)
-//        
-//        if let jsonDict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String : Any] {
-//            return try await withCheckedThrowingContinuation { continuation in
-//                TFLCDLineInfo.lineInfo(with: jsonDict, and: context) { lineInfo in
-//                    guard let lineInfo = lineInfo else {
-//                        continuation.resume(throwing: TFLClientError.InvalidJSON)
-//                        return
-//                    }
-//                    context.perform {
-//                        try? context.save()
-//                    }
-//                    continuation.resume(returning: lineInfo)
-//                }
-//            }
-//        } else {
-//            throw TFLClientError.InvalidFormat(data: data)
-//        }
-//    }
-    
-    
     func requestBusStops(with relativePath: String,
                                      query: String) async throws -> [TFLBusStation] {
         let data = try await tflManager.getDataWithRelativePath(relativePath: relativePath,and: query)

@@ -21,7 +21,8 @@ class SwiftDataStack {
         }
         
         let config = ModelConfiguration(schema: Schema(types),url:toURL)
-        let container =  try ModelContainer(for: types, config)
+        let container = try ModelContainer(for: TFLBusStation.self, configurations: config)
+
         self.container = container
         
     }

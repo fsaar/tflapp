@@ -10,6 +10,7 @@ struct TFLBusPredictionListView : View {
     @State var isVisible = true
     @Binding var predictionList : [TFLBusPrediction]
     @State var firstId : TFLBusPrediction.ID?
+    let tflClient = TFLClient()
     var body : some View {
         ScrollView(.horizontal,showsIndicators: false) {
             HStack {
@@ -18,6 +19,14 @@ struct TFLBusPredictionListView : View {
                         .scaleEffect(isVisible ? 1.0 : 0.01,anchor: .center)
                         .transaction(value:self.isVisible) {
                             $0.animation = self.isVisible ? nil : $0.animation
+                        }
+                        .onTapGesture {
+                            let line = prediction.wrappedValue.lineName
+                            print("\(prediction.wrappedValue.lineName)")
+                            Task {
+                                _ = try? await tflClient.lineStationInfo(for: line)
+                            }
+                          
                         }
                 }
             } .animation(.linear(duration: 0.4),value:predictionList)
